@@ -18,9 +18,9 @@ _Prerequisites:_
 
 _Installation:_  
 1. Clone the repository:  
-   `git clone https://github.com/your-username/starkminds-frontend.git`  
+   `git clone https://github.com/your-username/strellerminds-frontend.git`  
 2. Change to the project directory:  
-   `cd starkminds-frontend`  
+   `cd strellerminds-frontend`  
 3. Install dependencies:  
    `npm install`  
 4. Create a `.env` file using the provided `.env.example` for environment-specific configurations.  
