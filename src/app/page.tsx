@@ -1,14 +1,16 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import { ReactNode } from "react";
 
-
-export default function Home({children}: {children:ReactNode}) {
+export default function Home() {
   return (
-    <>
+    <main>
       <Navbar />
-      {children}
+      {/* Your page content goes here */}
+      <div className="container mx-auto py-8">
+        <h1 className="text-2xl font-bold">Welcome to our site</h1>
+        {/* Rest of your content */}
+      </div>
       <Footer />
-    </>
+    </main>
   );
 }
