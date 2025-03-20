@@ -16,14 +16,15 @@ _Prerequisites:_
 • Node.js v14 or higher  
 • npm
 
-_Installation:_  
+_Installation:_
+
 1. Clone the repository:  
-   `git clone https://github.com/your-username/strellerminds-frontend.git`  
+   `git clone https://github.com/your-username/strellerminds-frontend.git`
 2. Change to the project directory:  
-   `cd strellerminds-frontend`  
+   `cd strellerminds-frontend`
 3. Install dependencies:  
-   `npm install`  
-4. Create a `.env` file using the provided `.env.example` for environment-specific configurations.  
+   `npm install`
+4. Create a `.env` file using the provided `.env.example` for environment-specific configurations.
 5. Start the development server:  
    `npm run dev`
 
