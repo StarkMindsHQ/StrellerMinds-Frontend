@@ -2,8 +2,11 @@ import Card from "@/components/Card";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import ThemeToggle from "@/components/ThemeToggle"; // Import the toggle button
+import PaymentModal from "@/components/PaymentPage";
 
 export default function Home() {
+
+  
   return (
     <main className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen">
       <Navbar />
@@ -13,6 +16,7 @@ export default function Home() {
 
         {/* Theme Toggle Button */}
         <ThemeToggle />
+         <PaymentModal/>
       </div>
       <Footer />
     </main>
