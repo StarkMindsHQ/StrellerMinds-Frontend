@@ -1,3 +1,4 @@
+import Card from "@/components/Card";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { FeaturedCourses } from "@/components/FeaturedCourses"
@@ -5,6 +6,8 @@ import { allCourses } from "@/lib/course-data"
 import "./globals.css";
 
 export default function Home() {
+
+  
   return (
     <main className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen">
       <Navbar />
