@@ -1,3 +1,4 @@
+import Card from "@/components/Card";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import ThemeToggle from "@/components/ThemeToggle"; // Import the toggle button
@@ -8,6 +9,7 @@ export default function Home() {
       <Navbar />
       <div className="container mx-auto py-8 flex flex-col items-center">
         <h1 className="text-2xl font-bold">Welcome to our site</h1>
+        {/* Rest of your content */}
 
         {/* Theme Toggle Button */}
         <ThemeToggle />
