@@ -1,14 +1,9 @@
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
-import { ReactNode } from "react";
-
-
-export default function Home({children}: {children:ReactNode}) {
+import TestimonialsSection from '@/components/testimonial';
+export default function Home() {
   return (
-    <>
-      <Navbar />
-      {children}
-      <Footer />
-    </>
+    <main>
+      <h1>Welcome to StrellerMinds</h1>
+      <TestimonialsSection />
+    </main>
   );
 }
