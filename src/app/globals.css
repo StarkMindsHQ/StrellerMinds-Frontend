@@ -1,9 +1,15 @@
+
 @import 'tailwindcss';
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
 @tailwind utilities;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "tailwindcss";
 
 @layer base {
   :root {
@@ -55,6 +61,7 @@
 @layer base {
   * {
     /* @apply border; */
+    border-color: hsl(var(--border));
   }
 
   body {
