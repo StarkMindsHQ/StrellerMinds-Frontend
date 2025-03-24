@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { Inter, Source_Code_Pro } from 'next/font/google';
 import './globals.css';
-// import Footer from "@/components/Footer";
-// import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
 
 const inter = Inter({
   variable: '--font-inter',
@@ -25,11 +25,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.className} ${sourceCodePro.className} antialiased`}
+        className={`${inter.className} ${sourceCodePro.className} antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen`}
       >
-        {/* <Navbar /> */}
+        <Navbar />
         {children}
-        {/* <Footer /> */}
+        <Footer />
       </body>
     </html>
   );

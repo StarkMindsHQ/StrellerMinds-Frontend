@@ -1,7 +1,9 @@
+"use client"
+
 export default function Footer() {
-    return (
-      <footer>
-        {/* Footer content */}
-      </footer>
-    );
-  }
+  return (
+    <footer>
+      {/* Footer content */}
+    </footer>
+  );
+}
