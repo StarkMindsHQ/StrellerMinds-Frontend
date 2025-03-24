@@ -1,9 +1,13 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { ReactNode, useEffect, useRef } from "react"
 
-export default function AnimatedGradientBackground() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+interface Props {
+  children: ReactNode;
+}
+
+export default function AnimatedGradientBackground({ children }: Props) {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -95,15 +99,14 @@ export default function AnimatedGradientBackground() {
     animate();
 
     return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      className="absolute inset-0 w-full h-full -z-10 opacity-70"
-      aria-hidden="true"
-    />
-  );
+      window.removeEventListener("resize", handleResize)
+    }
+  }, [])
+
+  return(
+    <div className="relative w-full min-h-screen flex justify-center items-center">
+     <canvas ref={canvasRef} className="absolute inset-0 w-full h-full -z-10 opacity-70" aria-hidden="true" />
+     {children}
+    </div>)
 }
