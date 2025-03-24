@@ -1,18 +1,19 @@
 import type { Metadata } from 'next';
-import { Inter, Roboto_Mono } from 'next/font/google';
+import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 // import Footer from "@/components/Footer";
 // import Navbar from "@/components/Navbar";
 
-const geistSans = Inter({
+const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
 });
 
-const geistMono = Roboto_Mono({
+const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
 });
+import type { Metadata } from "next";
 import "./globals.css";
 
 
