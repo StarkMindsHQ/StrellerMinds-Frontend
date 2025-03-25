@@ -68,7 +68,7 @@ export function ValidatedInput({
         className={cn(error ? "border-destructive focus-visible:ring-destructive" : "", className)}
         required={required}
       />
-      {error && <p className="text-destructive text-sm">{error}</p>}
+      {error && <p className="text-destructive text-sm text-red-400">{error}</p>}
     </div>
   )
 }
