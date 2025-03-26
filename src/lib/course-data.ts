@@ -3,14 +3,14 @@ export interface EnhancedCourseData {
   id: string,
   title: string,
   popularity: number 
-  dateAdded: string ,
+  dateAdded: string,
   description: string,
   level: "Beginner" | "Intermediate" | "Advanced",
   durationHours: number,
   studentsCount: number,
   rating: number,
   trendingScore: number,
-
+  imageUrl: string,
 }
 
 // This will contain Centralized course data that can be imported by both the home page and courses page
@@ -27,6 +27,7 @@ export const allCourses: EnhancedCourseData[] = [
     popularity: 95,
     dateAdded: "2023-10-15",
     trendingScore: 75,
+    imageUrl: "/images/courses/blockchain-fundamentals.jpg",
   },
   {
     id: "stellar-smart-contract",
@@ -39,6 +40,7 @@ export const allCourses: EnhancedCourseData[] = [
     popularity: 85,
     dateAdded: "2023-11-20",
     trendingScore: 90,
+    imageUrl: "/images/courses/stellar-smart-contract.jpg",
   },
   {
     id: "defi-stellar",
@@ -51,6 +53,7 @@ export const allCourses: EnhancedCourseData[] = [
     popularity: 80,
     dateAdded: "2023-09-05",
     trendingScore: 85,
+    imageUrl: "/images/courses/defi-stellar.jpg",
   },
   {
     id: "blockchain-security",
@@ -63,6 +66,7 @@ export const allCourses: EnhancedCourseData[] = [
     popularity: 88,
     dateAdded: "2023-08-12",
     trendingScore: 70,
+    imageUrl: "/images/courses/blockchain-security.jpg",
   },
   {
     id: "crypto-trading",
@@ -75,6 +79,7 @@ export const allCourses: EnhancedCourseData[] = [
     popularity: 98,
     dateAdded: "2023-07-25",
     trendingScore: 65,
+    imageUrl: "/images/courses/crypto-trading.jpg",
   },
   {
     id: "nft-development",
@@ -87,6 +92,7 @@ export const allCourses: EnhancedCourseData[] = [
     popularity: 75,
     dateAdded: "2024-01-10",
     trendingScore: 95,
+    imageUrl: "/images/courses/nft-development.jpg",
   },
   {
     id: "blockchain-governance",
@@ -99,6 +105,6 @@ export const allCourses: EnhancedCourseData[] = [
     popularity: 70,
     dateAdded: "2024-02-05",
     trendingScore: 80,
+    imageUrl: "/images/courses/blockchain-governance.jpg",
   },
 ]
-

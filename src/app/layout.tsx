@@ -1,21 +1,18 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Inter, Source_Code_Pro } from 'next/font/google';
 import './globals.css';
-// import Footer from "@/components/Footer";
-// import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const inter = Inter({
+  variable: '--font-inter',
   subsets: ['latin'],
 });
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const sourceCodePro = Source_Code_Pro({
+  variable: '--font-source-code-pro',
   subsets: ['latin'],
 });
-import type { Metadata } from "next";
-import "./globals.css";
-
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -27,17 +24,13 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-
       <body
-        className={`${geistSans.className} ${geistMono.className} antialiased`}
+        className={`${inter.className} ${sourceCodePro.className} antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen`}
       >
-        {/* <Navbar /> */}
+        <Navbar />
         {children}
-        {/* <Footer /> */}
+        <Footer />
       </body>
-=
-      <body className="antialiased">{children}</body>
-
     </html>
   );
 }
