@@ -41,7 +41,7 @@ export function CourseCard({
   }
 
   return (
-    <div className="flex h-full flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md dark:border-gray-800 dark:bg-gray-950">
+    <div className="flex h-full flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md dark:border-gray-800 dark:bg-gray-950 hover:scale-[1.02] duration-200 ease-in-out">
       {/* Card Header */}
       <div className="relative p-0">
         <div className="absolute right-2 top-2 z-10">
@@ -67,7 +67,7 @@ export function CourseCard({
       </div>
 
       {/* Card Footer */}
-      <div className="flex flex-col space-y-4 border-gray-200 p-6 dark:border-gray-800">
+      <div className="flex flex-col space-y-4 border-t border-gray-200 p-6 dark:border-gray-800">
         <div className="flex w-full justify-between">
           <div className="flex items-center space-x-1">
             <Clock className="h-4 w-4 text-gray-400 dark:text-gray-500" />

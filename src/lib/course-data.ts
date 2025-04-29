@@ -11,6 +11,9 @@ export interface EnhancedCourseData {
   rating: number,
   trendingScore: number,
   imageUrl: string,
+  instructor?: string,  // Added as optional
+  duration?: string,    // Added as optional
+  features?: string[]   // Added as optional
 }
 
 // This will contain Centralized course data that can be imported by both the home page and courses page
