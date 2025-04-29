@@ -3,7 +3,7 @@
 import { ReactNode, useEffect, useRef } from "react"
 
 interface Props {
-  children: ReactNode;
+  children?: ReactNode; // Make children optional
 }
 
 export default function AnimatedGradientBackground({ children }: Props) {
@@ -22,9 +22,9 @@ export default function AnimatedGradientBackground({ children }: Props) {
     const particles: Particle[] = [];
     const particleCount = 12;
     const colors = [
-      'rgba(66, 99, 235, 0.2)',
-      'rgba(79, 125, 242, 0.2)',
-      'rgba(56, 103, 214, 0.15)',
+      'rgba(223, 177, 204, 0.25)', // #dfb1cc with transparency
+      'rgba(223, 177, 204, 0.15)', // #dfb1cc with more transparency
+      'rgba(92, 15, 73, 0.15)',    // #5c0f49 with transparency
     ];
 
     class Particle {
@@ -38,9 +38,9 @@ export default function AnimatedGradientBackground({ children }: Props) {
       constructor() {
         this.x = Math.random() * width;
         this.y = Math.random() * height;
-        this.size = Math.random() * 200 + 100;
-        this.speedX = Math.random() * 0.2 - 0.1;
-        this.speedY = Math.random() * 0.2 - 0.1;
+        this.size = Math.random() * 250 + 150; // Slightly larger particles for a smoother look
+        this.speedX = Math.random() * 0.15 - 0.075; // Slower movement for a more elegant feel
+        this.speedY = Math.random() * 0.15 - 0.075;
         this.color = colors[Math.floor(Math.random() * colors.length)];
       }
 
@@ -99,14 +99,13 @@ export default function AnimatedGradientBackground({ children }: Props) {
     animate();
 
     return () => {
-
       window.removeEventListener("resize", handleResize)
     }
   }, [])
 
   return(
     <div className="relative w-full min-h-screen flex justify-center items-center">
-     <canvas ref={canvasRef} className="absolute inset-0 w-full h-full -z-10 opacity-70" aria-hidden="true" />
+     <canvas ref={canvasRef} className="absolute inset-0 w-full h-full -z-10 opacity-80" aria-hidden="true" />
      {children}
     </div>)
 }
