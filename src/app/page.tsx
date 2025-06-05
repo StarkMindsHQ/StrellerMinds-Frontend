@@ -1,4 +1,3 @@
-import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
 import FeatureCards from "@/components/FeatureCards";
 import TestimonialsSection from "@/components/testimonial";
@@ -16,8 +15,6 @@ export default function Home() {
         <h1 className="text-2xl font-bold">Welcome to our site</h1>
         <FeaturedCourses courses={allCourses} maxCoursesToShow={3} />
       </div>
-
-      <Footer />
     </main>
   );
 }
