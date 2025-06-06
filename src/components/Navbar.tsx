@@ -7,6 +7,9 @@ import { Menu, X, Home, BookOpen, Users, FileText, Info } from "lucide-react";
 import SimpleLogo from "@/components/ui/SimpleLogo";
 import SignInButton from "@/components/ui/SignInButton";
 import CustomGetStartedButton from "@/components/ui/CustomGetStartedButton";
+import CryptoTicker from "./CryptoTicker";
+
+
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -34,6 +37,7 @@ const Navbar = () => {
               <SimpleLogo />
               <span className="font-bold text-xl ml-2">StrellerMinds</span>
             </Link>
+            <CryptoTicker/>
           </div>
 
           {/* Mobile menu button */}

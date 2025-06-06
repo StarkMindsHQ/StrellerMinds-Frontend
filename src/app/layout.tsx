@@ -4,6 +4,10 @@ import './globals.css';
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { Toaster } from "sonner"
+import { Providers } from '@/lib/providers';
+
+
+
 const inter = Inter({
   variable: '--font-inter',
   subsets: ['latin'],
@@ -29,12 +33,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <Providers>
         <StyledComponentsRegistry>
           <Navbar />
           {children}
           <Footer />
           <Toaster position="top-right" />
         </StyledComponentsRegistry>
+        </Providers>
       </body>
     </html>
   );
