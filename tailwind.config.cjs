@@ -42,6 +42,28 @@ module.exports = {
       textColor: {
         DEFAULT: 'hsl(var(--foreground))',
       },
+      animation: {
+        'skeleton': 'skeleton 2s ease-in-out infinite alternate',
+        'pulse-skeleton': 'pulse-skeleton 1.5s ease-in-out infinite',
+      },
+      keyframes: {
+        skeleton: {
+          '0%': {
+            backgroundColor: 'hsl(210, 40%, 94%)',
+          },
+          '100%': {
+            backgroundColor: 'hsl(210, 40%, 98%)',
+          },
+        },
+        'pulse-skeleton': {
+          '0%, 100%': {
+            opacity: '1',
+          },
+          '50%': {
+            opacity: '0.5',
+          },
+        },
+      },
     },
   },
   plugins: [],
