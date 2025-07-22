@@ -1,20 +1,36 @@
-// Enhanced course data with properties for tab filtering
+// Enhanced course data with properties for tab filtering and all CourseCard features
 export interface EnhancedCourseData {
-  id: string,
-  title: string,
-  popularity: number 
-  dateAdded: string,
-  description: string,
-  level: "Beginner" | "Intermediate" | "Advanced",
-  durationHours: number,
-  studentsCount: number,
-  rating: number,
-  trendingScore: number,
-  imageUrl: string,
-  instructor?: string,  // Added as optional
-  duration?: string,    // Added as optional
-  features?: string[]   // Added as optional
+  // Core required properties
+  id: string
+  title: string
+  description: string
+  level: "Beginner" | "Intermediate" | "Advanced"
+  durationHours: number
+  studentsCount: number
+  rating: number
+  imageUrl: string
+  
+  // Enhanced filtering properties
+  popularity: number
+  dateAdded: string
+  trendingScore: number
+  
+  // Optional enhanced properties
+  instructor?: string
+  duration?: string    // Alternative duration format
+  features?: string[]  // Course features/benefits
+  tags?: string[]      // Course tags
+  price?: number       // Course price
+  originalPrice?: number // Original price for discounts
+  reviewCount?: number // Number of reviews
+  
+  // Legacy support
+  /** @deprecated Use features instead */
+  highlights?: string[] // Deprecated: use features instead
 }
+
+// Type alias for backward compatibility
+export type CourseData = EnhancedCourseData
 
 // This will contain Centralized course data that can be imported by both the home page and courses page
 // This is the hard-coded course data in place of when we fetch data in the future
@@ -31,6 +47,17 @@ export const allCourses: EnhancedCourseData[] = [
     dateAdded: "2023-10-15",
     trendingScore: 75,
     imageUrl: "/images/courses/blockchain-fundamentals.jpg",
+    instructor: "Dr. Sarah Chen",
+    price: 99,
+    originalPrice: 149,
+    features: [
+      "Complete blockchain architecture overview",
+      "Hands-on cryptography exercises",
+      "Real-world case studies",
+      "Certificate of completion"
+    ],
+    tags: ["Blockchain", "Fundamentals", "Beginner-Friendly"],
+    reviewCount: 324
   },
   {
     id: "stellar-smart-contract",
@@ -44,6 +71,18 @@ export const allCourses: EnhancedCourseData[] = [
     dateAdded: "2023-11-20",
     trendingScore: 90,
     imageUrl: "/images/courses/stellar-smart-contract.jpg",
+    instructor: "Alex Rodriguez",
+    price: 159,
+    originalPrice: 199,
+    features: [
+      "Soroban smart contract development",
+      "Testing and deployment strategies",
+      "Security best practices",
+      "Production-ready examples",
+      "24/7 community support"
+    ],
+    tags: ["Stellar", "Smart Contracts", "Soroban"],
+    reviewCount: 187
   },
   {
     id: "defi-stellar",
@@ -57,6 +96,17 @@ export const allCourses: EnhancedCourseData[] = [
     dateAdded: "2023-09-05",
     trendingScore: 85,
     imageUrl: "/images/courses/defi-stellar.jpg",
+    instructor: "Michael Thompson",
+    price: 249,
+    features: [
+      "Build complete DeFi protocols",
+      "Liquidity pool management",
+      "Yield farming strategies",
+      "Risk assessment techniques",
+      "Portfolio optimization"
+    ],
+    tags: ["DeFi", "Advanced", "Finance"],
+    reviewCount: 98
   },
   {
     id: "blockchain-security",
@@ -70,6 +120,17 @@ export const allCourses: EnhancedCourseData[] = [
     dateAdded: "2023-08-12",
     trendingScore: 70,
     imageUrl: "/images/courses/blockchain-security.jpg",
+    instructor: "Dr. Emily Davis",
+    price: 129,
+    originalPrice: 179,
+    features: [
+      "Vulnerability assessment tools",
+      "Penetration testing methods",
+      "Secure coding practices",
+      "Incident response protocols"
+    ],
+    tags: ["Security", "Best Practices", "Enterprise"],
+    reviewCount: 156
   },
   {
     id: "crypto-trading",
