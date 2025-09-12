@@ -10,14 +10,10 @@ import { Separator } from "@/components/ui/separator"
 import { Upload, Eye, EyeOff, Bell, Shield, User, ChevronRight } from "lucide-react"
 import Link from "next/link"
 import ChangePassword from "@/components/ChangePassword"
+import NotificationPreferences from "@/components/NotificationPreferences"
 
 export default function SettingsPage() {
   const [activeSection, setActiveSection] = useState("profile")
-  const [showCurrentPassword, setShowCurrentPassword] = useState(false)
-  const [showNewPassword, setShowNewPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const [promotionalEmails, setPromotionalEmails] = useState(true)
-  const [transactionalEmails, setTransactionalEmails] = useState(false)
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-purple-50">
@@ -263,48 +259,7 @@ export default function SettingsPage() {
 
             {/* Notifications Section */}
             {activeSection === "notifications" && (
-              <div className="space-y-8 animate-in slide-in-from-right-5 duration-300">
-                <div className="bg-white/50 backdrop-blur-sm p-8 rounded-xl border border-purple-100">
-                  <h3 className="text-xl font-bold text-[#5c0f49] mb-6">Notification Preferences</h3>
-                  <div className="space-y-6">
-                    <div className="flex items-center justify-between p-4 bg-white/70 rounded-xl border border-purple-100">
-                      <div>
-                        <h4 className="font-semibold text-[#5c0f49]">Promotional Emails</h4>
-                        <p className="text-sm text-gray-600">Receive updates about new courses and offers</p>
-                      </div>
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={promotionalEmails}
-                          onChange={(e) => setPromotionalEmails(e.target.checked)}
-                          className="sr-only peer"
-                        />
-                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#5c0f49]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-[#5c0f49] peer-checked:to-purple-600"></div>
-                      </label>
-                    </div>
-
-                    <div className="flex items-center justify-between p-4 bg-white/70 rounded-xl border border-purple-100">
-                      <div>
-                        <h4 className="font-semibold text-[#5c0f49]">Transactional Emails</h4>
-                        <p className="text-sm text-gray-600">Important account and course updates</p>
-                      </div>
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={transactionalEmails}
-                          onChange={(e) => setTransactionalEmails(e.target.checked)}
-                          className="sr-only peer"
-                        />
-                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#5c0f49]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-[#5c0f49] peer-checked:to-purple-600"></div>
-                      </label>
-                    </div>
-
-                    <Button className="bg-gradient-to-r from-[#ffcc00] to-yellow-400 hover:from-yellow-400 hover:to-[#ffcc00] text-[#5c0f49] font-bold px-10 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                      Save Preferences
-                    </Button>
-                  </div>
-                </div>
-              </div>
+              <NotificationPreferences />
             )}
           </div>
         </div>
