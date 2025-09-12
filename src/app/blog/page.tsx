@@ -1,4 +1,14 @@
 import MainLayout from "@/components/MainLayout";
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Blog - Blockchain Insights & Tutorials',
+  description: 'Stay updated with the latest blockchain insights, tutorials, and industry updates from StrellerMinds experts.',
+  openGraph: {
+    title: 'StrellerMinds Blog - Blockchain Insights & Tutorials',
+    description: 'Stay updated with the latest blockchain insights, tutorials, and industry updates from StrellerMinds experts.',
+  },
+};
 
 export default function BlogPage() {
   return (

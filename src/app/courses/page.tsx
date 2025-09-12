@@ -1,6 +1,16 @@
 import { CourseCard } from "@/components/CourseCard"
 import { allCourses } from "@/lib/course-data"
 import MainLayout from "@/components/MainLayout"
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Courses - Blockchain Education Catalog',
+  description: 'Browse our complete catalog of blockchain courses. Learn DeFi, Smart Contracts, Web3 development and more with expert-led content.',
+  openGraph: {
+    title: 'Blockchain Courses - StrellerMinds Education Catalog',
+    description: 'Browse our complete catalog of blockchain courses. Learn DeFi, Smart Contracts, Web3 development and more with expert-led content.',
+  },
+};
 
 export default function CoursesPage() {
   return (
