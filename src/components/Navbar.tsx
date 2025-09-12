@@ -152,13 +152,16 @@ const Navbar = () => {
     <nav className="bg-[#5c0f49] text-white py-3 z-50 relative">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center">
-          {/* Logo */}
-          <div className="flex-shrink-0 flex flex-col gap-1">
+          {/* Logo and Crypto Ticker */}
+          <div className="flex-shrink-0 flex items-center gap-6">
             <Link href="/" className="flex items-center">
               <SimpleLogo />
               <span className="font-bold text-xl ml-2">StrellerMinds</span>
             </Link>
-            <CryptoTicker />
+            {/* Desktop Crypto Ticker */}
+            <div className="hidden lg:block">
+              <CryptoTicker />
+            </div>
           </div>
 
           {/* Hamburger button */}
@@ -210,6 +213,11 @@ const Navbar = () => {
             role="menu"
             className="md:hidden mt-4 h-[90vh]"
           >
+            {/* Mobile Crypto Ticker */}
+            <div className="mb-4 pb-4 border-b border-[#dfb1cc]/30">
+              <CryptoTicker />
+            </div>
+            
             <ul className="flex flex-col space-y-4">
               {navLinks.map((link) => (
                 <li key={link.name}>
