@@ -149,12 +149,20 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="bg-[#5c0f49] text-white py-3 z-50 relative">
+    <nav 
+      className="bg-[#5c0f49] text-white py-3 z-50 relative" 
+      role="navigation" 
+      aria-label="Main navigation"
+    >
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center">
           {/* Logo and Crypto Ticker */}
           <div className="flex-shrink-0 flex items-center gap-6">
-            <Link href="/" className="flex items-center">
+            <Link 
+              href="/" 
+              className="flex items-center focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#5c0f49] rounded-md px-2 py-1"
+              aria-label="StrellerMinds home page"
+            >
               <SimpleLogo />
               <span className="font-bold text-xl ml-2">StrellerMinds</span>
             </Link>
@@ -168,31 +176,37 @@ const Navbar = () => {
           <div className="md:hidden">
             <button
               onClick={toggleMenu}
-              aria-label="Toggle menu"
+              aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
               aria-expanded={isMenuOpen}
               aria-controls="mobile-menu"
-              className="text-white focus:outline-none focus:ring-2 focus:ring-white rounded"
+              className="text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#5c0f49] rounded-md p-2"
+              type="button"
             >
-              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {isMenuOpen ? 
+                <X className="h-6 w-6" aria-hidden="true" /> : 
+                <Menu className="h-6 w-6" aria-hidden="true" />
+              }
             </button>
           </div>
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center justify-center flex-1">
-            <ul className="flex space-x-8">
+            <ul className="flex space-x-8" role="menubar">
               {navLinks.map((link) => (
-                <li key={link.name}>
+                <li key={link.name} role="none">
                   <Link
                     href={link.href}
-                    className={`group flex items-center gap-2 relative px-2 py-1 overflow-hidden hover:text-[#dfb1cc] transition-colors ${
-                      pathname === link.href ? "font-semibold" : ""
+                    role="menuitem"
+                    aria-current={pathname === link.href ? "page" : undefined}
+                    className={`group flex items-center gap-2 relative px-3 py-2 rounded-md overflow-hidden hover:text-[#dfb1cc] transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#5c0f49] ${
+                      pathname === link.href ? "font-semibold bg-white/10" : ""
                     }`}
                   >
-                    <span className="inline-block transition-transform group-hover:translate-x-1 duration-300 ease-in-out">
+                    <span className="inline-block transition-transform group-hover:translate-x-1 duration-300 ease-in-out" aria-hidden="true">
                       {link.icon}
                     </span>
                     <span>{link.name}</span>
-                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#dfb1cc] transition-all duration-300 ease-in-out group-hover:w-full"></span>
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#dfb1cc] transition-all duration-300 ease-in-out group-hover:w-full" aria-hidden="true"></span>
                   </Link>
                 </li>
               ))}
@@ -211,6 +225,7 @@ const Navbar = () => {
           <div
             id="mobile-menu"
             role="menu"
+            aria-label="Mobile navigation menu"
             className="md:hidden mt-4 h-[90vh]"
           >
             {/* Mobile Crypto Ticker */}
@@ -220,20 +235,22 @@ const Navbar = () => {
             
             <ul className="flex flex-col space-y-4">
               {navLinks.map((link) => (
-                <li key={link.name}>
+                <li key={link.name} role="none">
                   <Link
                     href={link.href}
-                    className={`flex items-center gap-2 hover:text-[#dfb1cc] transition-colors ${
-                      pathname === link.href ? "font-semibold" : ""
+                    role="menuitem"
+                    aria-current={pathname === link.href ? "page" : undefined}
+                    className={`flex items-center gap-2 px-3 py-2 rounded-md hover:text-[#dfb1cc] transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#5c0f49] ${
+                      pathname === link.href ? "font-semibold bg-white/10" : ""
                     }`}
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    {link.icon}
+                    <span aria-hidden="true">{link.icon}</span>
                     <span>{link.name}</span>
                   </Link>
                 </li>
               ))}
-              <li className="pt-4 border-t border-[#dfb1cc]/30 flex flex-col space-y-3">
+              <li className="pt-4 border-t border-[#dfb1cc]/30 flex flex-col space-y-3" role="none">
                 <SignInButton />
                 <CustomGetStartedButton />
               </li>

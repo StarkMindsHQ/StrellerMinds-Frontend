@@ -4,7 +4,11 @@ import styled from 'styled-components';
 const SignInButton = () => {
   return (
     <StyledWrapper>
-      <button className="button">
+      <button 
+        className="button"
+        type="button"
+        aria-label="Sign in to your account"
+      >
         <div className="text">Sign In</div> {/* Changed text from PRESS IN */}
       </button>
     </StyledWrapper>
