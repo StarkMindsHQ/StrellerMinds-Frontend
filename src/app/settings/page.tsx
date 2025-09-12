@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { Upload, Eye, EyeOff, Bell, Shield, User, ChevronRight } from "lucide-react"
 import Link from "next/link"
+import ChangePassword from "@/components/ChangePassword"
 
 export default function SettingsPage() {
   const [activeSection, setActiveSection] = useState("profile")
@@ -257,79 +258,7 @@ export default function SettingsPage() {
 
             {/* Password Section */}
             {activeSection === "password" && (
-              <div className="space-y-8 animate-in slide-in-from-right-5 duration-300">
-                <div className="bg-white/50 backdrop-blur-sm p-8 rounded-xl border border-purple-100">
-                  <h3 className="text-xl font-bold text-[#5c0f49] mb-6">Change Password</h3>
-                  <div className="space-y-6">
-                    <div>
-                      <Label htmlFor="current-password" className="text-sm font-semibold text-[#5c0f49] mb-3 block">
-                        Current Password
-                      </Label>
-                      <div className="relative">
-                        <Input
-                          id="current-password"
-                          type={showCurrentPassword ? "text" : "password"}
-                          placeholder="Enter current password"
-                          className="rounded-xl border-purple-200 focus:border-[#5c0f49] focus:ring-[#5c0f49]/20 bg-white/70 backdrop-blur-sm pr-12 transition-all duration-300"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-[#5c0f49] transition-colors duration-300"
-                        >
-                          {showCurrentPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                        </button>
-                      </div>
-                    </div>
-
-                    <div>
-                      <Label htmlFor="new-password" className="text-sm font-semibold text-[#5c0f49] mb-3 block">
-                        New Password
-                      </Label>
-                      <div className="relative">
-                        <Input
-                          id="new-password"
-                          type={showNewPassword ? "text" : "password"}
-                          placeholder="Enter new password"
-                          className="rounded-xl border-purple-200 focus:border-[#5c0f49] focus:ring-[#5c0f49]/20 bg-white/70 backdrop-blur-sm pr-12 transition-all duration-300"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setShowNewPassword(!showNewPassword)}
-                          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-[#5c0f49] transition-colors duration-300"
-                        >
-                          {showNewPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                        </button>
-                      </div>
-                    </div>
-
-                    <div>
-                      <Label htmlFor="confirm-password" className="text-sm font-semibold text-[#5c0f49] mb-3 block">
-                        Confirm New Password
-                      </Label>
-                      <div className="relative">
-                        <Input
-                          id="confirm-password"
-                          type={showConfirmPassword ? "text" : "password"}
-                          placeholder="Confirm new password"
-                          className="rounded-xl border-purple-200 focus:border-[#5c0f49] focus:ring-[#5c0f49]/20 bg-white/70 backdrop-blur-sm pr-12 transition-all duration-300"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-[#5c0f49] transition-colors duration-300"
-                        >
-                          {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                        </button>
-                      </div>
-                    </div>
-
-                    <Button className="bg-gradient-to-r from-[#ffcc00] to-yellow-400 hover:from-yellow-400 hover:to-[#ffcc00] text-[#5c0f49] font-bold px-10 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                      Update Password
-                    </Button>
-                  </div>
-                </div>
-              </div>
+              <ChangePassword />
             )}
 
             {/* Notifications Section */}
