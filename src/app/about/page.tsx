@@ -1,4 +1,14 @@
 import MainLayout from "@/components/MainLayout";
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'About Us - Learn About Our Mission',
+  description: 'Discover StrellerMinds mission to empower minds through cutting-edge blockchain education. Learn about our expert instructors and comprehensive curriculum.',
+  openGraph: {
+    title: 'About StrellerMinds - Blockchain Education Experts',
+    description: 'Discover StrellerMinds mission to empower minds through cutting-edge blockchain education. Learn about our expert instructors and comprehensive curriculum.',
+  },
+};
 
 export default function AboutPage() {
   return (

@@ -4,6 +4,16 @@ import TestimonialsSection from "@/components/testimonial";
 import { FeaturedCourses } from "@/components/FeaturedCourses";
 import { allCourses } from "@/lib/course-data";
 import MainLayout from "@/components/MainLayout";
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Home - Blockchain Education Platform',
+  description: 'Start your blockchain journey with StrellerMinds. Expert-led courses in DeFi, Smart Contracts, and Web3 development.',
+  openGraph: {
+    title: 'StrellerMinds - Blockchain Education Platform',
+    description: 'Start your blockchain journey with StrellerMinds. Expert-led courses in DeFi, Smart Contracts, and Web3 development.',
+  },
+};
 
 export default function Home() {
   return (
