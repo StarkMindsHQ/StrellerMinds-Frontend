@@ -289,7 +289,8 @@ export default function NotificationPreferences() {
             <Button 
               onClick={handleSaveChanges}
               disabled={isLoading || !hasChanges}
-              className="bg-gradient-to-r from-[#ffcc00] to-yellow-400 hover:from-yellow-400 hover:to-[#ffcc00] text-[#5c0f49] font-bold px-10 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              variant="primary"
+              size="lg"
             >
               {isLoading ? (
                 <div className="flex items-center space-x-2">
