@@ -97,3 +97,33 @@ const ToastDescription = React.forwardRef<
 ))
 ToastDescription.displayName = ToastPrimitives.Description.displayName
 
+
+const ToastIcon = ({ variant }: { variant?: "default" | "destructive" | "success" | "info" }) => {
+  switch (variant) {
+    case "success":
+      return <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
+    case "destructive":
+      return <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400" />
+    case "info":
+      return <Info className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+    default:
+      return null
+  }
+}
+
+type ToastProps = React.ComponentPropsWithoutRef<typeof Toast>
+
+type ToastActionElement = React.ReactElement<typeof ToastAction>
+
+export {
+  type ToastProps,
+  type ToastActionElement,
+  ToastProvider,
+  ToastViewport,
+  Toast,
+  ToastTitle,
+  ToastDescription,
+  ToastClose,
+  ToastAction,
+  ToastIcon,
+}
