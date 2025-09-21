@@ -7,6 +7,7 @@ import Link from "next/link";
 import logo from "@/assets/logo.png"
 import loginImage from "@/assets/login-image.png";
 import loginBg from "@/assets/login-bg.png";
+import { logger } from "@/lib/logger";
 
 type FormValues = {
   email: string;
@@ -18,7 +19,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = (data: FormValues) => {
-    console.log("Form Data:", data);
+    logger.log("Form Data:", data);
     reset();
   };
 

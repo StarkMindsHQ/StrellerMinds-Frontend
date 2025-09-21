@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/inputt"
 import { FormField } from "@/components/form-field"
 import { PhoneInput } from "@/components/phone-input"
 import { Logo } from "@/components/logo"
+import { logger } from "@/lib/logger"
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
@@ -68,7 +69,7 @@ export default function Register() {
 
     if (isValid) {
       // Submit form data
-      console.log("Form submitted:", formData)
+      logger.log("Form submitted:", formData)
     }
   }
 
