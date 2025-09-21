@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import AnimatedGradientBackground from '@/components/Animated-graded-background';
 import { LuArrowRight, LuArrowLeft } from "react-icons/lu";
+import { logger } from '@/lib/logger';
 
 
 type FormData = {
@@ -19,7 +20,7 @@ export default function PasswordReset() {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         // Simulate form submission
-        console.log('Form submitted:', formData);
+        logger.log('Form submitted:', formData);
         setSubmitted(true);
     };
 

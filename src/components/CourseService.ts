@@ -1,19 +1,21 @@
-import type { EnhancedCourseData } from "@/lib/course-data"
+import type { EnhancedCourseData } from '@/lib/course-data';
+import { logger } from '@/lib/logger';
 
 // This file will would be used to fetch course data from the API and handle abstraction for data fetching operations
-export async function fetchFeaturedCourses(tab = "popular"): Promise<EnhancedCourseData[]> {
+export async function fetchFeaturedCourses(
+  tab = 'popular',
+): Promise<EnhancedCourseData[]> {
   try {
-    const response = await fetch(`/api/courses?tab=${tab}`)
+    const response = await fetch(`/api/courses?tab=${tab}`);
 
     if (!response.ok) {
-      throw new Error("Failed to fetch courses")
+      throw new Error('Failed to fetch courses');
     }
 
-    const data = await response.json()
-    return data.courses
+    const data = await response.json();
+    return data.courses;
   } catch (error) {
-    console.error("Error fetching courses:", error)
-    return []
+    logger.error('Error fetching courses:', error);
+    return [];
   }
 }
-
