@@ -5,7 +5,8 @@ import AnimatedGradientBackground from './Animated-graded-background';
 import Link from 'next/link';
 import { LuGithub } from 'react-icons/lu';
 import { FaRegStar } from 'react-icons/fa';
-import { ValidatedInput } from './ui/input';
+import { Input } from './ui/inputt';
+import { toast } from 'sonner';
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -49,9 +50,12 @@ const LoginForm = () => {
     if (!validateForm()) return;
 
     setLoading(true);
+
+    // This is where you would typically handle form submission.
+    // Set timeout is used here to simulate a network request.
     setTimeout(() => {
       setLoading(false);
-      alert('Login successful!');
+      toast.success('Login successful!');
     }, 1500);
   };
 
@@ -86,17 +90,13 @@ const LoginForm = () => {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-semibold">Email</label>
-              <ValidatedInput
+              <Input
                 className="w-full px-3 py-2 border rounded-lg outline-none"
-                validate={(value) =>
-                  !value.includes('@') ? 'Invalid email address' : null
-                }
                 id="email"
-                label=""
                 placeholder="you@example.com"
                 type="email"
                 defaultValue={formData.email}
-                onChange={(value) => handleChange(value, 'email')}
+                onChange={(e) => handleChange(e.target.value, 'email')}
               />
             </div>
             <div>
@@ -109,15 +109,13 @@ const LoginForm = () => {
                   Forgot password?
                 </Link>
               </div>
-              <ValidatedInput
+              <Input
                 className="w-full px-3 py-2 border rounded-lg outline-none"
-                validate={validatePassword}
                 id="password"
-                label=""
                 placeholder="password"
                 type="password"
                 defaultValue={formData.password}
-                onChange={(value) => handleChange(value, 'password')}
+                onChange={(e) => handleChange(e.target.value, 'password')}
               />
             </div>
             <div className="flex items-center">

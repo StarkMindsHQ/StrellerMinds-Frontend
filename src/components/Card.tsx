@@ -1,6 +1,7 @@
 "use client"
 import { useState } from "react";
-import { ValidatedInput } from "./ui/input";
+import {Input} from "./ui/inputt";
+import { toast } from "sonner";
 
 export default function Card () {
 
@@ -23,22 +24,19 @@ const [formData, setFormData] = useState({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    alert(`Form submitted with: ${JSON.stringify(formData, null, 2)}`)
+    
+    // The submission logic should be placed here
+    // After which a toast is shown depending on the state of submission
+    toast.success(`Form submitted successfully!`)
   }
 
     return (
-
-
-<ValidatedInput 
+        <Input 
         id="email"
-        label="Email Address"
         placeholder="your@email.com"
         type="email"
         required
-        validate={validateEmail}
-        onChange={(value) => setFormData((prev) => ({ ...prev, email: value 
-    })
-    )} 
+        onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))} 
     />
    )
 }

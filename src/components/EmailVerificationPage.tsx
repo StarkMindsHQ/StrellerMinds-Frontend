@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import AnimatedGradientBackground from './Animated-graded-background';
 import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
+import { toast } from 'sonner';
 
 export default function EmailVerificationPage() {
   const [email] = useState('algodicino@gmail.com');
@@ -11,7 +12,7 @@ export default function EmailVerificationPage() {
 
   const handleResendCode = () => {
     // This would connect to your backend resend functionality
-    alert('Verification code resent!');
+    toast.success('Verification code resent!');
   };
 
   const handleCompleteSignup = (e: React.FormEvent) => {
@@ -24,7 +25,7 @@ export default function EmailVerificationPage() {
       if (code.length === 6) {
         window.location.href = '/dashboard'; // Redirect on success
       } else {
-        alert('Please enter a valid 6-digit code');
+        toast.error('Please enter a valid 6-digit code');
       }
     }, 1000);
   };
