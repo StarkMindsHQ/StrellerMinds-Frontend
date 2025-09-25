@@ -24,12 +24,19 @@ export default function CodeEditor({ code, setCode, isExecuting, setIsExecuting,
   const [showTestButton, setShowTestButton] = useState(true)
   const stopExecutionRef = useRef<(() => void) | null>(null)
   const executionTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const isMountedRef = useRef(true)
 
   const handleEditorDidMount = (editor: any) => {
     editorRef.current = editor
   }
 
   const handleExecuteCode = async () => {
+    // Clear any existing timeout to prevent accumulation
+    if (executionTimeoutRef.current) {
+      clearTimeout(executionTimeoutRef.current)
+      executionTimeoutRef.current = null
+    }
+
     setIsExecuting(true)
     setOutput("")
 
@@ -37,27 +44,35 @@ export default function CodeEditor({ code, setCode, isExecuting, setIsExecuting,
 
     try {
       const { stop } = await executeCode(code, (log: string) => {
+        if (!isMountedRef.current) return
         currentOutput += log + "\n"
         setOutput(currentOutput)
       })
 
-      // Store the stop function for later use
+      if (!isMountedRef.current) return
+
       stopExecutionRef.current = stop
 
-      // Set a safety timeout to ensure UI doesn't get stuck
       executionTimeoutRef.current = setTimeout(() => {
-        if (isExecuting) {
-          setOutput((prev) => prev + "\n--- Execution timed out after 60 seconds ---")
-          handleStopExecution()
-        }
-      }, 60000) // 60 second safety timeout
+        if (!isMountedRef.current) return
+        setOutput((prev) => prev + "\n--- Execution timed out after 60 seconds ---")
+        handleStopExecution()
+      }, 60000)
     } catch (error) {
+      if (!isMountedRef.current) return
+
       if (error instanceof Error) {
         setOutput(`Execution error: ${error.message}`)
       } else {
         setOutput(`Execution error: ${String(error)}`)
       }
       setIsExecuting(false)
+
+      if (executionTimeoutRef.current) {
+        clearTimeout(executionTimeoutRef.current)
+        executionTimeoutRef.current = null
+      }
+      stopExecutionRef.current = null
     }
   }
 
@@ -79,14 +94,25 @@ export default function CodeEditor({ code, setCode, isExecuting, setIsExecuting,
   // Clean up on unmount
   useEffect(() => {
     return () => {
+      isMountedRef.current = false
+
       if (stopExecutionRef.current) {
-        stopExecutionRef.current()
+        try {
+          stopExecutionRef.current()
+        } catch (error) {
+          console.warn("Error during execution cleanup:", error)
+        }
+        stopExecutionRef.current = null
       }
+
       if (executionTimeoutRef.current) {
         clearTimeout(executionTimeoutRef.current)
+        executionTimeoutRef.current = null
       }
+
+      setIsExecuting(false)
     }
-  }, [])
+  }, [setIsExecuting])
 
   const runSimpleTest = () => {
     setCode(simpleTestCode)
