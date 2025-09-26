@@ -70,7 +70,9 @@ const VerificationPage = () => {
         </div>
       )}
 
-      {isVerified && <p className={styles.successMessage}>OTP Verified Successfully!</p>}
+      {isVerified && (
+        <p className={styles.successMessage}>OTP Verified Successfully!</p>
+      )}
       {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
     </div>
   );
