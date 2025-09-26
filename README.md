@@ -24,7 +24,15 @@ _Installation:_
    `cd strellerminds-frontend`
 3. Install dependencies:  
    `npm install`
-4. Create a `.env` file using the provided `.env.example` for environment-specific configurations.
+4. **Environment Configuration**:  
+   Copy the `.env.example` file to `.env` and configure your environment variables:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+   Edit `.env` with your actual values. The app will validate all required environment variables at startup and fail gracefully with clear error messages if any are missing or invalid.
+
 5. Start the development server:  
    `npm run dev`
 

@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 import { Inter, Source_Code_Pro } from 'next/font/google';
 import './globals.css';
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
-import { Toaster } from "sonner"
+import Footer from '@/components/Footer';
+import Navbar from '@/components/Navbar';
+import { Toaster } from 'sonner';
 import { Providers } from '@/lib/providers';
-
-
+import EnvironmentValidator from '@/components/EnvironmentValidator';
+import { initializeServerEnvironment } from '@/lib/env-server';
 
 const inter = Inter({
   variable: '--font-inter',
@@ -21,10 +21,19 @@ const sourceCodePro = Source_Code_Pro({
 export const metadata: Metadata = {
   title: {
     default: 'StrellerMinds - Blockchain Education Platform',
-    template: '%s | StrellerMinds'
+    template: '%s | StrellerMinds',
   },
-  description: 'Empowering minds through cutting-edge blockchain education. Learn DeFi, Smart Contracts, and blockchain development with expert-led courses.',
-  keywords: ['blockchain', 'education', 'DeFi', 'smart contracts', 'cryptocurrency', 'web3', 'learning platform'],
+  description:
+    'Empowering minds through cutting-edge blockchain education. Learn DeFi, Smart Contracts, and blockchain development with expert-led courses.',
+  keywords: [
+    'blockchain',
+    'education',
+    'DeFi',
+    'smart contracts',
+    'cryptocurrency',
+    'web3',
+    'learning platform',
+  ],
   authors: [{ name: 'StrellerMinds Team' }],
   creator: 'StrellerMinds',
   publisher: 'StrellerMinds',
@@ -40,12 +49,14 @@ export const metadata: Metadata = {
     url: 'https://strellerminds.com',
     siteName: 'StrellerMinds',
     title: 'StrellerMinds - Blockchain Education Platform',
-    description: 'Empowering minds through cutting-edge blockchain education. Learn DeFi, Smart Contracts, and blockchain development with expert-led courses.',
+    description:
+      'Empowering minds through cutting-edge blockchain education. Learn DeFi, Smart Contracts, and blockchain development with expert-led courses.',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'StrellerMinds - Blockchain Education Platform',
-    description: 'Empowering minds through cutting-edge blockchain education. Learn DeFi, Smart Contracts, and blockchain development with expert-led courses.',
+    description:
+      'Empowering minds through cutting-edge blockchain education. Learn DeFi, Smart Contracts, and blockchain development with expert-led courses.',
     creator: '@strellerminds',
   },
   robots: {
@@ -66,6 +77,9 @@ export const metadata: Metadata = {
 
 import StyledComponentsRegistry from '@/lib/registry';
 
+// Initialize server environment validation
+initializeServerEnvironment();
+
 export default function RootLayout({
   children,
 }: {
@@ -74,13 +88,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <EnvironmentValidator />
         <Providers>
-        <StyledComponentsRegistry>
-          <Navbar />
-          {children}
-          <Footer />
-          <Toaster position="top-right" />
-        </StyledComponentsRegistry>
+          <StyledComponentsRegistry>
+            <Navbar />
+            {children}
+            <Footer />
+            <Toaster position="top-right" />
+          </StyledComponentsRegistry>
         </Providers>
       </body>
     </html>
