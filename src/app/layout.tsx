@@ -1,12 +1,10 @@
 import type { Metadata } from 'next';
 import { Inter, Source_Code_Pro } from 'next/font/google';
 import './globals.css';
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
-import { Toaster } from "sonner"
+import Footer from '@/components/Footer';
+import Navbar from '@/components/Navbar';
+import { Toaster } from 'sonner';
 import { Providers } from '@/lib/providers';
-
-
 
 const inter = Inter({
   variable: '--font-inter',
@@ -21,10 +19,19 @@ const sourceCodePro = Source_Code_Pro({
 export const metadata: Metadata = {
   title: {
     default: 'StrellerMinds - Blockchain Education Platform',
-    template: '%s | StrellerMinds'
+    template: '%s | StrellerMinds',
   },
-  description: 'Empowering minds through cutting-edge blockchain education. Learn DeFi, Smart Contracts, and blockchain development with expert-led courses.',
-  keywords: ['blockchain', 'education', 'DeFi', 'smart contracts', 'cryptocurrency', 'web3', 'learning platform'],
+  description:
+    'Empowering minds through cutting-edge blockchain education. Learn DeFi, Smart Contracts, and blockchain development with expert-led courses.',
+  keywords: [
+    'blockchain',
+    'education',
+    'DeFi',
+    'smart contracts',
+    'cryptocurrency',
+    'web3',
+    'learning platform',
+  ],
   authors: [{ name: 'StrellerMinds Team' }],
   creator: 'StrellerMinds',
   publisher: 'StrellerMinds',
@@ -40,12 +47,14 @@ export const metadata: Metadata = {
     url: 'https://strellerminds.com',
     siteName: 'StrellerMinds',
     title: 'StrellerMinds - Blockchain Education Platform',
-    description: 'Empowering minds through cutting-edge blockchain education. Learn DeFi, Smart Contracts, and blockchain development with expert-led courses.',
+    description:
+      'Empowering minds through cutting-edge blockchain education. Learn DeFi, Smart Contracts, and blockchain development with expert-led courses.',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'StrellerMinds - Blockchain Education Platform',
-    description: 'Empowering minds through cutting-edge blockchain education. Learn DeFi, Smart Contracts, and blockchain development with expert-led courses.',
+    description:
+      'Empowering minds through cutting-edge blockchain education. Learn DeFi, Smart Contracts, and blockchain development with expert-led courses.',
     creator: '@strellerminds',
   },
   robots: {
@@ -75,12 +84,18 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Providers>
-        <StyledComponentsRegistry>
-          <Navbar />
-          {children}
-          <Footer />
-          <Toaster position="top-right" />
-        </StyledComponentsRegistry>
+          <StyledComponentsRegistry>
+            <a
+              href="#main-content"
+              className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-16 focus:bg-[#5c0f49] focus:text-white focus:p-4 focus:outline-none focus:z-100"
+            >
+              Skip to content
+            </a>
+            <Navbar />
+            {children}
+            <Footer />
+            <Toaster position="top-right" />
+          </StyledComponentsRegistry>
         </Providers>
       </body>
     </html>
