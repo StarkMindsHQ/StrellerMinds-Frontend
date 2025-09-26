@@ -1,4 +1,7 @@
-export async function executeCode(code: string, logCallback: (log: string) => void): Promise<{ stop: () => void }> {
+export async function executeCode(
+  code: string,
+  logCallback: (log: string) => void,
+): Promise<{ stop: () => void }> {
   // Create a simpler worker script with better error handling
   const workerScript = `
     // Set up communication channel
@@ -225,48 +228,47 @@ export async function executeCode(code: string, logCallback: (log: string) => vo
       self.postMessage({ type: 'error', data: 'Worker error: ' + event.message });
       self.postMessage({ type: 'done' });
     };
-  `
+  `;
 
   // Create a blob from the worker script
-  const blob = new Blob([workerScript], { type: "application/javascript" })
-  const workerUrl = URL.createObjectURL(blob)
+  const blob = new Blob([workerScript], { type: 'application/javascript' });
+  const workerUrl = URL.createObjectURL(blob);
 
   // Create the worker
-  const worker = new Worker(workerUrl)
+  const worker = new Worker(workerUrl);
 
   // Function to stop execution
   const stop = () => {
-    worker.postMessage({ action: "stop" })
-    worker.terminate()
-    URL.revokeObjectURL(workerUrl)
-  }
+    worker.postMessage({ action: 'stop' });
+    worker.terminate();
+    URL.revokeObjectURL(workerUrl);
+  };
 
   return new Promise((resolve) => {
     // Set up message handler
     worker.onmessage = (e) => {
-      if (e.data.type === "log") {
-        logCallback(e.data.data)
-      } else if (e.data.type === "error") {
-        logCallback("ERROR: " + e.data.data)
-      } else if (e.data.type === "done") {
+      if (e.data.type === 'log') {
+        logCallback(e.data.data);
+      } else if (e.data.type === 'error') {
+        logCallback('ERROR: ' + e.data.data);
+      } else if (e.data.type === 'done') {
         // Clean up
-        worker.terminate()
-        URL.revokeObjectURL(workerUrl)
+        worker.terminate();
+        URL.revokeObjectURL(workerUrl);
       }
-    }
+    };
 
     // Set up error handler
     worker.onerror = (error) => {
-      logCallback(`ERROR: Worker initialization failed: ${error.message}`)
-      worker.terminate()
-      URL.revokeObjectURL(workerUrl)
-    }
+      logCallback(`ERROR: Worker initialization failed: ${error.message}`);
+      worker.terminate();
+      URL.revokeObjectURL(workerUrl);
+    };
 
     // Start the worker with the code
-    worker.postMessage({ code })
+    worker.postMessage({ code });
 
     // Resolve immediately with the stop function
-    resolve({ stop })
-  })
+    resolve({ stop });
+  });
 }
-

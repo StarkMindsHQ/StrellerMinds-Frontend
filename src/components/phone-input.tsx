@@ -1,21 +1,26 @@
-"use client"
+'use client';
 
-import { useState } from "react"
-import { ChevronDown } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { useState } from 'react';
+import { ChevronDown } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface PhoneInputProps {
-  value: string
-  onChange: (value: string) => void
-  error?: boolean
-  className?: string
+  value: string;
+  onChange: (value: string) => void;
+  error?: boolean;
+  className?: string;
 }
 
-export function PhoneInput({ value, onChange, error, className }: PhoneInputProps) {
-  const [countryCode, setCountryCode] = useState("+234")
+export function PhoneInput({
+  value,
+  onChange,
+  error,
+  className,
+}: PhoneInputProps) {
+  const [countryCode, setCountryCode] = useState('+234');
 
   return (
-    <div className={cn("flex w-full", className)}>
+    <div className={cn('flex w-full', className)}>
       <div className="relative">
         <button
           type="button"
@@ -31,12 +36,14 @@ export function PhoneInput({ value, onChange, error, className }: PhoneInputProp
         type="tel"
         placeholder="Enter"
         className={cn(
-          "flex-1 min-w-0 px-3 py-2 border border-l-0 rounded-r-md focus:outline-none focus:ring-2 text-sm",
-          error ? "border-red-500 focus:ring-red-200" : "border-gray-300 focus:ring-red-100",
+          'flex-1 min-w-0 px-3 py-2 border border-l-0 rounded-r-md focus:outline-none focus:ring-2 text-sm',
+          error
+            ? 'border-red-500 focus:ring-red-200'
+            : 'border-gray-300 focus:ring-red-100',
         )}
         value={value}
         onChange={(e) => onChange(e.target.value)}
       />
     </div>
-  )
+  );
 }

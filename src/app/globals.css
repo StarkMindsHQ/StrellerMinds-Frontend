@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-@import "tw-animate-css";
+@import 'tw-animate-css';
 
 /* Skeleton loading animations */
 @keyframes fadeIn {
@@ -185,7 +185,9 @@
 .page-transition-enter-active {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 300ms, transform 300ms;
+  transition:
+    opacity 300ms,
+    transform 300ms;
 }
 
 .page-transition-exit {
@@ -196,7 +198,9 @@
 .page-transition-exit-active {
   opacity: 0;
   transform: translateY(-10px);
-  transition: opacity 300ms, transform 300ms;
+  transition:
+    opacity 300ms,
+    transform 300ms;
 }
 
 @keyframes underlineEaseIn {
@@ -214,14 +218,14 @@
 }
 
 .animated-underline::after {
-  content: "";
+  content: '';
   position: absolute;
   border-radius: 10px;
   left: 0;
   bottom: -2px;
   width: 0;
   height: 4px;
-  background-color: #3B40E0;
+  background-color: #3b40e0;
   animation: underlineEaseIn 1.5s ease-in forwards;
 }
 

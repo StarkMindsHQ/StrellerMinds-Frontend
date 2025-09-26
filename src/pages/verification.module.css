@@ -1,43 +1,44 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    max-width: 400px;
-    margin: 0 auto;
-  }
-  
-  .input {
-    padding: 10px;
-    font-size: 16px;
-    width: 100%;
-    margin-bottom: 20px;
-  }
-  
-  .verifyButton, .generateButton {
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    border: none;
-    width: 100%;
-  }
-  
-  .verifyButton:hover, .generateButton:hover {
-    background-color: #0056b3;
-  }
-  
-  .timer {
-    font-size: 14px;
-    color: gray;
-  }
-  
-  .successMessage {
-    color: green;
-  }
-  
-  .errorMessage {
-    color: red;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.input {
+  padding: 10px;
+  font-size: 16px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.verifyButton,
+.generateButton {
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  width: 100%;
+}
+
+.verifyButton:hover,
+.generateButton:hover {
+  background-color: #0056b3;
+}
+
+.timer {
+  font-size: 14px;
+  color: gray;
+}
+
+.successMessage {
+  color: green;
+}
+
+.errorMessage {
+  color: red;
+}

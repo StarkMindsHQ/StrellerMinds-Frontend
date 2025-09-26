@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const SignInButton = () => {
   return (
     <StyledWrapper>
-      <button 
+      <button
         className="button"
         type="button"
         aria-label="Sign in to your account"
@@ -13,7 +13,7 @@ const SignInButton = () => {
       </button>
     </StyledWrapper>
   );
-}
+};
 
 const StyledWrapper = styled.div`
   /* Using Navbar colors */
@@ -37,20 +37,22 @@ const StyledWrapper = styled.div`
   }
 
   .button:hover {
-    background: var(--navbar-border); /* Use border color for hover background */
+    background: var(
+      --navbar-border
+    ); /* Use border color for hover background */
     box-shadow: none;
     .text {
-       color: var(--navbar-bg); /* Change text color on hover */
+      color: var(--navbar-bg); /* Change text color on hover */
     }
   }
 
   .button:active {
-     background: var(--button-active-bg); /* Darker background on active */
-     border-color: var(--button-active-bg);
-     box-shadow: none;
-     .text {
-        transform: scale(0.95); /* Slight scale effect on active */
-     }
+    background: var(--button-active-bg); /* Darker background on active */
+    border-color: var(--button-active-bg);
+    box-shadow: none;
+    .text {
+      transform: scale(0.95); /* Slight scale effect on active */
+    }
   }
 
   .text {

@@ -57,7 +57,7 @@ export function useLoading(options: UseLoadingOptions = {}): UseLoadingReturn {
 export function useAsyncData<T>(
   fetchFunction: () => Promise<T>,
   dependencies: any[] = [],
-  options: UseLoadingOptions = {}
+  options: UseLoadingOptions = {},
 ) {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<Error | null>(null);
@@ -70,9 +70,9 @@ export function useAsyncData<T>(
       try {
         startLoading();
         setError(null);
-        
+
         const result = await fetchFunction();
-        
+
         if (!isCancelled) {
           setData(result);
         }
@@ -95,4 +95,4 @@ export function useAsyncData<T>(
   }, dependencies);
 
   return { data, error, isLoading };
-} 
+}

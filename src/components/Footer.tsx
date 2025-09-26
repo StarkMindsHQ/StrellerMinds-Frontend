@@ -1,5 +1,13 @@
 import React from 'react';
-import { MapPin, Phone, Mail, Github, Twitter, Linkedin, Heart } from 'lucide-react';
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Github,
+  Twitter,
+  Linkedin,
+  Heart,
+} from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -9,7 +17,7 @@ export default function Footer() {
         <div className="absolute top-8 right-12 w-20 h-20 bg-gradient-to-r from-[#ffcc00] to-yellow-300 rounded-full blur-2xl animate-pulse"></div>
         <div className="absolute bottom-8 left-12 w-24 h-24 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full blur-2xl animate-pulse delay-1000"></div>
       </div>
-      
+
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info - Compact */}
@@ -22,29 +30,37 @@ export default function Footer() {
                 <h2 className="text-2xl font-bold bg-gradient-to-r from-white via-purple-100 to-[#ffcc00] bg-clip-text text-transparent">
                   StrellerMinds
                 </h2>
-                <p className="text-purple-300 text-sm">Empowering African Designers</p>
+                <p className="text-purple-300 text-sm">
+                  Empowering African Designers
+                </p>
               </div>
             </div>
-            
+
             <p className="text-purple-200 text-sm leading-relaxed max-w-md">
-              Transforming African design through innovative education and cultural heritage.
+              Transforming African design through innovative education and
+              cultural heritage.
             </p>
-            
+
             {/* Contact Info - Compact Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="flex items-center space-x-2 p-2 bg-white/5 rounded-lg">
                 <MapPin className="h-4 w-4 text-[#ffcc00]" />
                 <span className="text-purple-100 text-sm">Lagos, Nigeria</span>
               </div>
-              
+
               <div className="flex items-center space-x-2 p-2 bg-white/5 rounded-lg">
                 <Phone className="h-4 w-4 text-[#ffcc00]" />
-                <span className="text-purple-100 text-sm">+234 814 880 6684</span>
+                <span className="text-purple-100 text-sm">
+                  +234 814 880 6684
+                </span>
               </div>
-              
+
               <div className="flex items-center space-x-2 p-2 bg-white/5 rounded-lg sm:col-span-2">
                 <Mail className="h-4 w-4 text-[#ffcc00]" />
-                <a href="mailto:hello@strellerminds.com" className="text-purple-100 hover:text-[#ffcc00] transition-colors text-sm">
+                <a
+                  href="mailto:hello@strellerminds.com"
+                  className="text-purple-100 hover:text-[#ffcc00] transition-colors text-sm"
+                >
                   hello@strellerminds.com
                 </a>
               </div>
@@ -62,11 +78,11 @@ export default function Footer() {
                 { name: 'Courses', href: '/courses' },
                 { name: 'About', href: '/about' },
                 { name: 'Contact', href: '/contact' },
-                { name: 'Blog', href: '/blog' }
+                { name: 'Blog', href: '/blog' },
               ].map((link) => (
                 <li key={link.name}>
-                  <a 
-                    href={link.href} 
+                  <a
+                    href={link.href}
                     className="text-purple-300 hover:text-[#ffcc00] transition-colors text-sm block py-1"
                   >
                     {link.name}
@@ -87,11 +103,11 @@ export default function Footer() {
                 { name: 'Help Center', href: '/support' },
                 { name: 'FAQ', href: '/faq' },
                 { name: 'Privacy', href: '/privacy' },
-                { name: 'Terms', href: '/terms' }
+                { name: 'Terms', href: '/terms' },
               ].map((link) => (
                 <li key={link.name}>
-                  <a 
-                    href={link.href} 
+                  <a
+                    href={link.href}
                     className="text-purple-300 hover:text-[#ffcc00] transition-colors text-sm block py-1"
                   >
                     {link.name}
@@ -99,7 +115,7 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
-            
+
             {/* Social Links - Compact */}
             <div>
               <h4 className="text-white font-medium mb-2 text-sm flex items-center">
@@ -110,7 +126,7 @@ export default function Footer() {
                 {[
                   { icon: Twitter, href: '#', label: 'Twitter' },
                   { icon: Linkedin, href: '#', label: 'LinkedIn' },
-                  { icon: Github, href: '#', label: 'GitHub' }
+                  { icon: Github, href: '#', label: 'GitHub' },
                 ].map((social) => (
                   <a
                     key={social.label}

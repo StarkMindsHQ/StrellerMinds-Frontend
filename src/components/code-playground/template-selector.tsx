@@ -1,13 +1,22 @@
-"use client"
+'use client';
 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 interface TemplateSelectorProps {
-  selectedTemplate: string
-  onTemplateChange: (value: string) => void
+  selectedTemplate: string;
+  onTemplateChange: (value: string) => void;
 }
 
-export default function TemplateSelector({ selectedTemplate, onTemplateChange }: TemplateSelectorProps) {
+export default function TemplateSelector({
+  selectedTemplate,
+  onTemplateChange,
+}: TemplateSelectorProps) {
   return (
     <Select value={selectedTemplate} onValueChange={onTemplateChange}>
       <SelectTrigger className="w-[180px]">
@@ -22,6 +31,5 @@ export default function TemplateSelector({ selectedTemplate, onTemplateChange }:
         <SelectItem value="stellar-test">Stellar SDK Test</SelectItem>
       </SelectContent>
     </Select>
-  )
+  );
 }
-

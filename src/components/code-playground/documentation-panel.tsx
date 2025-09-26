@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 
 export default function DocumentationPanel() {
   return (
@@ -12,7 +12,8 @@ export default function DocumentationPanel() {
           <div>
             <h3 className="font-semibold mb-1">Getting Started</h3>
             <p className="text-sm text-muted-foreground">
-              Select a template or start from scratch. Write your Stellar code and click "Run Code" to execute it.
+              Select a template or start from scratch. Write your Stellar code
+              and click "Run Code" to execute it.
             </p>
           </div>
           <Separator />
@@ -22,7 +23,9 @@ export default function DocumentationPanel() {
               <li>• Create Account - Generate a new Stellar account</li>
               <li>• Check Balance - View an account's balance</li>
               <li>• Send Payment - Transfer assets between accounts</li>
-              <li>• Create Trustline - Set up a trustline for a custom asset</li>
+              <li>
+                • Create Trustline - Set up a trustline for a custom asset
+              </li>
             </ul>
           </div>
           <Separator />
@@ -64,6 +67,5 @@ export default function DocumentationPanel() {
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }
-
