@@ -1,55 +1,101 @@
-"use client";
+'use client';
 
 import { useState, useEffect } from 'react';
-import { CourseGridSkeleton, SkeletonText, Skeleton } from '@/components/skeleton';
-import { useLoading } from '@/hooks/useLoading';
+import {
+  CourseGridSkeleton,
+  SkeletonText,
+  Skeleton,
+} from '@/components/skeleton';
 import { CourseCard } from '@/components/CourseCard';
 import { allCourses } from '@/lib/course-data';
+import { AlertCircle, RefreshCw } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface FeaturedCoursesWithLoadingProps {
   maxCoursesToShow?: number;
-  showLoadingDemo?: boolean; // For demonstration purposes
+  showLoadingDemo?: boolean;
 }
 
-export default function FeaturedCoursesWithLoading({ 
+export default function FeaturedCoursesWithLoading({
   maxCoursesToShow = 6,
-  showLoadingDemo = false 
+  showLoadingDemo = false,
 }: FeaturedCoursesWithLoadingProps) {
-  const [courses, setCourses] = useState<any[]>([]);
-  const { isLoading, setLoading } = useLoading({ minLoadingTime: 1200 });
+  const [courses, setCourses] = useState<typeof allCourses>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Simulate data fetching
-  useEffect(() => {
-    const fetchCourses = async () => {
-      setLoading(true);
-      
-      // Simulate network delay
-      await new Promise(resolve => setTimeout(resolve, showLoadingDemo ? 2000 : 500));
-      
-      // Get courses (in real app, this would be an API call)
+  const fetchCourses = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      // In a real app, this would be an API call like:
+      // const response = await fetch('/api/courses/featured');
+      // if (!response.ok) {
+      //   throw new Error(`HTTP error! status: ${response.status}`);
+      // }
+      // const featuredCourses = await response.json();
+
+      if (showLoadingDemo && Math.random() < 0.1) {
+        throw new Error('Failed to fetch courses. Please try again.');
+      }
+
       const featuredCourses = allCourses.slice(0, maxCoursesToShow);
       setCourses(featuredCourses);
-      
-      setLoading(false);
-    };
+    } catch (error) {
+      setError(
+        error instanceof Error ? error.message : 'An unexpected error occurred',
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchCourses();
-  }, [maxCoursesToShow, setLoading, showLoadingDemo]);
+  }, [maxCoursesToShow, showLoadingDemo]);
 
   if (isLoading) {
     return (
       <section className="py-16 bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Section header skeleton */}
           <div className="text-center mb-12">
             <Skeleton className="h-10 w-80 mx-auto mb-4" />
             <div className="max-w-2xl mx-auto">
               <SkeletonText lines={2} className="h-5" />
             </div>
           </div>
-          
-          {/* Course grid skeleton */}
           <CourseGridSkeleton count={maxCoursesToShow} />
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="py-16 bg-gray-50 dark:bg-gray-900">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <div className="flex justify-center mb-6">
+              <div className="flex items-center justify-center w-16 h-16 bg-red-100 dark:bg-red-900/20 rounded-full">
+                <AlertCircle className="w-8 h-8 text-red-600 dark:text-red-400" />
+              </div>
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+              Unable to Load Courses
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">
+              {error}
+            </p>
+            <Button
+              onClick={fetchCourses}
+              variant="outline"
+              className="inline-flex items-center gap-2"
+            >
+              <RefreshCw className="w-4 h-4" />
+              Try Again
+            </Button>
+          </div>
         </div>
       </section>
     );
@@ -63,10 +109,11 @@ export default function FeaturedCoursesWithLoading({
             Featured Courses
           </h2>
           <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
-            Discover our most popular courses designed to advance your blockchain development skills
+            Discover our most popular courses designed to advance your
+            blockchain development skills
           </p>
         </div>
-        
+
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {courses.map((course, index) => (
             <div
@@ -82,17 +129,3 @@ export default function FeaturedCoursesWithLoading({
     </section>
   );
 }
-
-// CSS for the fade-in animation (add this to your global CSS)
-const styles = `
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-`; 
