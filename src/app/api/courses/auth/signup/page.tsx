@@ -1,80 +1,96 @@
-"use client"
+'use client';
 
-import type React from "react"
+import type React from 'react';
 
-import { useState } from "react"
-import Link from "next/link"
-import { motion } from "framer-motion"
-import { ArrowLeft, ArrowRight, Check, Eye, EyeOff, Github, Loader2, Star } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Separator } from "@/components/ui/separator"
-import { Progress } from "@/components/ui/progress"
-import AnimatedGradientBackground from "@/components/animated-gradient-background"
+import { useState } from 'react';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import {
+  ArrowLeft,
+  ArrowRight,
+  Check,
+  Eye,
+  EyeOff,
+  Github,
+  Loader2,
+  Star,
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/inputt';
+import { Label } from '@/components/ui/label';
+import { Separator } from '@/components/ui/separator';
+import { Progress } from '@/components/ui/progress';
+import AnimatedGradientBackground from '@/components/Animated-graded-background';
 
 export default function SignUpPage() {
-  const [isLoading, setIsLoading] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [agreedToTerms, setAgreedToTerms] = useState(false)
-  const [step, setStep] = useState(1)
-  const [verificationCode, setVerificationCode] = useState("")
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [step, setStep] = useState(1);
+  const [verificationCode, setVerificationCode] = useState('');
 
   // Password strength calculation
   const calculatePasswordStrength = (password: string): number => {
-    if (!password) return 0
+    if (!password) return 0;
 
-    let strength = 0
+    let strength = 0;
 
     // Length check
-    if (password.length >= 8) strength += 25
+    if (password.length >= 8) strength += 25;
 
     // Character variety checks
-    if (/[A-Z]/.test(password)) strength += 25
-    if (/[0-9]/.test(password)) strength += 25
-    if (/[^A-Za-z0-9]/.test(password)) strength += 25
+    if (/[A-Z]/.test(password)) strength += 25;
+    if (/[0-9]/.test(password)) strength += 25;
+    if (/[^A-Za-z0-9]/.test(password)) strength += 25;
 
-    return strength
-  }
+    return strength;
+  };
 
-  const passwordStrength = calculatePasswordStrength(password)
+  const passwordStrength = calculatePasswordStrength(password);
 
   const getPasswordStrengthText = () => {
-    if (passwordStrength <= 25) return "Weak"
-    if (passwordStrength <= 50) return "Fair"
-    if (passwordStrength <= 75) return "Good"
-    return "Strong"
-  }
+    if (passwordStrength <= 25) return 'Weak';
+    if (passwordStrength <= 50) return 'Fair';
+    if (passwordStrength <= 75) return 'Good';
+    return 'Strong';
+  };
 
   const getPasswordStrengthColor = () => {
-    if (passwordStrength <= 25) return "bg-red-500"
-    if (passwordStrength <= 50) return "bg-yellow-500"
-    if (passwordStrength <= 75) return "bg-blue-500"
-    return "bg-green-500"
-  }
+    if (passwordStrength <= 25) return 'bg-red-500';
+    if (passwordStrength <= 50) return 'bg-yellow-500';
+    if (passwordStrength <= 75) return 'bg-blue-500';
+    return 'bg-green-500';
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
+    e.preventDefault();
+    setIsLoading(true);
 
     // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500))
+    await new Promise((resolve) => setTimeout(resolve, 1500));
 
-    setIsLoading(false)
+    setIsLoading(false);
 
     if (step === 1) {
-      setStep(2)
+      setStep(2);
     } else {
       // In a real app, you would handle verification and registration here
-      window.location.href = "/dashboard"
+      window.location.href = '/dashboard';
     }
-  }
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -85,7 +101,7 @@ export default function SignUpPage() {
         delayChildren: 0.3,
       },
     },
-  }
+  };
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
@@ -93,12 +109,12 @@ export default function SignUpPage() {
       y: 0,
       opacity: 1,
       transition: {
-        type: "spring",
+        type: 'spring',
         stiffness: 100,
         damping: 10,
       },
     },
-  }
+  };
 
   const slideVariants = {
     enter: (direction: number) => ({
@@ -109,7 +125,7 @@ export default function SignUpPage() {
       x: 0,
       opacity: 1,
       transition: {
-        type: "spring",
+        type: 'spring',
         stiffness: 300,
         damping: 30,
       },
@@ -121,7 +137,7 @@ export default function SignUpPage() {
         duration: 0.3,
       },
     }),
-  }
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -129,23 +145,35 @@ export default function SignUpPage() {
         <AnimatedGradientBackground />
       </div>
       <main className="flex-1 flex items-center justify-center p-4 sm:p-6 md:p-8 relative z-10">
-        <motion.div initial="hidden" animate="visible" variants={containerVariants} className="w-full max-w-md">
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={containerVariants}
+          className="w-full max-w-md"
+        >
           <motion.div variants={itemVariants}>
             <Card className="border-none shadow-lg">
               <CardHeader className="space-y-1">
                 <div className="flex items-center justify-between">
                   {step === 2 && (
-                    <Button variant="ghost" size="sm" className="p-0 h-8 w-8" onClick={() => setStep(1)}>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="p-0 h-8 w-8"
+                      onClick={() => setStep(1)}
+                    >
                       <ArrowLeft className="h-4 w-4" />
                       <span className="sr-only">Back</span>
                     </Button>
                   )}
-                  <div className={step === 2 ? "ml-8" : ""}>
+                  <div className={step === 2 ? 'ml-8' : ''}>
                     <CardTitle className="text-2xl font-bold">
-                      {step === 1 ? "Create an account" : "Verify your email"}
+                      {step === 1 ? 'Create an account' : 'Verify your email'}
                     </CardTitle>
                     <CardDescription>
-                      {step === 1 ? "Enter your information to create an account" : "We've sent a code to your email"}
+                      {step === 1
+                        ? 'Enter your information to create an account'
+                        : "We've sent a code to your email"}
                     </CardDescription>
                   </div>
                   <div className="w-8"></div> {/* Spacer for alignment */}
@@ -159,8 +187,8 @@ export default function SignUpPage() {
                   <div className="relative h-1 w-full bg-muted overflow-hidden rounded-full">
                     <motion.div
                       className="absolute inset-y-0 left-0 bg-primary"
-                      initial={{ width: "50%" }}
-                      animate={{ width: step === 1 ? "50%" : "100%" }}
+                      initial={{ width: '50%' }}
+                      animate={{ width: step === 1 ? '50%' : '100%' }}
                       transition={{ duration: 0.5 }}
                     />
                   </div>
@@ -221,7 +249,7 @@ export default function SignUpPage() {
                         <div className="relative">
                           <Input
                             id="password"
-                            type={showPassword ? "text" : "password"}
+                            type={showPassword ? 'text' : 'password'}
                             placeholder="••••••••"
                             required
                             value={password}
@@ -235,49 +263,70 @@ export default function SignUpPage() {
                             className="absolute right-0 top-0 h-full px-3 py-2 text-muted-foreground"
                             onClick={() => setShowPassword(!showPassword)}
                           >
-                            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                            <span className="sr-only">{showPassword ? "Hide password" : "Show password"}</span>
+                            {showPassword ? (
+                              <EyeOff className="h-4 w-4" />
+                            ) : (
+                              <Eye className="h-4 w-4" />
+                            )}
+                            <span className="sr-only">
+                              {showPassword ? 'Hide password' : 'Show password'}
+                            </span>
                           </Button>
                         </div>
 
                         {password && (
                           <div className="mt-2 space-y-2">
                             <div className="flex justify-between items-center">
-                              <span className="text-xs">{getPasswordStrengthText()} password</span>
-                              <span className="text-xs">{passwordStrength}%</span>
+                              <span className="text-xs">
+                                {getPasswordStrengthText()} password
+                              </span>
+                              <span className="text-xs">
+                                {passwordStrength}%
+                              </span>
                             </div>
-                            <Progress value={passwordStrength} className={`h-1 ${getPasswordStrengthColor()}`} />
+                            <Progress
+                              value={passwordStrength}
+                              className={`h-1 ${getPasswordStrengthColor()}`}
+                            />
 
                             <ul className="space-y-1 mt-2">
                               <li className="text-xs flex items-center gap-1.5">
                                 <span
-                                  className={`w-3.5 h-3.5 rounded-full flex items-center justify-center ${password.length >= 8 ? "bg-green-500" : "bg-muted"}`}
+                                  className={`w-3.5 h-3.5 rounded-full flex items-center justify-center ${password.length >= 8 ? 'bg-green-500' : 'bg-muted'}`}
                                 >
-                                  {password.length >= 8 && <Check className="h-2.5 w-2.5 text-white" />}
+                                  {password.length >= 8 && (
+                                    <Check className="h-2.5 w-2.5 text-white" />
+                                  )}
                                 </span>
                                 At least 8 characters
                               </li>
                               <li className="text-xs flex items-center gap-1.5">
                                 <span
-                                  className={`w-3.5 h-3.5 rounded-full flex items-center justify-center ${/[A-Z]/.test(password) ? "bg-green-500" : "bg-muted"}`}
+                                  className={`w-3.5 h-3.5 rounded-full flex items-center justify-center ${/[A-Z]/.test(password) ? 'bg-green-500' : 'bg-muted'}`}
                                 >
-                                  {/[A-Z]/.test(password) && <Check className="h-2.5 w-2.5 text-white" />}
+                                  {/[A-Z]/.test(password) && (
+                                    <Check className="h-2.5 w-2.5 text-white" />
+                                  )}
                                 </span>
                                 At least 1 uppercase letter
                               </li>
                               <li className="text-xs flex items-center gap-1.5">
                                 <span
-                                  className={`w-3.5 h-3.5 rounded-full flex items-center justify-center ${/[0-9]/.test(password) ? "bg-green-500" : "bg-muted"}`}
+                                  className={`w-3.5 h-3.5 rounded-full flex items-center justify-center ${/[0-9]/.test(password) ? 'bg-green-500' : 'bg-muted'}`}
                                 >
-                                  {/[0-9]/.test(password) && <Check className="h-2.5 w-2.5 text-white" />}
+                                  {/[0-9]/.test(password) && (
+                                    <Check className="h-2.5 w-2.5 text-white" />
+                                  )}
                                 </span>
                                 At least 1 number
                               </li>
                               <li className="text-xs flex items-center gap-1.5">
                                 <span
-                                  className={`w-3.5 h-3.5 rounded-full flex items-center justify-center ${/[^A-Za-z0-9]/.test(password) ? "bg-green-500" : "bg-muted"}`}
+                                  className={`w-3.5 h-3.5 rounded-full flex items-center justify-center ${/[^A-Za-z0-9]/.test(password) ? 'bg-green-500' : 'bg-muted'}`}
                                 >
-                                  {/[^A-Za-z0-9]/.test(password) && <Check className="h-2.5 w-2.5 text-white" />}
+                                  {/[^A-Za-z0-9]/.test(password) && (
+                                    <Check className="h-2.5 w-2.5 text-white" />
+                                  )}
                                 </span>
                                 At least 1 special character
                               </li>
@@ -290,18 +339,24 @@ export default function SignUpPage() {
                         <Checkbox
                           id="terms"
                           checked={agreedToTerms}
-                          onCheckedChange={(checked) => setAgreedToTerms(checked as boolean)}
+                          onCheckedChange={(checked) =>
+                            setAgreedToTerms(checked as boolean)
+                          }
                           className="mt-1"
                         />
                         <Label
                           htmlFor="terms"
                           className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                         >
-                          I agree to the{" "}
-                          <Link href="/terms" className="text-primary underline hover:text-primary/90" target="_blank">
+                          I agree to the{' '}
+                          <Link
+                            href="/terms"
+                            className="text-primary underline hover:text-primary/90"
+                            target="_blank"
+                          >
                             terms of service
-                          </Link>{" "}
-                          and{" "}
+                          </Link>{' '}
+                          and{' '}
                           <Link
                             href="/privacy"
                             className="text-primary underline hover:text-primary/90"
@@ -330,7 +385,7 @@ export default function SignUpPage() {
                                 animate={{ x: [0, 5, 0] }}
                                 transition={{
                                   repeat: Number.POSITIVE_INFINITY,
-                                  repeatType: "reverse",
+                                  repeatType: 'reverse',
                                   duration: 1,
                                   repeatDelay: 1,
                                 }}
@@ -342,7 +397,7 @@ export default function SignUpPage() {
                         </span>
                         <motion.div
                           className="absolute inset-0 bg-primary"
-                          initial={{ x: "-100%" }}
+                          initial={{ x: '-100%' }}
                           whileHover={{ x: 0 }}
                           transition={{ duration: 0.3 }}
                         />
@@ -353,7 +408,9 @@ export default function SignUpPage() {
                           <Separator className="w-full" />
                         </div>
                         <div className="relative flex justify-center">
-                          <span className="bg-card px-2 text-xs text-muted-foreground">OR CONTINUE WITH</span>
+                          <span className="bg-card px-2 text-xs text-muted-foreground">
+                            OR CONTINUE WITH
+                          </span>
                         </div>
                       </div>
 
@@ -377,7 +434,7 @@ export default function SignUpPage() {
                               initial={{ scale: 0 }}
                               animate={{ scale: 1 }}
                               transition={{
-                                type: "spring",
+                                type: 'spring',
                                 stiffness: 200,
                                 damping: 15,
                                 delay: 0.2,
@@ -387,8 +444,10 @@ export default function SignUpPage() {
                             </motion.div>
                           </div>
                           <p className="text-sm text-muted-foreground">
-                            We've sent a verification code to{" "}
-                            <span className="font-medium text-foreground">{email}</span>
+                            We've sent a verification code to{' '}
+                            <span className="font-medium text-foreground">
+                              {email}
+                            </span>
                           </p>
                         </div>
 
@@ -403,8 +462,11 @@ export default function SignUpPage() {
                           maxLength={6}
                         />
                         <p className="text-xs text-muted-foreground text-center mt-2">
-                          Didn't receive a code?{" "}
-                          <button type="button" className="text-primary hover:underline">
+                          Didn't receive a code?{' '}
+                          <button
+                            type="button"
+                            className="text-primary hover:underline"
+                          >
                             Resend
                           </button>
                         </p>
@@ -428,7 +490,7 @@ export default function SignUpPage() {
                                 animate={{ x: [0, 5, 0] }}
                                 transition={{
                                   repeat: Number.POSITIVE_INFINITY,
-                                  repeatType: "reverse",
+                                  repeatType: 'reverse',
                                   duration: 1,
                                   repeatDelay: 1,
                                 }}
@@ -440,7 +502,7 @@ export default function SignUpPage() {
                         </span>
                         <motion.div
                           className="absolute inset-0 bg-primary"
-                          initial={{ x: "-100%" }}
+                          initial={{ x: '-100%' }}
                           whileHover={{ x: 0 }}
                           transition={{ duration: 0.3 }}
                         />
@@ -452,8 +514,11 @@ export default function SignUpPage() {
 
               <CardFooter className="flex flex-col space-y-4">
                 <div className="text-center text-sm">
-                  Already have an account?{" "}
-                  <Link href="/auth/signin" className="text-primary font-medium hover:underline">
+                  Already have an account?{' '}
+                  <Link
+                    href="/auth/signin"
+                    className="text-primary font-medium hover:underline"
+                  >
                     Sign in
                   </Link>
                 </div>
@@ -463,5 +528,5 @@ export default function SignUpPage() {
         </motion.div>
       </main>
     </div>
-  )
+  );
 }

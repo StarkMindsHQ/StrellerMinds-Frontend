@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { CourseCard } from "@/components/CourseCard"
 import { allCourses } from "@/lib/course-data"
 import MainLayout from "@/components/MainLayout"
