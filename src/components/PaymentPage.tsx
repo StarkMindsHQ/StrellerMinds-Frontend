@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import CardModal from '../components/modal/Card-modal';
-import CryptoModal from '../components/modal/Crypto-modal';
+import CardModal from "./modal/Card-modal"
+import CryptoModal from "./modal/Crypto-modal"
 import { logger } from '@/lib/logger';
 
 const PaymentPage: React.FC = () => {

@@ -1,12 +1,18 @@
 {
-  "extends": [
-    "next/core-web-vitals",
-    "next/typescript",
-    "plugin:prettier/recommended"
-  ],
-  "plugins": ["prettier"],
+  "extends": ["next/core-web-vitals"],
+  "plugins": ["import"],
   "rules": {
-    "prettier/prettier": "error",
-    "no-console": ["error", { "allow": ["warn", "error"] }]
+    "import/no-unresolved": "error",
+    "import/named": "error",
+    "import/no-absolute-path": "error",
+    "import/no-self-import": "error",
+    "import/no-useless-path-segments": "error"
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": {
+        "project": "./tsconfig.json"
+      }
+    }
   }
 }
