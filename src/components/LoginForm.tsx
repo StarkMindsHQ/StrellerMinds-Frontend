@@ -1,70 +1,38 @@
 'use client';
 
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import AnimatedGradientBackground from './Animated-graded-background';
 import Link from 'next/link';
 import { LuGithub } from 'react-icons/lu';
 import { FaRegStar } from 'react-icons/fa';
 import { Input } from './ui/inputt';
+import { FormError } from './ui/form-error';
 import { toast } from 'sonner';
+import { loginSchema, type LoginFormData } from '@/lib/validations';
 
 const LoginForm = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    rememberMe: false,
-  });
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>(
-    {},
-  );
   const [loading, setLoading] = useState(false);
   const [announcementMessage, setAnnouncementMessage] = useState('');
   const [submissionError, setSubmissionError] = useState('');
 
-  const validateForm = () => {
-    let newErrors: { email?: string; password?: string } = {};
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    setError,
+    clearErrors,
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+    mode: 'onChange',
+  });
 
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email address is required.';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address.';
-    }
-
-    if (!formData.password.trim()) {
-      newErrors.password = 'Password is required.';
-    } else {
-      const passwordError = validatePassword(formData.password);
-      if (passwordError) {
-        newErrors.password = passwordError;
-      }
-    }
-
-    setErrors(newErrors);
-    return { isValid: Object.keys(newErrors).length === 0, errors: newErrors };
-  };
-
-  const handleChange = (value: string, name: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      [name]: name === 'rememberMe' ? value === 'true' : value,
-    }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const validation = validateForm();
-
-    if (!validation.isValid) {
-      const errorCount = Object.keys(validation.errors).length;
-      setAnnouncementMessage(
-        `Your submission failed. Please correct the ${errorCount} error${errorCount === 1 ? '' : 's'} highlighted below.`
-      );
-      return;
-    }
-
+  const onSubmit = async (data: LoginFormData) => {
     // Clear any previous error announcements and submission errors
     setAnnouncementMessage('');
     setSubmissionError('');
+    clearErrors();
     setLoading(true);
 
     try {
@@ -75,8 +43,8 @@ const LoginForm = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email: formData.email,
-          password: formData.password,
+          email: data.email,
+          password: data.password,
         }),
       });
 
@@ -86,23 +54,25 @@ const LoginForm = () => {
           const errorMessage = 'Incorrect email or password. Please try again.';
           setSubmissionError(errorMessage);
           setAnnouncementMessage(errorMessage);
+          setError('root', { message: errorMessage });
         } else {
           // Other server errors
           const errorMessage = 'An error occurred. Please try again later.';
           setSubmissionError(errorMessage);
           setAnnouncementMessage(errorMessage);
+          setError('root', { message: errorMessage });
         }
         setLoading(false);
         return;
       }
 
       // Success
-      const data = await response.json();
+      const responseData = await response.json();
       setLoading(false);
       toast.success('Login successful!');
 
       // Handle successful login (e.g., redirect, store token, etc.)
-      // Example: localStorage.setItem('token', data.token);
+      // Example: localStorage.setItem('token', responseData.data.token);
       // Example: router.push('/dashboard');
 
     } catch (error) {
@@ -110,22 +80,11 @@ const LoginForm = () => {
       const errorMessage = 'Connection error. Please check your internet and try again.';
       setSubmissionError(errorMessage);
       setAnnouncementMessage(errorMessage);
+      setError('root', { message: errorMessage });
       setLoading(false);
     }
   };
 
-  const validatePassword = (value: any) => {
-    if (value.length < 8) return 'Password must be at least 8 characters long';
-    if (!/[A-Z]/.test(value))
-      return 'Password must contain at least one uppercase letter';
-    if (!/[a-z]/.test(value))
-      return 'Password must contain at least one lowercase letter';
-    if (!/[0-9]/.test(value))
-      return 'Password must contain at least one number';
-    if (!/[^A-Za-z0-9]/.test(value))
-      return 'Password must contain at least one special character';
-    return null;
-  };
   const signInWithGithub = () => {
     return;
   };
@@ -142,7 +101,7 @@ const LoginForm = () => {
           <h2 className="mb-5 text-[#777]">
             Enter your credencials to acces your account
           </h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {/* ARIA live region for screen reader announcements */}
             <div
               role="alert"
@@ -158,12 +117,15 @@ const LoginForm = () => {
                 id="email"
                 placeholder="you@example.com"
                 type="email"
-                defaultValue={formData.email}
-                onChange={(e) => handleChange(e.target.value, 'email')}
+                {...register('email')}
                 aria-invalid={!!errors.email}
-                aria-describedby="email-error"
+                aria-describedby={errors.email ? "email-error" : undefined}
               />
-              {errors.email && <p id="email-error" className="text-red-600 text-sm mt-1">{errors.email}</p>}
+              <FormError 
+                message={errors.email?.message} 
+                fieldName="email"
+                className="text-red-600 text-sm mt-1"
+              />
             </div>
             <div>
               <div className="flex justify-between">
@@ -180,16 +142,19 @@ const LoginForm = () => {
                 id="password"
                 placeholder="password"
                 type="password"
-                defaultValue={formData.password}
-                onChange={(e) => handleChange(e.target.value, 'password')}
+                {...register('password')}
                 aria-invalid={!!errors.password}
-                aria-describedby="password-error"
+                aria-describedby={errors.password ? "password-error" : undefined}
               />
-              {errors.password && <p id="password-error" className="text-red-600 text-sm mt-1">{errors.password}</p>}
+              <FormError 
+                message={errors.password?.message} 
+                fieldName="password"
+                className="text-red-600 text-sm mt-1"
+              />
             </div>
-            {submissionError && (
+            {errors.root && (
               <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                <p className="text-red-800 text-sm">{submissionError}</p>
+                <FormError message={errors.root.message} />
               </div>
             )}
             <div className="flex items-center">
@@ -197,19 +162,16 @@ const LoginForm = () => {
                 type="checkbox"
                 id="rememberMe"
                 className="mr-2 p-1"
-                checked={formData.rememberMe}
-                onChange={(e) =>
-                  handleChange(e.target.checked.toString(), 'rememberMe')
-                }
+                {...register('rememberMe')}
               />
               <label htmlFor="rememberMe">Remember Me</label>
             </div>
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
-              disabled={loading}
+              className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={loading || isSubmitting}
             >
-              {loading ? 'Signing in...' : 'Sign In'}
+              {loading || isSubmitting ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
           <div className="mt-9">
