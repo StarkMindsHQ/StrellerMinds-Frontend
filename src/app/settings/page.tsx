@@ -27,7 +27,7 @@ export default function SettingsPage() {
     watch,
   } = useForm<ProfileUpdateFormData>({
     resolver: zodResolver(profileUpdateSchema),
-    mode: 'onChange',
+    mode: 'all',
     defaultValues: {
       firstName: "Anaya",
       lastName: "Suliemon",

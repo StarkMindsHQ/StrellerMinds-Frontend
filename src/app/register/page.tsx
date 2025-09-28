@@ -25,7 +25,7 @@ export default function Register() {
     watch,
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
-    mode: 'onChange',
+    mode: 'all',
   })
 
   const onSubmit = async (data: RegisterFormData) => {

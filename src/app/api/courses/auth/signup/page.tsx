@@ -49,13 +49,13 @@ export default function SignUpPage() {
   // Step 1 form
   const step1Form = useForm<SignupStep1FormData>({
     resolver: zodResolver(signupStep1Schema),
-    mode: 'onChange',
+    mode: 'all',
   });
 
   // Step 2 form
   const step2Form = useForm<SignupStep2FormData>({
     resolver: zodResolver(signupStep2Schema),
-    mode: 'onChange',
+    mode: 'all',
   });
 
   const { watch: watchStep1 } = step1Form;

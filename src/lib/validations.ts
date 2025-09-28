@@ -1,8 +1,9 @@
 import { z } from "zod"
 
 // Common validation patterns
-const emailSchema = z
+export const emailSchema = z
   .string()
+  .trim()
   .min(1, { message: "Email is required" })
   .max(254, { message: "Email must be no more than 254 characters" })
   .email({ message: "Please enter a valid email address" })
@@ -12,7 +13,6 @@ const emailSchema = z
     return domain && domain.includes('.') && !domain.startsWith('.') && !domain.endsWith('.');
   }, { message: "Please enter a valid email domain" })
   .toLowerCase()
-  .trim()
 
 const passwordSchema = z
   .string()

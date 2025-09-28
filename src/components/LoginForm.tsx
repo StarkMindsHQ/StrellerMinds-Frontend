@@ -25,14 +25,13 @@ const LoginForm = () => {
     clearErrors,
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
-    mode: 'onChange',
+    mode: 'all',
   });
 
   const onSubmit = async (data: LoginFormData) => {
     // Clear any previous error announcements and submission errors
     setAnnouncementMessage('');
     setSubmissionError('');
-    clearErrors();
     setLoading(true);
 
     try {
@@ -123,7 +122,7 @@ const LoginForm = () => {
               />
               <FormError 
                 message={errors.email?.message} 
-                fieldName="email"
+                id="email-error"
                 className="text-red-600 text-sm mt-1"
               />
             </div>
@@ -148,7 +147,7 @@ const LoginForm = () => {
               />
               <FormError 
                 message={errors.password?.message} 
-                fieldName="password"
+                id="password-error"
                 className="text-red-600 text-sm mt-1"
               />
             </div>
