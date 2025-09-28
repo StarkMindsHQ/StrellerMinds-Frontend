@@ -2,74 +2,52 @@
 
 import React from "react"
 import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
 import Link from "next/link"
 import { Eye, EyeOff, Phone, Mail } from "lucide-react"
-import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/inputt"
 import { FormField } from "@/components/form-field"
 import { PhoneInput } from "@/components/phone-input"
 import { Logo } from "@/components/logo"
 import { logger } from "@/lib/logger"
-
-const formSchema = z.object({
-  name: z.string().min(2, { message: "Name must be at least 2 characters" }),
-  email: z.string().email({ message: "Please enter a valid email address" }),
-  phone: z.string().min(10, { message: "Please enter a valid phone number" }),
-  password: z
-    .string()
-    .min(8, { message: "Password must be at least 8 characters" })
-    .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
-    .regex(/[a-z]/, { message: "Password must contain at least one lowercase letter" })
-    .regex(/[0-9]/, { message: "Password must contain at least one number" }),
-})
-
-type FormData = z.infer<typeof formSchema>
+import { registerSchema, type RegisterFormData } from "@/lib/validations"
 
 export default function Register() {
-  const [formData, setFormData] = useState<FormData>({
-    name: "",
-    email: "",
-    phone: "",
-    password: "",
-  })
-
-  const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({})
   const [showPassword, setShowPassword] = useState(false)
 
-  const validateField = (name: keyof FormData, value: string) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    setValue,
+    watch,
+  } = useForm<RegisterFormData>({
+    resolver: zodResolver(registerSchema),
+    mode: 'onChange',
+  })
+
+  const onSubmit = async (data: RegisterFormData) => {
     try {
-      formSchema.shape[name].parse(value)
-      setErrors((prev) => ({ ...prev, [name]: undefined }))
-      return true
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        const message = error.errors[0]?.message || `Invalid ${name}`
-        setErrors((prev) => ({ ...prev, [name]: message }))
+      // Automatically append +234 to phone number
+      const formDataWithCountryCode = {
+        ...data,
+        phone: `+234${data.phone}`
       }
-      return false
-    }
-  }
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-    validateField(name as keyof FormData, value)
-  }
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-
-    // Validate all fields
-    let isValid = true
-    Object.entries(formData).forEach(([key, value]) => {
-      const fieldValid = validateField(key as keyof FormData, value)
-      if (!fieldValid) isValid = false
-    })
-
-    if (isValid) {
+      
       // Submit form data
-      logger.log("Form submitted:", formData)
+      logger.log("Form submitted:", formDataWithCountryCode)
+      
+      // Here you would typically make an API call
+      // const response = await fetch('/api/auth/register', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(formDataWithCountryCode),
+      // })
+      
+    } catch (error) {
+      console.error('Registration error:', error)
     }
   }
 
@@ -84,54 +62,67 @@ export default function Register() {
           <p className="text-gray-600 mb-6">Register for StrellerMinds, a pioneering blockchain education platform on Stellar</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <FormField label="Name" name="name" error={errors.name}>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <FormField label="Name" name="name" error={errors.name?.message}>
             <Input
               id="name"
-              name="name"
               placeholder="Enter"
-              value={formData.name}
-              onChange={handleChange}
-              onBlur={(e) => validateField("name", e.target.value)}
+              {...register('name')}
               error={!!errors.name}
             />
           </FormField>
 
-          <FormField label="Email" name="email" error={errors.email}>
+          <FormField label="Email" name="email" error={errors.email?.message}>
             <Input
               id="email"
-              name="email"
               type="email"
               placeholder="Enter"
-              value={formData.email}
-              onChange={handleChange}
-              onBlur={(e) => validateField("email", e.target.value)}
+              {...register('email')}
               error={!!errors.email}
             />
           </FormField>
 
-          <FormField label="Phone" name="phone" error={errors.phone}>
+          <FormField label="Phone" name="phone" error={errors.phone?.message}>
             <PhoneInput
-              value={formData.phone}
+              value={watch('phone') || ''}
               onChange={(value) => {
-                setFormData((prev) => ({ ...prev, phone: value }))
-                validateField("phone", value)
+                setValue('phone', value, { shouldValidate: true })
               }}
               error={!!errors.phone}
             />
           </FormField>
 
-          <FormField label="Password" name="password" error={errors.password}>
+          <FormField label="Password" name="password" error={errors.password?.message}>
             <div className="relative">
               <Input
                 id="password"
-                name="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter"
-                value={formData.password}
-                onChange={handleChange}
-                onBlur={(e) => validateField("password", e.target.value)}
+                {...register('password')}
                 error={!!errors.password}
+              />
+              <button
+                type="button"
+                className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? (
+                  <EyeOff className="h-5 w-5 text-gray-400" />
+                ) : (
+                  <Eye className="h-5 w-5 text-gray-400" />
+                )}
+              </button>
+            </div>
+          </FormField>
+
+          <FormField label="Confirm Password" name="confirmPassword" error={errors.confirmPassword?.message}>
+            <div className="relative">
+              <Input
+                id="confirmPassword"
+                type={showPassword ? "text" : "password"}
+                placeholder="Confirm password"
+                {...register('confirmPassword')}
+                error={!!errors.confirmPassword}
               />
               <button
                 type="button"
@@ -160,8 +151,12 @@ export default function Register() {
             </p>
           </div>
 
-          <Button type="submit" className="w-full py-3 bg-red-600 hover:bg-red-700">
-            Register
+          <Button 
+            type="submit" 
+            className="w-full py-3 bg-red-600 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? 'Registering...' : 'Register'}
           </Button>
 
           <div className="text-center mt-4">
