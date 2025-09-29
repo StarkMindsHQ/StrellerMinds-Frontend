@@ -1,8 +1,8 @@
-import { 
-  Skeleton, 
-  SkeletonText, 
+import {
+  Skeleton,
+  SkeletonText,
   SkeletonButton,
-  SkeletonCard 
+  SkeletonCard,
 } from '@/components/ui/skeleton';
 
 // Code editor skeleton
@@ -20,12 +20,16 @@ export function CodeEditorSkeleton() {
         {Array.from({ length: 12 }).map((_, index) => (
           <div key={index} className="flex">
             <Skeleton className="h-5 w-6 mr-4" /> {/* Line numbers */}
-            <Skeleton 
+            <Skeleton
               className={`h-5 ${
-                index % 4 === 0 ? 'w-1/4' : 
-                index % 3 === 0 ? 'w-3/4' : 
-                index % 2 === 0 ? 'w-1/2' : 'w-2/3'
-              }`} 
+                index % 4 === 0
+                  ? 'w-1/4'
+                  : index % 3 === 0
+                    ? 'w-3/4'
+                    : index % 2 === 0
+                      ? 'w-1/2'
+                      : 'w-2/3'
+              }`}
             />
           </div>
         ))}
@@ -60,10 +64,13 @@ export function SavedSnippetsSkeleton() {
           <SkeletonText className="h-6 w-40" />
           <SkeletonText className="h-4 w-64 mt-1" />
         </div>
-        
+
         <div className="space-y-2">
           {Array.from({ length: 4 }).map((_, index) => (
-            <div key={index} className="flex items-center justify-between p-3 border rounded-md">
+            <div
+              key={index}
+              className="flex items-center justify-between p-3 border rounded-md"
+            >
               <Skeleton className="h-4 w-32" />
               <div className="flex gap-2">
                 <SkeletonButton className="w-12 h-8" />
@@ -86,7 +93,7 @@ export function SaveCodeFormSkeleton() {
           <SkeletonText className="h-6 w-24" />
           <SkeletonText className="h-4 w-48 mt-1" />
         </div>
-        
+
         <div className="space-y-4">
           <div>
             <Skeleton className="h-4 w-20 mb-2" />
@@ -105,7 +112,7 @@ export function DocumentationPanelSkeleton() {
     <SkeletonCard>
       <div className="space-y-4">
         <SkeletonText className="h-6 w-32" />
-        
+
         <div className="space-y-3">
           {Array.from({ length: 5 }).map((_, index) => (
             <div key={index} className="space-y-2">
@@ -121,9 +128,7 @@ export function DocumentationPanelSkeleton() {
 
 // Template selector skeleton
 export function TemplateSelectorSkeleton() {
-  return (
-    <Skeleton className="h-10 w-40 rounded-md" />
-  );
+  return <Skeleton className="h-10 w-40 rounded-md" />;
 }
 
 // Full code playground skeleton
@@ -158,11 +163,11 @@ export function CodePlaygroundSkeleton() {
             <Skeleton className="h-8 w-32 rounded-md" />
             <Skeleton className="h-8 w-24 rounded-md" />
           </div>
-          
+
           <SavedSnippetsSkeleton />
           <DocumentationPanelSkeleton />
         </div>
       </div>
     </div>
   );
-} 
+}
