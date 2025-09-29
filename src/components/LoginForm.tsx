@@ -17,6 +17,7 @@ const LoginForm = () => {
   const [announcementMessage, setAnnouncementMessage] = useState('');
   const [submissionError, setSubmissionError] = useState('');
 
+<<<<<<< HEAD
   const {
     register,
     handleSubmit,
@@ -27,6 +28,48 @@ const LoginForm = () => {
     resolver: zodResolver(loginSchema),
     mode: 'all',
   });
+=======
+  const validateForm = () => {
+    let newErrors: { email?: string; password?: string } = {};
+
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email address is required.';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address.';
+    }
+
+    if (!formData.password.trim()) {
+      newErrors.password = 'Password is required.';
+    } else {
+      const passwordError = validatePassword(formData.password);
+      if (passwordError) {
+        newErrors.password = passwordError;
+      }
+    }
+
+    setErrors(newErrors);
+    return { isValid: Object.keys(newErrors).length === 0, errors: newErrors };
+  };
+
+  const handleChange = (value: string, name: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === 'rememberMe' ? value === 'true' : value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const validation = validateForm();
+
+    if (!validation.isValid) {
+      const errorCount = Object.keys(validation.errors).length;
+      setAnnouncementMessage(
+        `Your submission failed. Please correct the ${errorCount} error${errorCount === 1 ? '' : 's'} highlighted below.`,
+      );
+      return;
+    }
+>>>>>>> f89608a47ee4e9a4cd5e6970d561bb9f0c6b72a6
 
   const onSubmit = async (data: LoginFormData) => {
     // Clear any previous error announcements and submission errors
@@ -73,10 +116,10 @@ const LoginForm = () => {
       // Handle successful login (e.g., redirect, store token, etc.)
       // Example: localStorage.setItem('token', responseData.data.token);
       // Example: router.push('/dashboard');
-
     } catch (error) {
       // Network or other connection errors
-      const errorMessage = 'Connection error. Please check your internet and try again.';
+      const errorMessage =
+        'Connection error. Please check your internet and try again.';
       setSubmissionError(errorMessage);
       setAnnouncementMessage(errorMessage);
       setError('root', { message: errorMessage });
@@ -102,15 +145,13 @@ const LoginForm = () => {
           </h2>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {/* ARIA live region for screen reader announcements */}
-            <div
-              role="alert"
-              aria-live="assertive"
-              className="sr-only"
-            >
+            <div role="alert" aria-live="assertive" className="sr-only">
               {announcementMessage}
             </div>
             <div>
-              <label htmlFor="email" className="block text-sm font-semibold">Email</label>
+              <label htmlFor="email" className="block text-sm font-semibold">
+                Email
+              </label>
               <Input
                 className="w-full px-3 py-2 border rounded-lg outline-none"
                 id="email"
@@ -125,10 +166,23 @@ const LoginForm = () => {
                 id="email-error"
                 className="text-red-600 text-sm mt-1"
               />
+<<<<<<< HEAD
+=======
+              {errors.email && (
+                <p id="email-error" className="text-red-600 text-sm mt-1">
+                  {errors.email}
+                </p>
+              )}
+>>>>>>> f89608a47ee4e9a4cd5e6970d561bb9f0c6b72a6
             </div>
             <div>
               <div className="flex justify-between">
-                <label htmlFor="password" className="block text-sm font-semibold">Password</label>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-semibold"
+                >
+                  Password
+                </label>
                 <Link
                   href={'./'}
                   className="block text-sm font-medium text-[#155dfc]"
@@ -150,6 +204,14 @@ const LoginForm = () => {
                 id="password-error"
                 className="text-red-600 text-sm mt-1"
               />
+<<<<<<< HEAD
+=======
+              {errors.password && (
+                <p id="password-error" className="text-red-600 text-sm mt-1">
+                  {errors.password}
+                </p>
+              )}
+>>>>>>> f89608a47ee4e9a4cd5e6970d561bb9f0c6b72a6
             </div>
             {errors.root && (
               <div className="bg-red-50 border border-red-200 rounded-lg p-3">

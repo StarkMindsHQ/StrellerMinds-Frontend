@@ -2,7 +2,7 @@ import React from 'react';
 
 const CustomGetStartedButton = () => {
   return (
-    <button 
+    <button
       className="group relative flex h-11 cursor-pointer items-center overflow-hidden rounded-lg bg-[#5c0f49] px-5 pr-14 text-base font-medium tracking-wide text-[#dfb1cc] shadow-inner shadow-[#dfb1cc]/30 transition-all duration-300 ease-out hover:pr-5 hover:shadow-lg hover:shadow-[#dfb1cc]/30 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#5c0f49]"
       type="button"
       aria-label="Get started with StrellerMinds courses"

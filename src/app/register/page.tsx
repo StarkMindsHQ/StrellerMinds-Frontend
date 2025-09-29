@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import React from "react"
 import { useState } from "react"
@@ -49,7 +49,7 @@ export default function Register() {
     } catch (error) {
       console.error('Registration error:', error)
     }
-  }
+  };
 
   return (
     <div className="flex flex-col justify-center items-center py-10 px-4">
@@ -58,8 +58,13 @@ export default function Register() {
           <div className="flex justify-center mb-6">
             <Logo />
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-[#5D4037] mb-2">Create an Account</h1>
-          <p className="text-gray-600 mb-6">Register for StrellerMinds, a pioneering blockchain education platform on Stellar</p>
+          <h1 className="text-3xl md:text-4xl font-bold text-[#5D4037] mb-2">
+            Create an Account
+          </h1>
+          <p className="text-gray-600 mb-6">
+            Register for StrellerMinds, a pioneering blockchain education
+            platform on Stellar
+          </p>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -140,11 +145,11 @@ export default function Register() {
 
           <div className="text-sm">
             <p>
-              By registering, you agree to StrellerMinds{" "}
+              By registering, you agree to StrellerMinds{' '}
               <Link href="/terms" className="text-red-600 hover:underline">
                 Terms of Service
-              </Link>{" "}
-              and{" "}
+              </Link>{' '}
+              and{' '}
               <Link href="/privacy" className="text-red-600 hover:underline">
                 Privacy Policy
               </Link>
@@ -161,7 +166,7 @@ export default function Register() {
 
           <div className="text-center mt-4">
             <p>
-              Have an account?{" "}
+              Have an account?{' '}
               <Link href="/login" className="text-red-600 hover:underline">
                 Sign In
               </Link>
@@ -181,5 +186,5 @@ export default function Register() {
         </form>
       </div>
     </div>
-  )
+  );
 }

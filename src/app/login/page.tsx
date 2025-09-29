@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -75,7 +75,9 @@ export default function LoginPage() {
                 type="email"
                 placeholder="Enter"
                 className={`w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 ${
-                  errors.email ? "border-red-500 ring-red-400" : "focus:ring-red-400"
+                  errors.email
+                    ? 'border-red-500 ring-red-400'
+                    : 'focus:ring-red-400'
                 }`}
               />
               <FormError message={errors.email?.message} />
@@ -90,7 +92,9 @@ export default function LoginPage() {
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter"
                   className={`w-full border rounded-lg px-4 py-2 pr-10 focus:outline-none focus:ring-2 ${
-                    errors.password ? "border-red-500 ring-red-400" : "focus:ring-red-400"
+                    errors.password
+                      ? 'border-red-500 ring-red-400'
+                      : 'focus:ring-red-400'
                   }`}
                 />
                 <button
@@ -98,7 +102,7 @@ export default function LoginPage() {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute inset-y-0 right-3 flex items-center text-gray-600 text-sm"
                 >
-                  {showPassword ? "Hide" : "Show"}
+                  {showPassword ? 'Hide' : 'Show'}
                 </button>
               </div>
               <FormError message={errors.password?.message} />
@@ -122,7 +126,7 @@ export default function LoginPage() {
 
           {/* Register Link */}
           <div className="mt-6 text-sm text-gray-700">
-            Don’t have an account?{" "}
+            Don’t have an account?{' '}
             <Link href="#" className="text-red-600 hover:underline">
               Register
             </Link>
@@ -141,7 +145,7 @@ export default function LoginPage() {
       </div>
 
       {/* Wavy SVG separator */}
-   {/* <div className="absolute top-0 right-1/2 translate-x-1/2 h-full hidden md:block z-20">
+      {/* <div className="absolute top-0 right-1/2 translate-x-1/2 h-full hidden md:block z-20">
   <svg
     viewBox="0 0 500 500"
     preserveAspectRatio="none"
@@ -153,8 +157,6 @@ export default function LoginPage() {
     />
   </svg>
 </div> */}
-
-
 
       {/* Right Side (Image) */}
       <div className="w-full md:w-1/2 relative hidden md:block z-10">
