@@ -34,7 +34,7 @@ import {
 } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import WalletConnect from '@/components/wallet-connect';
+// import WalletConnect from '@/components/WalletConnect';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import {
   DropdownMenu,
@@ -219,7 +219,7 @@ export default function DashboardPage() {
             <h1 className="text-lg font-semibold">Dashboard</h1>
           </div>
           <div className="flex items-center gap-4">
-            <WalletConnect variant="outline" size="sm" />
+            {/* <WalletConnect variant="outline" size="sm" /> */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="icon" className="relative">
@@ -799,5 +799,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
-s;
