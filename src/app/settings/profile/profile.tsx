@@ -1,29 +1,29 @@
-"use client"
+'use client';
 
-import { useState } from "react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/inputt"
-import { Label } from "@/components/ui/label"
-import { Upload, Camera } from "lucide-react"
+import { useState } from 'react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/inputt';
+import { Label } from '@/components/ui/label';
+import { Upload, Camera } from 'lucide-react';
 
 export default function ProfileComponent() {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null)
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
+    const file = event.target.files?.[0];
     if (file) {
-      const reader = new FileReader()
+      const reader = new FileReader();
       reader.onload = (e) => {
-        setSelectedImage(e.target?.result as string)
-      }
-      reader.readAsDataURL(file)
+        setSelectedImage(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
     }
-  }
+  };
 
   const openFileManager = () => {
-    document.getElementById('file-upload')?.click()
-  }
+    document.getElementById('file-upload')?.click();
+  };
 
   return (
     <div className="space-y-8">
@@ -34,8 +34,14 @@ export default function ProfileComponent() {
             <div className="absolute inset-0 bg-gradient-to-r from-[#5c0f49] to-purple-600 rounded-full p-1 animate-pulse">
               <div className="bg-white rounded-full p-1">
                 <Avatar className="h-36 w-36 ring-2 ring-[#ffcc00]/50 ring-offset-2 transition-all duration-500 group-hover:ring-[#ffcc00] group-hover:ring-offset-4">
-                  <AvatarImage src={selectedImage || "/api/placeholder/144/144"} alt="Profile" className="object-cover" />
-                  <AvatarFallback className="text-3xl bg-gradient-to-br from-[#5c0f49] to-purple-600 text-white font-bold">AS</AvatarFallback>
+                  <AvatarImage
+                    src={selectedImage || '/api/placeholder/144/144'}
+                    alt="Profile"
+                    className="object-cover"
+                  />
+                  <AvatarFallback className="text-3xl bg-gradient-to-br from-[#5c0f49] to-purple-600 text-white font-bold">
+                    AS
+                  </AvatarFallback>
                 </Avatar>
               </div>
             </div>
@@ -46,7 +52,7 @@ export default function ProfileComponent() {
               <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
             </div>
           </div>
-          
+
           {/* Hidden file input */}
           <input
             id="file-upload"
@@ -55,8 +61,8 @@ export default function ProfileComponent() {
             onChange={handleFileUpload}
             className="hidden"
           />
-          
-          <Button 
+
+          <Button
             onClick={openFileManager}
             className="bg-gradient-to-r from-[#5c0f49] to-purple-600 hover:from-purple-600 hover:to-[#5c0f49] text-white px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 group"
           >
@@ -68,7 +74,10 @@ export default function ProfileComponent() {
         {/* Profile Form */}
         <div className="flex-1 space-y-8">
           <div className="bg-gradient-to-r from-white/80 to-purple-50/80 backdrop-blur-sm p-6 rounded-2xl border border-purple-200/50 shadow-lg hover:shadow-xl transition-all duration-300">
-            <Label htmlFor="fullname" className="text-sm font-bold text-[#5c0f49] mb-4 flex items-center">
+            <Label
+              htmlFor="fullname"
+              className="text-sm font-bold text-[#5c0f49] mb-4 flex items-center"
+            >
               <div className="w-2 h-2 bg-[#ffcc00] rounded-full mr-2"></div>
               Full name
             </Label>
@@ -95,7 +104,10 @@ export default function ProfileComponent() {
           </div>
 
           <div className="bg-gradient-to-r from-white/80 to-purple-50/80 backdrop-blur-sm p-6 rounded-2xl border border-purple-200/50 shadow-lg hover:shadow-xl transition-all duration-300 group">
-            <Label htmlFor="email" className="text-sm font-bold text-[#5c0f49] mb-4 flex items-center">
+            <Label
+              htmlFor="email"
+              className="text-sm font-bold text-[#5c0f49] mb-4 flex items-center"
+            >
               <div className="w-2 h-2 bg-[#ffcc00] rounded-full mr-2"></div>
               Email
             </Label>
@@ -112,7 +124,10 @@ export default function ProfileComponent() {
           </div>
 
           <div className="bg-gradient-to-r from-white/80 to-purple-50/80 backdrop-blur-sm p-6 rounded-2xl border border-purple-200/50 shadow-lg hover:shadow-xl transition-all duration-300 group">
-            <Label htmlFor="phone" className="text-sm font-bold text-[#5c0f49] mb-4 flex items-center">
+            <Label
+              htmlFor="phone"
+              className="text-sm font-bold text-[#5c0f49] mb-4 flex items-center"
+            >
               <div className="w-2 h-2 bg-[#ffcc00] rounded-full mr-2"></div>
               Phone
             </Label>
@@ -133,7 +148,10 @@ export default function ProfileComponent() {
           </div>
 
           <div className="bg-gradient-to-r from-white/80 to-purple-50/80 backdrop-blur-sm p-6 rounded-2xl border border-purple-200/50 shadow-lg hover:shadow-xl transition-all duration-300 group">
-            <Label htmlFor="title" className="text-sm font-bold text-[#5c0f49] mb-4 flex items-center">
+            <Label
+              htmlFor="title"
+              className="text-sm font-bold text-[#5c0f49] mb-4 flex items-center"
+            >
               <div className="w-2 h-2 bg-[#ffcc00] rounded-full mr-2"></div>
               Title
             </Label>
@@ -157,5 +175,5 @@ export default function ProfileComponent() {
         </div>
       </div>
     </div>
-  )
+  );
 }
