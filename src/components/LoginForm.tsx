@@ -18,24 +18,29 @@ const LoginForm = () => {
     {},
   );
   const [loading, setLoading] = useState(false);
+  const [announcementMessage, setAnnouncementMessage] = useState('');
+  const [submissionError, setSubmissionError] = useState('');
 
   const validateForm = () => {
     let newErrors: { email?: string; password?: string } = {};
 
     if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
+      newErrors.email = 'Email address is required.';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Invalid email format';
+      newErrors.email = 'Please enter a valid email address.';
     }
 
     if (!formData.password.trim()) {
-      newErrors.password = 'Password is required';
-    } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
+      newErrors.password = 'Password is required.';
+    } else {
+      const passwordError = validatePassword(formData.password);
+      if (passwordError) {
+        newErrors.password = passwordError;
+      }
     }
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    return { isValid: Object.keys(newErrors).length === 0, errors: newErrors };
   };
 
   const handleChange = (value: string, name: string) => {
@@ -45,18 +50,68 @@ const LoginForm = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validateForm()) return;
+    const validation = validateForm();
 
+    if (!validation.isValid) {
+      const errorCount = Object.keys(validation.errors).length;
+      setAnnouncementMessage(
+        `Your submission failed. Please correct the ${errorCount} error${errorCount === 1 ? '' : 's'} highlighted below.`,
+      );
+      return;
+    }
+
+    // Clear any previous error announcements and submission errors
+    setAnnouncementMessage('');
+    setSubmissionError('');
     setLoading(true);
 
-    // This is where you would typically handle form submission.
-    // Set timeout is used here to simulate a network request.
-    setTimeout(() => {
+    try {
+      // Simulate API call - replace with actual API endpoint
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          // Authentication failure
+          const errorMessage = 'Incorrect email or password. Please try again.';
+          setSubmissionError(errorMessage);
+          setAnnouncementMessage(errorMessage);
+        } else {
+          // Other server errors
+          const errorMessage = 'An error occurred. Please try again later.';
+          setSubmissionError(errorMessage);
+          setAnnouncementMessage(errorMessage);
+        }
+        setLoading(false);
+        return;
+      }
+
+      // Success
+      const data = await response.json();
       setLoading(false);
       toast.success('Login successful!');
-    }, 1500);
+
+      // Handle successful login (e.g., redirect, store token, etc.)
+      // Example: localStorage.setItem('token', data.token);
+      // Example: router.push('/dashboard');
+    } catch (error) {
+      // Network or other connection errors
+      const errorMessage =
+        'Connection error. Please check your internet and try again.';
+      setSubmissionError(errorMessage);
+      setAnnouncementMessage(errorMessage);
+      setLoading(false);
+    }
   };
 
   const validatePassword = (value: any) => {
@@ -88,8 +143,14 @@ const LoginForm = () => {
             Enter your credencials to acces your account
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* ARIA live region for screen reader announcements */}
+            <div role="alert" aria-live="assertive" className="sr-only">
+              {announcementMessage}
+            </div>
             <div>
-              <label className="block text-sm font-semibold">Email</label>
+              <label htmlFor="email" className="block text-sm font-semibold">
+                Email
+              </label>
               <Input
                 className="w-full px-3 py-2 border rounded-lg outline-none"
                 id="email"
@@ -97,11 +158,23 @@ const LoginForm = () => {
                 type="email"
                 defaultValue={formData.email}
                 onChange={(e) => handleChange(e.target.value, 'email')}
+                aria-invalid={!!errors.email}
+                aria-describedby="email-error"
               />
+              {errors.email && (
+                <p id="email-error" className="text-red-600 text-sm mt-1">
+                  {errors.email}
+                </p>
+              )}
             </div>
             <div>
               <div className="flex justify-between">
-                <label className="block text-sm font-semibold">Password</label>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-semibold"
+                >
+                  Password
+                </label>
                 <Link
                   href={'./'}
                   className="block text-sm font-medium text-[#155dfc]"
@@ -116,8 +189,20 @@ const LoginForm = () => {
                 type="password"
                 defaultValue={formData.password}
                 onChange={(e) => handleChange(e.target.value, 'password')}
+                aria-invalid={!!errors.password}
+                aria-describedby="password-error"
               />
+              {errors.password && (
+                <p id="password-error" className="text-red-600 text-sm mt-1">
+                  {errors.password}
+                </p>
+              )}
             </div>
+            {submissionError && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                <p className="text-red-800 text-sm">{submissionError}</p>
+              </div>
+            )}
             <div className="flex items-center">
               <input
                 type="checkbox"

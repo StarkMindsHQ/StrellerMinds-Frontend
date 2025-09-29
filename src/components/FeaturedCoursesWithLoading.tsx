@@ -6,6 +6,7 @@ import {
   SkeletonText,
   Skeleton,
 } from '@/components/skeleton';
+import { useLoading } from '@/hooks/useLoading';
 import { CourseCard } from '@/components/CourseCard';
 import { allCourses } from '@/lib/course-data';
 import { AlertCircle, RefreshCw } from 'lucide-react';
@@ -39,7 +40,6 @@ export default function FeaturedCoursesWithLoading({
       if (showLoadingDemo && Math.random() < 0.1) {
         throw new Error('Failed to fetch courses. Please try again.');
       }
-
       const featuredCourses = allCourses.slice(0, maxCoursesToShow);
       setCourses(featuredCourses);
     } catch (error) {

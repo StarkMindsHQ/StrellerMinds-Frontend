@@ -2,7 +2,6 @@
 
 import type React from 'react';
 import Image from 'next/image';
-
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Check, CreditCard, Loader2, Star } from 'lucide-react';
@@ -44,7 +43,6 @@ export default function CheckoutModal({
 
   const handlePayment = async () => {
     setIsProcessing(true);
-
     try {
       // In a real app, this would integrate with a payment processor:
       // const response = await fetch('/api/payments/process', {

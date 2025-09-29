@@ -1,7 +1,7 @@
-import { 
-  Skeleton, 
-  SkeletonText, 
-  SkeletonButton
+import {
+  Skeleton,
+  SkeletonText,
+  SkeletonButton,
 } from '@/components/ui/skeleton';
 
 // Hero section skeleton
@@ -12,21 +12,21 @@ export function HeroSkeleton() {
         <div className="text-center max-w-4xl mx-auto">
           {/* Main heading */}
           <Skeleton className="h-16 w-full max-w-3xl mx-auto mb-6" />
-          
+
           {/* Subheading */}
           <Skeleton className="h-12 w-3/4 max-w-2xl mx-auto mb-8" />
-          
+
           {/* Description */}
           <div className="max-w-2xl mx-auto mb-10">
             <SkeletonText lines={3} className="h-5" />
           </div>
-          
+
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <SkeletonButton className="w-48 h-12" />
             <SkeletonButton className="w-40 h-12" />
           </div>
-          
+
           {/* Stats or badges row */}
           <div className="flex flex-wrap justify-center gap-8 mb-12">
             {Array.from({ length: 4 }).map((_, index) => (
@@ -36,14 +36,14 @@ export function HeroSkeleton() {
               </div>
             ))}
           </div>
-          
+
           {/* Hero image/illustration placeholder */}
           <div className="relative max-w-4xl mx-auto">
             <Skeleton className="w-full h-96 rounded-lg" />
           </div>
         </div>
       </div>
-      
+
       {/* Background decoration elements */}
       <div className="absolute top-20 left-20 opacity-20">
         <Skeleton className="h-20 w-20 rounded-full" />
@@ -71,4 +71,4 @@ export function HeroSectionSkeleton() {
       </div>
     </section>
   );
-} 
+}

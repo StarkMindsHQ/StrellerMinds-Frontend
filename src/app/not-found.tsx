@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Home, ArrowLeft } from 'lucide-react';
@@ -23,21 +23,25 @@ export default function NotFound() {
             Page Not Found
           </h2>
           <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed">
-            Oops! The page you're looking for doesn't exist. It might have been moved, deleted, or you entered the wrong URL.
+            Oops! The page you're looking for doesn't exist. It might have been
+            moved, deleted, or you entered the wrong URL.
           </p>
         </div>
 
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <Button asChild className="bg-[#5c0f49] hover:bg-[#4a0c3a] text-white">
+          <Button
+            asChild
+            className="bg-[#5c0f49] hover:bg-[#4a0c3a] text-white"
+          >
             <Link href="/" className="flex items-center gap-2">
               <Home className="h-4 w-4" />
               Go Home
             </Link>
           </Button>
-          
-          <Button 
-            variant="outline" 
+
+          <Button
+            variant="outline"
             onClick={() => window.history.back()}
             className="border-[#dfb1cc] text-[#5c0f49] hover:bg-[#dfb1cc]/10 dark:border-[#dfb1cc] dark:text-[#dfb1cc]"
           >
@@ -54,8 +58,8 @@ export default function NotFound() {
         {/* Additional Help Text */}
         <p className="text-sm text-gray-500 dark:text-gray-400">
           If you think this is a mistake, please{' '}
-          <Link 
-            href="/contact" 
+          <Link
+            href="/contact"
             className="text-[#5c0f49] dark:text-[#dfb1cc] hover:underline font-medium"
           >
             contact us
@@ -65,4 +69,4 @@ export default function NotFound() {
       </div>
     </div>
   );
-} 
+}
