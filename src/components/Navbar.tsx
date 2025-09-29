@@ -123,6 +123,7 @@ import SimpleLogo from '@/components/ui/SimpleLogo';
 import SignInButton from '@/components/ui/SignInButton';
 import CustomGetStartedButton from '@/components/ui/CustomGetStartedButton';
 import CryptoTicker from './CryptoTicker';
+import ThemeToggle from './ThemeToggle';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -240,8 +241,9 @@ const Navbar = () => {
             </ul>
           </div>
 
-          {/* Desktop Auth Buttons */}
+          {/* Desktop Auth Buttons and Theme Toggle */}
           <div className="hidden md:flex items-center space-x-4">
+            <ThemeToggle />
             <SignInButton />
             <CustomGetStartedButton />
           </div>
@@ -281,6 +283,7 @@ const Navbar = () => {
                 className="pt-4 border-t border-[#dfb1cc]/30 flex flex-col space-y-3"
                 role="none"
               >
+                <ThemeToggle />
                 <SignInButton />
                 <CustomGetStartedButton />
               </li>
