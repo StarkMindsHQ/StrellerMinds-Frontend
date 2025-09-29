@@ -43,7 +43,15 @@ export default function LoginPage() {
           {/* Logo */}
           <div className="w-full flex justify-start mb-8">
             <Link href="/">
-              <Image src={logo} alt="logo" width={50} />
+              <Image
+                src={logo}
+                alt="logo"
+                width={50}
+                height={50}
+                sizes="50px"
+                placeholder="blur"
+                priority
+              />
             </Link>
           </div>
 
@@ -169,6 +177,9 @@ export default function LoginPage() {
           alt="Login-Image"
           fill
           className="object-cover"
+          placeholder="blur"
+          priority
+          sizes="(max-width: 768px) 0px, 50vw"
         />
       </div>
     </div>

@@ -123,10 +123,13 @@ export function CourseCard({
               alt={title}
               width={variant === "compact" ? 60 : 80}
               height={variant === "compact" ? 60 : 80}
+              sizes={variant === "compact" ? "60px" : "80px"}
               className={cn(
                 "object-contain opacity-80 transition-opacity group-hover:opacity-100",
                 variant === "compact" ? "h-15 w-15" : "h-20 w-20"
               )}
+              placeholder="blur"
+              blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nODAnIGhlaWdodD0nODAnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zyc+PHJlY3Qgd2lkdGg9JzgwJyBoZWlnaHQ9JzgwJyBmaWxsPSIjZWVlIi8+PC9zdmc+"
             />
           ) : (
             <PlaceholderSVG />

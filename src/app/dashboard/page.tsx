@@ -37,6 +37,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import Image from "next/image"
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState("overview")
@@ -176,12 +177,8 @@ export default function DashboardPage() {
         </div>
         <div className="mt-auto border-t p-4">
           <div className="flex items-center gap-3 rounded-lg px-3 py-2">
-            <div className="w-10 h-10 rounded-full bg-muted overflow-hidden">
-              <img
-                src="/placeholder.svg?height=40&width=40&text=JD"
-                alt="User avatar"
-                className="w-full h-full object-cover"
-              />
+            <div className="w-10 h-10 rounded-full bg-muted overflow-hidden relative">
+              <Image src="/placeholder.svg?height=40&width=40&text=JD" alt="User avatar" fill sizes="40px" className="object-cover" />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium">John Doe</p>
@@ -263,12 +260,8 @@ export default function DashboardPage() {
             </DropdownMenu>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="rounded-full">
-                  <img
-                    src="/placeholder.svg?height=32&width=32&text=JD"
-                    alt="User avatar"
-                    className="h-8 w-8 rounded-full"
-                  />
+                <Button variant="ghost" size="icon" className="rounded-full relative h-8 w-8">
+                  <Image src="/placeholder.svg?height=32&width=32&text=JD" alt="User avatar" fill sizes="32px" className="rounded-full object-cover" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
@@ -354,12 +347,8 @@ export default function DashboardPage() {
                   <CardContent className="space-y-4">
                     <div className="space-y-4">
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-md overflow-hidden shrink-0">
-                          <img
-                            src="/placeholder.svg?height=48&width=48&text=SC"
-                            alt="Stellar Smart Contracts"
-                            className="w-full h-full object-cover"
-                          />
+                        <div className="w-12 h-12 rounded-md overflow-hidden shrink-0 relative">
+                          <Image src="/placeholder.svg?height=48&width=48&text=SC" alt="Stellar Smart Contracts" fill sizes="48px" className="object-cover" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between">
@@ -377,12 +366,8 @@ export default function DashboardPage() {
                       </div>
 
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-md overflow-hidden shrink-0">
-                          <img
-                            src="/placeholder.svg?height=48&width=48&text=BF"
-                            alt="Blockchain Fundamentals"
-                            className="w-full h-full object-cover"
-                          />
+                        <div className="w-12 h-12 rounded-md overflow-hidden shrink-0 relative">
+                          <Image src="/placeholder.svg?height=48&width=48&text=BF" alt="Blockchain Fundamentals" fill sizes="48px" className="object-cover" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between">
@@ -470,12 +455,8 @@ export default function DashboardPage() {
                       </Button>
                     </div>
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-md overflow-hidden shrink-0">
-                        <img
-                          src="/placeholder.svg?height=40&width=40&text=Sec"
-                          alt="Security Course"
-                          className="w-full h-full object-cover"
-                        />
+                      <div className="w-10 h-10 rounded-md overflow-hidden shrink-0 relative">
+                        <Image src="/placeholder.svg?height=40&width=40&text=Sec" alt="Security Course" fill sizes="40px" className="object-cover" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="font-medium truncate">Blockchain Security Best Practices</p>
@@ -486,12 +467,8 @@ export default function DashboardPage() {
                       </Button>
                     </div>
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-md overflow-hidden shrink-0">
-                        <img
-                          src="/placeholder.svg?height=40&width=40&text=NFT"
-                          alt="NFT Course"
-                          className="w-full h-full object-cover"
-                        />
+                      <div className="w-10 h-10 rounded-md overflow-hidden shrink-0 relative">
+                        <Image src="/placeholder.svg?height=40&width=40&text=NFT" alt="NFT Course" fill sizes="40px" className="object-cover" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="font-medium truncate">NFT Development with Stellar</p>
@@ -517,12 +494,8 @@ export default function DashboardPage() {
                   <CardContent className="space-y-4">
                     <div className="space-y-2">
                       <div className="flex items-start gap-2">
-                        <div className="w-8 h-8 rounded-full overflow-hidden shrink-0">
-                          <img
-                            src="/placeholder.svg?height=32&width=32&text=SC"
-                            alt="User avatar"
-                            className="w-full h-full object-cover"
-                          />
+                        <div className="w-8 h-8 rounded-full overflow-hidden shrink-0 relative">
+                          <Image src="/placeholder.svg?height=32&width=32&text=SC" alt="User avatar" fill sizes="32px" className="object-cover" />
                         </div>
                         <div>
                           <div className="flex items-center gap-2">
@@ -535,12 +508,8 @@ export default function DashboardPage() {
                     </div>
                     <div className="space-y-2">
                       <div className="flex items-start gap-2">
-                        <div className="w-8 h-8 rounded-full overflow-hidden shrink-0">
-                          <img
-                            src="/placeholder.svg?height=32&width=32&text=MR"
-                            alt="User avatar"
-                            className="w-full h-full object-cover"
-                          />
+                        <div className="w-8 h-8 rounded-full overflow-hidden shrink-0 relative">
+                          <Image src="/placeholder.svg?height=32&width=32&text=MR" alt="User avatar" fill sizes="32px" className="object-cover" />
                         </div>
                         <div>
                           <div className="flex items-center gap-2">
@@ -553,12 +522,8 @@ export default function DashboardPage() {
                     </div>
                     <div className="space-y-2">
                       <div className="flex items-start gap-2">
-                        <div className="w-8 h-8 rounded-full overflow-hidden shrink-0">
-                          <img
-                            src="/placeholder.svg?height=32&width=32&text=AJ"
-                            alt="User avatar"
-                            className="w-full h-full object-cover"
-                          />
+                        <div className="w-8 h-8 rounded-full overflow-hidden shrink-0 relative">
+                          <Image src="/placeholder.svg?height=32&width=32&text=AJ" alt="User avatar" fill sizes="32px" className="object-cover" />
                         </div>
                         <div>
                           <div className="flex items-center gap-2">

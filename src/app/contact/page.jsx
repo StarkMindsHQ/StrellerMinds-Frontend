@@ -6,7 +6,16 @@ const Contact = () => {
   return (
     <MainLayout variant="full-width" padding="none" background="transparent">
       <section className="w-full">
-        <Image src="/contacthead.svg" alt="Contact Header Image" />
+        <div className="relative w-full h-[200px] sm:h-[260px] md:h-[320px]">
+          <Image
+            src="/contacthead.svg"
+            alt="Contact Header Image"
+            fill
+            className="object-contain"
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 100vw"
+            priority
+          />
+        </div>
       </section>
       
       <section className="bg-white text-gray-900 px-4 py-12">
@@ -19,7 +28,15 @@ const Contact = () => {
             We take pride in providing solutions and look forward to hearing from you.
           </p>
           <div className="my-6">
-            <Image src="/contactLine.svg" alt="Contact Line Decoration" />
+            <div className="relative w-full h-[24px]">
+              <Image
+                src="/contactLine.svg"
+                alt="Contact Line Decoration"
+                fill
+                className="object-contain"
+                sizes="100vw"
+              />
+            </div>
           </div>
         </div>
 
@@ -81,8 +98,15 @@ const Contact = () => {
         {/* Footer Contact Info */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 text-center border-t pt-10 max-w-5xl mx-auto">
           <div className="flex gap-4 items-center">
-            <div>
-              <Image src="/map-location-svgrepo-com 1.svg" alt="Location Icon" />
+            <div className="relative w-10 h-10">
+              <Image
+                src="/map-location-svgrepo-com 1.svg"
+                alt="Location Icon"
+                fill
+                className="object-contain"
+                sizes="40px"
+                priority
+              />
             </div>
             <div>
               <p className="font-semibold text-red-600">Location</p>
@@ -94,8 +118,14 @@ const Contact = () => {
           </div>
           
           <div className="flex gap-4 items-center">
-            <div>
-              <Image src="/contactemail.svg" alt="Email Icon" />
+            <div className="relative w-10 h-10">
+              <Image
+                src="/contactemail.svg"
+                alt="Email Icon"
+                fill
+                className="object-contain"
+                sizes="40px"
+              />
             </div>
             <div>
               <p className="font-semibold text-red-600">Email</p>
@@ -104,8 +134,14 @@ const Contact = () => {
           </div>
           
           <div className="flex gap-4 items-center">
-            <div>
-              <Image src="/phone-contact.svg" alt="Phone Icon" />
+            <div className="relative w-10 h-10">
+              <Image
+                src="/phone-contact.svg"
+                alt="Phone Icon"
+                fill
+                className="object-contain"
+                sizes="40px"
+              />
             </div>
             <div>
               <p className="font-semibold text-red-600">Phone</p>

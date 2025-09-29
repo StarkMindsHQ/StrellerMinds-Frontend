@@ -6,6 +6,7 @@ import { useState } from "react"
 import { motion } from "framer-motion"
 import { ArrowRight, Check, CreditCard, Loader2, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import Image from "next/image"
 import {
     Dialog,
     DialogContent,
@@ -17,7 +18,7 @@ import {
 } from "@/components/ui/dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
+import { Input } from "@/components/ui/inputt"
 import { Separator } from "@/components/ui/separator"
 import WalletConnect from "@/components/wallet-connect"
 
@@ -72,11 +73,9 @@ export default function CheckoutModal({
                         </DialogHeader>
 
                         <div className="flex items-center gap-4 rounded-lg border p-4 my-4">
-                            <img
-                                src={courseImage || "/placeholder.svg"}
-                                alt={courseName}
-                                className="h-16 w-16 rounded-md object-cover"
-                            />
+                            <div className="h-16 w-16 rounded-md overflow-hidden relative">
+                                <Image src={courseImage || "/placeholder.svg"} alt={courseName} fill sizes="64px" className="object-cover" />
+                            </div>
                             <div>
                                 <h3 className="font-medium">{courseName}</h3>
                                 <div className="flex items-center gap-2 text-sm text-muted-foreground">

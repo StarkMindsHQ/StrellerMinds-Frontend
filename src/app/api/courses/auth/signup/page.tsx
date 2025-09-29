@@ -5,15 +5,16 @@ import type React from "react"
 import { useState } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
+import type { Variants } from "framer-motion"
 import { ArrowLeft, ArrowRight, Check, Eye, EyeOff, Github, Loader2, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Input } from "@/components/ui/input"
+import { Input } from "@/components/ui/inputt"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { Progress } from "@/components/ui/progress"
-import AnimatedGradientBackground from "@/components/animated-gradient-background"
+import AnimatedGradientBackground from "@/components/Animated-graded-background"
 
 export default function SignUpPage() {
   const [isLoading, setIsLoading] = useState(false)
@@ -76,7 +77,7 @@ export default function SignUpPage() {
     }
   }
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -87,13 +88,14 @@ export default function SignUpPage() {
     },
   }
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { y: 20, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
       transition: {
-        type: "spring",
+        // Cast to satisfy framer-motion type in our setup
+        type: "spring" as any,
         stiffness: 100,
         damping: 10,
       },
