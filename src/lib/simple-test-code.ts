@@ -40,5 +40,4 @@ async function testAsync() {
 testAsync().then(() => {
   console.log("All tests completed successfully!");
 });
-`
-
+`;

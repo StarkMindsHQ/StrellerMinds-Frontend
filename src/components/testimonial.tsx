@@ -1,10 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import {
@@ -83,11 +82,42 @@ interface Testimonial {
   avatarUrl: string;
 }
 
+// Throttle function for mouse movement
+const throttle = (func: (e: MouseEvent) => void, delay: number) => {
+  let timeoutId: NodeJS.Timeout | null = null;
+  let lastExecTime = 0;
+
+  return function (...args: [MouseEvent]) {
+    const currentTime = Date.now();
+
+    if (currentTime - lastExecTime > delay) {
+      func(...args);
+      lastExecTime = currentTime;
+    } else {
+      if (timeoutId) clearTimeout(timeoutId);
+      timeoutId = setTimeout(
+        () => {
+          func(...args);
+          lastExecTime = Date.now();
+        },
+        delay - (currentTime - lastExecTime),
+      );
+    }
+  };
+};
+
 export default function TestimonialsSection() {
   const [activeSlide, setActiveSlide] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Check for reduced motion preference
+  const shouldReduceMotion = useReducedMotion();
+
+  // Apply reduced motion only to background animations, keep UI animations
+  const ANIMATED_PARTICLES_COUNT = shouldReduceMotion ? 0 : 6;
+  const FLOATING_CIRCLES_COUNT = shouldReduceMotion ? 0 : 6;
 
   const testimonials: Testimonial[] = [
     {
@@ -127,17 +157,24 @@ export default function TestimonialsSection() {
     return () => clearInterval(interval);
   }, [testimonials.length]);
 
-  // Track mouse movement for interactive background
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
+  // Optimized mouse tracking with throttling
+  const throttledMouseMove = useCallback(
+    throttle((e: MouseEvent) => {
+      if (!shouldReduceMotion) {
+        setMousePosition({ x: e.clientX, y: e.clientY });
+      }
+    }, 16),
+    [shouldReduceMotion],
+  );
 
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, []);
+  useEffect(() => {
+    if (!shouldReduceMotion) {
+      window.addEventListener('mousemove', throttledMouseMove);
+      return () => {
+        window.removeEventListener('mousemove', throttledMouseMove);
+      };
+    }
+  }, [throttledMouseMove, shouldReduceMotion]);
 
   // Handle video play/pause events
   const handleVideoPlay = () => {
@@ -148,9 +185,34 @@ export default function TestimonialsSection() {
     setIsVideoPlaying(false);
   };
 
+  // Animation variants for better performance
+  const particleVariants = {
+    animate: {
+      x: ['0%', '100%', '0%'],
+      y: ['0%', '100%', '0%'],
+      transition: {
+        duration: shouldReduceMotion ? 0 : 25,
+        repeat: shouldReduceMotion ? 0 : Infinity,
+        ease: 'linear',
+      },
+    },
+  };
+
+  const floatingVariants = {
+    animate: {
+      x: ['0%', '10%', '0%'],
+      y: ['0%', '15%', '0%'],
+      transition: {
+        duration: shouldReduceMotion ? 0 : 20,
+        repeat: shouldReduceMotion ? 0 : Infinity,
+        ease: 'easeInOut',
+      },
+    },
+  };
+
   return (
     <>
-      {/* Why Learn Section - Now separate */}
+      {/* Why Learn Section */}
       <section className="py-16 bg-gradient-to-b from-white to-[#f8f0f5] relative overflow-hidden">
         <div className="absolute inset-0 opacity-10 pointer-events-none">
           <div className="absolute h-full w-full bg-[url('/patterns/circuit-board.svg')] bg-repeat opacity-5"></div>
@@ -197,7 +259,11 @@ export default function TestimonialsSection() {
                         key={index}
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.1 }}
+                        transition={{
+                          delay: index * 0.1,
+                          duration: 0.5,
+                          ease: [0.25, 0.46, 0.45, 0.94],
+                        }}
                         viewport={{ once: true }}
                         className="flex gap-3"
                       >
@@ -277,7 +343,7 @@ export default function TestimonialsSection() {
                           ],
                         }}
                         transition={{
-                          duration: Math.random() * 10 + 10,
+                          duration: 20,
                           repeat: Infinity,
                           ease: 'linear',
                         }}
@@ -294,7 +360,9 @@ export default function TestimonialsSection() {
                     <DialogTrigger asChild>
                       <div className="absolute inset-0 flex flex-col items-center justify-center cursor-pointer group">
                         <div className="relative w-20 h-20 rounded-full bg-gradient-to-br from-purple-700 to-pink-600 flex items-center justify-center transition-transform group-hover:scale-110 shadow-lg">
-                          <div className="absolute inset-0 rounded-full animate-ping bg-white/20 opacity-75"></div>
+                          {!shouldReduceMotion && (
+                            <div className="absolute inset-0 rounded-full animate-ping bg-white/20 opacity-75"></div>
+                          )}
                           <Play className="h-8 w-8 text-white fill-white" />
                         </div>
                         <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 mt-6">
@@ -347,10 +415,10 @@ export default function TestimonialsSection() {
           background: `linear-gradient(135deg, #dfb1cc 0%, #e9c6db 50%, #f0d6e6 100%)`,
         }}
       >
-        {/* Dynamic animated background */}
+        {/* Optimized animated background */}
         <div className="absolute inset-0 overflow-hidden">
-          {/* Animated circles */}
-          {[...Array(15)].map((_, i) => (
+          {/* Reduced animated circles from 15 to 8 */}
+          {Array.from({ length: FLOATING_CIRCLES_COUNT }, (_, i) => (
             <motion.div
               key={i}
               className="absolute rounded-full bg-white opacity-20"
@@ -423,9 +491,14 @@ export default function TestimonialsSection() {
                   className={index === activeSlide ? 'block' : 'hidden'}
                 >
                   <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5 }}
+                    key={`testimonial-${testimonial.id}-${activeSlide}`}
+                    initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95, y: -20 }}
+                    transition={{
+                      duration: 0.6,
+                      ease: [0.25, 0.46, 0.45, 0.94],
+                    }}
                   >
                     <Card className="bg-white/95 backdrop-blur-sm border-none rounded-2xl shadow-xl overflow-hidden">
                       <CardContent className="p-8 md:p-10">

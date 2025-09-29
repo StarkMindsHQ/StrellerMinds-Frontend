@@ -1,13 +1,13 @@
 'use client';
 
-import { ReactNode, useEffect, useRef } from "react"
+import { ReactNode, useEffect, useRef } from 'react';
 
 interface Props {
   children?: ReactNode; // Make children optional
 }
 
 export default function AnimatedGradientBackground({ children }: Props) {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -24,7 +24,7 @@ export default function AnimatedGradientBackground({ children }: Props) {
     const colors = [
       'rgba(223, 177, 204, 0.25)', // #dfb1cc with transparency
       'rgba(223, 177, 204, 0.15)', // #dfb1cc with more transparency
-      'rgba(92, 15, 73, 0.15)',    // #5c0f49 with transparency
+      'rgba(92, 15, 73, 0.15)', // #5c0f49 with transparency
     ];
 
     class Particle {
@@ -99,13 +99,18 @@ export default function AnimatedGradientBackground({ children }: Props) {
     animate();
 
     return () => {
-      window.removeEventListener("resize", handleResize)
-    }
-  }, [])
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
-  return(
+  return (
     <div className="relative w-full min-h-screen flex justify-center items-center">
-     <canvas ref={canvasRef} className="absolute inset-0 w-full h-full -z-10 opacity-80" aria-hidden="true" />
-     {children}
-    </div>)
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full -z-10 opacity-80"
+        aria-hidden="true"
+      />
+      {children}
+    </div>
+  );
 }

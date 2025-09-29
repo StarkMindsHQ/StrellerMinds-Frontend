@@ -1,5 +1,5 @@
 export const codeTemplates = {
-  "create-account": `// Create a new Stellar account
+  'create-account': `// Create a new Stellar account
 const StellarSdk = require('stellar-sdk');
 const server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
 
@@ -17,7 +17,7 @@ try {
 } catch (error) {
   console.error("ERROR!", error);
 }`,
-  "check-balance": `// Check account balance
+  'check-balance': `// Check account balance
 const StellarSdk = require('stellar-sdk');
 const server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
 
@@ -34,7 +34,7 @@ try {
 } catch (error) {
   console.error("Error loading account details", error);
 }`,
-  "send-payment": `// Send a payment
+  'send-payment': `// Send a payment
 const StellarSdk = require('stellar-sdk');
 const server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
 
@@ -73,7 +73,7 @@ try {
 } catch (error) {
   console.error('Something went wrong!', error);
 }`,
-  "create-trustline": `// Create a trustline for a custom asset
+  'create-trustline': `// Create a trustline for a custom asset
 const StellarSdk = require('stellar-sdk');
 const server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
 
@@ -114,7 +114,7 @@ try {
 } catch (error) {
   console.error('Error creating trustline:', error);
 }`,
-  "stellar-test": `// Comprehensive test of Stellar SDK functionality
+  'stellar-test': `// Comprehensive test of Stellar SDK functionality
 const StellarSdk = require('stellar-sdk');
 const server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
 
@@ -214,5 +214,4 @@ const server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
 
 // Your code here
 `,
-}
-
+};

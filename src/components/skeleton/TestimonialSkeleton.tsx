@@ -1,9 +1,9 @@
-import { 
-  Skeleton, 
-  SkeletonText, 
+import {
+  Skeleton,
+  SkeletonText,
   SkeletonAvatar,
   SkeletonButton,
-  SkeletonCard 
+  SkeletonCard,
 } from '@/components/ui/skeleton';
 
 // Individual testimonial skeleton
@@ -24,7 +24,7 @@ export function TestimonialCardSkeleton() {
               ))}
             </div>
           </div>
-          
+
           {/* Content section */}
           <div className="flex-1">
             {/* Name and title */}
@@ -32,17 +32,17 @@ export function TestimonialCardSkeleton() {
               <Skeleton className="h-6 w-40 mb-2" />
               <Skeleton className="h-4 w-32" />
             </div>
-            
+
             {/* Testimonial content */}
             <SkeletonText lines={4} className="h-4 mb-4" />
-            
+
             {/* Achievement badges */}
             <div className="flex flex-wrap gap-2 mb-4">
               {Array.from({ length: 3 }).map((_, index) => (
                 <Skeleton key={index} className="h-6 w-20 rounded-full" />
               ))}
             </div>
-            
+
             {/* Course info */}
             <div className="flex items-center gap-4 mb-4">
               <Skeleton className="h-8 w-8 rounded-md" />
@@ -51,7 +51,7 @@ export function TestimonialCardSkeleton() {
                 <Skeleton className="h-3 w-32" />
               </div>
             </div>
-            
+
             {/* Watch demo button */}
             <SkeletonButton className="w-32 h-10" />
           </div>
@@ -71,7 +71,7 @@ export function TestimonialsSkeleton() {
           <Skeleton className="h-10 w-80 mx-auto mb-4" />
           <SkeletonText lines={2} className="h-5 max-w-2xl mx-auto" />
         </div>
-        
+
         {/* Carousel controls */}
         <div className="relative max-w-6xl mx-auto">
           <div className="flex justify-between items-center mb-8">
@@ -83,11 +83,11 @@ export function TestimonialsSkeleton() {
             </div>
             <Skeleton className="h-10 w-10 rounded-full" />
           </div>
-          
+
           {/* Testimonial card */}
           <TestimonialCardSkeleton />
         </div>
       </div>
     </section>
   );
-} 
+}
