@@ -57,7 +57,7 @@ const LoginForm = () => {
     if (!validation.isValid) {
       const errorCount = Object.keys(validation.errors).length;
       setAnnouncementMessage(
-        `Your submission failed. Please correct the ${errorCount} error${errorCount === 1 ? '' : 's'} highlighted below.`
+        `Your submission failed. Please correct the ${errorCount} error${errorCount === 1 ? '' : 's'} highlighted below.`,
       );
       return;
     }
@@ -104,10 +104,10 @@ const LoginForm = () => {
       // Handle successful login (e.g., redirect, store token, etc.)
       // Example: localStorage.setItem('token', data.token);
       // Example: router.push('/dashboard');
-
     } catch (error) {
       // Network or other connection errors
-      const errorMessage = 'Connection error. Please check your internet and try again.';
+      const errorMessage =
+        'Connection error. Please check your internet and try again.';
       setSubmissionError(errorMessage);
       setAnnouncementMessage(errorMessage);
       setLoading(false);
@@ -144,15 +144,13 @@ const LoginForm = () => {
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* ARIA live region for screen reader announcements */}
-            <div
-              role="alert"
-              aria-live="assertive"
-              className="sr-only"
-            >
+            <div role="alert" aria-live="assertive" className="sr-only">
               {announcementMessage}
             </div>
             <div>
-              <label htmlFor="email" className="block text-sm font-semibold">Email</label>
+              <label htmlFor="email" className="block text-sm font-semibold">
+                Email
+              </label>
               <Input
                 className="w-full px-3 py-2 border rounded-lg outline-none"
                 id="email"
@@ -163,11 +161,20 @@ const LoginForm = () => {
                 aria-invalid={!!errors.email}
                 aria-describedby="email-error"
               />
-              {errors.email && <p id="email-error" className="text-red-600 text-sm mt-1">{errors.email}</p>}
+              {errors.email && (
+                <p id="email-error" className="text-red-600 text-sm mt-1">
+                  {errors.email}
+                </p>
+              )}
             </div>
             <div>
               <div className="flex justify-between">
-                <label htmlFor="password" className="block text-sm font-semibold">Password</label>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-semibold"
+                >
+                  Password
+                </label>
                 <Link
                   href={'./'}
                   className="block text-sm font-medium text-[#155dfc]"
@@ -185,7 +192,11 @@ const LoginForm = () => {
                 aria-invalid={!!errors.password}
                 aria-describedby="password-error"
               />
-              {errors.password && <p id="password-error" className="text-red-600 text-sm mt-1">{errors.password}</p>}
+              {errors.password && (
+                <p id="password-error" className="text-red-600 text-sm mt-1">
+                  {errors.password}
+                </p>
+              )}
             </div>
             {submissionError && (
               <div className="bg-red-50 border border-red-200 rounded-lg p-3">
