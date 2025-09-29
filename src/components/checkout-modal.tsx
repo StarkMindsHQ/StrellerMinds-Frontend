@@ -5,6 +5,7 @@ import type React from 'react';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Check, CreditCard, Loader2, Star } from 'lucide-react';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -19,7 +20,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
-import WalletConnect from '@/components/wallet-connect';
+import WalletConnect from './wallet-connect';
 
 interface CheckoutModalProps {
   children: React.ReactNode;
@@ -74,10 +75,14 @@ export default function CheckoutModal({
             </DialogHeader>
 
             <div className="flex items-center gap-4 rounded-lg border p-4 my-4">
-              <img
+              <Image
                 src={courseImage || '/placeholder.svg'}
                 alt={courseName}
+                width={64}
+                height={64}
                 className="h-16 w-16 rounded-md object-cover"
+                placeholder="blur"
+                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
               />
               <div>
                 <h3 className="font-medium">{courseName}</h3>
@@ -209,8 +214,9 @@ export default function CheckoutModal({
             </motion.div>
             <h2 className="mb-2 text-xl font-bold">Payment Successful!</h2>
             <p className="mb-6 text-center text-muted-foreground">
-              Thank you for your purchase. You now have access to "{courseName}
-              ".
+              Thank you for your purchase. You now have access to &quot;
+              {courseName}
+              &quot;.
             </p>
             <Button>
               <div className="flex items-center gap-2">
