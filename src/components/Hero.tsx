@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import AnimatedGradientBackground from '@/components/Animated-graded-background';
 import Lottie from 'lottie-react';
-import strellerAnimation from '@/assests/Streller.json';
+import strellerAnimation from '@/asset/Streller.json';
 import styled from 'styled-components';
 
 export default function Hero() {
