@@ -1,7 +1,7 @@
 'use client';
 
 import type React from 'react';
-
+import Image from 'next/image';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Check, CreditCard, Loader2, Star } from 'lucide-react';
@@ -21,6 +21,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import WalletConnect from './wallet-connect';
+
 
 interface CheckoutModalProps {
   children: React.ReactNode;
@@ -45,20 +46,29 @@ export default function CheckoutModal({
 
   const handlePayment = async () => {
     setIsProcessing(true);
+    try {
+      // In a real app, this would integrate with a payment processor:
+      // const response = await fetch('/api/payments/process', {
+      //     method: 'POST',
+      //     headers: { 'Content-Type': 'application/json' },
+      //     body: JSON.stringify({
+      //         courseId: courseId,
+      //         amount: coursePrice,
+      //         paymentMethod: paymentMethod
+      //     })
+      // });
+      // const result = await response.json();
+      setIsProcessing(false);
+      setIsComplete(true);
 
-    // Simulate payment processing
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    setIsProcessing(false);
-    setIsComplete(true);
-
-    // Redirect to course after payment
-    setTimeout(() => {
-      setIsOpen(false);
-      setIsComplete(false);
-      // In a real app, you would redirect to the course page
-      // window.location.href = `/course/${courseId}`
-    }, 3000);
+      // Auto-close after showing success message
+      setTimeout(() => {
+        setIsOpen(false);
+        setIsComplete(false);
+      }, 3000);
+    } catch (error) {
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -71,6 +81,10 @@ export default function CheckoutModal({
               <DialogTitle>Complete your purchase</DialogTitle>
               <DialogDescription>
                 Choose your preferred payment method to enroll in this course.
+                <span className="block mt-2 text-xs text-amber-600 dark:text-amber-400 font-medium">
+                  🚧 Demo Mode: This is a demonstration. No real payments will
+                  be processed.
+                </span>
               </DialogDescription>
             </DialogHeader>
 
@@ -81,8 +95,12 @@ export default function CheckoutModal({
                 width={64}
                 height={64}
                 className="h-16 w-16 rounded-md object-cover"
+
                 placeholder="blur"
                 blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+                width={64}
+                height={64}
+
               />
               <div>
                 <h3 className="font-medium">{courseName}</h3>
@@ -130,7 +148,9 @@ export default function CheckoutModal({
                 </div>
 
                 <div className="flex justify-center">
-                  <WalletConnect />
+                  <Button variant="outline" disabled>
+                    Connect Wallet (Demo)
+                  </Button>
                 </div>
 
                 <div className="text-center text-sm text-muted-foreground">
@@ -212,11 +232,15 @@ export default function CheckoutModal({
             >
               <Check className="h-8 w-8 text-green-600" />
             </motion.div>
-            <h2 className="mb-2 text-xl font-bold">Payment Successful!</h2>
+            <h2 className="mb-2 text-xl font-bold">Demo Payment Successful!</h2>
             <p className="mb-6 text-center text-muted-foreground">
               Thank you for your purchase. You now have access to &quot;
               {courseName}
               &quot;.
+
+              This was a demonstration. In a real application, you would now
+              have access to "{courseName}".
+
             </p>
             <Button>
               <div className="flex items-center gap-2">

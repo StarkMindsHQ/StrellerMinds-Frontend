@@ -19,8 +19,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({
   const baseClasses = 'min-h-screen';
 
   const backgroundClasses = {
-    default: 'bg-white dark:bg-gray-900 text-gray-900 dark:text-white',
-    gray: 'bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-white',
+    default: 'bg-background text-foreground',
+    gray: 'bg-muted text-foreground',
     transparent: '',
   };
 
@@ -41,6 +41,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
     return (
       <main
         className={cn(baseClasses, backgroundClasses[background], className)}
+        id="main-content"
       >
         {children}
       </main>
@@ -48,7 +49,10 @@ const MainLayout: React.FC<MainLayoutProps> = ({
   }
 
   return (
-    <main className={cn(baseClasses, backgroundClasses[background], className)}>
+    <main
+      id="main-content"
+      className={cn(baseClasses, backgroundClasses[background], className)}
+    >
       <div className={cn(variantClasses[variant], paddingClasses[padding])}>
         {children}
       </div>
