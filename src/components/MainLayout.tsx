@@ -41,6 +41,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
     return (
       <main
         className={cn(baseClasses, backgroundClasses[background], className)}
+        id="main-content"
       >
         {children}
       </main>
@@ -48,7 +49,10 @@ const MainLayout: React.FC<MainLayoutProps> = ({
   }
 
   return (
-    <main className={cn(baseClasses, backgroundClasses[background], className)}>
+    <main
+      id="main-content"
+      className={cn(baseClasses, backgroundClasses[background], className)}
+    >
       <div className={cn(variantClasses[variant], paddingClasses[padding])}>
         {children}
       </div>
