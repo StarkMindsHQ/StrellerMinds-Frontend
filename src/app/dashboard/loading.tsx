@@ -13,7 +13,10 @@ export default function DashboardLoading() {
             <div className="mt-8 flex-grow flex flex-col">
               <nav className="flex-1 px-2 space-y-1 bg-white dark:bg-gray-950">
                 {Array.from({ length: 6 }).map((_, index) => (
-                  <div key={index} className="flex items-center px-2 py-2 text-sm rounded-md">
+                  <div
+                    key={index}
+                    className="flex items-center px-2 py-2 text-sm rounded-md"
+                  >
                     <div className="h-5 w-5 bg-gray-200 dark:bg-gray-800 animate-skeleton rounded-sm mr-3"></div>
                     <div className="h-4 w-24 bg-gray-200 dark:bg-gray-800 animate-skeleton rounded-md"></div>
                   </div>
@@ -50,4 +53,4 @@ export default function DashboardLoading() {
       </div>
     </div>
   );
-} 
+}
