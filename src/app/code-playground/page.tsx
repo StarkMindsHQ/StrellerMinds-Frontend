@@ -1,69 +1,79 @@
-"use client"
+'use client';
 
-import { useState, useEffect } from "react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Toaster } from "sonner"
-import { codeTemplates } from "@/lib/code-templates"
-import TemplateSelector from "@/components/code-playground/template-selector"
-import CodeEditor from "@/components/code-playground/code-editor"
-import OutputPanel from "@/components/code-playground/output-panel"
+import { useState, useEffect } from 'react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Toaster } from 'sonner';
+import { codeTemplates } from '@/lib/code-templates';
+import TemplateSelector from '@/components/code-playground/template-selector';
+import CodeEditor from '@/components/code-playground/code-editor';
+import OutputPanel from '@/components/code-playground/output-panel';
 
-import SaveCodeForm from "@/components/code-playground/save-code-form"
-import DocumentationPanel from "@/components/code-playground/documentation-panel"
-import SavedSnippets from "@/components/code-playground/saved-snippets"
-
+import SaveCodeForm from '@/components/code-playground/save-code-form';
+import DocumentationPanel from '@/components/code-playground/documentation-panel';
+import SavedSnippets from '@/components/code-playground/saved-snippets';
 
 export default function StellarPlayground() {
-  const [code, setCode] = useState(codeTemplates["blank"])
-  const [output, setOutput] = useState("")
-  const [isExecuting, setIsExecuting] = useState(false)
-  const [selectedTemplate, setSelectedTemplate] = useState("blank")
-  const [savedSnippets, setSavedSnippets] = useState<{ [key: string]: string }>({})
+  const [code, setCode] = useState(codeTemplates['blank']);
+  const [output, setOutput] = useState('');
+  const [isExecuting, setIsExecuting] = useState(false);
+  const [selectedTemplate, setSelectedTemplate] = useState('blank');
+  const [savedSnippets, setSavedSnippets] = useState<{ [key: string]: string }>(
+    {},
+  );
 
   // Load saved snippets from localStorage on component mount
   useEffect(() => {
-    const saved = localStorage.getItem("stellar-playground-snippets")
+    const saved = localStorage.getItem('stellar-playground-snippets');
     if (saved) {
-      setSavedSnippets(JSON.parse(saved))
+      setSavedSnippets(JSON.parse(saved));
     }
-  }, [])
+  }, []);
 
   const handleTemplateChange = (value: string) => {
-    setSelectedTemplate(value)
-    setCode(codeTemplates[value as keyof typeof codeTemplates])
-  }
+    setSelectedTemplate(value);
+    setCode(codeTemplates[value as keyof typeof codeTemplates]);
+  };
 
   const saveSnippet = (name: string, code: string) => {
     const updatedSnippets = {
       ...savedSnippets,
       [name]: code,
-    }
+    };
 
-    setSavedSnippets(updatedSnippets)
-    localStorage.setItem("stellar-playground-snippets", JSON.stringify(updatedSnippets))
-  }
+    setSavedSnippets(updatedSnippets);
+    localStorage.setItem(
+      'stellar-playground-snippets',
+      JSON.stringify(updatedSnippets),
+    );
+  };
 
   const loadSnippet = (name: string) => {
-    setCode(savedSnippets[name])
-  }
+    setCode(savedSnippets[name]);
+  };
 
   const deleteSnippet = (name: string) => {
-    const { [name]: _, ...rest } = savedSnippets
-    setSavedSnippets(rest)
-    localStorage.setItem("stellar-playground-snippets", JSON.stringify(rest))
-  }
+    const { [name]: _, ...rest } = savedSnippets;
+    setSavedSnippets(rest);
+    localStorage.setItem('stellar-playground-snippets', JSON.stringify(rest));
+  };
 
   // Check for shared code in URL on component mount
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const sharedCode = params.get("code")
+    const params = new URLSearchParams(window.location.search);
+    const sharedCode = params.get('code');
 
     if (sharedCode) {
-      setCode(decodeURIComponent(sharedCode))
-      setSelectedTemplate("blank")
+      setCode(decodeURIComponent(sharedCode));
+      setSelectedTemplate('blank');
     }
-  }, [])
+  }, []);
 
   return (
     <div className="container mx-auto p-4 max-w-7xl">
@@ -71,8 +81,13 @@ export default function StellarPlayground() {
 
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle className="text-2xl">Stellar Blockchain Playground</CardTitle>
-          <CardDescription>Write, run, and test Stellar blockchain code directly in your browser</CardDescription>
+          <CardTitle className="text-2xl">
+            Stellar Blockchain Playground
+          </CardTitle>
+          <CardDescription>
+            Write, run, and test Stellar blockchain code directly in your
+            browser
+          </CardDescription>
         </CardHeader>
       </Card>
 
@@ -82,7 +97,10 @@ export default function StellarPlayground() {
             <CardHeader className="pb-3">
               <div className="flex justify-between items-center">
                 <CardTitle>Code Editor</CardTitle>
-                <TemplateSelector selectedTemplate={selectedTemplate} onTemplateChange={handleTemplateChange} />
+                <TemplateSelector
+                  selectedTemplate={selectedTemplate}
+                  onTemplateChange={handleTemplateChange}
+                />
               </div>
             </CardHeader>
             <CardContent>
@@ -106,17 +124,20 @@ export default function StellarPlayground() {
               <TabsTrigger value="save">Save Code</TabsTrigger>
             </TabsList>
             <TabsContent value="saved">
-              <SavedSnippets snippets={savedSnippets} onLoad={loadSnippet} onDelete={deleteSnippet} />
+              <SavedSnippets
+                snippets={savedSnippets}
+                onLoad={loadSnippet}
+                onDelete={deleteSnippet}
+              />
             </TabsContent>
             <TabsContent value="save">
               <SaveCodeForm code={code} onSave={saveSnippet} />
             </TabsContent>
           </Tabs>
 
-          <DocumentationPanel/>
+          <DocumentationPanel />
         </div>
       </div>
     </div>
-  )
+  );
 }
-
