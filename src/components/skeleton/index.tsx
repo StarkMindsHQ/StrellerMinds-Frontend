@@ -9,4 +9,4 @@ export * from './CodePlaygroundSkeleton';
 
 // Additional skeleton components
 export * from './TestimonialSkeleton';
-export * from './HeroSkeleton'; 
+export * from './HeroSkeleton';

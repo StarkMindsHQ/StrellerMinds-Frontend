@@ -1,7 +1,7 @@
-"use client"
+'use client';
 
-import { useState } from "react"
-import Link from "next/link"
+import { useState } from 'react';
+import Link from 'next/link';
 import {
   ArrowRight,
   BarChart3,
@@ -22,13 +22,20 @@ import {
   Menu,
   CheckCircle,
   Bell,
-} from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Progress } from "@/components/ui/progress"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import WalletConnect from "@/components/wallet-connect"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import WalletConnect from '@/components/wallet-connect';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -36,17 +43,21 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from '@/components/ui/dropdown-menu';
 
 export default function DashboardPage() {
-  const [activeTab, setActiveTab] = useState("overview")
+  const [activeTab, setActiveTab] = useState('overview');
 
   return (
     <div className="flex min-h-screen">
       {/* Mobile Sidebar Trigger */}
       <Sheet>
         <SheetTrigger asChild>
-          <Button variant="outline" size="icon" className="md:hidden absolute top-4 left-4 z-50">
+          <Button
+            variant="outline"
+            size="icon"
+            className="md:hidden absolute top-4 left-4 z-50"
+          >
             <Menu className="h-5 w-5" />
           </Button>
         </SheetTrigger>
@@ -185,9 +196,15 @@ export default function DashboardPage() {
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium">John Doe</p>
-              <p className="text-xs text-muted-foreground truncate">john.doe@example.com</p>
+              <p className="text-xs text-muted-foreground truncate">
+                john.doe@example.com
+              </p>
             </div>
-            <Button variant="ghost" size="icon" className="text-muted-foreground">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-muted-foreground"
+            >
               <LogOut className="h-5 w-5" />
             </Button>
           </div>
@@ -222,7 +239,9 @@ export default function DashboardPage() {
                         <Calendar className="h-4 w-4 text-primary" />
                       </span>
                       <span className="font-medium">Live Q&A Session</span>
-                      <span className="ml-auto text-xs text-muted-foreground">2h ago</span>
+                      <span className="ml-auto text-xs text-muted-foreground">
+                        2h ago
+                      </span>
                     </div>
                     <p className="mt-1 text-xs text-muted-foreground">
                       Reminder: Smart Contract Security Q&A starts in 1 hour
@@ -234,7 +253,9 @@ export default function DashboardPage() {
                         <CheckCircle className="h-4 w-4 text-green-600" />
                       </span>
                       <span className="font-medium">Assignment Graded</span>
-                      <span className="ml-auto text-xs text-muted-foreground">1d ago</span>
+                      <span className="ml-auto text-xs text-muted-foreground">
+                        1d ago
+                      </span>
                     </div>
                     <p className="mt-1 text-xs text-muted-foreground">
                       Your DeFi Protocol Analysis assignment has been graded
@@ -246,10 +267,13 @@ export default function DashboardPage() {
                         <MessageSquare className="h-4 w-4 text-blue-600" />
                       </span>
                       <span className="font-medium">New Discussion Reply</span>
-                      <span className="ml-auto text-xs text-muted-foreground">2d ago</span>
+                      <span className="ml-auto text-xs text-muted-foreground">
+                        2d ago
+                      </span>
                     </div>
                     <p className="mt-1 text-xs text-muted-foreground">
-                      Michael Rodriguez replied to your question about time-locked transactions
+                      Michael Rodriguez replied to your question about
+                      time-locked transactions
                     </p>
                   </DropdownMenuItem>
                 </div>
@@ -286,8 +310,12 @@ export default function DashboardPage() {
         <main className="grid gap-6 p-4 sm:p-6 md:gap-8 md:p-8">
           <div className="flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
             <div>
-              <h2 className="text-2xl font-bold tracking-tight">Welcome back, John!</h2>
-              <p className="text-muted-foreground">Track your progress and continue learning</p>
+              <h2 className="text-2xl font-bold tracking-tight">
+                Welcome back, John!
+              </h2>
+              <p className="text-muted-foreground">
+                Track your progress and continue learning
+              </p>
             </div>
             <div className="flex gap-2">
               <Button variant="outline">Browse Courses</Button>
@@ -295,7 +323,11 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          <Tabs defaultValue="overview" className="space-y-4" onValueChange={setActiveTab}>
+          <Tabs
+            defaultValue="overview"
+            className="space-y-4"
+            onValueChange={setActiveTab}
+          >
             <TabsList>
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="courses">My Courses</TabsTrigger>
@@ -305,42 +337,58 @@ export default function DashboardPage() {
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Courses Enrolled</CardTitle>
+                    <CardTitle className="text-sm font-medium">
+                      Courses Enrolled
+                    </CardTitle>
                     <BookOpen className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">5</div>
-                    <p className="text-xs text-muted-foreground">+1 from last month</p>
+                    <p className="text-xs text-muted-foreground">
+                      +1 from last month
+                    </p>
                   </CardContent>
                 </Card>
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Completion Rate</CardTitle>
+                    <CardTitle className="text-sm font-medium">
+                      Completion Rate
+                    </CardTitle>
                     <BarChart3 className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">68%</div>
-                    <p className="text-xs text-muted-foreground">+4% from last month</p>
+                    <p className="text-xs text-muted-foreground">
+                      +4% from last month
+                    </p>
                   </CardContent>
                 </Card>
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Hours Learned</CardTitle>
+                    <CardTitle className="text-sm font-medium">
+                      Hours Learned
+                    </CardTitle>
                     <Clock className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">24.5</div>
-                    <p className="text-xs text-muted-foreground">+2.5 from last week</p>
+                    <p className="text-xs text-muted-foreground">
+                      +2.5 from last week
+                    </p>
                   </CardContent>
                 </Card>
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Certificates Earned</CardTitle>
+                    <CardTitle className="text-sm font-medium">
+                      Certificates Earned
+                    </CardTitle>
                     <Certificate className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">2</div>
-                    <p className="text-xs text-muted-foreground">+1 from last month</p>
+                    <p className="text-xs text-muted-foreground">
+                      +1 from last month
+                    </p>
                   </CardContent>
                 </Card>
               </div>
@@ -349,7 +397,9 @@ export default function DashboardPage() {
                 <Card className="lg:col-span-4">
                   <CardHeader>
                     <CardTitle>Continue Learning</CardTitle>
-                    <CardDescription>Pick up where you left off</CardDescription>
+                    <CardDescription>
+                      Pick up where you left off
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="space-y-4">
@@ -363,13 +413,23 @@ export default function DashboardPage() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between">
-                            <h3 className="font-medium truncate">Stellar Smart Contract Development</h3>
-                            <span className="text-xs text-muted-foreground">68%</span>
+                            <h3 className="font-medium truncate">
+                              Stellar Smart Contract Development
+                            </h3>
+                            <span className="text-xs text-muted-foreground">
+                              68%
+                            </span>
                           </div>
                           <Progress value={68} className="h-2 mt-2" />
                           <div className="flex items-center justify-between mt-1">
-                            <span className="text-xs text-muted-foreground">Module 4: Advanced Contract Patterns</span>
-                            <Button variant="ghost" size="sm" className="h-7 gap-1">
+                            <span className="text-xs text-muted-foreground">
+                              Module 4: Advanced Contract Patterns
+                            </span>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-7 gap-1"
+                            >
                               Continue <ArrowRight className="h-3.5 w-3.5" />
                             </Button>
                           </div>
@@ -386,13 +446,23 @@ export default function DashboardPage() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between">
-                            <h3 className="font-medium truncate">Blockchain Fundamentals</h3>
-                            <span className="text-xs text-muted-foreground">92%</span>
+                            <h3 className="font-medium truncate">
+                              Blockchain Fundamentals
+                            </h3>
+                            <span className="text-xs text-muted-foreground">
+                              92%
+                            </span>
                           </div>
                           <Progress value={92} className="h-2 mt-2" />
                           <div className="flex items-center justify-between mt-1">
-                            <span className="text-xs text-muted-foreground">Module 8: Consensus Mechanisms</span>
-                            <Button variant="ghost" size="sm" className="h-7 gap-1">
+                            <span className="text-xs text-muted-foreground">
+                              Module 8: Consensus Mechanisms
+                            </span>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-7 gap-1"
+                            >
                               Continue <ArrowRight className="h-3.5 w-3.5" />
                             </Button>
                           </div>
@@ -405,7 +475,9 @@ export default function DashboardPage() {
                 <Card className="lg:col-span-3">
                   <CardHeader>
                     <CardTitle>Upcoming Events</CardTitle>
-                    <CardDescription>Scheduled sessions and deadlines</CardDescription>
+                    <CardDescription>
+                      Scheduled sessions and deadlines
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
@@ -414,8 +486,12 @@ export default function DashboardPage() {
                           <Calendar className="h-4 w-4" />
                         </div>
                         <div>
-                          <p className="font-medium">Live Q&A: Smart Contract Security</p>
-                          <p className="text-sm text-muted-foreground">Tomorrow, 2:00 PM</p>
+                          <p className="font-medium">
+                            Live Q&A: Smart Contract Security
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            Tomorrow, 2:00 PM
+                          </p>
                         </div>
                       </div>
                       <div className="flex items-start gap-3">
@@ -423,8 +499,12 @@ export default function DashboardPage() {
                           <FileText className="h-4 w-4" />
                         </div>
                         <div>
-                          <p className="font-medium">Assignment Due: DeFi Protocol Analysis</p>
-                          <p className="text-sm text-muted-foreground">Friday, 11:59 PM</p>
+                          <p className="font-medium">
+                            Assignment Due: DeFi Protocol Analysis
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            Friday, 11:59 PM
+                          </p>
                         </div>
                       </div>
                       <div className="flex items-start gap-3">
@@ -432,8 +512,12 @@ export default function DashboardPage() {
                           <Users className="h-4 w-4" />
                         </div>
                         <div>
-                          <p className="font-medium">Community Meetup: Stellar Ecosystem</p>
-                          <p className="text-sm text-muted-foreground">Next Monday, 6:00 PM</p>
+                          <p className="font-medium">
+                            Community Meetup: Stellar Ecosystem
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            Next Monday, 6:00 PM
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -462,8 +546,12 @@ export default function DashboardPage() {
                         />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium truncate">DeFi Applications on Stellar</p>
-                        <p className="text-xs text-muted-foreground">Intermediate • 10 hours</p>
+                        <p className="font-medium truncate">
+                          DeFi Applications on Stellar
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          Intermediate • 10 hours
+                        </p>
                       </div>
                       <Button variant="ghost" size="icon">
                         <ChevronRight className="h-4 w-4" />
@@ -478,8 +566,12 @@ export default function DashboardPage() {
                         />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium truncate">Blockchain Security Best Practices</p>
-                        <p className="text-xs text-muted-foreground">Advanced • 8 hours</p>
+                        <p className="font-medium truncate">
+                          Blockchain Security Best Practices
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          Advanced • 8 hours
+                        </p>
                       </div>
                       <Button variant="ghost" size="icon">
                         <ChevronRight className="h-4 w-4" />
@@ -494,8 +586,12 @@ export default function DashboardPage() {
                         />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium truncate">NFT Development with Stellar</p>
-                        <p className="text-xs text-muted-foreground">Intermediate • 7 hours</p>
+                        <p className="font-medium truncate">
+                          NFT Development with Stellar
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          Intermediate • 7 hours
+                        </p>
                       </div>
                       <Button variant="ghost" size="icon">
                         <ChevronRight className="h-4 w-4" />
@@ -512,7 +608,9 @@ export default function DashboardPage() {
                 <Card>
                   <CardHeader>
                     <CardTitle>Community Activity</CardTitle>
-                    <CardDescription>Recent discussions and posts</CardDescription>
+                    <CardDescription>
+                      Recent discussions and posts
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="space-y-2">
@@ -527,9 +625,13 @@ export default function DashboardPage() {
                         <div>
                           <div className="flex items-center gap-2">
                             <p className="text-sm font-medium">Sarah Chen</p>
-                            <p className="text-xs text-muted-foreground">2h ago</p>
+                            <p className="text-xs text-muted-foreground">
+                              2h ago
+                            </p>
                           </div>
-                          <p className="text-sm">Shared a resource on Stellar payment channels</p>
+                          <p className="text-sm">
+                            Shared a resource on Stellar payment channels
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -544,10 +646,17 @@ export default function DashboardPage() {
                         </div>
                         <div>
                           <div className="flex items-center gap-2">
-                            <p className="text-sm font-medium">Michael Rodriguez</p>
-                            <p className="text-xs text-muted-foreground">5h ago</p>
+                            <p className="text-sm font-medium">
+                              Michael Rodriguez
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              5h ago
+                            </p>
                           </div>
-                          <p className="text-sm">Asked a question about Stellar smart contract security</p>
+                          <p className="text-sm">
+                            Asked a question about Stellar smart contract
+                            security
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -563,9 +672,13 @@ export default function DashboardPage() {
                         <div>
                           <div className="flex items-center gap-2">
                             <p className="text-sm font-medium">Alex Johnson</p>
-                            <p className="text-xs text-muted-foreground">Yesterday</p>
+                            <p className="text-xs text-muted-foreground">
+                              Yesterday
+                            </p>
                           </div>
-                          <p className="text-sm">Posted a solution to the weekly coding challenge</p>
+                          <p className="text-sm">
+                            Posted a solution to the weekly coding challenge
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -580,7 +693,9 @@ export default function DashboardPage() {
                 <Card>
                   <CardHeader>
                     <CardTitle>Account Summary</CardTitle>
-                    <CardDescription>Your subscription and billing</CardDescription>
+                    <CardDescription>
+                      Your subscription and billing
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="flex items-center justify-between">
@@ -588,16 +703,23 @@ export default function DashboardPage() {
                         <GraduationCap className="h-5 w-5 text-primary" />
                         <span className="font-medium">Pro Plan</span>
                       </div>
-                      <span className="text-sm text-muted-foreground">Active</span>
+                      <span className="text-sm text-muted-foreground">
+                        Active
+                      </span>
                     </div>
                     <div className="space-y-1">
                       <p className="text-sm">
-                        Next billing date: <span className="font-medium">April 15, 2025</span>
+                        Next billing date:{' '}
+                        <span className="font-medium">April 15, 2025</span>
                       </p>
-                      <p className="text-sm text-muted-foreground">$29.99/month</p>
+                      <p className="text-sm text-muted-foreground">
+                        $29.99/month
+                      </p>
                     </div>
                     <div className="pt-2">
-                      <h4 className="text-sm font-medium mb-2">Plan Features:</h4>
+                      <h4 className="text-sm font-medium mb-2">
+                        Plan Features:
+                      </h4>
                       <ul className="space-y-1">
                         <li className="text-sm flex items-center gap-2">
                           <CheckCircle className="h-4 w-4 text-green-500" />
@@ -635,12 +757,16 @@ export default function DashboardPage() {
                 <Card>
                   <CardHeader>
                     <CardTitle>My Enrolled Courses</CardTitle>
-                    <CardDescription>Track your progress across all courses</CardDescription>
+                    <CardDescription>
+                      Track your progress across all courses
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-6">
                       {/* Course items would go here */}
-                      <p className="text-muted-foreground">Course content will be displayed here</p>
+                      <p className="text-muted-foreground">
+                        Course content will be displayed here
+                      </p>
                     </div>
                   </CardContent>
                 </Card>
@@ -652,12 +778,16 @@ export default function DashboardPage() {
                 <Card>
                   <CardHeader>
                     <CardTitle>My Certificates</CardTitle>
-                    <CardDescription>View and download your earned certificates</CardDescription>
+                    <CardDescription>
+                      View and download your earned certificates
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-6">
                       {/* Certificate items would go here */}
-                      <p className="text-muted-foreground">Certificate content will be displayed here</p>
+                      <p className="text-muted-foreground">
+                        Certificate content will be displayed here
+                      </p>
                     </div>
                   </CardContent>
                 </Card>
@@ -667,7 +797,7 @@ export default function DashboardPage() {
         </main>
       </div>
     </div>
-  )
+  );
 }
 
-s
+s;

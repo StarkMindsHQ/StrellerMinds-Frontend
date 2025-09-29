@@ -1,9 +1,9 @@
-import { 
-  Skeleton, 
-  SkeletonText, 
-  SkeletonAvatar, 
+import {
+  Skeleton,
+  SkeletonText,
+  SkeletonAvatar,
   SkeletonButton,
-  SkeletonCard 
+  SkeletonCard,
 } from '@/components/ui/skeleton';
 
 // Stats card skeleton (for metrics like courses completed, certificates earned)
@@ -47,7 +47,7 @@ export function DashboardActivityCardSkeleton() {
           <SkeletonText className="h-6 w-48" />
           <SkeletonText className="h-4 w-64 mt-1" />
         </div>
-        
+
         <div className="space-y-4">
           {/* Activity items */}
           {Array.from({ length: 3 }).map((_, index) => (
@@ -60,7 +60,7 @@ export function DashboardActivityCardSkeleton() {
             </div>
           ))}
         </div>
-        
+
         <SkeletonButton className="w-full" />
       </div>
     </SkeletonCard>
@@ -76,7 +76,7 @@ export function DashboardRecommendationsCardSkeleton() {
           <SkeletonText className="h-6 w-44" />
           <SkeletonText className="h-4 w-52 mt-1" />
         </div>
-        
+
         <div className="space-y-4">
           {/* Recommendation items */}
           {Array.from({ length: 3 }).map((_, index) => (
@@ -90,7 +90,7 @@ export function DashboardRecommendationsCardSkeleton() {
             </div>
           ))}
         </div>
-        
+
         <SkeletonButton className="w-full" />
       </div>
     </SkeletonCard>
@@ -106,7 +106,7 @@ export function DashboardCommunityCardSkeleton() {
           <SkeletonText className="h-6 w-40" />
           <SkeletonText className="h-4 w-56 mt-1" />
         </div>
-        
+
         <div className="space-y-4">
           {/* Community activity items */}
           {Array.from({ length: 3 }).map((_, index) => (
@@ -124,7 +124,7 @@ export function DashboardCommunityCardSkeleton() {
             </div>
           ))}
         </div>
-        
+
         <SkeletonButton className="w-full" />
       </div>
     </SkeletonCard>
@@ -141,7 +141,7 @@ export function DashboardSkeleton() {
           <DashboardStatsCardSkeleton key={index} />
         ))}
       </div>
-      
+
       {/* Main Content Grid */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <DashboardProgressCardSkeleton />
@@ -151,4 +151,4 @@ export function DashboardSkeleton() {
       </div>
     </div>
   );
-} 
+}
