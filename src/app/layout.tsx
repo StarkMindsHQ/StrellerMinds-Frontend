@@ -3,8 +3,11 @@ import { Inter, Source_Code_Pro } from 'next/font/google';
 import './globals.css';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
+import CookieBanner from '@/components/CookieBanner';
+import Analytics from '@/components/Analytics';
 import { Toaster } from 'sonner';
 import { Providers } from '@/lib/providers';
+import StyledComponentsRegistry from '@/lib/registry';
 
 const inter = Inter({
   variable: '--font-inter',
@@ -73,8 +76,6 @@ export const metadata: Metadata = {
   },
 };
 
-import StyledComponentsRegistry from '@/lib/registry';
-
 export default function RootLayout({
   children,
 }: {
@@ -82,19 +83,27 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      <body className={`${inter.variable} ${sourceCodePro.variable}`}>
         <Providers>
           <StyledComponentsRegistry>
+            {/* Accessibility Skip Link */}
             <a
               href="#main-content"
               className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-16 focus:bg-[#5c0f49] focus:text-white focus:p-4 focus:outline-none focus:z-100"
             >
               Skip to content
             </a>
+
             <Navbar />
-            {children}
+            <main id="main-content">{children}</main>
             <Footer />
             <Toaster position="top-right" />
+
+            {/* Privacy-compliant Analytics */}
+            <Analytics />
+
+            {/* Cookie Consent Banner */}
+            <CookieBanner />
           </StyledComponentsRegistry>
         </Providers>
       </body>
