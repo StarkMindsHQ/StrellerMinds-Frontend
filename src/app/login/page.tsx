@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useForm } from "react-hook-form";
-import { useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import logo from "@/assets/logo.png"
-import loginImage from "@/assets/login-image.png";
-import loginBg from "@/assets/login-bg.png";
-import { logger } from "@/lib/logger";
+import { useForm } from 'react-hook-form';
+import { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import logo from '@/assets/logo.png';
+import loginImage from '@/assets/login-image.png';
+import loginBg from '@/assets/login-bg.png';
+import { logger } from '@/lib/logger';
 
 type FormValues = {
   email: string;
@@ -15,11 +15,16 @@ type FormValues = {
 };
 
 export default function LoginPage() {
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<FormValues>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<FormValues>();
   const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = (data: FormValues) => {
-    logger.log("Form Data:", data);
+    logger.log('Form Data:', data);
     reset();
   };
 
@@ -61,21 +66,25 @@ export default function LoginPage() {
             <div className="mb-4">
               <label className="block text-gray-700 mb-2">Email</label>
               <input
-                {...register("email", {
-                  required: "Email is required",
+                {...register('email', {
+                  required: 'Email is required',
                   pattern: {
                     value: /^\S+@\S+$/i,
-                    message: "Invalid email address",
+                    message: 'Invalid email address',
                   },
                 })}
                 type="email"
                 placeholder="Enter"
                 className={`w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 ${
-                  errors.email ? "border-red-500 ring-red-400" : "focus:ring-red-400"
+                  errors.email
+                    ? 'border-red-500 ring-red-400'
+                    : 'focus:ring-red-400'
                 }`}
               />
               {errors.email && (
-                <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.email.message}
+                </p>
               )}
             </div>
 
@@ -84,17 +93,19 @@ export default function LoginPage() {
               <label className="block text-gray-700 mb-2">Password</label>
               <div className="relative">
                 <input
-                  {...register("password", {
-                    required: "Password is required",
+                  {...register('password', {
+                    required: 'Password is required',
                     minLength: {
                       value: 6,
-                      message: "Password must be at least 6 characters",
+                      message: 'Password must be at least 6 characters',
                     },
                   })}
-                  type={showPassword ? "text" : "password"}
+                  type={showPassword ? 'text' : 'password'}
                   placeholder="Enter"
                   className={`w-full border rounded-lg px-4 py-2 pr-10 focus:outline-none focus:ring-2 ${
-                    errors.password ? "border-red-500 ring-red-400" : "focus:ring-red-400"
+                    errors.password
+                      ? 'border-red-500 ring-red-400'
+                      : 'focus:ring-red-400'
                   }`}
                 />
                 <button
@@ -102,11 +113,13 @@ export default function LoginPage() {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute inset-y-0 right-3 flex items-center text-gray-600 text-sm"
                 >
-                  {showPassword ? "Hide" : "Show"}
+                  {showPassword ? 'Hide' : 'Show'}
                 </button>
               </div>
               {errors.password && (
-                <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.password.message}
+                </p>
               )}
             </div>
 
@@ -128,7 +141,7 @@ export default function LoginPage() {
 
           {/* Register Link */}
           <div className="mt-6 text-sm text-gray-700">
-            Don’t have an account?{" "}
+            Don’t have an account?{' '}
             <Link href="#" className="text-red-600 hover:underline">
               Register
             </Link>
@@ -147,7 +160,7 @@ export default function LoginPage() {
       </div>
 
       {/* Wavy SVG separator */}
-   {/* <div className="absolute top-0 right-1/2 translate-x-1/2 h-full hidden md:block z-20">
+      {/* <div className="absolute top-0 right-1/2 translate-x-1/2 h-full hidden md:block z-20">
   <svg
     viewBox="0 0 500 500"
     preserveAspectRatio="none"
@@ -159,8 +172,6 @@ export default function LoginPage() {
     />
   </svg>
 </div> */}
-
-
 
       {/* Right Side (Image) */}
       <div className="w-full md:w-1/2 relative hidden md:block z-10">

@@ -1,29 +1,35 @@
-"use client"
+'use client';
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Save } from "lucide-react"
-import { toast } from "sonner"
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Save } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface SaveCodeFormProps {
-  code: string
-  onSave: (name: string, code: string) => void
+  code: string;
+  onSave: (name: string, code: string) => void;
 }
 
 export default function SaveCodeForm({ code, onSave }: SaveCodeFormProps) {
-  const [snippetName, setSnippetName] = useState("")
+  const [snippetName, setSnippetName] = useState('');
 
   const handleSave = () => {
     if (!snippetName.trim()) {
-      toast.error("Please enter a name for your code snippet")
-      return
+      toast.error('Please enter a name for your code snippet');
+      return;
     }
 
-    onSave(snippetName, code)
-    toast.success(`Your code snippet "${snippetName}" has been saved`)
-    setSnippetName("")
-  }
+    onSave(snippetName, code);
+    toast.success(`Your code snippet "${snippetName}" has been saved`);
+    setSnippetName('');
+  };
 
   return (
     <Card>
@@ -52,6 +58,5 @@ export default function SaveCodeForm({ code, onSave }: SaveCodeFormProps) {
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }
-
