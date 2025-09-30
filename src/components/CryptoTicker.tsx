@@ -33,7 +33,6 @@ const fetchCryptoPrices = async (): Promise<CryptoData> => {
         include_24hr_change: 'true',
       },
       timeout: env.NEXT_PUBLIC_API_TIMEOUT,
-
     },
   );
   return data;

@@ -9,6 +9,7 @@ import { Copy, Play, Share2, RefreshCw, Square } from 'lucide-react';
 import { toast } from 'sonner';
 import { executeCode } from '@/lib/code-executor';
 import { simpleTestCode } from '@/lib/simple-test-code';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 interface CodeEditorProps {
   code: string;
@@ -142,58 +143,60 @@ export default function CodeEditor({
   };
 
   return (
-    <div className="space-y-4">
-      <div className="border rounded-md overflow-hidden h-[500px]">
-        <Editor
-          height="100%"
-          defaultLanguage="javascript"
-          value={code}
-          onChange={(value) => {
-            setCode(value || '');
-            if (!showTestButton) setShowTestButton(true);
-          }}
-          onMount={handleEditorDidMount}
-          theme="vs-dark"
-          options={{
-            minimap: { enabled: false },
-            fontSize: 14,
-            wordWrap: 'on',
-            automaticLayout: true,
-          }}
-        />
-      </div>
-      <div className="flex  gap-2 flex-wrap">
-        {isExecuting ? (
-          <Button
-            onClick={handleStopExecution}
-            variant="destructive"
-            className="gap-2"
-          >
-            <Square className="h-4 w-4" />
-            Stop Execution
+    <ErrorBoundary>
+      <div className="space-y-4">
+        <div className="border rounded-md overflow-hidden h-[500px]">
+          <Editor
+            height="100%"
+            defaultLanguage="javascript"
+            value={code}
+            onChange={(value) => {
+              setCode(value || '');
+              if (!showTestButton) setShowTestButton(true);
+            }}
+            onMount={handleEditorDidMount}
+            theme="vs-dark"
+            options={{
+              minimap: { enabled: false },
+              fontSize: 14,
+              wordWrap: 'on',
+              automaticLayout: true,
+            }}
+          />
+        </div>
+        <div className="flex  gap-2 flex-wrap">
+          {isExecuting ? (
+            <Button
+              onClick={handleStopExecution}
+              variant="destructive"
+              className="gap-2"
+            >
+              <Square className="h-4 w-4" />
+              Stop Execution
+            </Button>
+          ) : (
+            <Button onClick={handleExecuteCode} className="gap-2">
+              <Play className="h-4 w-4" />
+              Run Code
+            </Button>
+          )}
+          {showTestButton && (
+            <Button variant="outline" onClick={runSimpleTest} className="gap-2">
+              <RefreshCw className="h-4 w-4" />
+              Load Test Code
+            </Button>
+          )}
+          <Button variant="outline" onClick={copyCode} className="gap-2">
+            <Copy className="h-4 w-4" />
+            Copy
           </Button>
-        ) : (
-          <Button onClick={handleExecuteCode} className="gap-2">
-            <Play className="h-4 w-4" />
-            Run Code
-          </Button>
-        )}
-        {showTestButton && (
-          <Button variant="outline" onClick={runSimpleTest} className="gap-2">
-            <RefreshCw className="h-4 w-4" />
-            Load Test Code
-          </Button>
-        )}
-        <Button variant="outline" onClick={copyCode} className="gap-2">
-          <Copy className="h-4 w-4" />
-          Copy
-        </Button>
 
-        <Button variant="outline" onClick={shareCode} className="gap-2">
-          <Share2 className="h-4 w-4" />
-          Share
-        </Button>
+          <Button variant="outline" onClick={shareCode} className="gap-2">
+            <Share2 className="h-4 w-4" />
+            Share
+          </Button>
+        </div>
       </div>
-    </div>
+    </ErrorBoundary>
   );
 }

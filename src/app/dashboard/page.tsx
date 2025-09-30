@@ -45,12 +45,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState('overview');
 
   return (
-    <div className="flex min-h-screen">
+    <ErrorBoundary context="Dashboard" resetOnPropsChange={true} resetKeys={[activeTab]}>
+      <div className="flex min-h-screen">
       {/* Mobile Sidebar Trigger */}
       <Sheet>
         <SheetTrigger asChild>
@@ -838,5 +840,6 @@ export default function DashboardPage() {
         </main>
       </div>
     </div>
+    </ErrorBoundary>
   );
 }
