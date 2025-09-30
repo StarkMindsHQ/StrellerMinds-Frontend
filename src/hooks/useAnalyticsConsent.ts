@@ -5,10 +5,11 @@ import {
   getAnalyticsConsent,
   setAnalyticsConsent,
   isDNTEnabled,
+  type AnalyticsConsent,
 } from '@/utils/analytics';
 
 export function useAnalyticsConsent() {
-  const [consent, setConsent] = useState<boolean | null>(null);
+  const [consent, setConsent] = useState<AnalyticsConsent>(null);
   const [showBanner, setShowBanner] = useState(false);
   const [dntEnabled, setDntEnabled] = useState(false);
 
