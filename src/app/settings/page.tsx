@@ -1,20 +1,31 @@
 'use client';
 
-import { useState } from "react"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/inputt"
-import { Label } from "@/components/ui/label"
-import { Separator } from "@/components/ui/separator"
-import { FormError } from "@/components/ui/form-error"
-import { Upload, Eye, EyeOff, Bell, Shield, User, ChevronRight } from "lucide-react"
-import Link from "next/link"
-import ChangePassword from "@/components/ChangePassword"
-import NotificationPreferences from "@/components/NotificationPreferences"
-import { profileUpdateSchema, type ProfileUpdateFormData } from "@/lib/validations"
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/inputt';
+import { Label } from '@/components/ui/label';
+import { Separator } from '@/components/ui/separator';
+import { FormError } from '@/components/ui/form-error';
+import {
+  Upload,
+  Eye,
+  EyeOff,
+  Bell,
+  Shield,
+  User,
+  ChevronRight,
+} from 'lucide-react';
+import Link from 'next/link';
+import ChangePassword from '@/components/ChangePassword';
+import NotificationPreferences from '@/components/NotificationPreferences';
+import {
+  profileUpdateSchema,
+  type ProfileUpdateFormData,
+} from '@/lib/validations';
 
 export default function SettingsPage() {
   const [activeSection, setActiveSection] = useState('profile');
@@ -29,22 +40,22 @@ export default function SettingsPage() {
     resolver: zodResolver(profileUpdateSchema),
     mode: 'all',
     defaultValues: {
-      firstName: "Anaya",
-      lastName: "Suliemon",
-      email: "Anayaadamz@hotmail.com",
-      phone: "8045671129",
-      title: "Fashion Enthusiast",
+      firstName: 'Anaya',
+      lastName: 'Suliemon',
+      email: 'Anayaadamz@hotmail.com',
+      phone: '8045671129',
+      title: 'Fashion Enthusiast',
     },
-  })
+  });
 
   const onSubmit = async (data: ProfileUpdateFormData) => {
     try {
       // TODO: Implement profile update API call
-      console.log("Profile update data:", data)
+      console.log('Profile update data:', data);
     } catch (error) {
-      console.error('Profile update error:', error)
+      console.error('Profile update error:', error);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-purple-50">
@@ -302,7 +313,10 @@ export default function SettingsPage() {
                   </div>
 
                   {/* Profile Form */}
-                  <form onSubmit={handleSubmit(onSubmit)} className="flex-1 space-y-8">
+                  <form
+                    onSubmit={handleSubmit(onSubmit)}
+                    className="flex-1 space-y-8"
+                  >
                     <div className="bg-white/50 backdrop-blur-sm p-6 rounded-xl border border-purple-100">
                       <Label
                         htmlFor="fullname"
@@ -386,7 +400,7 @@ export default function SettingsPage() {
                       <FormError message={errors.title?.message} />
                     </div>
 
-                    <Button 
+                    <Button
                       type="submit"
                       className="bg-gradient-to-r from-[#ffcc00] to-yellow-400 hover:from-yellow-400 hover:to-[#ffcc00] text-[#5c0f49] font-bold px-10 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                       disabled={isSubmitting}

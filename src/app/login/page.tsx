@@ -1,35 +1,40 @@
 'use client';
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import logo from "@/assets/logo.png"
-import loginImage from "@/assets/login-image.png";
-import loginBg from "@/assets/login-bg.png";
-import { logger } from "@/lib/logger";
-import { z } from "zod";
-import { emailSchema } from "@/lib/validations";
-import { FormError } from "@/components/ui/form-error";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import logo from '@/assets/logo.png';
+import loginImage from '@/assets/login-image.png';
+import loginBg from '@/assets/login-bg.png';
+import { logger } from '@/lib/logger';
+import { z } from 'zod';
+import { emailSchema } from '@/lib/validations';
+import { FormError } from '@/components/ui/form-error';
 
 // Simple login schema without rememberMe
 const simpleLoginSchema = z.object({
   email: emailSchema,
-  password: z.string().min(1, { message: "Password is required" }),
+  password: z.string().min(1, { message: 'Password is required' }),
 });
 
 type SimpleLoginFormData = z.infer<typeof simpleLoginSchema>;
 
 export default function LoginPage() {
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<SimpleLoginFormData>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<SimpleLoginFormData>({
     resolver: zodResolver(simpleLoginSchema),
     mode: 'all',
   });
   const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = (data: SimpleLoginFormData) => {
-    logger.log("Form Data:", data);
+    logger.log('Form Data:', data);
     reset();
   };
 
@@ -71,7 +76,7 @@ export default function LoginPage() {
             <div className="mb-4">
               <label className="block text-gray-700 mb-2">Email</label>
               <input
-                {...register("email")}
+                {...register('email')}
                 type="email"
                 placeholder="Enter"
                 className={`w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 ${
@@ -88,8 +93,8 @@ export default function LoginPage() {
               <label className="block text-gray-700 mb-2">Password</label>
               <div className="relative">
                 <input
-                  {...register("password")}
-                  type={showPassword ? "text" : "password"}
+                  {...register('password')}
+                  type={showPassword ? 'text' : 'password'}
                   placeholder="Enter"
                   className={`w-full border rounded-lg px-4 py-2 pr-10 focus:outline-none focus:ring-2 ${
                     errors.password

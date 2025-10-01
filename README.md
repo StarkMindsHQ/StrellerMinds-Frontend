@@ -34,9 +34,10 @@ _Installation:_
    Edit `.env` with your actual values. The app will validate all required environment variables at startup and fail gracefully with clear error messages if any are missing or invalid.
 
    `pnpm install` (or `npm install`)
-4. Create a `.env` file using the provided `.env.example` for environment-specific configurations.
 
-5. Start the development server:  
+5. Create a `.env` file using the provided `.env.example` for environment-specific configurations.
+
+6. Start the development server:  
    `pnpm run dev` (or `npm run dev`)
 
 **Available Scripts**

@@ -7,7 +7,7 @@ import AnimatedGradientBackground from './Animated-graded-background';
 import Link from 'next/link';
 import { LuGithub } from 'react-icons/lu';
 import { FaRegStar } from 'react-icons/fa';
-import { Input } from './ui/inputt';
+import { Input } from './ui/input';
 import { FormError } from './ui/form-error';
 import { toast } from 'sonner';
 import { loginSchema, type LoginFormData } from '@/lib/validations';
@@ -17,7 +17,6 @@ const LoginForm = () => {
   const [announcementMessage, setAnnouncementMessage] = useState('');
   const [submissionError, setSubmissionError] = useState('');
 
-<<<<<<< HEAD
   const {
     register,
     handleSubmit,
@@ -28,48 +27,6 @@ const LoginForm = () => {
     resolver: zodResolver(loginSchema),
     mode: 'all',
   });
-=======
-  const validateForm = () => {
-    let newErrors: { email?: string; password?: string } = {};
-
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email address is required.';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address.';
-    }
-
-    if (!formData.password.trim()) {
-      newErrors.password = 'Password is required.';
-    } else {
-      const passwordError = validatePassword(formData.password);
-      if (passwordError) {
-        newErrors.password = passwordError;
-      }
-    }
-
-    setErrors(newErrors);
-    return { isValid: Object.keys(newErrors).length === 0, errors: newErrors };
-  };
-
-  const handleChange = (value: string, name: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      [name]: name === 'rememberMe' ? value === 'true' : value,
-    }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const validation = validateForm();
-
-    if (!validation.isValid) {
-      const errorCount = Object.keys(validation.errors).length;
-      setAnnouncementMessage(
-        `Your submission failed. Please correct the ${errorCount} error${errorCount === 1 ? '' : 's'} highlighted below.`,
-      );
-      return;
-    }
->>>>>>> f89608a47ee4e9a4cd5e6970d561bb9f0c6b72a6
 
   const onSubmit = async (data: LoginFormData) => {
     // Clear any previous error announcements and submission errors
@@ -159,21 +116,13 @@ const LoginForm = () => {
                 type="email"
                 {...register('email')}
                 aria-invalid={!!errors.email}
-                aria-describedby={errors.email ? "email-error" : undefined}
+                aria-describedby={errors.email ? 'email-error' : undefined}
               />
-              <FormError 
-                message={errors.email?.message} 
+              <FormError
+                message={errors.email?.message}
                 id="email-error"
                 className="text-red-600 text-sm mt-1"
               />
-<<<<<<< HEAD
-=======
-              {errors.email && (
-                <p id="email-error" className="text-red-600 text-sm mt-1">
-                  {errors.email}
-                </p>
-              )}
->>>>>>> f89608a47ee4e9a4cd5e6970d561bb9f0c6b72a6
             </div>
             <div>
               <div className="flex justify-between">
@@ -197,21 +146,15 @@ const LoginForm = () => {
                 type="password"
                 {...register('password')}
                 aria-invalid={!!errors.password}
-                aria-describedby={errors.password ? "password-error" : undefined}
+                aria-describedby={
+                  errors.password ? 'password-error' : undefined
+                }
               />
-              <FormError 
-                message={errors.password?.message} 
+              <FormError
+                message={errors.password?.message}
                 id="password-error"
                 className="text-red-600 text-sm mt-1"
               />
-<<<<<<< HEAD
-=======
-              {errors.password && (
-                <p id="password-error" className="text-red-600 text-sm mt-1">
-                  {errors.password}
-                </p>
-              )}
->>>>>>> f89608a47ee4e9a4cd5e6970d561bb9f0c6b72a6
             </div>
             {errors.root && (
               <div className="bg-red-50 border border-red-200 rounded-lg p-3">

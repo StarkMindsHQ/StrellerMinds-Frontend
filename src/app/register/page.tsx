@@ -1,21 +1,21 @@
 'use client';
 
-import React from "react"
-import { useState } from "react"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import Link from "next/link"
-import { Eye, EyeOff, Phone, Mail } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/inputt"
-import { FormField } from "@/components/form-field"
-import { PhoneInput } from "@/components/phone-input"
-import { Logo } from "@/components/logo"
-import { logger } from "@/lib/logger"
-import { registerSchema, type RegisterFormData } from "@/lib/validations"
+import React from 'react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
+import { Eye, EyeOff, Phone, Mail } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/inputt';
+import { FormField } from '@/components/form-field';
+import { PhoneInput } from '@/components/phone-input';
+import { Logo } from '@/components/logo';
+import { logger } from '@/lib/logger';
+import { registerSchema, type RegisterFormData } from '@/lib/validations';
 
 export default function Register() {
-  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -26,28 +26,27 @@ export default function Register() {
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
     mode: 'all',
-  })
+  });
 
   const onSubmit = async (data: RegisterFormData) => {
     try {
       // Automatically append +234 to phone number
       const formDataWithCountryCode = {
         ...data,
-        phone: `+234${data.phone}`
-      }
-      
+        phone: `+234${data.phone}`,
+      };
+
       // Submit form data
-      logger.log("Form submitted:", formDataWithCountryCode)
-      
+      logger.log('Form submitted:', formDataWithCountryCode);
+
       // Here you would typically make an API call
       // const response = await fetch('/api/auth/register', {
       //   method: 'POST',
       //   headers: { 'Content-Type': 'application/json' },
       //   body: JSON.stringify(formDataWithCountryCode),
       // })
-      
     } catch (error) {
-      console.error('Registration error:', error)
+      console.error('Registration error:', error);
     }
   };
 
@@ -91,17 +90,21 @@ export default function Register() {
             <PhoneInput
               value={watch('phone') || ''}
               onChange={(value) => {
-                setValue('phone', value, { shouldValidate: true })
+                setValue('phone', value, { shouldValidate: true });
               }}
               error={!!errors.phone}
             />
           </FormField>
 
-          <FormField label="Password" name="password" error={errors.password?.message}>
+          <FormField
+            label="Password"
+            name="password"
+            error={errors.password?.message}
+          >
             <div className="relative">
               <Input
                 id="password"
-                type={showPassword ? "text" : "password"}
+                type={showPassword ? 'text' : 'password'}
                 placeholder="Enter"
                 {...register('password')}
                 error={!!errors.password}
@@ -120,11 +123,15 @@ export default function Register() {
             </div>
           </FormField>
 
-          <FormField label="Confirm Password" name="confirmPassword" error={errors.confirmPassword?.message}>
+          <FormField
+            label="Confirm Password"
+            name="confirmPassword"
+            error={errors.confirmPassword?.message}
+          >
             <div className="relative">
               <Input
                 id="confirmPassword"
-                type={showPassword ? "text" : "password"}
+                type={showPassword ? 'text' : 'password'}
                 placeholder="Confirm password"
                 {...register('confirmPassword')}
                 error={!!errors.confirmPassword}
@@ -156,8 +163,8 @@ export default function Register() {
             </p>
           </div>
 
-          <Button 
-            type="submit" 
+          <Button
+            type="submit"
             className="w-full py-3 bg-red-600 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={isSubmitting}
           >
