@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Eye, EyeOff, Phone, Mail } from 'lucide-react';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/inputt';
+import { Input } from '@/components/ui/input';
 import { FormField } from '@/components/form-field';
 import { PhoneInput } from '@/components/phone-input';
 import { Logo } from '@/components/logo';

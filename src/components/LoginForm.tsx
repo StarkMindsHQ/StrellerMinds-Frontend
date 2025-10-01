@@ -22,7 +22,7 @@ const LoginForm = () => {
   const [submissionError, setSubmissionError] = useState('');
 
   const validateForm = () => {
-    let newErrors: { email?: string; password?: string } = {};
+    const newErrors: { email?: string; password?: string } = {};
 
     if (!formData.email.trim()) {
       newErrors.email = 'Email address is required.';

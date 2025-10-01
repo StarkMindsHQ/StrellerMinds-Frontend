@@ -22,7 +22,6 @@ import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import WalletConnect from './wallet-connect';
 
-
 interface CheckoutModalProps {
   children: React.ReactNode;
   courseName: string;
@@ -95,12 +94,10 @@ export default function CheckoutModal({
                 width={64}
                 height={64}
                 className="h-16 w-16 rounded-md object-cover"
-
                 placeholder="blur"
                 blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                 width={64}
                 height={64}
-
               />
               <div>
                 <h3 className="font-medium">{courseName}</h3>
@@ -236,11 +233,8 @@ export default function CheckoutModal({
             <p className="mb-6 text-center text-muted-foreground">
               Thank you for your purchase. You now have access to &quot;
               {courseName}
-              &quot;.
-
-              This was a demonstration. In a real application, you would now
-              have access to "{courseName}".
-
+              &quot;. This was a demonstration. In a real application, you would
+              now have access to "{courseName}".
             </p>
             <Button>
               <div className="flex items-center gap-2">

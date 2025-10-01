@@ -41,7 +41,7 @@ export default function DashboardError({ error, reset }: ErrorProps) {
             Dashboard Temporarily Unavailable
           </h1>
           <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-            We're experiencing issues loading your dashboard. Our team is
+            We&apos;re experiencing issues loading your dashboard. Our team is
             working to restore access as quickly as possible.
           </p>
         </div>

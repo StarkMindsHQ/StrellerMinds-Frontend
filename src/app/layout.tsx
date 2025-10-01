@@ -7,6 +7,7 @@ import { Toaster } from 'sonner';
 import { Providers } from '@/lib/providers';
 import EnvironmentValidator from '@/components/EnvironmentValidator';
 import { initializeServerEnvironment } from '@/lib/env-server';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 const inter = Inter({
   variable: '--font-inter',
@@ -155,17 +156,19 @@ export default function RootLayout({
         <EnvironmentValidator />
         <Providers>
           <StyledComponentsRegistry>
-            <a
-              href="#main-content"
-              className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-16 focus:bg-[#5c0f49] focus:text-white focus:p-4 focus:outline-none focus:z-100"
-            >
-              Skip to content
-            </a>
+            <ErrorBoundary>
+              <a
+                href="#main-content"
+                className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-16 focus:bg-[#5c0f49] focus:text-white focus:p-4 focus:outline-none focus:z-100"
+              >
+                Skip to content
+              </a>
 
-            <Navbar />
-            {children}
-            <Footer />
-            <Toaster position="top-right" />
+              <Navbar />
+              {children}
+              <Footer />
+              <Toaster position="top-right" />
+            </ErrorBoundary>
           </StyledComponentsRegistry>
         </Providers>
       </body>

@@ -18,6 +18,7 @@ import OutputPanel from '@/components/code-playground/output-panel';
 import SaveCodeForm from '@/components/code-playground/save-code-form';
 import DocumentationPanel from '@/components/code-playground/documentation-panel';
 import SavedSnippets from '@/components/code-playground/saved-snippets';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 export default function StellarPlayground() {
   const [code, setCode] = useState(codeTemplates['blank']);
@@ -76,68 +77,70 @@ export default function StellarPlayground() {
   }, []);
 
   return (
-    <div className="container mx-auto p-4 max-w-7xl">
-      <Toaster position="top-right" />
+    <ErrorBoundary>
+      <div className="container mx-auto p-4 max-w-7xl">
+        <Toaster position="top-right" />
 
-      <Card className="mb-6">
-        <CardHeader>
-          <CardTitle className="text-2xl">
-            Stellar Blockchain Playground
-          </CardTitle>
-          <CardDescription>
-            Write, run, and test Stellar blockchain code directly in your
-            browser
-          </CardDescription>
-        </CardHeader>
-      </Card>
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle className="text-2xl">
+              Stellar Blockchain Playground
+            </CardTitle>
+            <CardDescription>
+              Write, run, and test Stellar blockchain code directly in your
+              browser
+            </CardDescription>
+          </CardHeader>
+        </Card>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <Card className="mb-6">
-            <CardHeader className="pb-3">
-              <div className="flex justify-between items-center">
-                <CardTitle>Code Editor</CardTitle>
-                <TemplateSelector
-                  selectedTemplate={selectedTemplate}
-                  onTemplateChange={handleTemplateChange}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <Card className="mb-6">
+              <CardHeader className="pb-3">
+                <div className="flex justify-between items-center">
+                  <CardTitle>Code Editor</CardTitle>
+                  <TemplateSelector
+                    selectedTemplate={selectedTemplate}
+                    onTemplateChange={handleTemplateChange}
+                  />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <CodeEditor
+                  code={code}
+                  setCode={setCode}
+                  isExecuting={isExecuting}
+                  setIsExecuting={setIsExecuting}
+                  setOutput={setOutput}
                 />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <CodeEditor
-                code={code}
-                setCode={setCode}
-                isExecuting={isExecuting}
-                setIsExecuting={setIsExecuting}
-                setOutput={setOutput}
-              />
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
 
-          <OutputPanel output={output} />
-        </div>
+            <OutputPanel output={output} />
+          </div>
 
-        <div>
-          <Tabs defaultValue="saved">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="saved">Saved Snippets</TabsTrigger>
-              <TabsTrigger value="save">Save Code</TabsTrigger>
-            </TabsList>
-            <TabsContent value="saved">
-              <SavedSnippets
-                snippets={savedSnippets}
-                onLoad={loadSnippet}
-                onDelete={deleteSnippet}
-              />
-            </TabsContent>
-            <TabsContent value="save">
-              <SaveCodeForm code={code} onSave={saveSnippet} />
-            </TabsContent>
-          </Tabs>
+          <div>
+            <Tabs defaultValue="saved">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="saved">Saved Snippets</TabsTrigger>
+                <TabsTrigger value="save">Save Code</TabsTrigger>
+              </TabsList>
+              <TabsContent value="saved">
+                <SavedSnippets
+                  snippets={savedSnippets}
+                  onLoad={loadSnippet}
+                  onDelete={deleteSnippet}
+                />
+              </TabsContent>
+              <TabsContent value="save">
+                <SaveCodeForm code={code} onSave={saveSnippet} />
+              </TabsContent>
+            </Tabs>
 
-          <DocumentationPanel />
+            <DocumentationPanel />
+          </div>
         </div>
       </div>
-    </div>
+    </ErrorBoundary>
   );
 }
