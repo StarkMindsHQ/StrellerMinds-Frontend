@@ -27,7 +27,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/inputt';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Progress } from '@/components/ui/progress';
@@ -39,6 +38,7 @@ import {
   type SignupStep1FormData,
   type SignupStep2FormData,
 } from '@/lib/validations';
+import { Input } from '@/components/ui/input';
 
 export default function SignUpPage() {
   const [isLoading, setIsLoading] = useState(false);

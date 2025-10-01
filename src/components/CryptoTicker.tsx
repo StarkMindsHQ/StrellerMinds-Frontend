@@ -3,6 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { TrendingUp, TrendingDown, Loader2, AlertCircle } from 'lucide-react';
+import { env } from '@/lib/env';
 
 // TypeScript interfaces for API responses
 interface CoinPrice {
@@ -24,13 +25,15 @@ interface CoinConfig {
 
 const fetchCryptoPrices = async (): Promise<CryptoData> => {
   const { data } = await axios.get(
-    'https://api.coingecko.com/api/v3/simple/price',
+    `${env.NEXT_PUBLIC_COINGECKO_API_URL}/simple/price`,
     {
       params: {
         ids: 'bitcoin,ethereum,stellar',
         vs_currencies: 'usd',
         include_24hr_change: 'true',
       },
+      timeout: env.NEXT_PUBLIC_API_TIMEOUT,
+
     },
   );
   return data;

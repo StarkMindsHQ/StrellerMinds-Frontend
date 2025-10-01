@@ -285,62 +285,75 @@ export default function TestimonialsSection() {
 
                 <div className="md:w-1/2 relative min-h-[400px]">
                   <div className="absolute inset-0 bg-gradient-to-br from-purple-900/90 to-pink-600/90">
-                    {!shouldReduceMotion && (
+                    <motion.div
+                      className="absolute inset-0 mix-blend-overlay opacity-20"
+                      animate={{
+                        backgroundPosition: ['0% 0%', '100% 100%'],
+                      }}
+                      transition={{
+                        duration: 20,
+                        repeat: Infinity,
+                        repeatType: 'reverse',
+                      }}
+                    >
+                      <svg
+                        className="w-full h-full"
+                        viewBox="0 0 100 100"
+                        preserveAspectRatio="none"
+                      >
+                        <defs>
+                          <pattern
+                            id="grid"
+                            width="10"
+                            height="10"
+                            patternUnits="userSpaceOnUse"
+                          >
+                            <path
+                              d="M 10 0 L 0 0 0 10"
+                              fill="none"
+                              stroke="white"
+                              strokeWidth="0.5"
+                            />
+                          </pattern>
+                        </defs>
+                        <rect width="100" height="100" fill="url(#grid)" />
+                      </svg>
+                    </motion.div>
+
+                    {/* Animated particles */}
+                    {[...Array(10)].map((_, i) => (
                       <motion.div
-                        className="absolute inset-0 mix-blend-overlay opacity-20"
+                        key={i}
+                        className="absolute rounded-full bg-white/30"
+                        initial={{
+                          x: Math.random() * 100 + '%',
+                          y: Math.random() * 100 + '%',
+                          scale: Math.random() * 0.3 + 0.1,
+                        }}
                         animate={{
-                          backgroundPosition: ['0% 0%', '100% 100%'],
+                          x: [
+                            Math.random() * 100 + '%',
+                            Math.random() * 100 + '%',
+                            Math.random() * 100 + '%',
+                          ],
+                          y: [
+                            Math.random() * 100 + '%',
+                            Math.random() * 100 + '%',
+                            Math.random() * 100 + '%',
+                          ],
                         }}
                         transition={{
                           duration: 20,
                           repeat: Infinity,
-                          repeatType: 'reverse',
+                          ease: 'linear',
                         }}
-                      >
-                        <svg
-                          className="w-full h-full"
-                          viewBox="0 0 100 100"
-                          preserveAspectRatio="none"
-                        >
-                          <defs>
-                            <pattern
-                              id="grid"
-                              width="10"
-                              height="10"
-                              patternUnits="userSpaceOnUse"
-                            >
-                              <path
-                                d="M 10 0 L 0 0 0 10"
-                                fill="none"
-                                stroke="white"
-                                strokeWidth="0.5"
-                              />
-                            </pattern>
-                          </defs>
-                          <rect width="100" height="100" fill="url(#grid)" />
-                        </svg>
-                      </motion.div>
-                    )}
-
-                    {/* Optimized animated particles - reduced from 10 to 6 */}
-                    {Array.from(
-                      { length: ANIMATED_PARTICLES_COUNT },
-                      (_, i) => (
-                        <motion.div
-                          key={i}
-                          className="absolute rounded-full bg-white/30 will-change-transform"
-                          variants={particleVariants}
-                          animate="animate"
-                          style={{
-                            left: `${Math.random() * 80 + 10}%`,
-                            top: `${Math.random() * 80 + 10}%`,
-                            width: Math.random() * 10 + 5 + 'px',
-                            height: Math.random() * 10 + 5 + 'px',
-                            filter: 'blur(' + (Math.random() * 2 + 1) + 'px)',
-                          }}
-                        />
-                      ),
-                    )}
+                        style={{
+                          width: Math.random() * 10 + 5 + 'px',
+                          height: Math.random() * 10 + 5 + 'px',
+                          filter: 'blur(' + (Math.random() * 2 + 1) + 'px)',
+                        }}
+                      />
+                    ))}
                   </div>
 
                   <Dialog>
@@ -395,7 +408,7 @@ export default function TestimonialsSection() {
         </div>
       </section>
 
-      {/* Testimonials Section - Optimized background */}
+      {/* Testimonials Section - With dynamic background */}
       <section
         className="py-20 px-4 relative overflow-hidden"
         style={{
@@ -408,30 +421,47 @@ export default function TestimonialsSection() {
           {Array.from({ length: FLOATING_CIRCLES_COUNT }, (_, i) => (
             <motion.div
               key={i}
-              className="absolute rounded-full bg-white opacity-20 will-change-transform"
-              variants={floatingVariants}
-              animate="animate"
+              className="absolute rounded-full bg-white opacity-20"
+              initial={{
+                x: Math.random() * 100 + '%',
+                y: Math.random() * 100 + '%',
+                scale: Math.random() * 0.5 + 0.5,
+              }}
+              animate={{
+                x: [
+                  Math.random() * 100 + '%',
+                  Math.random() * 100 + '%',
+                  Math.random() * 100 + '%',
+                ],
+                y: [
+                  Math.random() * 100 + '%',
+                  Math.random() * 100 + '%',
+                  Math.random() * 100 + '%',
+                ],
+              }}
+              transition={{
+                duration: Math.random() * 20 + 20,
+                repeat: Infinity,
+                ease: 'linear',
+              }}
               style={{
-                left: `${Math.random() * 90 + 5}%`,
-                top: `${Math.random() * 90 + 5}%`,
-                width: Math.random() * 100 + 50 + 'px',
-                height: Math.random() * 100 + 50 + 'px',
-                filter: 'blur(' + (Math.random() * 20 + 10) + 'px)',
+                width: Math.random() * 150 + 50 + 'px',
+                height: Math.random() * 150 + 50 + 'px',
+                filter: 'blur(' + (Math.random() * 30 + 5) + 'px)',
               }}
             />
           ))}
 
-          {/* Optimized interactive gradient overlay */}
-          {!shouldReduceMotion && (
-            <div
-              className="absolute inset-0 transition-all duration-300 ease-out"
-              style={{
-                background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(236, 72, 153, 0.15) 0%, rgba(223, 177, 204, 0) 50%)`,
-              }}
-            />
-          )}
+          {/* Interactive gradient overlay that follows mouse */}
+          <motion.div
+            className="absolute inset-0 bg-gradient-radial from-pink-300/30 to-transparent"
+            animate={{
+              background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(236, 72, 153, 0.15) 0%, rgba(223, 177, 204, 0) 50%)`,
+            }}
+            transition={{ type: 'spring', damping: 15 }}
+          />
 
-          {/* Static pattern overlay */}
+          {/* Subtle pattern overlay */}
           <div className="absolute inset-0 bg-[url('/patterns/topography.svg')] opacity-5"></div>
         </div>
 

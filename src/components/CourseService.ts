@@ -1,5 +1,6 @@
 import type { EnhancedCourseData } from '@/lib/course-data';
 import { logger } from '@/lib/logger';
+import { env } from '@/lib/env';
 
 // This file will would be used to fetch course data from the API and handle abstraction for data fetching operations
 export async function fetchFeaturedCourses(
@@ -11,7 +12,12 @@ export async function fetchFeaturedCourses(
 
   for (let attempt = 1; attempt < retries; ++attempt) {
     try {
-      const response = await fetch(`/api/courses?tab=${tab}`);
+      const response = await fetch(
+        `${env.NEXT_PUBLIC_API_BASE_URL}/courses?tab=${tab}`,
+        {
+          signal: AbortSignal.timeout(env.NEXT_PUBLIC_API_TIMEOUT),
+        },
+      );
 
       if (!response.ok) {
         throw new Error('Failed to fetch courses');
