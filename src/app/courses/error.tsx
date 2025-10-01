@@ -3,13 +3,7 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import {
-  Home,
-  RefreshCw,
-  BookOpen,
-  AlertCircle,
-  Search,
-} from 'lucide-react';
+import { Home, RefreshCw, BookOpen, AlertCircle, Search } from 'lucide-react';
 
 interface ErrorProps {
   error: Error & { digest?: string };
@@ -41,8 +35,8 @@ export default function CoursesError({ error, reset }: ErrorProps) {
             Courses Temporarily Unavailable
           </h1>
           <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-            We&apos;re experiencing issues loading the courses catalog. Our team is
-            working to restore access as quickly as possible.
+            We&apos;re experiencing issues loading the courses catalog. Our team
+            is working to restore access as quickly as possible.
           </p>
         </div>
 

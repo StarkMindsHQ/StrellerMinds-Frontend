@@ -38,8 +38,8 @@ export default function Error({ error, reset }: ErrorProps) {
             Server Error
           </h2>
           <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed">
-            Oops! Something went wrong on our end. We&apos;re working to fix this
-            issue. Please try again in a few moments.
+            Oops! Something went wrong on our end. We&apos;re working to fix
+            this issue. Please try again in a few moments.
           </p>
         </div>
 
