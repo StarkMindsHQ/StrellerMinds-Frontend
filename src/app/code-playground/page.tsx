@@ -60,7 +60,7 @@ export default function StellarPlayground() {
   };
 
   const deleteSnippet = (name: string) => {
-    const { [name]: _, ...rest } = savedSnippets;
+    const { [name]: deleted, ...rest } = savedSnippets;
     setSavedSnippets(rest);
     localStorage.setItem('stellar-playground-snippets', JSON.stringify(rest));
   };

@@ -3,7 +3,7 @@ import { logger } from './logger';
 
 export interface RecoveryAction {
   type: 'retry' | 'redirect' | 'reset' | 'fallback' | 'notify';
-  payload?: any;
+  payload?: unknown;
   label: string;
   description?: string;
 }
@@ -35,7 +35,7 @@ export class ErrorRecoveryManager {
 
   private initializeDefaultStrategies() {
     // Network Error Recovery
-    this.recoveryStrategies.set('network', (error: Error) => [
+    this.recoveryStrategies.set('network', (_error: Error) => [
       {
         type: 'retry',
         label: 'Retry Connection',
@@ -57,7 +57,7 @@ export class ErrorRecoveryManager {
     ]);
 
     // Authentication Error Recovery
-    this.recoveryStrategies.set('auth', (error: Error) => [
+    this.recoveryStrategies.set('auth', (_error: Error) => [
       {
         type: 'redirect',
         payload: '/login',
@@ -73,7 +73,7 @@ export class ErrorRecoveryManager {
     ]);
 
     // API Error Recovery
-    this.recoveryStrategies.set('api', (error: Error) => [
+    this.recoveryStrategies.set('api', (_error: Error) => [
       {
         type: 'retry',
         label: 'Retry Request',
@@ -94,7 +94,7 @@ export class ErrorRecoveryManager {
     ]);
 
     // Component Error Recovery
-    this.recoveryStrategies.set('component', (error: Error) => [
+    this.recoveryStrategies.set('component', (_error: Error) => [
       {
         type: 'reset',
         payload: 'component',
@@ -110,7 +110,7 @@ export class ErrorRecoveryManager {
     ]);
 
     // Code Execution Error Recovery
-    this.recoveryStrategies.set('code-execution', (error: Error) => [
+    this.recoveryStrategies.set('code-execution', (_error: Error) => [
       {
         type: 'reset',
         payload: 'editor',
@@ -132,7 +132,7 @@ export class ErrorRecoveryManager {
     ]);
 
     // Storage Error Recovery
-    this.recoveryStrategies.set('storage', (error: Error) => [
+    this.recoveryStrategies.set('storage', (_error: Error) => [
       {
         type: 'retry',
         label: 'Retry Storage',
@@ -347,7 +347,7 @@ export class ErrorRecoveryManager {
 
   private async handleReset(
     target: string,
-    context?: string,
+    _context?: string,
   ): Promise<boolean> {
     try {
       switch (target) {
@@ -409,7 +409,7 @@ export class ErrorRecoveryManager {
       // This would integrate with your notification system
       if (typeof window !== 'undefined') {
         // You could use toast notifications, modals, etc.
-        console.log('Notification:', message);
+        // console.log('Notification:', message);
 
         // Example with a simple alert (replace with your notification system)
         if (process.env.NODE_ENV === 'development') {

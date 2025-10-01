@@ -7,7 +7,6 @@ import {
   Home,
   RefreshCw,
   BookOpen,
-  AlertTriangle,
   AlertCircle,
   Search,
 } from 'lucide-react';
@@ -42,7 +41,7 @@ export default function CoursesError({ error, reset }: ErrorProps) {
             Courses Temporarily Unavailable
           </h1>
           <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-            We're experiencing issues loading the courses catalog. Our team is
+            We&apos;re experiencing issues loading the courses catalog. Our team is
             working to restore access as quickly as possible.
           </p>
         </div>

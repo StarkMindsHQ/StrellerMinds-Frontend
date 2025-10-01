@@ -1,4 +1,4 @@
-// @ts-ignore - Sentry types may not be available in all environments
+// @ts-expect-error - Sentry types may not be available in all environments
 import * as Sentry from '@sentry/nextjs';
 import { logger } from './logger';
 
@@ -8,7 +8,7 @@ export interface ErrorContext {
   feature?: string;
   component?: string;
   action?: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 export interface ErrorSeverity {

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { Component, ErrorInfo, ReactNode } from 'react';
-// @ts-ignore - Sentry types may not be available in all environments
+// @ts-expect-error - Sentry types may not be available in all environments
 import * as Sentry from '@sentry/nextjs';
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -52,7 +52,7 @@ export class ErrorBoundary extends Component<
     this.setState({ errorInfo });
 
     // Report to Sentry
-    Sentry.withScope((scope: any) => {
+    Sentry.withScope((scope: unknown) => {
       scope.setTag('errorBoundary', true);
       scope.setContext('errorInfo', {
         componentStack: errorInfo.componentStack,
@@ -122,7 +122,7 @@ export class ErrorBoundary extends Component<
                 Something went wrong
               </h1>
               <p className="text-gray-600 dark:text-gray-400">
-                An unexpected error occurred. We've been notified and are
+                An unexpected error occurred. We&apos;ve been notified and are
                 working to fix this issue.
               </p>
             </div>

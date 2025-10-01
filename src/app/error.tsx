@@ -38,7 +38,7 @@ export default function Error({ error, reset }: ErrorProps) {
             Server Error
           </h2>
           <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed">
-            Oops! Something went wrong on our end. We're working to fix this
+            Oops! Something went wrong on our end. We&apos;re working to fix this
             issue. Please try again in a few moments.
           </p>
         </div>
@@ -77,7 +77,7 @@ export default function Error({ error, reset }: ErrorProps) {
             >
               contact our support team
             </Link>{' '}
-            and we'll help you resolve this issue.
+            and we&apos;ll help you resolve this issue.
           </p>
           <p className="text-xs text-gray-400 dark:text-gray-500">
             Error ID: {error.digest || 'Unknown'}
