@@ -8,7 +8,7 @@ export interface ElectiveData {
   creditHours: number;
   instructor: string;
   level: 'Beginner' | 'Intermediate' | 'Advanced';
-  
+
   // Additional properties for enhanced functionality
   duration: string; // e.g., "12 weeks", "1 semester"
   prerequisites?: string[];
@@ -17,7 +17,7 @@ export interface ElectiveData {
   reviewCount: number;
   imageUrl?: string;
   tags: string[];
-  
+
   // Metadata for filtering and sorting
   dateAdded: string;
   popularity: number;
@@ -29,7 +29,8 @@ export const allElectives: ElectiveData[] = [
   {
     id: 'blockchain-ethics',
     name: 'Blockchain Ethics and Governance',
-    description: 'Explore the ethical implications of blockchain technology and decentralized governance models.',
+    description:
+      'Explore the ethical implications of blockchain technology and decentralized governance models.',
     category: 'Ethics & Philosophy',
     creditHours: 3,
     instructor: 'Dr. Sarah Mitchell',
@@ -48,7 +49,8 @@ export const allElectives: ElectiveData[] = [
   {
     id: 'crypto-economics',
     name: 'Cryptocurrency Economics',
-    description: 'Deep dive into the economic principles behind cryptocurrencies and token economics.',
+    description:
+      'Deep dive into the economic principles behind cryptocurrencies and token economics.',
     category: 'Economics',
     creditHours: 4,
     instructor: 'Prof. Michael Chen',
@@ -59,7 +61,7 @@ export const allElectives: ElectiveData[] = [
     rating: 4.9,
     reviewCount: 67,
     imageUrl: '/images/electives/crypto-economics.jpg',
-    tags: ['Economics', 'Tokenomics', 'Finance', 'Advanced'],
+    tags: ['Economics', 'Token Economics', 'Finance', 'Advanced'],
     dateAdded: '2024-02-01',
     popularity: 92,
     isActive: true,
@@ -67,7 +69,8 @@ export const allElectives: ElectiveData[] = [
   {
     id: 'web3-ux-design',
     name: 'Web3 User Experience Design',
-    description: 'Learn to design intuitive user interfaces for decentralized applications.',
+    description:
+      'Learn to design intuitive user interfaces for decentralized applications.',
     category: 'Design',
     creditHours: 3,
     instructor: 'Emma Rodriguez',
@@ -84,9 +87,10 @@ export const allElectives: ElectiveData[] = [
     isActive: true,
   },
   {
-    id: 'defi-protocols',
+    id: 'decentralized-finance-protocols',
     name: 'Advanced DeFi Protocol Development',
-    description: 'Build complex DeFi protocols including AMMs, lending platforms, and yield farming.',
+    description:
+      'Build complex DeFi protocols including AMMs, lending platforms, and yield farming.',
     category: 'Development',
     creditHours: 5,
     instructor: 'Alex Thompson',
@@ -96,8 +100,8 @@ export const allElectives: ElectiveData[] = [
     studentsEnrolled: 156,
     rating: 4.8,
     reviewCount: 45,
-    imageUrl: '/images/electives/defi-protocols.jpg',
-    tags: ['DeFi', 'Development', 'Advanced', 'Protocols'],
+    imageUrl: '/images/electives/decentralized-finance-protocols.jpg',
+    tags: ['Decentralized Finance', 'Development', 'Advanced', 'Protocols'],
     dateAdded: '2024-02-10',
     popularity: 88,
     isActive: true,
@@ -105,7 +109,8 @@ export const allElectives: ElectiveData[] = [
   {
     id: 'nft-art-creation',
     name: 'NFT Art Creation and Marketplace',
-    description: 'Create, mint, and sell digital art as NFTs on various blockchain platforms.',
+    description:
+      'Create, mint, and sell digital art as NFTs on various blockchain platforms.',
     category: 'Art & Creativity',
     creditHours: 2,
     instructor: 'Luna Park',
@@ -124,7 +129,8 @@ export const allElectives: ElectiveData[] = [
   {
     id: 'blockchain-law',
     name: 'Blockchain and Legal Frameworks',
-    description: 'Understand the legal implications and regulatory landscape of blockchain technology.',
+    description:
+      'Understand the legal implications and regulatory landscape of blockchain technology.',
     category: 'Law & Regulation',
     creditHours: 3,
     instructor: 'Dr. James Wilson',
@@ -143,7 +149,8 @@ export const allElectives: ElectiveData[] = [
   {
     id: 'crypto-trading-advanced',
     name: 'Advanced Cryptocurrency Trading',
-    description: 'Master advanced trading strategies, technical analysis, and risk management.',
+    description:
+      'Master advanced trading strategies, technical analysis, and risk management.',
     category: 'Trading & Finance',
     creditHours: 4,
     instructor: 'Maria Santos',
@@ -162,7 +169,8 @@ export const allElectives: ElectiveData[] = [
   {
     id: 'dao-governance',
     name: 'DAO Creation and Governance',
-    description: 'Learn to create and manage Decentralized Autonomous Organizations.',
+    description:
+      'Learn to create and manage Decentralized Autonomous Organizations.',
     category: 'Governance',
     creditHours: 3,
     instructor: 'David Kim',
@@ -181,7 +189,8 @@ export const allElectives: ElectiveData[] = [
   {
     id: 'blockchain-sustainability',
     name: 'Sustainable Blockchain Technologies',
-    description: 'Explore eco-friendly blockchain solutions and sustainable development practices.',
+    description:
+      'Explore eco-friendly blockchain solutions and sustainable development practices.',
     category: 'Sustainability',
     creditHours: 2,
     instructor: 'Dr. Green Thompson',
@@ -198,9 +207,10 @@ export const allElectives: ElectiveData[] = [
     isActive: true,
   },
   {
-    id: 'metaverse-development',
-    name: 'Metaverse and Virtual Worlds',
-    description: 'Build immersive virtual experiences and metaverse applications.',
+    id: 'virtual-worlds-development',
+    name: 'Virtual Worlds and Immersive Experiences',
+    description:
+      'Build immersive virtual experiences and interactive digital environments.',
     category: 'Virtual Reality',
     creditHours: 4,
     instructor: 'Ryan Foster',
@@ -210,8 +220,8 @@ export const allElectives: ElectiveData[] = [
     studentsEnrolled: 178,
     rating: 4.8,
     reviewCount: 67,
-    imageUrl: '/images/electives/metaverse-development.jpg',
-    tags: ['Metaverse', 'VR', 'Virtual Worlds', 'Development'],
+    imageUrl: '/images/electives/virtual-worlds-development.jpg',
+    tags: ['Virtual Worlds', 'VR', 'Immersive Tech', 'Development'],
     dateAdded: '2024-02-20',
     popularity: 91,
     isActive: true,
@@ -219,7 +229,8 @@ export const allElectives: ElectiveData[] = [
   {
     id: 'blockchain-security-audit',
     name: 'Blockchain Security Auditing',
-    description: 'Learn to audit smart contracts and blockchain applications for security vulnerabilities.',
+    description:
+      'Learn to audit smart contracts and blockchain applications for security vulnerabilities.',
     category: 'Security',
     creditHours: 5,
     instructor: 'Dr. Security Expert',
@@ -238,7 +249,8 @@ export const allElectives: ElectiveData[] = [
   {
     id: 'crypto-journalism',
     name: 'Cryptocurrency Journalism',
-    description: 'Learn to report on blockchain and cryptocurrency news with accuracy and insight.',
+    description:
+      'Learn to report on blockchain and cryptocurrency news with accuracy and insight.',
     category: 'Media & Communication',
     creditHours: 2,
     instructor: 'Sarah News',
@@ -258,12 +270,16 @@ export const allElectives: ElectiveData[] = [
 
 // Helper function to get unique categories for filtering
 export const getUniqueCategories = (): string[] => {
-  const categories = allElectives.map(elective => elective.category);
+  const categories = allElectives.map((elective) => elective.category);
   return Array.from(new Set(categories)).sort();
 };
 
 // Helper function to get credit hour ranges for filtering
-export const getCreditHourRanges = (): { label: string; min: number; max: number }[] => {
+export const getCreditHourRanges = (): {
+  label: string;
+  min: number;
+  max: number;
+}[] => {
   return [
     { label: '1-2 Credits', min: 1, max: 2 },
     { label: '3 Credits', min: 3, max: 3 },
