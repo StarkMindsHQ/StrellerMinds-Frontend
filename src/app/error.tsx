@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -38,20 +38,25 @@ export default function Error({ error, reset }: ErrorProps) {
             Server Error
           </h2>
           <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed">
-            Oops! Something went wrong on our end. We're working to fix this issue. Please try again in a few moments.
+            Oops! Something went wrong on our end. We're working to fix this
+            issue. Please try again in a few moments.
           </p>
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <Button 
+          <Button
             onClick={reset}
             className="bg-[#5c0f49] hover:bg-[#4a0c3a] text-white"
           >
             <RefreshCw className="h-4 w-4 mr-2" />
             Try Again
           </Button>
-          
-          <Button asChild variant="outline" className="border-[#dfb1cc] text-[#5c0f49] hover:bg-[#dfb1cc]/10 dark:border-[#dfb1cc] dark:text-[#dfb1cc]">
+
+          <Button
+            asChild
+            variant="outline"
+            className="border-[#dfb1cc] text-[#5c0f49] hover:bg-[#dfb1cc]/10 dark:border-[#dfb1cc] dark:text-[#dfb1cc]"
+          >
             <Link href="/" className="flex items-center gap-2">
               <Home className="h-4 w-4" />
               Go Home
@@ -66,13 +71,13 @@ export default function Error({ error, reset }: ErrorProps) {
         <div className="space-y-2">
           <p className="text-sm text-gray-500 dark:text-gray-400">
             If this problem persists, please{' '}
-            <Link 
-              href="/contact" 
+            <Link
+              href="/contact"
               className="text-[#5c0f49] dark:text-[#dfb1cc] hover:underline font-medium"
             >
               contact our support team
-            </Link>
-            {' '}and we'll help you resolve this issue.
+            </Link>{' '}
+            and we'll help you resolve this issue.
           </p>
           <p className="text-xs text-gray-400 dark:text-gray-500">
             Error ID: {error.digest || 'Unknown'}

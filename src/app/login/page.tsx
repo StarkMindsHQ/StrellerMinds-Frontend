@@ -1,6 +1,7 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -8,11 +9,17 @@ import logo from '@/assets/logo.png';
 import loginImage from '@/assets/login-image.png';
 import loginBg from '@/assets/login-bg.png';
 import { logger } from '@/lib/logger';
+import { z } from 'zod';
+import { emailSchema } from '@/lib/validations';
+import { FormError } from '@/components/ui/form-error';
 
-type FormValues = {
-  email: string;
-  password: string;
-};
+// Simple login schema without rememberMe
+const simpleLoginSchema = z.object({
+  email: emailSchema,
+  password: z.string().min(1, { message: 'Password is required' }),
+});
+
+type SimpleLoginFormData = z.infer<typeof simpleLoginSchema>;
 
 export default function LoginPage() {
   const {
@@ -20,10 +27,13 @@ export default function LoginPage() {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<FormValues>();
+  } = useForm<SimpleLoginFormData>({
+    resolver: zodResolver(simpleLoginSchema),
+    mode: 'all',
+  });
   const [showPassword, setShowPassword] = useState(false);
 
-  const onSubmit = (data: FormValues) => {
+  const onSubmit = (data: SimpleLoginFormData) => {
     logger.log('Form Data:', data);
     reset();
   };
@@ -33,14 +43,14 @@ export default function LoginPage() {
       {/* Left Side */}
       <div className="relative w-full md:w-1/2 h-screen overflow-hidden z-10">
         {/* Background Layer */}
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `url(${loginBg.src})`,
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
-            backgroundPosition: 'right center',
-          }}
+        <Image
+          src={loginBg}
+          alt="Login background"
+          fill
+          className="object-cover object-right"
+          placeholder="blur"
+          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+          priority
         />
 
         {/* Content Layer */}
@@ -66,13 +76,7 @@ export default function LoginPage() {
             <div className="mb-4">
               <label className="block text-gray-700 mb-2">Email</label>
               <input
-                {...register('email', {
-                  required: 'Email is required',
-                  pattern: {
-                    value: /^\S+@\S+$/i,
-                    message: 'Invalid email address',
-                  },
-                })}
+                {...register('email')}
                 type="email"
                 placeholder="Enter"
                 className={`w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 ${
@@ -81,11 +85,7 @@ export default function LoginPage() {
                     : 'focus:ring-red-400'
                 }`}
               />
-              {errors.email && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.email.message}
-                </p>
-              )}
+              <FormError message={errors.email?.message} />
             </div>
 
             {/* Password */}
@@ -93,13 +93,7 @@ export default function LoginPage() {
               <label className="block text-gray-700 mb-2">Password</label>
               <div className="relative">
                 <input
-                  {...register('password', {
-                    required: 'Password is required',
-                    minLength: {
-                      value: 6,
-                      message: 'Password must be at least 6 characters',
-                    },
-                  })}
+                  {...register('password')}
                   type={showPassword ? 'text' : 'password'}
                   placeholder="Enter"
                   className={`w-full border rounded-lg px-4 py-2 pr-10 focus:outline-none focus:ring-2 ${
@@ -116,11 +110,7 @@ export default function LoginPage() {
                   {showPassword ? 'Hide' : 'Show'}
                 </button>
               </div>
-              {errors.password && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.password.message}
-                </p>
-              )}
+              <FormError message={errors.password?.message} />
             </div>
 
             {/* Forgot password */}
@@ -180,6 +170,9 @@ export default function LoginPage() {
           alt="Login-Image"
           fill
           className="object-cover"
+          placeholder="blur"
+          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+          priority
         />
       </div>
     </div>
