@@ -3,6 +3,8 @@
 import type React from 'react';
 
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
@@ -25,22 +27,39 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Progress } from '@/components/ui/progress';
+import { FormError } from '@/components/ui/form-error';
 import AnimatedGradientBackground from '@/components/Animated-graded-background';
+import {
+  signupStep1Schema,
+  signupStep2Schema,
+  type SignupStep1FormData,
+  type SignupStep2FormData,
+} from '@/lib/validations';
+import { Input } from '@/components/ui/input';
 
 export default function SignUpPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [step, setStep] = useState(1);
-  const [verificationCode, setVerificationCode] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+
+  // Step 1 form
+  const step1Form = useForm<SignupStep1FormData>({
+    resolver: zodResolver(signupStep1Schema),
+    mode: 'all',
+  });
+
+  // Step 2 form
+  const step2Form = useForm<SignupStep2FormData>({
+    resolver: zodResolver(signupStep2Schema),
+    mode: 'all',
+  });
+
+  const { watch: watchStep1 } = step1Form;
+  const password = watchStep1('password');
 
   // Password strength calculation
   const calculatePasswordStrength = (password: string): number => {
@@ -75,21 +94,26 @@ export default function SignUpPage() {
     return 'bg-green-500';
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onStep1Submit = async (data: SignupStep1FormData) => {
+    setIsLoading(true);
+    setUserEmail(data.email);
+
+    // Simulate API call
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+
+    setIsLoading(false);
+    setStep(2);
+  };
+
+  const onStep2Submit = async (data: SignupStep2FormData) => {
     setIsLoading(true);
 
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
     setIsLoading(false);
-
-    if (step === 1) {
-      setStep(2);
-    } else {
-      // In a real app, you would handle verification and registration here
-      window.location.href = '/dashboard';
-    }
+    // In a real app, you would handle verification and registration here
+    window.location.href = '/dashboard';
   };
 
   const containerVariants = {
@@ -205,17 +229,23 @@ export default function SignUpPage() {
                   exit="exit"
                 >
                   {step === 1 ? (
-                    <form onSubmit={handleSubmit} className="space-y-4">
+                    <form
+                      onSubmit={step1Form.handleSubmit(onStep1Submit)}
+                      className="space-y-4"
+                    >
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <Label htmlFor="firstName">First name</Label>
                           <Input
                             id="firstName"
                             placeholder="John"
-                            required
-                            value={firstName}
-                            onChange={(e) => setFirstName(e.target.value)}
+                            {...step1Form.register('firstName')}
                             className="transition-all duration-200 focus:ring-2 focus:ring-primary"
+                          />
+                          <FormError
+                            message={
+                              step1Form.formState.errors.firstName?.message
+                            }
                           />
                         </div>
                         <div className="space-y-2">
@@ -223,10 +253,13 @@ export default function SignUpPage() {
                           <Input
                             id="lastName"
                             placeholder="Doe"
-                            required
-                            value={lastName}
-                            onChange={(e) => setLastName(e.target.value)}
+                            {...step1Form.register('lastName')}
                             className="transition-all duration-200 focus:ring-2 focus:ring-primary"
+                          />
+                          <FormError
+                            message={
+                              step1Form.formState.errors.lastName?.message
+                            }
                           />
                         </div>
                       </div>
@@ -237,10 +270,11 @@ export default function SignUpPage() {
                           id="email"
                           type="email"
                           placeholder="you@example.com"
-                          required
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
+                          {...step1Form.register('email')}
                           className="transition-all duration-200 focus:ring-2 focus:ring-primary"
+                        />
+                        <FormError
+                          message={step1Form.formState.errors.email?.message}
                         />
                       </div>
 
@@ -251,9 +285,7 @@ export default function SignUpPage() {
                             id="password"
                             type={showPassword ? 'text' : 'password'}
                             placeholder="••••••••"
-                            required
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            {...step1Form.register('password')}
                             className="pr-10 transition-all duration-200 focus:ring-2 focus:ring-primary"
                           />
                           <Button
@@ -273,6 +305,9 @@ export default function SignUpPage() {
                             </span>
                           </Button>
                         </div>
+                        <FormError
+                          message={step1Form.formState.errors.password?.message}
+                        />
 
                         {password && (
                           <div className="mt-2 space-y-2">
@@ -338,10 +373,7 @@ export default function SignUpPage() {
                       <div className="flex items-start space-x-2 pt-2">
                         <Checkbox
                           id="terms"
-                          checked={agreedToTerms}
-                          onCheckedChange={(checked) =>
-                            setAgreedToTerms(checked as boolean)
-                          }
+                          {...step1Form.register('agreedToTerms')}
                           className="mt-1"
                         />
                         <Label
@@ -366,11 +398,16 @@ export default function SignUpPage() {
                           </Link>
                         </Label>
                       </div>
+                      <FormError
+                        message={
+                          step1Form.formState.errors.agreedToTerms?.message
+                        }
+                      />
 
                       <Button
                         type="submit"
                         className="w-full group relative overflow-hidden"
-                        disabled={isLoading || !agreedToTerms}
+                        disabled={isLoading || step1Form.formState.isSubmitting}
                       >
                         <span className="flex items-center justify-center gap-2 relative z-10">
                           {isLoading ? (
@@ -426,7 +463,10 @@ export default function SignUpPage() {
                       </div>
                     </form>
                   ) : (
-                    <form onSubmit={handleSubmit} className="space-y-4">
+                    <form
+                      onSubmit={step2Form.handleSubmit(onStep2Submit)}
+                      className="space-y-4"
+                    >
                       <div className="space-y-2">
                         <div className="text-center mb-4">
                           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
@@ -446,7 +486,7 @@ export default function SignUpPage() {
                           <p className="text-sm text-muted-foreground">
                             We've sent a verification code to{' '}
                             <span className="font-medium text-foreground">
-                              {email}
+                              {userEmail}
                             </span>
                           </p>
                         </div>
@@ -455,11 +495,14 @@ export default function SignUpPage() {
                         <Input
                           id="code"
                           placeholder="Enter 6-digit code"
-                          required
-                          value={verificationCode}
-                          onChange={(e) => setVerificationCode(e.target.value)}
+                          {...step2Form.register('verificationCode')}
                           className="text-center text-lg tracking-widest transition-all duration-200 focus:ring-2 focus:ring-primary"
                           maxLength={6}
+                        />
+                        <FormError
+                          message={
+                            step2Form.formState.errors.verificationCode?.message
+                          }
                         />
                         <p className="text-xs text-muted-foreground text-center mt-2">
                           Didn't receive a code?{' '}
@@ -475,7 +518,7 @@ export default function SignUpPage() {
                       <Button
                         type="submit"
                         className="w-full group relative overflow-hidden"
-                        disabled={isLoading || verificationCode.length !== 6}
+                        disabled={isLoading || step2Form.formState.isSubmitting}
                       >
                         <span className="flex items-center justify-center gap-2 relative z-10">
                           {isLoading ? (

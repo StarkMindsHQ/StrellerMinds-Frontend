@@ -3,7 +3,14 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Home, RefreshCw, BookOpen, AlertTriangle, AlertCircle, Search } from 'lucide-react';
+import {
+  Home,
+  RefreshCw,
+  BookOpen,
+  AlertTriangle,
+  AlertCircle,
+  Search,
+} from 'lucide-react';
 
 interface ErrorProps {
   error: Error & { digest?: string };

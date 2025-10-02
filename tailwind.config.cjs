@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: "class", // Enables dark mode with the "dark" class
-  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
+  darkMode: 'class', // Enables dark mode with the "dark" class
+  content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
     extend: {
       colors: {
@@ -43,7 +43,7 @@ module.exports = {
         DEFAULT: 'hsl(var(--foreground))',
       },
       animation: {
-        'skeleton': 'skeleton 2s ease-in-out infinite alternate',
+        skeleton: 'skeleton 2s ease-in-out infinite alternate',
         'pulse-skeleton': 'pulse-skeleton 1.5s ease-in-out infinite',
       },
       keyframes: {
