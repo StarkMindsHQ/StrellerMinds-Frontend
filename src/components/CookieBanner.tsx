@@ -1,6 +1,6 @@
 'use client';
-
-import { useAnalyticsConsent } from '@/hooks/useAnalyticsConsent';
+import React from 'react';
+import { useAnalyticsConsent } from '../hooks/useAnalyticsConsent';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Cookie, Shield } from 'lucide-react';
 

@@ -1,8 +1,8 @@
 'use client';
-
+import React from 'react';
 import { Analytics as VercelAnalytics } from '@vercel/analytics/react';
 import { useEffect, useState } from 'react';
-import { shouldLoadAnalytics } from '@/utils/analytics';
+import { shouldLoadAnalytics } from '../utils/analytics';
 
 export default function Analytics() {
   const [loadAnalytics, setLoadAnalytics] = useState(false);

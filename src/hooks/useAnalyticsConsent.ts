@@ -6,7 +6,7 @@ import {
   setAnalyticsConsent,
   isDNTEnabled,
   type AnalyticsConsent,
-} from '@/utils/analytics';
+} from '../utils/analytics';
 
 export function useAnalyticsConsent() {
   const [consent, setConsent] = useState<AnalyticsConsent>(null);

@@ -1,15 +1,19 @@
+import React from 'react';
 import type { Metadata } from 'next';
 import { Inter, Source_Code_Pro } from 'next/font/google';
 import './globals.css';
-import Footer from '@/components/Footer';
-import Navbar from '@/components/Navbar';
-import CookieBanner from '@/components/CookieBanner';
-import Analytics from '@/components/Analytics';
+import Footer from '../components/Footer';
+import Navbar from '../components/Navbar';
+import CookieBanner from '../components/CookieBanner';
+import Analytics from '../components/Analytics';
 import { Toaster } from 'sonner';
-import { Providers } from '@/lib/providers';
-import EnvironmentValidator from '@/components/EnvironmentValidator';
-import { initializeServerEnvironment } from '@/lib/env-server';
-import StyledComponentsRegistry from '@/lib/registry';
+import { Providers } from '../lib/providers';
+import EnvironmentValidator from '../components/EnvironmentValidator';
+import { initializeServerEnvironment } from '../lib/env-server';
+import StyledComponentsRegistry from '../lib/registry';
+
+// Initialize server environment validation
+initializeServerEnvironment();
 
 const inter = Inter({
   variable: '--font-inter',
@@ -118,7 +122,27 @@ export const metadata: Metadata = {
   },
 
   verification: {
-    google: 'your-google-verification-code',
+    google: 'your-google-verification-code', // TODO: Replace with actual code from Google Search Console
+  },
+
+  // Additional metadata for better SEO
+  category: 'education',
+  classification: 'Education',
+
+  // App-specific metadata
+  applicationName: 'StrellerMinds',
+  referrer: 'origin-when-cross-origin',
+
+  // Apple-specific
+  appleWebApp: {
+    capable: true,
+    title: 'StrellerMinds',
+    statusBarStyle: 'black-translucent',
+  },
+
+  // Other metadata
+  other: {
+    'msapplication-TileColor': '#0a0a0a',
   },
 };
 
@@ -132,8 +156,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${sourceCodePro.variable}`}>
+      <body>
+        {/* Keep both: EnvironmentValidator component + initialized server env */}
         <EnvironmentValidator />
+
         <Providers>
           <StyledComponentsRegistry>
             {/* Accessibility Skip Link */}
@@ -145,7 +171,7 @@ export default function RootLayout({
             </a>
 
             <Navbar />
-            <main id="main-content">{children}</main>
+            {children}
             <Footer />
             <Toaster position="top-right" />
 
