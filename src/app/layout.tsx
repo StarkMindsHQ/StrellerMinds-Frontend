@@ -7,6 +7,9 @@ import CookieBanner from '@/components/CookieBanner';
 import Analytics from '@/components/Analytics';
 import { Toaster } from 'sonner';
 import { Providers } from '@/lib/providers';
+import EnvironmentValidator from '@/components/EnvironmentValidator';
+import { initializeServerEnvironment } from '@/lib/env-server';
+
 import StyledComponentsRegistry from '@/lib/registry';
 
 const inter = Inter({
@@ -76,6 +79,9 @@ export const metadata: Metadata = {
   },
 };
 
+// Initialize server environment validation
+initializeServerEnvironment();
+
 export default function RootLayout({
   children,
 }: {
@@ -84,8 +90,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} ${sourceCodePro.variable}`}>
+        <EnvironmentValidator />
         <Providers>
           <StyledComponentsRegistry>
+
             {/* Accessibility Skip Link */}
             <a
               href="#main-content"
