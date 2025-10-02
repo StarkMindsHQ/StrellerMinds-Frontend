@@ -6,6 +6,8 @@
  */
 export type AnalyticsConsent = true | false | null;
 
+const CONSENT_KEY = 'analytics-consent';
+
 /**
  * Checks if the user has enabled Do Not Track (DNT) in their browser
  * @returns {boolean} true if DNT is enabled, false otherwise
@@ -29,9 +31,15 @@ export function isDNTEnabled(): boolean {
 export function getAnalyticsConsent(): AnalyticsConsent {
   if (typeof window === 'undefined') return null;
 
-  const consent = localStorage.getItem('analytics-consent');
+  const consent = localStorage.getItem(CONSENT_KEY);
+  
+  // Explicitly handle all three cases for strict typing
   if (consent === null) return null;
-  return consent === 'true';
+  if (consent === 'true') return true;
+  if (consent === 'false') return false;
+  
+  // Fallback for any unexpected values (corrupted data)
+  return null;
 }
 
 /**
@@ -40,7 +48,15 @@ export function getAnalyticsConsent(): AnalyticsConsent {
  */
 export function setAnalyticsConsent(consent: boolean): void {
   if (typeof window === 'undefined') return;
-  localStorage.setItem('analytics-consent', consent.toString());
+  localStorage.setItem(CONSENT_KEY, consent.toString());
+}
+
+/**
+ * Clears the analytics consent preference (useful for testing)
+ */
+export function clearAnalyticsConsent(): void {
+  if (typeof window === 'undefined') return;
+  localStorage.removeItem(CONSENT_KEY);
 }
 
 /**
