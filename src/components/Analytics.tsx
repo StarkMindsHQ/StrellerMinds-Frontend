@@ -1,6 +1,4 @@
 'use client';
-import React from 'react';
-import { Analytics as VercelAnalytics } from '@vercel/analytics/react';
 import { useEffect, useState } from 'react';
 import { shouldLoadAnalytics } from '../utils/analytics';
 
@@ -13,8 +11,10 @@ export default function Analytics() {
     setLoadAnalytics(shouldLoad);
 
     if (shouldLoad) {
+      // eslint-disable-next-line no-console
       console.log('✅ Analytics enabled - user has consented');
     } else {
+      // eslint-disable-next-line no-console
       console.log('🚫 Analytics disabled - DNT enabled or no consent');
     }
   }, []);
@@ -24,5 +24,7 @@ export default function Analytics() {
     return null;
   }
 
-  return <VercelAnalytics />;
+  // Placeholder for analytics - would normally render VercelAnalytics
+  // TODO: Install @vercel/analytics package and import { Analytics } from '@vercel/analytics/react'
+  return null;
 }

@@ -151,6 +151,11 @@ const Navbar = () => {
       icon: <BookOpen className="h-4 w-4 text-[#ffcc00]" />,
     },
     {
+      name: 'Electives',
+      href: '/electives',
+      icon: <BookOpen className="h-4 w-4 text-[#ffcc00]" />,
+    },
+    {
       name: 'Community',
       href: '/community',
       icon: <Users className="h-4 w-4 text-[#ffcc00]" />,
@@ -173,7 +178,7 @@ const Navbar = () => {
       role="navigation"
       aria-label="Main navigation"
     >
-      <div className="container mx-auto px-4">
+      <div className="mx-auto px-4">
         <div className="flex justify-between items-center">
           {/* Logo and Crypto Ticker */}
           <div className="flex-shrink-0 flex items-center gap-6">
@@ -213,14 +218,17 @@ const Navbar = () => {
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center justify-center flex-1">
-            <ul className="flex space-x-8" role="menubar">
+            <ul
+              className="flex space-x-4 lg:space-x-6 xl:space-x-6"
+              role="menubar"
+            >
               {navLinks.map((link) => (
                 <li key={link.name} role="none">
                   <Link
                     href={link.href}
                     role="menuitem"
                     aria-current={pathname === link.href ? 'page' : undefined}
-                    className={`group flex items-center gap-2 relative px-3 py-2 rounded-md overflow-hidden hover:text-[#dfb1cc] transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#5c0f49] ${
+                    className={`group flex items-center gap-2 relative px-2 md:px-3 py-2 rounded-md overflow-hidden hover:text-[#dfb1cc] transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#5c0f49] ${
                       pathname === link.href ? 'font-semibold bg-white/10' : ''
                     }`}
                   >
