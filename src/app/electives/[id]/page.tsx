@@ -243,5 +243,3 @@ const CourseDetail = () => {
 };
 
 export default CourseDetail;
-
-export default CourseDetail;
