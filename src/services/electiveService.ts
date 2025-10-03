@@ -117,6 +117,11 @@ export interface FetchCoursesOptions {
   simulateError?: boolean;
 }
 
+export interface FetchCourseByIdOptions {
+  simulateDelay?: number;
+  simulateError?: boolean;
+}
+
 export const courseService = {
   async fetchCourses(
     options: FetchCoursesOptions = {},
@@ -133,5 +138,23 @@ export const courseService = {
       courses: MOCK_COURSES,
       total: MOCK_COURSES.length,
     };
+  },
+
+  async fetchCourseById(
+    id: string,
+    options: FetchCourseByIdOptions = {},
+  ): Promise<Course | null> {
+    const { simulateDelay = 800, simulateError = false } = options;
+
+    await new Promise((resolve) => setTimeout(resolve, simulateDelay));
+
+    if (simulateError) {
+      throw new Error(
+        'Failed to fetch course details. Please try again later.',
+      );
+    }
+
+    const course = MOCK_COURSES.find((c) => c.id === id);
+    return course || null;
   },
 };
