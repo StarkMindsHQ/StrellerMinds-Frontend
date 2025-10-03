@@ -1,12 +1,19 @@
+import React from 'react';
 import type { Metadata } from 'next';
 import { Inter, Source_Code_Pro } from 'next/font/google';
 import './globals.css';
-import Footer from '@/components/Footer';
-import Navbar from '@/components/Navbar';
+import Footer from '../components/Footer';
+import Navbar from '../components/Navbar';
+import CookieBanner from '../components/CookieBanner';
+import Analytics from '../components/Analytics';
 import { Toaster } from 'sonner';
-import { Providers } from '@/lib/providers';
-import EnvironmentValidator from '@/components/EnvironmentValidator';
-import { initializeServerEnvironment } from '@/lib/env-server';
+import { Providers } from '../lib/providers';
+import EnvironmentValidator from '../components/EnvironmentValidator';
+import { initializeServerEnvironment } from '../lib/env-server';
+import StyledComponentsRegistry from '../lib/registry';
+
+// Initialize server environment validation
+initializeServerEnvironment();
 
 const inter = Inter({
   variable: '--font-inter',
@@ -139,8 +146,6 @@ export const metadata: Metadata = {
   },
 };
 
-import StyledComponentsRegistry from '@/lib/registry';
-
 // Initialize server environment validation
 initializeServerEnvironment();
 
@@ -152,9 +157,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
+        {/* Keep both: EnvironmentValidator component + initialized server env */}
         <EnvironmentValidator />
+
         <Providers>
           <StyledComponentsRegistry>
+            {/* Accessibility Skip Link */}
             <a
               href="#main-content"
               className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-16 focus:bg-[#5c0f49] focus:text-white focus:p-4 focus:outline-none focus:z-100"
@@ -166,6 +174,12 @@ export default function RootLayout({
             {children}
             <Footer />
             <Toaster position="top-right" />
+
+            {/* Privacy-compliant Analytics */}
+            <Analytics />
+
+            {/* Cookie Consent Banner */}
+            <CookieBanner />
           </StyledComponentsRegistry>
         </Providers>
       </body>
