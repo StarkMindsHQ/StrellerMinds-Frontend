@@ -122,6 +122,11 @@ export interface FetchCourseByIdOptions {
   simulateError?: boolean;
 }
 
+export const MOCK_STUDENT = {
+  id: 'mock-student-id',
+  enrolledCourses: new Set<string>(),
+};
+
 export const courseService = {
   async fetchCourses(
     options: FetchCoursesOptions = {},
@@ -157,4 +162,34 @@ export const courseService = {
     const course = MOCK_COURSES.find((c) => c.id === id);
     return course || null;
   },
+
+  async enrollInCourse(
+    courseId: string,
+    options: { simulateDelay?: number; simulateError?: boolean } = {},
+  ): Promise<{ success: boolean; message: string }> {
+    const { simulateDelay = 1200, simulateError = false } = options;
+
+    await new Promise((resolve) => setTimeout(resolve, simulateDelay));
+
+    if (simulateError) {
+      throw new Error('Enrollment failed. Please try again.');
+    }
+
+    const course = MOCK_COURSES.find((c) => c.id === courseId);
+    if (!course) {
+      return { success: false, message: 'Course not found.' };
+    }
+
+    if (!course.isActive) {
+      return { success: false, message: 'Course is currently unavailable.' };
+    }
+
+    if (MOCK_STUDENT.enrolledCourses.has(courseId)) {
+      return { success: false, message: 'You are already enrolled.' };
+    }
+
+    MOCK_STUDENT.enrolledCourses.add(courseId);
+    return { success: true, message: 'Successfully enrolled!' };
+  },
 };
+

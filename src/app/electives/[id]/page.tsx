@@ -12,18 +12,23 @@ import {
   RefreshCw,
 } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
-import { Course, courseService } from '@/services/electiveService';
+import { Course, courseService, MOCK_STUDENT } from '@/services/electiveService';
+
+import { useToast } from '@/contexts/use-toast';
 
 const CourseDetail = () => {
   const params = useParams();
   const id = Array.isArray(params?.id) ? params.id[0] : params?.id;
 
   const router = useRouter();
+  const { toast } = useToast();
 
   const [course, setCourse] = useState<Course | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [notFound, setNotFound] = useState(false);
+  const [isEnrolled, setIsEnrolled] = useState(false);
+  const [isEnrolling, setIsEnrolling] = useState(false);
 
   const loadCourse = async (simulateError = false) => {
     if (!id) {
@@ -44,6 +49,8 @@ const CourseDetail = () => {
 
       if (data) {
         setCourse(data);
+        // Mock checking enrollment status
+        setIsEnrolled(MOCK_STUDENT.enrolledCourses.has(id));
       } else {
         setNotFound(true);
       }
@@ -59,6 +66,38 @@ const CourseDetail = () => {
   useEffect(() => {
     loadCourse();
   }, [id]);
+
+  const handleEnroll = async () => {
+    if (!id) return;
+
+    setIsEnrolling(true);
+    try {
+      const result = await courseService.enrollInCourse(id);
+      if (result.success) {
+        setIsEnrolled(true);
+        toast({
+          title: 'Enrollment Successful',
+          description: result.message,
+          variant: 'success',
+        });
+      } else {
+        toast({
+          title: 'Enrollment Failed',
+          description: result.message,
+          variant: 'destructive',
+        });
+      }
+    } catch (err) {
+      toast({
+        title: 'Enrollment Error',
+        description:
+          err instanceof Error ? err.message : 'An unexpected error occurred',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsEnrolling(false);
+    }
+  };
 
   // ------------------- Loading State -------------------
   if (loading) {
@@ -178,10 +217,19 @@ const CourseDetail = () => {
           <div className="pt-6 border-t border-[#ffcc09]">
             <div className="flex flex-col sm:flex-row gap-4">
               <button
-                className="flex-1 px-6 py-3 bg-[#ffcc09] text-[#5c0149] font-semibold rounded-lg hover:opacity-90 transition disabled:opacity-50"
-                disabled={!course.isActive}
+                onClick={handleEnroll}
+                className="flex-1 px-6 py-3 bg-[#ffcc09] text-[#5c0149] font-semibold rounded-lg hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={!course.isActive || isEnrolled || isEnrolling}
               >
-                {course.isActive ? 'Enroll Now' : 'Currently Unavailable'}
+                {isEnrolling ? (
+                  <Loader2 className="w-5 h-5 mx-auto animate-spin" />
+                ) : isEnrolled ? (
+                  'Already Enrolled'
+                ) : course.isActive ? (
+                  'Enroll Now'
+                ) : (
+                  'Currently Unavailable'
+                )}
               </button>
               <button className="flex-1 px-6 py-3 border border-[#ffcc09] text-[#ffcc09] font-semibold rounded-lg hover:bg-[#ffcc09] hover:text-[#5c0149] transition">
                 Add to Wishlist
@@ -193,5 +241,7 @@ const CourseDetail = () => {
     </div>
   );
 };
+
+export default CourseDetail;
 
 export default CourseDetail;
