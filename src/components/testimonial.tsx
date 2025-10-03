@@ -27,7 +27,7 @@ import styled from 'styled-components';
 const WatchDemoButton = () => {
   return (
     <WatchButtonWrapper>
-      <button className="btn">
+      <button className="btn" aria-label="Watch demo video">
         Watch Demo
       </button>
     </WatchButtonWrapper>
@@ -90,6 +90,7 @@ export default function TestimonialsSection() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
 
   const testimonials: Testimonial[] = [
     {
@@ -149,6 +150,34 @@ export default function TestimonialsSection() {
   const handleVideoPause = () => {
     setIsVideoPlaying(false);
   };
+
+  // Handle keyboard navigation for carousel
+  const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      setActiveSlide(index);
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      setActiveSlide((prev) => (prev + 1) % testimonials.length);
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      setActiveSlide((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      setActiveSlide(0);
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      setActiveSlide(testimonials.length - 1);
+    }
+  };
+
+  // Focus management for carousel items
+  useEffect(() => {
+    const activeItem = carouselRef.current?.querySelector('[role="tabpanel"]:not([hidden])');
+    if (activeItem) {
+      (activeItem as HTMLElement).focus();
+    }
+  }, [activeSlide]);
 
   return (
     <>
@@ -276,15 +305,19 @@ export default function TestimonialsSection() {
                   
                   <Dialog>
                     <DialogTrigger asChild>
-                      <div className="absolute inset-0 flex flex-col items-center justify-center cursor-pointer group">
-                        <div className="relative w-20 h-20 rounded-full bg-gradient-to-br from-purple-700 to-pink-600 flex items-center justify-center transition-transform group-hover:scale-110 shadow-lg">
+                      <button 
+                        className="absolute inset-0 flex flex-col items-center justify-center group focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 rounded-lg"
+                        aria-label="Play demo video"
+                      >
+                        <div className="relative w-20 h-20 rounded-full bg-gradient-to-br from-purple-700 to-pink-600 flex items-center justify-center transition-transform group-hover:scale-110 group-focus:scale-110 shadow-lg">
                           <div className="absolute inset-0 rounded-full animate-ping bg-white/20 opacity-75"></div>
                           <Play className="h-8 w-8 text-white fill-white" />
+                          <span className="sr-only">Play demo video</span>
                         </div>
                         <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 mt-6">
                           <WatchDemoButton />
                         </div>
-                      </div>
+                      </button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-2xl p-0 bg-black border-none overflow-hidden rounded-xl">
                       <div className="relative aspect-video w-full">
@@ -378,8 +411,13 @@ export default function TestimonialsSection() {
         </div>
 
         <div className="max-w-7xl mx-auto relative z-10">
+          {/* Skip link for keyboard users */}
+          <a href="#testimonial-carousel" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-1/2 focus:-translate-x-1/2 focus:bg-white focus:px-4 focus:py-2 focus:rounded focus:shadow-lg focus:z-50">
+            Skip to Testimonials
+          </a>
+          
           {/* Testimonials Section */}
-          <div className="text-center mb-12">
+          <div id="testimonial-carousel" className="text-center mb-12" tabIndex={-1}>
             <Badge variant="outline" className="mb-4 px-4 py-1 bg-white/30 backdrop-blur-sm text-purple-900 border-purple-200">
               TESTIMONIALS
             </Badge>
@@ -392,96 +430,118 @@ export default function TestimonialsSection() {
             </p>
           </div>
 
-          <Carousel className="w-full max-w-4xl mx-auto">
-            <CarouselContent>
-              {testimonials.map((testimonial, index) => (
-                <CarouselItem
-                  key={testimonial.id}
-                  className={index === activeSlide ? 'block' : 'hidden'}
-                >
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <Card className="bg-white/95 backdrop-blur-sm border-none rounded-2xl shadow-xl overflow-hidden">
-                      <CardContent className="p-8 md:p-10">
-                        <div className="flex flex-col md:flex-row gap-6 items-start">
-                          <div className="flex-shrink-0">
-                            <div className="relative">
-                              <div className="absolute -inset-1 bg-gradient-to-br from-purple-600 to-pink-500 rounded-full blur opacity-30"></div>
-                              <Avatar className="h-16 w-16 md:h-20 md:w-20 border-2 border-white relative">
-                                <AvatarImage
-                                  src={testimonial.avatarUrl}
-                                  alt={testimonial.name}
-                                />
-                                <AvatarFallback className="bg-gradient-to-br from-purple-600 to-pink-500 text-white text-xl">
-                                  {testimonial.name.charAt(0)}
-                                </AvatarFallback>
-                              </Avatar>
-                            </div>
-                            <div className="hidden md:flex flex-col items-center mt-4 space-y-1">
-                              {[...Array(5)].map((_, i) => (
-                                <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-                              ))}
-                            </div>
-                          </div>
-                          
-                          <div className="flex-1">
-                            <div className="flex md:hidden mb-4 space-x-1">
-                              {[...Array(5)].map((_, i) => (
-                                <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                              ))}
-                            </div>
-                            
-                            <p className="text-xl md:text-2xl italic text-gray-800 mb-6 leading-relaxed">
-                              &quot;{testimonial.quote}&quot;
-                            </p>
-                            
-                            <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-                              <div>
-                                <h4 className="font-bold text-xl text-gray-900">
-                                  {testimonial.name}
-                                </h4>
-                                <p className="text-gray-600">
-                                  {testimonial.title}, {testimonial.company}
-                                </p>
+          <div className="relative" ref={carouselRef}>
+            <div 
+              role="region" 
+              aria-label="Testimonials carousel"
+              className="w-full max-w-4xl mx-auto"
+            >
+              <div 
+                role="tablist" 
+                aria-label="Testimonial navigation"
+                className="flex justify-center gap-2 mb-8"
+              >
+                {testimonials.map((_, index) => (
+                  <button
+                    key={`indicator-${index}`}
+                    type="button"
+                    role="tab"
+                    aria-label={`Testimonial ${index + 1}`}
+                    aria-selected={index === activeSlide}
+                    aria-controls={`testimonial-${index}`}
+                    id={`tab-${index}`}
+                    onClick={() => setActiveSlide(index)}
+                    onKeyDown={(e) => handleKeyDown(e, index)}
+                    className={`w-3 h-3 rounded-full transition-colors ${index === activeSlide ? 'bg-purple-900' : 'bg-purple-300'}`}
+                    tabIndex={index === activeSlide ? 0 : -1}
+                  />
+                ))}
+              </div>
+              
+              <Carousel className="w-full">
+                <CarouselContent>
+                  {testimonials.map((testimonial, index) => (
+                    <CarouselItem
+                      key={testimonial.id}
+                      id={`testimonial-${index}`}
+                      role="tabpanel"
+                      aria-labelledby={`tab-${index}`}
+                      tabIndex={0}
+                      className={index === activeSlide ? 'block' : 'hidden'}
+                      aria-hidden={index !== activeSlide}
+                    >
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        <Card className="bg-white/95 backdrop-blur-sm border-none rounded-2xl shadow-xl overflow-hidden">
+                          <CardContent className="p-8 md:p-10">
+                            <div className="flex flex-col md:flex-row gap-6 items-start">
+                              <div className="flex-shrink-0">
+                                <div className="relative">
+                                  <div className="absolute -inset-1 bg-gradient-to-br from-purple-600 to-pink-500 rounded-full blur opacity-30"></div>
+                                  <Avatar className="h-16 w-16 md:h-20 md:w-20 border-2 border-white relative">
+                                    <AvatarImage
+                                      src={testimonial.avatarUrl}
+                                      alt={testimonial.name}
+                                    />
+                                    <AvatarFallback className="bg-gradient-to-br from-purple-600 to-pink-500 text-white text-xl">
+                                      {testimonial.name.charAt(0)}
+                                    </AvatarFallback>
+                                  </Avatar>
+                                </div>
+                                <div className="hidden md:flex flex-col items-center mt-4 space-y-1">
+                                  {[...Array(5)].map((_, i) => (
+                                    <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+                                  ))}
+                                </div>
                               </div>
-                              <Badge className="mt-2 md:mt-0 self-start md:self-auto bg-gradient-to-r from-purple-600 to-pink-500 text-white border-none px-3 py-1">
-                                Graduate
-                              </Badge>
+                              
+                              <div className="flex-1">
+                                <div className="flex md:hidden mb-4 space-x-1">
+                                  {[...Array(5)].map((_, i) => (
+                                    <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                                  ))}
+                                </div>
+                                
+                                <p className="text-xl md:text-2xl italic text-gray-800 mb-6 leading-relaxed">
+                                  &quot;{testimonial.quote}&quot;
+                                </p>
+                                
+                                <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+                                  <div>
+                                    <h4 className="font-bold text-xl text-gray-900">
+                                      {testimonial.name}
+                                    </h4>
+                                    <p className="text-gray-600">
+                                      {testimonial.title}, {testimonial.company}
+                                    </p>
+                                  </div>
+                                  <Badge className="mt-2 md:mt-0 self-start md:self-auto bg-gradient-to-r from-purple-600 to-pink-500 text-white border-none px-3 py-1">
+                                    Graduate
+                                  </Badge>
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            
-            <div className="flex items-center justify-center mt-8">
-              <div className="flex items-center gap-4">
-                <CarouselPrevious
-                  variant="outline"
-                  className="relative mr-2 h-10 w-10 rounded-full border-purple-200 bg-white/50 backdrop-blur-sm hover:bg-white/80 hover:scale-110 transition-all"
-                  onClick={() =>
-                    setActiveSlide(
-                      (current) =>
-                        (current - 1 + testimonials.length) % testimonials.length,
-                    )
-                  }
-                />
+                          </CardContent>
+                        </Card>
+                      </motion.div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
                 
-                <div className="flex items-center gap-3">
+                <div className="flex items-center justify-center gap-3 mt-8">
                   {testimonials.map((_, index) => (
                     <button
                       key={index}
                       onClick={() => setActiveSlide(index)}
+                      onKeyDown={(e) => handleKeyDown(e, index)}
                       className="group focus:outline-none"
-                      aria-label={`Go to slide ${index + 1}`}
+                      aria-label={`Go to testimonial ${index + 1}`}
+                      aria-current={index === activeSlide}
                     >
-                      <div className="relative h-3 w-12 overflow-hidden rounded-full bg-white/50 backdrop-blur-sm hover:bg-white/70 transition-all">
+                      <div className="relative h-2 w-8 overflow-hidden rounded-full bg-white/50 backdrop-blur-sm hover:bg-white/70 transition-all">
                         <motion.div 
                           className="absolute inset-y-0 left-0 bg-gradient-to-r from-purple-600 to-pink-500 rounded-full"
                           initial={{ width: index === activeSlide ? "100%" : "0%" }}
@@ -498,16 +558,35 @@ export default function TestimonialsSection() {
                   ))}
                 </div>
                 
-                <CarouselNext
-                  variant="outline"
-                  className="relative ml-2 h-10 w-10 rounded-full border-purple-200 bg-white/50 backdrop-blur-sm hover:bg-white/80 hover:scale-110 transition-all"
-                  onClick={() =>
-                    setActiveSlide((current) => (current + 1) % testimonials.length)
-                  }
-                />
-              </div>
+                <div className="flex justify-center gap-4 mt-6">
+                  <button 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setActiveSlide(prev => (prev - 1 + testimonials.length) % testimonials.length);
+                    }}
+                    className="relative h-10 w-10 rounded-full border border-purple-200 bg-white/50 backdrop-blur-sm hover:bg-white/80 hover:scale-110 transition-all flex items-center justify-center"
+                    aria-label="Previous testimonial"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="m15 18-6-6 6-6" />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setActiveSlide(prev => (prev + 1) % testimonials.length);
+                    }}
+                    className="relative h-10 w-10 rounded-full border border-purple-200 bg-white/50 backdrop-blur-sm hover:bg-white/80 hover:scale-110 transition-all flex items-center justify-center"
+                    aria-label="Next testimonial"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="m9 18 6-6-6-6" />
+                    </svg>
+                  </button>
+                </div>
+              </Carousel>
             </div>
-          </Carousel>
+          </div>
         </div>
       </section>
     </>
