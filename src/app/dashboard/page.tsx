@@ -86,6 +86,13 @@ export default function DashboardPage() {
                 <span>My Courses</span>
               </Link>
               <Link
+                href="/my-electives"
+                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-foreground"
+              >
+                <GraduationCap className="h-5 w-5" />
+                <span>My Electives</span>
+              </Link>
+              <Link
                 href="#"
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-foreground"
               >
@@ -148,6 +155,13 @@ export default function DashboardPage() {
             >
               <BookOpen className="h-5 w-5" />
               <span>My Courses</span>
+            </Link>
+            <Link
+              href="/my-electives"
+              className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-foreground"
+            >
+              <GraduationCap className="h-5 w-5" />
+              <span>My Electives</span>
             </Link>
             <Link
               href="#"
