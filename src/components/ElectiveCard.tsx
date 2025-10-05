@@ -65,3 +65,31 @@ export const CourseCard = ({ course }: CourseCardProps) => {
     </Link>
   );
 };
+
+// Backward compatibility interface for legacy ElectiveCard usage
+interface LegacyElectiveCardProps extends Course {
+  className?: string;
+  variant?: 'default' | 'compact';
+}
+
+// Wrapper component for backward compatibility
+export const ElectiveCard = ({
+  className,
+  variant,
+  ...courseProps
+}: LegacyElectiveCardProps) => {
+  // Suppress unused vars for backward compatibility
+  void className;
+  void variant;
+  const course: Course = {
+    id: courseProps.id,
+    title: courseProps.title,
+    category: courseProps.category,
+    creditHours: courseProps.creditHours,
+    isActive: courseProps.isActive,
+    description: courseProps.description,
+    instructor: courseProps.instructor,
+  };
+
+  return <CourseCard course={course} />;
+};
