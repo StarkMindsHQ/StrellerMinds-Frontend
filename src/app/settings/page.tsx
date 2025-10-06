@@ -51,7 +51,8 @@ export default function SettingsPage() {
   const onSubmit = async (data: ProfileUpdateFormData) => {
     try {
       // TODO: Implement profile update API call
-      console.log('Profile update data:', data);
+      /** TODO: Implement profile update API call */
+      void data; // Acknowledge data is received
     } catch (error) {
       console.error('Profile update error:', error);
     }
