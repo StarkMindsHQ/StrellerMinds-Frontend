@@ -7,6 +7,8 @@ import MainLayout from '@/components/MainLayout';
 import { ElectiveCourseCard } from '@/components/ElectiveCourseCard';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/contexts/use-toast';
+import { EnrollmentAnalyticsWidget } from '@/components/admin/EnrollmentAnalyticsWidget';
+import { useEnrollmentAnalytics } from '@/hooks/useEnrollmentAnalytics';
 import {
   electiveCourses as initialElectiveCourses,
   mockDeleteElectiveCourse,
@@ -17,6 +19,12 @@ export default function AdminElectiveCoursesPage() {
   const [courses, setCourses] = useState<ElectiveCourseData[]>(
     initialElectiveCourses,
   );
+  const {
+    data: analytics,
+    isLoading: isAnalyticsLoading,
+    error: analyticsError,
+    refetch: refetchAnalytics,
+  } = useEnrollmentAnalytics();
 
   const handleDeleteCourse = async (courseId: string) => {
     try {
@@ -78,6 +86,15 @@ export default function AdminElectiveCoursesPage() {
             Add New Course
           </Button>
         </div>
+      </div>
+
+      <div className="mb-6">
+        <EnrollmentAnalyticsWidget
+          data={analytics}
+          isLoading={isAnalyticsLoading}
+          error={analyticsError}
+          onRetry={refetchAnalytics}
+        />
       </div>
 
       {/* Admin Notice */}
