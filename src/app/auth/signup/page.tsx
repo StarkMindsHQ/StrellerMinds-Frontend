@@ -484,7 +484,7 @@ export default function SignUpPage() {
                             </motion.div>
                           </div>
                           <p className="text-sm text-muted-foreground">
-                            We've sent a verification code to{' '}
+                            We&apos;ve sent a verification code to{' '}
                             <span className="font-medium text-foreground">
                               {userEmail}
                             </span>
@@ -505,7 +505,7 @@ export default function SignUpPage() {
                           }
                         />
                         <p className="text-xs text-muted-foreground text-center mt-2">
-                          Didn't receive a code?{' '}
+                          Didn&apos;t receive a code?{' '}
                           <button
                             type="button"
                             className="text-primary hover:underline"

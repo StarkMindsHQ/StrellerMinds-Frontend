@@ -231,7 +231,7 @@ export default function CheckoutModal({
               Thank you for your purchase. You now have access to &quot;
               {courseName}
               &quot;. This was a demonstration. In a real application, you would
-              now have access to "{courseName}".
+              now have access to &quot;{courseName}&quot;.
             </p>
             <Button>
               <div className="flex items-center gap-2">

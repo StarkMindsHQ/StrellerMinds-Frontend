@@ -40,11 +40,12 @@ export default function BlogPage() {
                   <span>5 min read</span>
                 </div>
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">
-                  Understanding Blockchain Technology: A Beginner's Guide
+                  Understanding Blockchain Technology: A Beginner&apos;s Guide
                 </h2>
                 <p className="text-gray-600 dark:text-gray-400 mb-4">
                   Dive into the fundamentals of blockchain technology and
-                  discover how it's revolutionizing industries across the globe.
+                  discover how it&apos;s revolutionizing industries across the
+                  globe.
                 </p>
                 <a
                   href="#"

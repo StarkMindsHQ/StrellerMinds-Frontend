@@ -188,8 +188,12 @@ export function validateEnvironment(): void {
   } catch (error) {
     // Environment validation failed
     if (error instanceof z.ZodError) {
-      const errorMessages = error.errors.map((err) => `${err.path.join('.')}: ${err.message}`);
-      throw new Error(`Missing or invalid environment variables: ${errorMessages.join(', ')}`);
+      const errorMessages = error.errors.map(
+        (err) => `${err.path.join('.')}: ${err.message}`,
+      );
+      throw new Error(
+        `Missing or invalid environment variables: ${errorMessages.join(', ')}`,
+      );
     } else {
       throw error;
     }
