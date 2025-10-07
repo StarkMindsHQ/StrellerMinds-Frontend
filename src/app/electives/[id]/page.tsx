@@ -12,7 +12,11 @@ import {
   RefreshCw,
 } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
-import { Course, courseService, MOCK_STUDENT } from '@/services/electiveService';
+import {
+  Course,
+  courseService,
+  MOCK_STUDENT,
+} from '@/services/electiveService';
 
 import { useToast } from '@/contexts/use-toast';
 
@@ -113,7 +117,6 @@ const CourseDetail = () => {
     );
   }
 
-  // ------------------- Error State -------------------
   if (error) {
     return (
       <div className="min-h-screen bg-[#5c0149] text-[#ffcc09] flex items-center justify-center px-6">

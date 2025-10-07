@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Check, CreditCard, Loader2, Star } from 'lucide-react';
-import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -96,8 +95,6 @@ export default function CheckoutModal({
                 className="h-16 w-16 rounded-md object-cover"
                 placeholder="blur"
                 blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-                width={64}
-                height={64}
               />
               <div>
                 <h3 className="font-medium">{courseName}</h3>
@@ -234,7 +231,7 @@ export default function CheckoutModal({
               Thank you for your purchase. You now have access to &quot;
               {courseName}
               &quot;. This was a demonstration. In a real application, you would
-              now have access to "{courseName}".
+              now have access to &quot;{courseName}&quot;.
             </p>
             <Button>
               <div className="flex items-center gap-2">

@@ -7,11 +7,13 @@ import { validateEnvironment } from './env';
 export function validateServerEnvironment(): void {
   try {
     validateEnvironment();
-    console.log('🚀 Server environment validated successfully');
+    // Server environment validated successfully
   } catch (error) {
-    console.error('❌ Server environment validation failed:');
-    console.error(error);
-    process.exit(1);
+    // Server environment validation failed
+    if (error instanceof Error) {
+      throw new Error(`Server environment validation failed: ${error.message}`);
+    }
+    throw new Error('Server environment validation failed');
   }
 }
 

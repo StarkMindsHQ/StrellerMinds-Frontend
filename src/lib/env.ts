@@ -177,30 +177,25 @@ export const envUtils = {
 export function validateEnvironment(): void {
   try {
     // Environment is already validated when imported, but we can add additional checks here
-    console.log('✅ Environment variables validated successfully');
-    console.log(`🌍 Environment: ${env.NODE_ENV}`);
-    console.log(`🚀 App URL: ${env.NEXT_PUBLIC_APP_URL}`);
-    console.log(`🔗 API Base URL: ${env.NEXT_PUBLIC_API_BASE_URL}`);
-    console.log(`⭐ Stellar Network: ${env.NEXT_PUBLIC_STELLAR_NETWORK}`);
-    console.log(
-      `🎯 Debug Mode: ${env.NEXT_PUBLIC_ENABLE_DEBUG_MODE ? 'Enabled' : 'Disabled'}`,
-    );
-    console.log(
-      `📊 Analytics: ${env.NEXT_PUBLIC_ENABLE_ANALYTICS ? 'Enabled' : 'Disabled'}`,
-    );
-    console.log(
-      `💻 Code Playground: ${env.NEXT_PUBLIC_ENABLE_CODE_PLAYGROUND ? 'Enabled' : 'Disabled'}`,
-    );
+    // Environment variables validated successfully
+    // Environment: ${env.NODE_ENV}
+    // App URL: ${env.NEXT_PUBLIC_APP_URL}
+    // API Base URL: ${env.NEXT_PUBLIC_API_BASE_URL}
+    // Stellar Network: ${env.NEXT_PUBLIC_STELLAR_NETWORK}
+    // Debug Mode: ${env.NEXT_PUBLIC_ENABLE_DEBUG_MODE ? 'Enabled' : 'Disabled'}
+    // Analytics: ${env.NEXT_PUBLIC_ENABLE_ANALYTICS ? 'Enabled' : 'Disabled'}
+    // Code Playground: ${env.NEXT_PUBLIC_ENABLE_CODE_PLAYGROUND ? 'Enabled' : 'Disabled'}
   } catch (error) {
-    console.error('❌ Environment validation failed:');
+    // Environment validation failed
     if (error instanceof z.ZodError) {
-      console.error('Missing or invalid environment variables:');
-      error.errors.forEach((err) => {
-        console.error(`  - ${err.path.join('.')}: ${err.message}`);
-      });
+      const errorMessages = error.errors.map(
+        (err) => `${err.path.join('.')}: ${err.message}`,
+      );
+      throw new Error(
+        `Missing or invalid environment variables: ${errorMessages.join(', ')}`,
+      );
     } else {
-      console.error(error);
+      throw error;
     }
-    process.exit(1);
   }
 }

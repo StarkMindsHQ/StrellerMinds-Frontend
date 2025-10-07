@@ -124,7 +124,7 @@ export interface FetchCourseByIdOptions {
 
 export const MOCK_STUDENT = {
   id: 'mock-student-id',
-  enrolledCourses: new Set<string>(),
+  enrolledCourses: new Set<string>(['1', '3', '5']), // Pre-enrolled in a few courses for testing
 };
 
 export const courseService = {
@@ -190,6 +190,50 @@ export const courseService = {
 
     MOCK_STUDENT.enrolledCourses.add(courseId);
     return { success: true, message: 'Successfully enrolled!' };
+  },
+
+  async unenrollFromCourse(
+    courseId: string,
+    options: { simulateDelay?: number; simulateError?: boolean } = {},
+  ): Promise<{ success: boolean; message: string }> {
+    const { simulateDelay = 800, simulateError = false } = options;
+
+    await new Promise((resolve) => setTimeout(resolve, simulateDelay));
+
+    if (simulateError) {
+      throw new Error('Unenrollment failed. Please try again.');
+    }
+
+    const course = MOCK_COURSES.find((c) => c.id === courseId);
+    if (!course) {
+      return { success: false, message: 'Course not found.' };
+    }
+
+    if (!MOCK_STUDENT.enrolledCourses.has(courseId)) {
+      return { success: false, message: 'You are not enrolled in this course.' };
+    }
+
+    MOCK_STUDENT.enrolledCourses.delete(courseId);
+    return { success: true, message: 'Successfully unenrolled!' };
+  },
+
+  async getEnrolledCourses(
+    options: { simulateDelay?: number; simulateError?: boolean } = {},
+  ): Promise<Course[]> {
+    const { simulateDelay = 600, simulateError = false } = options;
+
+    await new Promise((resolve) => setTimeout(resolve, simulateDelay));
+
+    if (simulateError) {
+      throw new Error('Failed to fetch enrolled courses. Please try again later.');
+    }
+
+    const enrolledCourseIds = Array.from(MOCK_STUDENT.enrolledCourses);
+    const enrolledCourses = MOCK_COURSES.filter((course) =>
+      enrolledCourseIds.includes(course.id)
+    );
+
+    return enrolledCourses;
   },
 };
 
