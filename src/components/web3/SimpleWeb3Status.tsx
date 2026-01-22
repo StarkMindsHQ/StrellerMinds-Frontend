@@ -31,18 +31,20 @@ export function SimpleWeb3Status() {
     );
   }
 
-  const currentConfig = chainId ? {
-    [1]: {
-      name: 'Ethereum Mainnet',
-      color: '#627EEA',
-      explorer: 'https://etherscan.io',
-    },
-    [11155111]: {
-      name: 'Sepolia Testnet',
-      color: '#627EEA',
-      explorer: 'https://sepolia.etherscan.io',
-    },
-  }[chainId] : null;
+  const currentConfig = chainId
+    ? {
+        [1]: {
+          name: 'Ethereum Mainnet',
+          color: '#627EEA',
+          explorer: 'https://etherscan.io',
+        },
+        [11155111]: {
+          name: 'Sepolia Testnet',
+          color: '#627EEA',
+          explorer: 'https://sepolia.etherscan.io',
+        },
+      }[chainId]
+    : null;
 
   return (
     <Card>
@@ -55,9 +57,11 @@ export function SimpleWeb3Status() {
       <CardContent className="space-y-3">
         <div className="flex items-center justify-between">
           <span className="text-sm font-medium">Address:</span>
-          <span className="text-sm font-mono">{formatAddress(address || '')}</span>
+          <span className="text-sm font-mono">
+            {formatAddress(address || '')}
+          </span>
         </div>
-        
+
         <div className="flex items-center justify-between">
           <span className="text-sm font-medium">Network:</span>
           <Badge variant="secondary" className="flex items-center gap-1">

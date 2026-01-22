@@ -10,51 +10,51 @@ export interface Web3Error {
 
 export const WEB3_ERRORS: Record<string, Web3Error> = {
   // Wallet connection errors
-  'USER_REJECTED_REQUEST': {
+  USER_REJECTED_REQUEST: {
     code: 'USER_REJECTED_REQUEST',
     message: 'User rejected the request',
     action: 'Please try again and approve the connection',
   },
-  'UNAUTHORIZED': {
+  UNAUTHORIZED: {
     code: 'UNAUTHORIZED',
     message: 'Unauthorized access',
     action: 'Please check your wallet permissions',
   },
-  'UNSUPPORTED_CHAIN': {
+  UNSUPPORTED_CHAIN: {
     code: 'UNSUPPORTED_CHAIN',
     message: 'Unsupported network',
     action: 'Please switch to a supported network',
   },
-  
+
   // Transaction errors
-  'INSUFFICIENT_FUNDS': {
+  INSUFFICIENT_FUNDS: {
     code: 'INSUFFICIENT_FUNDS',
     message: 'Insufficient funds for gas',
     action: 'Please add more ETH to your wallet',
   },
-  'NONCE_TOO_LOW': {
+  NONCE_TOO_LOW: {
     code: 'NONCE_TOO_LOW',
     message: 'Nonce too low',
     action: 'Please try again in a few moments',
   },
-  'GAS_LIMIT_EXCEEDED': {
+  GAS_LIMIT_EXCEEDED: {
     code: 'GAS_LIMIT_EXCEEDED',
     message: 'Gas limit exceeded',
     action: 'Please try with a higher gas limit',
   },
-  'CONTRACT_EXECUTION_FAILED': {
+  CONTRACT_EXECUTION_FAILED: {
     code: 'CONTRACT_EXECUTION_FAILED',
     message: 'Contract execution failed',
     action: 'Please check your inputs and try again',
   },
-  
+
   // Network errors
-  'NETWORK_ERROR': {
+  NETWORK_ERROR: {
     code: 'NETWORK_ERROR',
     message: 'Network connection error',
     action: 'Please check your internet connection',
   },
-  'TIMEOUT': {
+  TIMEOUT: {
     code: 'TIMEOUT',
     message: 'Transaction timeout',
     action: 'Please try again',
@@ -66,7 +66,8 @@ export function handleWeb3Error(error: any): void {
 
   // Try to extract error code and message
   const errorCode = error.code || error.data?.code || 'UNKNOWN_ERROR';
-  const errorMessage = error.message || error.data?.message || 'Unknown error occurred';
+  const errorMessage =
+    error.message || error.data?.message || 'Unknown error occurred';
 
   // Find matching error in our error dictionary
   const web3Error = WEB3_ERRORS[errorCode] || {
@@ -117,14 +118,14 @@ export function getErrorMessage(error: any): string {
   if (isUserRejectedError(error)) {
     return 'Transaction was cancelled';
   }
-  
+
   if (isInsufficientFundsError(error)) {
     return 'Insufficient funds for transaction';
   }
-  
+
   if (isNetworkError(error)) {
     return 'Network connection error';
   }
-  
+
   return error.message || 'An error occurred';
 }

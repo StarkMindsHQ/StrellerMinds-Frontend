@@ -192,4 +192,3 @@ export const courseService = {
     return { success: true, message: 'Successfully enrolled!' };
   },
 };
-

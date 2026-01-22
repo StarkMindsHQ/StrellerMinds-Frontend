@@ -1,6 +1,10 @@
 'use client';
 
-import { useWriteContract, useWaitForTransactionReceipt, useReadContract } from 'wagmi';
+import {
+  useWriteContract,
+  useWaitForTransactionReceipt,
+  useReadContract,
+} from 'wagmi';
 import { Abi } from 'viem';
 import { toast } from 'sonner';
 import { SIMPLE_STORAGE_ABI, ERC20_ABI, NFT_ABI } from './contracts';
@@ -11,7 +15,7 @@ import { useChainId } from 'wagmi';
 export function useSimpleStorage() {
   const { writeContract, isPending, data: hash } = useWriteContract();
   const chainId = useChainId();
-  
+
   const contractAddress = SAMPLE_CONTRACTS.sepolia.simpleStorage; // Default to Sepolia
 
   const storeValue = async (value: number) => {
@@ -35,9 +39,10 @@ export function useSimpleStorage() {
     functionName: 'retrieve',
   });
 
-  const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
-    hash,
-  });
+  const { isLoading: isConfirming, isSuccess: isConfirmed } =
+    useWaitForTransactionReceipt({
+      hash,
+    });
 
   return {
     storeValue,
@@ -91,9 +96,10 @@ export function useERC20Token(contractAddress: `0x${string}`) {
     args: ['0x0000000000000000000000000000000000000000'], // Replace with actual address
   });
 
-  const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
-    hash,
-  });
+  const { isLoading: isConfirming, isSuccess: isConfirmed } =
+    useWaitForTransactionReceipt({
+      hash,
+    });
 
   return {
     transfer,
@@ -132,7 +138,11 @@ export function useNFTContract(contractAddress: `0x${string}`) {
         address: contractAddress,
         abi: NFT_ABI as Abi,
         functionName: 'safeTransferFrom',
-        args: ['0x0000000000000000000000000000000000000000', to, BigInt(tokenId)], // Replace with actual from address
+        args: [
+          '0x0000000000000000000000000000000000000000',
+          to,
+          BigInt(tokenId),
+        ], // Replace with actual from address
       });
       toast.success('NFT transfer submitted!');
     } catch (error) {
@@ -155,9 +165,10 @@ export function useNFTContract(contractAddress: `0x${string}`) {
     args: ['0x0000000000000000000000000000000000000000'], // Replace with actual address
   });
 
-  const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
-    hash,
-  });
+  const { isLoading: isConfirming, isSuccess: isConfirmed } =
+    useWaitForTransactionReceipt({
+      hash,
+    });
 
   return {
     mintNFT,

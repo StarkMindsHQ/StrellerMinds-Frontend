@@ -19,7 +19,7 @@ export function NetworkSwitcher() {
     switchChain({ chainId });
   };
 
-  const currentChain = supportedChains.find(chain => chain.id === chainId);
+  const currentChain = supportedChains.find((chain) => chain.id === chainId);
   const currentConfig = chainConfig[chainId as keyof typeof chainConfig];
 
   return (

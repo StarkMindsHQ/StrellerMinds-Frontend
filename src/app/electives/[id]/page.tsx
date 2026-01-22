@@ -12,7 +12,11 @@ import {
   RefreshCw,
 } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
-import { Course, courseService, MOCK_STUDENT } from '@/services/electiveService';
+import {
+  Course,
+  courseService,
+  MOCK_STUDENT,
+} from '@/services/electiveService';
 
 import { useToast } from '@/contexts/use-toast';
 

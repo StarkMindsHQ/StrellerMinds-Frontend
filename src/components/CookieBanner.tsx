@@ -35,20 +35,23 @@ export default function CookieBanner() {
                         <Cookie className="h-6 w-6 text-white" />
                       </div>
                     </div>
-                    
+
                     <div className="flex-1 min-w-0">
                       <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                         🍪 Cookie & Analytics Preferences
                       </h3>
                       <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                        We use privacy-friendly analytics to improve your learning
-                        experience. Your data is never sold or shared with third
-                        parties. You can change your preferences anytime.
+                        We use privacy-friendly analytics to improve your
+                        learning experience. Your data is never sold or shared
+                        with third parties. You can change your preferences
+                        anytime.
                       </p>
-                      
+
                       <div className="mt-3 flex items-center gap-2 text-xs text-gray-500 dark:text-gray-500">
                         <Shield className="h-4 w-4" />
-                        <span>Privacy-first • GDPR Compliant • No tracking cookies</span>
+                        <span>
+                          Privacy-first • GDPR Compliant • No tracking cookies
+                        </span>
                       </div>
                     </div>
                   </div>

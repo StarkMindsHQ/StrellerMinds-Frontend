@@ -1,11 +1,23 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useAccount, useChainId } from 'wagmi';
-import { Loader2, CheckCircle, XCircle, Clock, ExternalLink } from 'lucide-react';
+import {
+  Loader2,
+  CheckCircle,
+  XCircle,
+  Clock,
+  ExternalLink,
+} from 'lucide-react';
 import { toast } from 'sonner';
 
 interface Transaction {
@@ -121,11 +133,7 @@ export function TransactionManager() {
             </CardDescription>
           </div>
           {transactions.length > 0 && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={clearTransactions}
-            >
+            <Button variant="outline" size="sm" onClick={clearTransactions}>
               Clear History
             </Button>
           )}
@@ -136,7 +144,10 @@ export function TransactionManager() {
           <div className="text-center py-8 text-muted-foreground">
             <Clock className="h-12 w-12 mx-auto mb-4 opacity-50" />
             <p>No transactions yet</p>
-            <p className="text-sm">Start interacting with smart contracts to see your transaction history</p>
+            <p className="text-sm">
+              Start interacting with smart contracts to see your transaction
+              history
+            </p>
           </div>
         ) : (
           <div className="space-y-3">

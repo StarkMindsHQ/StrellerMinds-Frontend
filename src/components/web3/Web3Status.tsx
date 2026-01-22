@@ -53,9 +53,11 @@ export function Web3Status() {
       <CardContent className="space-y-3">
         <div className="flex items-center justify-between">
           <span className="text-sm font-medium">Address:</span>
-          <span className="text-sm font-mono">{formatAddress(address || '')}</span>
+          <span className="text-sm font-mono">
+            {formatAddress(address || '')}
+          </span>
         </div>
-        
+
         <div className="flex items-center justify-between">
           <span className="text-sm font-medium">Network:</span>
           <Badge variant="secondary" className="flex items-center gap-1">

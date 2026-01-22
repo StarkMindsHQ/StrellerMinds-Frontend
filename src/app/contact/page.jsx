@@ -2,6 +2,17 @@ import React from 'react';
 import Image from 'next/image';
 import MainLayout from '@/components/MainLayout';
 
+export const metadata = {
+  title: 'Contact Us - Get in Touch Today',
+  description:
+    'Have questions about our blockchain courses or corporate training? Reach out to the StrellerMinds team for support and inquiries.',
+  openGraph: {
+    title: 'Contact StrellerMinds | Blockchain Education Support',
+    description:
+      'We are here to help. Contact us for any queries regarding our DeFi and Smart Contract courses.',
+  },
+};
+
 const Contact = () => {
   return (
     <MainLayout variant="full-width" padding="none" background="transparent">
@@ -16,7 +27,7 @@ const Contact = () => {
             Contact
           </div>
           <h2 className="text-2xl md:text-3xl font-ubuntu text-amber-900 mb-3">
-            We'd love to hear from you
+            We&apos;d love to hear from you
           </h2>
           <p className="text-gray-600 text-base px-2 font-EB-Garamond">
             We are here to help provide information on any query regarding our

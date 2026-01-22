@@ -4,13 +4,13 @@ import MainLayout from '@/components/MainLayout';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Courses - Blockchain Education Catalog',
+  title: 'Expert Blockchain Courses - Education Catalog',
   description:
-    'Browse our complete catalog of blockchain courses. Learn DeFi, Smart Contracts, Web3 development and more with expert-led content.',
+    'Master the future with our elite blockchain education catalog. From DeFi fundamentals to advanced Soroban smart contracts, learn from industry experts.',
   openGraph: {
     title: 'Blockchain Courses - StrellerMinds Education Catalog',
     description:
-      'Browse our complete catalog of blockchain courses. Learn DeFi, Smart Contracts, Web3 development and more with expert-led content.',
+      'Explore expert-led blockchain courses. Master DeFi, Smart Contracts, and Web3 development with real-world applications.',
   },
 };
 
