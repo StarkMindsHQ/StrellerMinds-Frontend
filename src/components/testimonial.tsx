@@ -23,17 +23,7 @@ import {
 import { X, Play, Star, CheckCircle2 } from 'lucide-react';
 import styled from 'styled-components';
 
-// Custom Watch Demo Button Component
-const WatchDemoButton = () => {
-  return (
-    <WatchButtonWrapper>
-      <button className="btn">
-        Watch Demo
-      </button>
-    </WatchButtonWrapper>
-  );
-};
-
+// Custom Watch Demo Button Component - Move styled component outside render
 const WatchButtonWrapper = styled.div`
   .btn { 
     width: 8.5em; 
@@ -75,6 +65,16 @@ const WatchButtonWrapper = styled.div`
     transition: all 0.5s; 
   }
 `;
+
+const WatchDemoButton = () => {
+  return (
+    <WatchButtonWrapper>
+      <button className="btn">
+        Watch Demo
+      </button>
+    </WatchButtonWrapper>
+  );
+};
 
 interface Testimonial {
   id: number;
