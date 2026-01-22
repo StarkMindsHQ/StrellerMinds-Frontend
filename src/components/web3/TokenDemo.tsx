@@ -1,7 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -25,7 +31,9 @@ export function TokenDemo() {
     isConfirming,
     isConfirmed,
     hash,
-  } = useERC20Token('0xabcdefabcdefabcdefabcdefabcdefabcdefabcd' as `0x${string}`);
+  } = useERC20Token(
+    '0xabcdefabcdefabcdefabcdefabcdefabcdefabcd' as `0x${string}`,
+  );
 
   const handleTransfer = () => {
     if (!recipient || !amount) {
@@ -57,7 +65,8 @@ export function TokenDemo() {
           <Badge variant="secondary">Learning Demo</Badge>
         </CardTitle>
         <CardDescription>
-          Interact with an ERC20 token contract. Transfer tokens and approve spending.
+          Interact with an ERC20 token contract. Transfer tokens and approve
+          spending.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -103,7 +112,9 @@ export function TokenDemo() {
               ) : (
                 <Send className="h-4 w-4 mr-2" />
               )}
-              {isPending || isConfirming ? 'Transferring...' : 'Transfer Tokens'}
+              {isPending || isConfirming
+                ? 'Transferring...'
+                : 'Transfer Tokens'}
             </Button>
           </div>
         </div>
@@ -146,7 +157,9 @@ export function TokenDemo() {
           <div className="p-4 border rounded-lg">
             <div className="flex items-center justify-between">
               <div>
-                <Label className="text-sm font-medium">Transaction Status</Label>
+                <Label className="text-sm font-medium">
+                  Transaction Status
+                </Label>
                 <div className="mt-1">
                   {isConfirming ? (
                     <div className="flex items-center gap-2 text-yellow-600">
@@ -172,11 +185,7 @@ export function TokenDemo() {
                 )}
               </div>
               {hash && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={viewOnExplorer}
-                >
+                <Button variant="outline" size="sm" onClick={viewOnExplorer}>
                   <ExternalLink className="h-4 w-4 mr-2" />
                   Explorer
                 </Button>
@@ -187,9 +196,11 @@ export function TokenDemo() {
 
         {/* Code Example */}
         <div className="p-4 bg-muted rounded-lg">
-          <Label className="text-sm font-medium mb-2 block">Smart Contract Functions</Label>
+          <Label className="text-sm font-medium mb-2 block">
+            Smart Contract Functions
+          </Label>
           <pre className="text-xs bg-background p-3 rounded border overflow-x-auto">
-{`// Transfer function
+            {`// Transfer function
 function transfer(address recipient, uint256 amount) public returns (bool) {
     _transfer(msg.sender, recipient, amount);
     return true;

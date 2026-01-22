@@ -32,12 +32,12 @@ export function getAnalyticsConsent(): AnalyticsConsent {
   if (typeof window === 'undefined') return null;
 
   const consent = localStorage.getItem(CONSENT_KEY);
-  
+
   // Explicitly handle all three cases for strict typing
   if (consent === null) return null;
   if (consent === 'true') return true;
   if (consent === 'false') return false;
-  
+
   // Fallback for any unexpected values (corrupted data)
   return null;
 }

@@ -4,10 +4,7 @@ import { injected, metaMask } from 'wagmi/connectors';
 
 export const web3Config = createConfig({
   chains: [mainnet, sepolia, goerli],
-  connectors: [
-    injected(),
-    metaMask(),
-  ],
+  connectors: [injected(), metaMask()],
   transports: {
     [mainnet.id]: http(),
     [sepolia.id]: http(),

@@ -1,7 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -13,7 +19,9 @@ import { toast } from 'sonner';
 export function NFTDemo() {
   const [recipient, setRecipient] = useState('');
   const [tokenId, setTokenId] = useState('');
-  const [tokenURI, setTokenURI] = useState('https://gateway.pinata.cloud/ipfs/QmExample');
+  const [tokenURI, setTokenURI] = useState(
+    'https://gateway.pinata.cloud/ipfs/QmExample',
+  );
 
   const {
     mintNFT,
@@ -26,7 +34,9 @@ export function NFTDemo() {
     isConfirming,
     isConfirmed,
     hash,
-  } = useNFTContract('0xfedcbafedcbafedcbafedcbafedcbafedcbafed' as `0x${string}`);
+  } = useNFTContract(
+    '0xfedcbafedcbafedcbafedcbafedcbafedcbafed' as `0x${string}`,
+  );
 
   const handleMint = () => {
     if (!tokenURI) {
@@ -79,7 +89,9 @@ export function NFTDemo() {
 
         {/* Token URI Display */}
         <div className="p-4 bg-muted rounded-lg">
-          <Label className="text-sm font-medium">Current Token URI (Token ID: 1)</Label>
+          <Label className="text-sm font-medium">
+            Current Token URI (Token ID: 1)
+          </Label>
           <div className="mt-1 p-2 bg-background rounded border text-xs font-mono break-all">
             {isReading ? (
               <div className="flex items-center gap-2">
@@ -155,7 +167,9 @@ export function NFTDemo() {
           <div className="p-4 border rounded-lg">
             <div className="flex items-center justify-between">
               <div>
-                <Label className="text-sm font-medium">Transaction Status</Label>
+                <Label className="text-sm font-medium">
+                  Transaction Status
+                </Label>
                 <div className="mt-1">
                   {isConfirming ? (
                     <div className="flex items-center gap-2 text-yellow-600">
@@ -181,11 +195,7 @@ export function NFTDemo() {
                 )}
               </div>
               {hash && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={viewOnExplorer}
-                >
+                <Button variant="outline" size="sm" onClick={viewOnExplorer}>
                   <ExternalLink className="h-4 w-4 mr-2" />
                   Explorer
                 </Button>
@@ -196,9 +206,11 @@ export function NFTDemo() {
 
         {/* Code Example */}
         <div className="p-4 bg-muted rounded-lg">
-          <Label className="text-sm font-medium mb-2 block">Smart Contract Functions</Label>
+          <Label className="text-sm font-medium mb-2 block">
+            Smart Contract Functions
+          </Label>
           <pre className="text-xs bg-background p-3 rounded border overflow-x-auto">
-{`// Mint NFT function
+            {`// Mint NFT function
 function mintNFT(string memory tokenURI) public returns (uint256) {
     _tokenIds.increment();
     uint256 newItemId = _tokenIds.current();

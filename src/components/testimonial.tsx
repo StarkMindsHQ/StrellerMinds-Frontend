@@ -25,53 +25,51 @@ import styled from 'styled-components';
 
 // Custom Watch Demo Button Component - Move styled component outside render
 const WatchButtonWrapper = styled.div`
-  .btn { 
-    width: 8.5em; 
-    height: 2.3em; 
-    margin: 0.5em; 
-    background: #5c0f49; 
-    color: white; 
-    border: none; 
-    border-radius: 0.625em; 
-    font-size: 20px; 
-    font-weight: bold; 
-    cursor: pointer; 
-    position: relative; 
-    z-index: 1; 
-    overflow: hidden; 
+  .btn {
+    width: 8.5em;
+    height: 2.3em;
+    margin: 0.5em;
+    background: #5c0f49;
+    color: white;
+    border: none;
+    border-radius: 0.625em;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  } 
+  }
 
-  button:hover { 
-    color: #5c0f49; 
-  } 
+  button:hover {
+    color: #5c0f49;
+  }
 
-  button:after { 
-    content: ""; 
-    background: white; 
-    position: absolute; 
-    z-index: -1; 
-    left: -20%; 
-    right: -20%; 
-    top: 0; 
-    bottom: 0; 
-    transform: skewX(-45deg) scale(0, 1); 
-    transition: all 0.5s; 
-  } 
+  button:after {
+    content: '';
+    background: white;
+    position: absolute;
+    z-index: -1;
+    left: -20%;
+    right: -20%;
+    top: 0;
+    bottom: 0;
+    transform: skewX(-45deg) scale(0, 1);
+    transition: all 0.5s;
+  }
 
-  button:hover:after { 
-    transform: skewX(-45deg) scale(1, 1); 
-    -webkit-transition: all 0.5s; 
-    transition: all 0.5s; 
+  button:hover:after {
+    transform: skewX(-45deg) scale(1, 1);
+    -webkit-transition: all 0.5s;
+    transition: all 0.5s;
   }
 `;
 
 const WatchDemoButton = () => {
   return (
     <WatchButtonWrapper>
-      <button className="btn">
-        Watch Demo
-      </button>
+      <button className="btn">Watch Demo</button>
     </WatchButtonWrapper>
   );
 };
@@ -155,7 +153,7 @@ export default function TestimonialsSection() {
   // Handle keyboard navigation for carousel
   const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
     const lastIndex = testimonials.length - 1;
-    
+
     switch (e.key) {
       case 'ArrowLeft':
         e.preventDefault();
@@ -200,7 +198,7 @@ export default function TestimonialsSection() {
         <div className="absolute inset-0 opacity-10 pointer-events-none">
           <div className="absolute h-full w-full bg-[url('/patterns/circuit-board.svg')] bg-repeat opacity-5"></div>
         </div>
-        
+
         <div className="max-w-7xl mx-auto px-4 relative z-10">
           <Card className="bg-white/90 backdrop-blur-sm border-none rounded-2xl shadow-xl overflow-hidden">
             <CardContent className="p-0">
@@ -210,31 +208,35 @@ export default function TestimonialsSection() {
                     Why Learn with Streller Minds?
                   </h2>
                   <p className="text-gray-700 mb-8 text-lg">
-                    Our platform leverages modern technologies, including React for
-                    frontend and Stellar smart contracts for decentralized education
-                    solutions that transform how you learn blockchain.
+                    Our platform leverages modern technologies, including React
+                    for frontend and Stellar smart contracts for decentralized
+                    education solutions that transform how you learn blockchain.
                   </p>
-                  
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                     {[
                       {
-                        title: "High-Quality Content",
-                        description: "Professionally produced videos that simplify complex blockchain concepts"
+                        title: 'High-Quality Content',
+                        description:
+                          'Professionally produced videos that simplify complex blockchain concepts',
                       },
                       {
-                        title: "Practical Projects",
-                        description: "Interactive labs and real-world projects to apply theoretical knowledge"
+                        title: 'Practical Projects',
+                        description:
+                          'Interactive labs and real-world projects to apply theoretical knowledge',
                       },
                       {
-                        title: "Community Building",
-                        description: "Vibrant community where learners and industry experts collaborate"
+                        title: 'Community Building',
+                        description:
+                          'Vibrant community where learners and industry experts collaborate',
                       },
                       {
-                        title: "Certification Programs",
-                        description: "Accredited courses offering verifiable credentials"
-                      }
+                        title: 'Certification Programs',
+                        description:
+                          'Accredited courses offering verifiable credentials',
+                      },
                     ].map((item, index) => (
-                      <motion.div 
+                      <motion.div
                         key={index}
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -260,7 +262,7 @@ export default function TestimonialsSection() {
 
                 <div className="md:w-1/2 relative min-h-[400px]">
                   <div className="absolute inset-0 bg-gradient-to-br from-purple-900/90 to-pink-600/90">
-                    <motion.div 
+                    <motion.div
                       className="absolute inset-0 mix-blend-overlay opacity-20"
                       animate={{
                         backgroundPosition: ['0% 0%', '100% 100%'],
@@ -271,52 +273,66 @@ export default function TestimonialsSection() {
                         repeatType: 'reverse',
                       }}
                     >
-                      <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                      <svg
+                        className="w-full h-full"
+                        viewBox="0 0 100 100"
+                        preserveAspectRatio="none"
+                      >
                         <defs>
-                          <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
-                            <path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" strokeWidth="0.5" />
+                          <pattern
+                            id="grid"
+                            width="10"
+                            height="10"
+                            patternUnits="userSpaceOnUse"
+                          >
+                            <path
+                              d="M 10 0 L 0 0 0 10"
+                              fill="none"
+                              stroke="white"
+                              strokeWidth="0.5"
+                            />
                           </pattern>
                         </defs>
                         <rect width="100" height="100" fill="url(#grid)" />
                       </svg>
                     </motion.div>
-                    
+
                     {/* Animated particles */}
                     {[...Array(10)].map((_, i) => (
                       <motion.div
                         key={i}
                         className="absolute rounded-full bg-white/30"
                         initial={{
-                          x: Math.random() * 100 + "%",
-                          y: Math.random() * 100 + "%",
+                          x: Math.random() * 100 + '%',
+                          y: Math.random() * 100 + '%',
                           scale: Math.random() * 0.3 + 0.1,
                         }}
                         animate={{
                           x: [
-                            Math.random() * 100 + "%",
-                            Math.random() * 100 + "%",
-                            Math.random() * 100 + "%",
+                            Math.random() * 100 + '%',
+                            Math.random() * 100 + '%',
+                            Math.random() * 100 + '%',
                           ],
                           y: [
-                            Math.random() * 100 + "%",
-                            Math.random() * 100 + "%",
-                            Math.random() * 100 + "%",
+                            Math.random() * 100 + '%',
+                            Math.random() * 100 + '%',
+                            Math.random() * 100 + '%',
                           ],
                         }}
                         transition={{
                           duration: Math.random() * 10 + 10,
                           repeat: Infinity,
-                          ease: "linear",
+                          ease: 'linear',
                         }}
                         style={{
-                          width: Math.random() * 10 + 5 + "px",
-                          height: Math.random() * 10 + 5 + "px",
-                          filter: "blur(" + (Math.random() * 2 + 1) + "px)",
+                          width: Math.random() * 10 + 5 + 'px',
+                          height: Math.random() * 10 + 5 + 'px',
+                          filter: 'blur(' + (Math.random() * 2 + 1) + 'px)',
                         }}
                       />
                     ))}
                   </div>
-                  
+
                   <Dialog>
                     <DialogTrigger asChild>
                       <div className="absolute inset-0 flex flex-col items-center justify-center cursor-pointer group">
@@ -339,10 +355,13 @@ export default function TestimonialsSection() {
                           onPlay={handleVideoPlay}
                           onPause={handleVideoPause}
                         >
-                          <source src="/videos/demo-video.mp4" type="video/mp4" />
+                          <source
+                            src="/videos/demo-video.mp4"
+                            type="video/mp4"
+                          />
                           Your browser does not support video playback.
                         </video>
-                        
+
                         {!isVideoPlaying && (
                           <div className="absolute inset-0 flex items-center justify-center bg-black/40">
                             <div className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-700 to-pink-600 flex items-center justify-center">
@@ -365,18 +384,18 @@ export default function TestimonialsSection() {
       </section>
 
       {/* Skip to main content link */}
-      <a 
-        href="#testimonials-main" 
+      <a
+        href="#testimonials-main"
         className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-1/2 focus:-translate-x-1/2 focus:bg-white focus:px-4 focus:py-2 focus:rounded focus:shadow-lg focus:z-50 focus:border-2 focus:border-purple-600"
       >
         Skip to testimonials
       </a>
 
       {/* Testimonials Section - With dynamic background */}
-      <section 
+      <section
         id="testimonials-main"
-        className="py-20 px-4 relative overflow-hidden" 
-        style={{ 
+        className="py-20 px-4 relative overflow-hidden"
+        style={{
           background: `linear-gradient(135deg, #dfb1cc 0%, #e9c6db 50%, #f0d6e6 100%)`,
         }}
         role="region"
@@ -391,44 +410,44 @@ export default function TestimonialsSection() {
               key={i}
               className="absolute rounded-full bg-white opacity-20"
               initial={{
-                x: Math.random() * 100 + "%",
-                y: Math.random() * 100 + "%",
+                x: Math.random() * 100 + '%',
+                y: Math.random() * 100 + '%',
                 scale: Math.random() * 0.5 + 0.5,
               }}
               animate={{
                 x: [
-                  Math.random() * 100 + "%",
-                  Math.random() * 100 + "%",
-                  Math.random() * 100 + "%",
+                  Math.random() * 100 + '%',
+                  Math.random() * 100 + '%',
+                  Math.random() * 100 + '%',
                 ],
                 y: [
-                  Math.random() * 100 + "%",
-                  Math.random() * 100 + "%",
-                  Math.random() * 100 + "%",
+                  Math.random() * 100 + '%',
+                  Math.random() * 100 + '%',
+                  Math.random() * 100 + '%',
                 ],
               }}
               transition={{
                 duration: Math.random() * 20 + 20,
                 repeat: Infinity,
-                ease: "linear",
+                ease: 'linear',
               }}
               style={{
-                width: Math.random() * 150 + 50 + "px",
-                height: Math.random() * 150 + 50 + "px",
-                filter: "blur(" + (Math.random() * 30 + 5) + "px)",
+                width: Math.random() * 150 + 50 + 'px',
+                height: Math.random() * 150 + 50 + 'px',
+                filter: 'blur(' + (Math.random() * 30 + 5) + 'px)',
               }}
             />
           ))}
-          
+
           {/* Interactive gradient overlay that follows mouse */}
           <motion.div
             className="absolute inset-0 bg-gradient-radial from-pink-300/30 to-transparent"
             animate={{
               background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(236, 72, 153, 0.15) 0%, rgba(223, 177, 204, 0) 50%)`,
             }}
-            transition={{ type: "spring", damping: 15 }}
+            transition={{ type: 'spring', damping: 15 }}
           />
-          
+
           {/* Subtle pattern overlay */}
           <div className="absolute inset-0 bg-[url('/patterns/topography.svg')] opacity-5"></div>
         </div>
@@ -436,7 +455,10 @@ export default function TestimonialsSection() {
         <div className="max-w-7xl mx-auto relative z-10">
           {/* Testimonials Section */}
           <div className="text-center mb-12">
-            <Badge variant="outline" className="mb-4 px-4 py-1 bg-white/30 backdrop-blur-sm text-purple-900 border-purple-200">
+            <Badge
+              variant="outline"
+              className="mb-4 px-4 py-1 bg-white/30 backdrop-blur-sm text-purple-900 border-purple-200"
+            >
               TESTIMONIALS
             </Badge>
             <h2 className="text-4xl font-bold text-purple-900 mb-4">
@@ -448,7 +470,7 @@ export default function TestimonialsSection() {
             </p>
           </div>
 
-          <Carousel 
+          <Carousel
             className="w-full max-w-4xl mx-auto"
             role="region"
             aria-roledescription="carousel"
@@ -490,22 +512,28 @@ export default function TestimonialsSection() {
                             </div>
                             <div className="hidden md:flex flex-col items-center mt-4 space-y-1">
                               {[...Array(5)].map((_, i) => (
-                                <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+                                <Star
+                                  key={i}
+                                  className="h-5 w-5 fill-yellow-400 text-yellow-400"
+                                />
                               ))}
                             </div>
                           </div>
-                          
+
                           <div className="flex-1">
                             <div className="flex md:hidden mb-4 space-x-1">
                               {[...Array(5)].map((_, i) => (
-                                <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                                <Star
+                                  key={i}
+                                  className="h-4 w-4 fill-yellow-400 text-yellow-400"
+                                />
                               ))}
                             </div>
-                            
+
                             <p className="text-xl md:text-2xl italic text-gray-800 mb-6 leading-relaxed">
                               &quot;{testimonial.quote}&quot;
                             </p>
-                            
+
                             <div className="flex flex-col md:flex-row md:items-center md:justify-between">
                               <div>
                                 <h4 className="font-bold text-xl text-gray-900">
@@ -527,7 +555,7 @@ export default function TestimonialsSection() {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            
+
             <div className="flex items-center justify-center mt-8">
               <div className="flex items-center gap-4">
                 <button
@@ -535,17 +563,29 @@ export default function TestimonialsSection() {
                   className="relative mr-2 h-10 w-10 rounded-full border border-purple-200 bg-white/50 backdrop-blur-sm hover:bg-white/80 hover:scale-110 transition-all focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 focus:ring-offset-purple-100 flex items-center justify-center"
                   onClick={(e) => {
                     e.preventDefault();
-                    const prevIndex = (activeSlide - 1 + testimonials.length) % testimonials.length;
+                    const prevIndex =
+                      (activeSlide - 1 + testimonials.length) %
+                      testimonials.length;
                     setActiveSlide(prevIndex);
                     setTimeout(() => slideRefs.current[prevIndex]?.focus(), 10);
                   }}
                   aria-label="Previous testimonial"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
                     <path d="m15 18-6-6 6-6" />
                   </svg>
                 </button>
-                
+
                 <div className="flex items-center gap-3">
                   {testimonials.map((_, index) => (
                     <button
@@ -555,28 +595,32 @@ export default function TestimonialsSection() {
                         setTimeout(() => slideRefs.current[index]?.focus(), 10);
                       }}
                       className={`group focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 focus:ring-offset-purple-100 rounded-full p-1 transition-all ${
-                        index === activeSlide ? 'opacity-100' : 'opacity-50 hover:opacity-75'
+                        index === activeSlide
+                          ? 'opacity-100'
+                          : 'opacity-50 hover:opacity-75'
                       }`}
                       aria-label={`Go to slide ${index + 1} of ${testimonials.length}`}
                       aria-current={index === activeSlide ? 'true' : 'false'}
                     >
                       <div className="relative h-3 w-12 overflow-hidden rounded-full bg-white/50 backdrop-blur-sm hover:bg-white/70 transition-all">
-                        <motion.div 
+                        <motion.div
                           className="absolute inset-y-0 left-0 bg-gradient-to-r from-purple-600 to-pink-500 rounded-full"
-                          initial={{ width: index === activeSlide ? "100%" : "0%" }}
-                          animate={{ 
-                            width: index === activeSlide ? "100%" : "0%",
+                          initial={{
+                            width: index === activeSlide ? '100%' : '0%',
                           }}
-                          transition={{ 
+                          animate={{
+                            width: index === activeSlide ? '100%' : '0%',
+                          }}
+                          transition={{
                             duration: index === activeSlide ? 5 : 0.3,
-                            ease: "linear"
+                            ease: 'linear',
                           }}
                         />
                       </div>
                     </button>
                   ))}
                 </div>
-                
+
                 <button
                   type="button"
                   className="relative ml-2 h-10 w-10 rounded-full border border-purple-200 bg-white/50 backdrop-blur-sm hover:bg-white/80 hover:scale-110 transition-all focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 focus:ring-offset-purple-100 flex items-center justify-center"
@@ -588,7 +632,17 @@ export default function TestimonialsSection() {
                   }}
                   aria-label="Next testimonial"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
                     <path d="m9 18 6-6-6-6" />
                   </svg>
                 </button>

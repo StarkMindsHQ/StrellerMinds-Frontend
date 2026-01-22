@@ -29,7 +29,7 @@ export function formatTransactionHash(hash: string): string {
 export function getExplorerUrl(
   hash: string,
   type: 'tx' | 'address' | 'block',
-  chainId: number
+  chainId: number,
 ): string {
   const explorers: Record<number, string> = {
     1: 'https://etherscan.io',
@@ -44,11 +44,11 @@ export function getExplorerUrl(
 export function waitForTransaction(
   hash: string,
   checkInterval: number = 1000,
-  timeout: number = 60000
+  timeout: number = 60000,
 ): Promise<{ status: 'success' | 'failed'; receipt?: any }> {
   return new Promise((resolve, reject) => {
     const startTime = Date.now();
-    
+
     const checkTransaction = async () => {
       try {
         // This would be implemented with actual provider
@@ -60,26 +60,23 @@ export function waitForTransaction(
         //   });
         //   return;
         // }
-        
+
         if (Date.now() - startTime > timeout) {
           reject(new Error('Transaction timeout'));
           return;
         }
-        
+
         setTimeout(checkTransaction, checkInterval);
       } catch (error) {
         reject(error);
       }
     };
-    
+
     checkTransaction();
   });
 }
 
-export function calculateGasFee(
-  gasLimit: bigint,
-  gasPrice: bigint
-): string {
+export function calculateGasFee(gasLimit: bigint, gasPrice: bigint): string {
   const gasFee = gasLimit * gasPrice;
   return formatEther(gasFee);
 }

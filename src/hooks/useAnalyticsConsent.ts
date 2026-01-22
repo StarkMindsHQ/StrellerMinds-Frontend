@@ -39,7 +39,7 @@ export function useAnalyticsConsent() {
     setAnalyticsConsent(true);
     setConsent(true);
     setShowBanner(false);
-    
+
     // Reload to initialize analytics
     window.location.reload();
   };

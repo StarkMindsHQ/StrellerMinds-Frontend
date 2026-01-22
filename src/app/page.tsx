@@ -7,13 +7,13 @@ import MainLayout from '@/components/MainLayout';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Home - Blockchain Education Platform',
+  title: 'Start Your Blockchain Journey',
   description:
-    'Start your blockchain journey with StrellerMinds. Expert-led courses in DeFi, Smart Contracts, and Web3 development.',
+    'Join StrellerMinds to master blockchain technology. Explore expert-led courses in DeFi, Smart Contracts, and Web3 development with real-world applications.',
   openGraph: {
-    title: 'StrellerMinds - Blockchain Education Platform',
+    title: 'StrellerMinds | Leading Blockchain & DeFi Education',
     description:
-      'Start your blockchain journey with StrellerMinds. Expert-led courses in DeFi, Smart Contracts, and Web3 development.',
+      'Join StrellerMinds to master blockchain technology. Explore expert-led courses in DeFi, Smart Contracts, and Web3 development.',
   },
 };
 
@@ -25,7 +25,9 @@ export default function Home() {
       <TestimonialsSection />
 
       <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8 flex flex-col items-center">
-        <h1 className="text-2xl font-bold">Welcome to our site</h1>
+        <h1 className="text-4xl font-extrabold text-center mb-8">
+          Master the Future of Blockchain with StrellerMinds
+        </h1>
         <FeaturedCourses courses={allCourses} maxCoursesToShow={3} />
       </div>
     </MainLayout>

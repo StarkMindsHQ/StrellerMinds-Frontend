@@ -5,7 +5,13 @@ import { SimpleWeb3Status } from '@/components/web3/SimpleWeb3Status';
 import { SimpleStorageDemo } from '@/components/web3/SimpleStorageDemo';
 import { TokenDemo } from '@/components/web3/TokenDemo';
 import { NFTDemo } from '@/components/web3/NFTDemo';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { BookOpen, Code, Coins, Image } from 'lucide-react';
 
@@ -16,9 +22,12 @@ export default function Web3FrontendPage() {
       <div className="mb-8">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
           <div>
-            <h1 className="text-3xl font-bold mb-2">Web3 Frontend Development</h1>
+            <h1 className="text-3xl font-bold mb-2">
+              Web3 Frontend Development
+            </h1>
             <p className="text-muted-foreground">
-              Learn to build modern Web3 applications with React and smart contract integration.
+              Learn to build modern Web3 applications with React and smart
+              contract integration.
             </p>
           </div>
         </div>
@@ -36,7 +45,8 @@ export default function Web3FrontendPage() {
               Course Overview
             </CardTitle>
             <CardDescription>
-              Master Web3 development through hands-on smart contract interactions
+              Master Web3 development through hands-on smart contract
+              interactions
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -46,7 +56,8 @@ export default function Web3FrontendPage() {
                 <div>
                   <h4 className="font-medium">Smart Contract Integration</h4>
                   <p className="text-sm text-muted-foreground">
-                    Connect and interact with Ethereum smart contracts using wagmi and viem
+                    Connect and interact with Ethereum smart contracts using
+                    wagmi and viem
                   </p>
                 </div>
               </div>
@@ -112,7 +123,9 @@ export default function Web3FrontendPage() {
 
       {/* Interactive Demos */}
       <div>
-        <h2 className="text-2xl font-bold mb-6">Interactive Smart Contract Demos</h2>
+        <h2 className="text-2xl font-bold mb-6">
+          Interactive Smart Contract Demos
+        </h2>
         <Tabs defaultValue="storage" className="w-full">
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="storage">Simple Storage</TabsTrigger>
@@ -144,9 +157,24 @@ export default function Web3FrontendPage() {
             </CardHeader>
             <CardContent>
               <ul className="space-y-2 text-sm">
-                <li>• <a href="#" className="text-blue-600 hover:underline">wagmi Documentation</a></li>
-                <li>• <a href="#" className="text-blue-600 hover:underline">viem Documentation</a></li>
-                <li>• <a href="#" className="text-blue-600 hover:underline">Ethereum Developer Portal</a></li>
+                <li>
+                  •{' '}
+                  <a href="#" className="text-blue-600 hover:underline">
+                    wagmi Documentation
+                  </a>
+                </li>
+                <li>
+                  •{' '}
+                  <a href="#" className="text-blue-600 hover:underline">
+                    viem Documentation
+                  </a>
+                </li>
+                <li>
+                  •{' '}
+                  <a href="#" className="text-blue-600 hover:underline">
+                    Ethereum Developer Portal
+                  </a>
+                </li>
               </ul>
             </CardContent>
           </Card>

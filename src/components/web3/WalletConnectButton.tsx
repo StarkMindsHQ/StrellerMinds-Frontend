@@ -52,23 +52,23 @@ export function WalletConnectButton() {
         <DropdownMenuTrigger asChild>
           <Button variant="outline" className="flex items-center gap-2">
             <Avatar className="h-6 w-6">
-              <AvatarImage src={`https://api.dicebear.com/7.x/identicon/svg?seed=${address}`} />
+              <AvatarImage
+                src={`https://api.dicebear.com/7.x/identicon/svg?seed=${address}`}
+              />
               <AvatarFallback>
                 <Wallet className="h-4 w-4" />
               </AvatarFallback>
             </Avatar>
-            <span className="hidden sm:inline">
-              {formatAddress(address)}
-            </span>
-            <span className="text-xs text-muted-foreground">
-              {chain?.name}
-            </span>
+            <span className="hidden sm:inline">{formatAddress(address)}</span>
+            <span className="text-xs text-muted-foreground">{chain?.name}</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-56">
           <div className="px-2 py-1.5 text-sm">
             <div className="font-medium">Connected Wallet</div>
-            <div className="text-muted-foreground">{formatAddress(address)}</div>
+            <div className="text-muted-foreground">
+              {formatAddress(address)}
+            </div>
             <div className="text-xs text-muted-foreground">{chain?.name}</div>
           </div>
           <DropdownMenuSeparator />
