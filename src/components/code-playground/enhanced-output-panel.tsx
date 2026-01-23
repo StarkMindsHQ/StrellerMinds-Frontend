@@ -86,26 +86,27 @@ export default function EnhancedOutputPanel({
 
   return (
     <Card>
-      <CardHeader className="pb-3">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <CardTitle>Output</CardTitle>
-            <Badge className={`${statusColors[status]} text-white`}>
+      <CardHeader className="pb-2 sm:pb-3 px-3 sm:px-6">
+        <div className="flex justify-between items-center flex-wrap gap-2">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <CardTitle className="text-base sm:text-lg">Output</CardTitle>
+            <Badge className={`${statusColors[status]} text-white text-xs sm:text-sm flex-shrink-0`}>
               {statusLabels[status]}
             </Badge>
             {executionTime !== undefined && status === 'completed' && (
-              <span className="text-sm text-muted-foreground">
+              <span className="text-xs sm:text-sm text-muted-foreground whitespace-nowrap">
                 {formatTime(executionTime)}
               </span>
             )}
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-1 sm:gap-2">
             <Button
               variant="ghost"
               size="sm"
               onClick={copyOutput}
               disabled={outputs.length === 0}
               title="Copy output"
+              className="min-h-[36px] sm:min-h-0 touch-manipulation"
             >
               <Copy className="h-4 w-4" />
             </Button>
@@ -115,6 +116,7 @@ export default function EnhancedOutputPanel({
               onClick={downloadOutput}
               disabled={outputs.length === 0}
               title="Download output"
+              className="min-h-[36px] sm:min-h-0 touch-manipulation"
             >
               <Download className="h-4 w-4" />
             </Button>
@@ -124,16 +126,17 @@ export default function EnhancedOutputPanel({
               onClick={onClear}
               disabled={outputs.length === 0}
               title="Clear output"
+              className="min-h-[36px] sm:min-h-0 touch-manipulation"
             >
               <Trash2 className="h-4 w-4" />
             </Button>
           </div>
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="px-3 sm:px-6">
         <div
           ref={outputRef}
-          className="bg-black font-mono p-4 rounded-md h-[250px] overflow-auto"
+          className="bg-black font-mono p-3 sm:p-4 rounded-md h-[200px] sm:h-[250px] overflow-auto text-xs sm:text-sm touch-pan-y"
         >
           {outputs.length === 0 ? (
             <div className="text-gray-500">
