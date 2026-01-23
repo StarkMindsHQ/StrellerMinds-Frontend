@@ -120,33 +120,35 @@ function CollaborativePlaygroundContent() {
   }, []);
 
   return (
-    <div className="container mx-auto p-4 max-w-7xl">
+    <div className="container mx-auto p-2 sm:p-4 max-w-7xl">
       <Toaster position="top-right" />
 
       {/* Header Card */}
-      <Card className="mb-6">
-        <CardHeader>
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-              <CardTitle className="text-2xl flex items-center gap-2">
-                <Code2 className="h-6 w-6" />
-                Collaborative Code Playground
+      <Card className="mb-4 sm:mb-6">
+        <CardHeader className="px-3 sm:px-6 py-3 sm:py-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+            <div className="min-w-0">
+              <CardTitle className="text-lg sm:text-2xl flex items-center gap-2">
+                <Code2 className="h-5 w-5 sm:h-6 sm:w-6 flex-shrink-0" />
+                <span className="truncate">Collaborative Code Playground</span>
               </CardTitle>
-              <CardDescription className="mt-1">
+              <CardDescription className="mt-1 text-xs sm:text-sm">
                 Real-time collaborative coding with live synchronization
               </CardDescription>
             </div>
             <div className="flex flex-wrap items-center gap-2">
               <SessionManager />
               {state.isConnected ? (
-                <Badge variant="outline" className="gap-1">
+                <Badge variant="outline" className="gap-1 text-xs sm:text-sm">
                   <div className="w-2 h-2 bg-green-500 rounded-full" />
-                  Connected
+                  <span className="hidden sm:inline">Connected</span>
+                  <span className="sm:hidden">On</span>
                 </Badge>
               ) : (
-                <Badge variant="outline" className="gap-1">
+                <Badge variant="outline" className="gap-1 text-xs sm:text-sm">
                   <div className="w-2 h-2 bg-gray-400 rounded-full" />
-                  Disconnected
+                  <span className="hidden sm:inline">Disconnected</span>
+                  <span className="sm:hidden">Off</span>
                 </Badge>
               )}
             </div>
@@ -156,22 +158,22 @@ function CollaborativePlaygroundContent() {
 
       {!state.session ? (
         <Card>
-          <CardContent className="py-12 text-center">
-            <Users className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-lg font-semibold mb-2">No Active Session</h3>
-            <p className="text-muted-foreground mb-4">
+          <CardContent className="py-8 sm:py-12 text-center px-4">
+            <Users className="h-10 w-10 sm:h-12 sm:w-12 mx-auto mb-3 sm:mb-4 text-muted-foreground" />
+            <h3 className="text-base sm:text-lg font-semibold mb-2">No Active Session</h3>
+            <p className="text-sm sm:text-base text-muted-foreground mb-4">
               Create a new session or join an existing one to start collaborating
             </p>
           </CardContent>
         </Card>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
           {/* Main Editor Area */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-4 sm:space-y-6">
             <Card>
-              <CardHeader className="pb-3">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                  <CardTitle>Collaborative Editor</CardTitle>
+              <CardHeader className="pb-2 sm:pb-3 px-3 sm:px-6">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4">
+                  <CardTitle className="text-base sm:text-lg">Collaborative Editor</CardTitle>
                   <LanguageSelector
                     selectedLanguage={language}
                     onLanguageChange={handleLanguageChange}
@@ -179,7 +181,7 @@ function CollaborativePlaygroundContent() {
                   />
                 </div>
               </CardHeader>
-              <CardContent>
+              <CardContent className="px-3 sm:px-6">
                 <CollaborativeEditor
                   language={language}
                   isExecuting={isExecuting}
@@ -199,7 +201,7 @@ function CollaborativePlaygroundContent() {
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             <CollaborationChat />
           </div>
         </div>

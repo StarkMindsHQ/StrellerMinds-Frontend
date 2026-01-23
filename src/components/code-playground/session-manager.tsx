@@ -117,14 +117,19 @@ export default function SessionManager() {
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-1 sm:gap-2 flex-wrap">
       {!state.session ? (
         <>
           <Dialog open={createOpen} onOpenChange={setCreateOpen}>
             <DialogTrigger asChild>
-              <Button variant="outline" size="sm" className="gap-2">
-                <Plus className="h-4 w-4" />
-                Create Session
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="gap-1 sm:gap-2 text-xs sm:text-sm min-h-[36px] sm:min-h-0 touch-manipulation"
+              >
+                <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                <span className="hidden xs:inline">Create Session</span>
+                <span className="xs:hidden">Create</span>
               </Button>
             </DialogTrigger>
             <DialogContent>
@@ -186,9 +191,14 @@ export default function SessionManager() {
 
           <Dialog open={joinOpen} onOpenChange={setJoinOpen}>
             <DialogTrigger asChild>
-              <Button variant="outline" size="sm" className="gap-2">
-                <LogIn className="h-4 w-4" />
-                Join Session
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="gap-1 sm:gap-2 text-xs sm:text-sm min-h-[36px] sm:min-h-0 touch-manipulation"
+              >
+                <LogIn className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                <span className="hidden xs:inline">Join Session</span>
+                <span className="xs:hidden">Join</span>
               </Button>
             </DialogTrigger>
             <DialogContent>
@@ -225,25 +235,43 @@ export default function SessionManager() {
           </Dialog>
         </>
       ) : (
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-2 px-3 py-1.5 bg-muted rounded-md">
-            <Users className="h-4 w-4" />
-            <span className="text-sm font-medium">{state.session.name}</span>
-            <span className="text-xs text-muted-foreground">
-              ({state.session.users.length} users)
+        <div className="flex items-center gap-1 sm:gap-2 flex-wrap">
+          <div className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 bg-muted rounded-md text-xs sm:text-sm">
+            <Users className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
+            <span className="font-medium truncate max-w-[120px] sm:max-w-none">{state.session.name}</span>
+            <span className="text-xs text-muted-foreground whitespace-nowrap">
+              ({state.session.users.length})
             </span>
           </div>
-          <Button variant="outline" size="sm" onClick={copySessionId} className="gap-2">
-            <Copy className="h-4 w-4" />
-            Copy ID
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={copySessionId} 
+            className="gap-1 sm:gap-2 min-h-[36px] sm:min-h-0 touch-manipulation"
+            title="Copy Session ID"
+          >
+            <Copy className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            <span className="hidden sm:inline">Copy ID</span>
           </Button>
-          <Button variant="outline" size="sm" onClick={shareSession} className="gap-2">
-            <Share2 className="h-4 w-4" />
-            Share
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={shareSession} 
+            className="gap-1 sm:gap-2 min-h-[36px] sm:min-h-0 touch-manipulation"
+            title="Share Session"
+          >
+            <Share2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            <span className="hidden sm:inline">Share</span>
           </Button>
-          <Button variant="outline" size="sm" onClick={handleLeaveSession} className="gap-2">
-            <LogOut className="h-4 w-4" />
-            Leave
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={handleLeaveSession} 
+            className="gap-1 sm:gap-2 min-h-[36px] sm:min-h-0 touch-manipulation"
+            title="Leave Session"
+          >
+            <LogOut className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            <span className="hidden sm:inline">Leave</span>
           </Button>
         </div>
       )}

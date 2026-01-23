@@ -287,33 +287,33 @@ export default function VoiceNoteRecorder({
           disabled={disabled}
           variant="outline"
           size="sm"
-          className="w-full gap-2"
+          className="w-full gap-2 min-h-[44px] sm:min-h-0 touch-manipulation"
         >
           <Mic className="h-4 w-4" />
-          Record Voice Note
+          <span className="text-sm sm:text-base">Record Voice Note</span>
         </Button>
       )}
 
       {isRecording && (
         <div className="space-y-2">
-          <div className="flex items-center justify-between p-2 bg-muted rounded-md">
+          <div className="flex items-center justify-between p-2 sm:p-3 bg-muted rounded-md">
             <div className="flex items-center gap-2">
               <div className="h-3 w-3 rounded-full bg-red-500 animate-pulse" />
-              <span className="text-sm font-mono">{formatDuration(duration)}</span>
+              <span className="text-sm sm:text-base font-mono">{formatDuration(duration)}</span>
             </div>
-            <div className="flex gap-1">
+            <div className="flex gap-1 sm:gap-2">
               {isPauseSupported() && (
                 <Button
                   onClick={togglePause}
                   variant="ghost"
                   size="icon"
-                  className="h-8 w-8"
+                  className="h-10 w-10 sm:h-8 sm:w-8 touch-manipulation"
                   title={isPaused ? 'Resume' : 'Pause'}
                 >
                   {isPaused ? (
-                    <Play className="h-4 w-4" />
+                    <Play className="h-4 w-4 sm:h-5 sm:w-5" />
                   ) : (
-                    <Pause className="h-4 w-4" />
+                    <Pause className="h-4 w-4 sm:h-5 sm:w-5" />
                   )}
                 </Button>
               )}
@@ -321,10 +321,10 @@ export default function VoiceNoteRecorder({
                 onClick={stopRecording}
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8"
+                className="h-10 w-10 sm:h-8 sm:w-8 touch-manipulation"
                 title="Stop"
               >
-                <Square className="h-4 w-4" />
+                <Square className="h-4 w-4 sm:h-5 sm:w-5" />
               </Button>
             </div>
           </div>
@@ -333,39 +333,42 @@ export default function VoiceNoteRecorder({
 
       {audioBlob && !isRecording && (
         <div className="space-y-2">
-          <div className="flex items-center justify-between p-2 bg-muted rounded-md">
-            <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between p-2 sm:p-3 bg-muted rounded-md flex-wrap gap-2">
+            <div className="flex items-center gap-2 flex-1 min-w-0">
               <Button
                 onClick={playPreview}
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8"
+                className="h-10 w-10 sm:h-8 sm:w-8 touch-manipulation flex-shrink-0"
                 title={isPlaying ? 'Pause' : 'Play'}
               >
                 {isPlaying ? (
-                  <Pause className="h-4 w-4" />
+                  <Pause className="h-4 w-4 sm:h-5 sm:w-5" />
                 ) : (
-                  <Play className="h-4 w-4" />
+                  <Play className="h-4 w-4 sm:h-5 sm:w-5" />
                 )}
               </Button>
-              <span className="text-sm font-mono">{formatDuration(duration)}</span>
-              <span className="text-xs text-muted-foreground">
-                ({(audioBlob.size / 1024).toFixed(1)} KB)
-              </span>
+              <div className="flex items-center gap-1 sm:gap-2 min-w-0">
+                <span className="text-xs sm:text-sm font-mono whitespace-nowrap">{formatDuration(duration)}</span>
+                <span className="text-xs text-muted-foreground hidden sm:inline">
+                  ({(audioBlob.size / 1024).toFixed(1)} KB)
+                </span>
+              </div>
             </div>
-            <div className="flex gap-1">
+            <div className="flex gap-1 sm:gap-2 flex-shrink-0">
               <Button
                 onClick={sendVoiceNote}
                 size="sm"
-                className="gap-2"
+                className="gap-2 min-h-[44px] sm:min-h-0 touch-manipulation"
               >
                 <Send className="h-4 w-4" />
-                Send
+                <span className="hidden sm:inline">Send</span>
               </Button>
               <Button
                 onClick={cancelRecording}
                 variant="ghost"
                 size="sm"
+                className="min-h-[44px] sm:min-h-0 touch-manipulation"
               >
                 Cancel
               </Button>

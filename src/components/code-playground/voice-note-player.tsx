@@ -101,33 +101,35 @@ export default function VoiceNotePlayer({
 
   return (
     <div
-      className={`flex items-center gap-2 p-3 rounded-lg ${
+      className={`flex items-center gap-2 p-2 sm:p-3 rounded-lg ${
         isCurrentUser
           ? 'bg-primary text-primary-foreground'
           : 'bg-muted'
       }`}
-      style={{ maxWidth: '80%', minWidth: '200px' }}
+      style={{ maxWidth: '100%', minWidth: '180px' }}
     >
       <Button
         onClick={togglePlay}
         variant="ghost"
         size="icon"
-        className={`h-8 w-8 ${isCurrentUser ? 'hover:bg-primary-foreground/20' : ''}`}
+        className={`h-10 w-10 sm:h-8 sm:w-8 touch-manipulation flex-shrink-0 ${
+          isCurrentUser ? 'hover:bg-primary-foreground/20' : ''
+        }`}
       >
         {isPlaying ? (
-          <Pause className="h-4 w-4" />
+          <Pause className="h-5 w-5 sm:h-4 sm:w-4" />
         ) : (
-          <Play className="h-4 w-4" />
+          <Play className="h-5 w-5 sm:h-4 sm:w-4" />
         )}
       </Button>
-      <div className="flex-1">
-        <div className="flex items-center gap-2 mb-1">
-          <Mic className="h-3 w-3 opacity-70" />
-          <span className="text-xs font-mono">{formatDuration(currentTime)}</span>
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-1 sm:gap-2 mb-1">
+          <Mic className="h-3 w-3 sm:h-3.5 sm:w-3.5 opacity-70 flex-shrink-0" />
+          <span className="text-xs sm:text-sm font-mono whitespace-nowrap">{formatDuration(currentTime)}</span>
           <span className="text-xs opacity-70">/</span>
-          <span className="text-xs font-mono opacity-70">{formatDuration(duration)}</span>
+          <span className="text-xs sm:text-sm font-mono opacity-70 whitespace-nowrap">{formatDuration(duration)}</span>
         </div>
-        <div className="h-1 bg-black/20 rounded-full overflow-hidden">
+        <div className="h-1.5 sm:h-1 bg-black/20 rounded-full overflow-hidden touch-none">
           <div
             className="h-full bg-current transition-all"
             style={{ width: `${progress}%` }}

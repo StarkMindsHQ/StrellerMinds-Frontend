@@ -216,12 +216,12 @@ export default function CollaborativeEditor({
   }, [code, getCurrentCode]);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3 sm:space-y-4">
       {/* User presence indicator */}
       {state.session && (
-        <div className="flex items-center gap-2 p-2 bg-muted rounded-md">
-          <Users className="h-4 w-4" />
-          <span className="text-sm">
+        <div className="flex items-center gap-2 p-2 sm:p-3 bg-muted rounded-md flex-wrap">
+          <Users className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
+          <span className="text-xs sm:text-sm">
             {state.session.users.length} user{state.session.users.length !== 1 ? 's' : ''} in
             session
           </span>
@@ -229,7 +229,7 @@ export default function CollaborativeEditor({
             {Array.from(state.users.values()).map((user) => (
               <div
                 key={user.id}
-                className="w-6 h-6 rounded-full flex items-center justify-center text-xs text-white"
+                className="w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-xs text-white flex-shrink-0"
                 style={{ backgroundColor: user.color }}
                 title={user.name}
               >
@@ -240,7 +240,7 @@ export default function CollaborativeEditor({
         </div>
       )}
 
-      <div className="border rounded-md overflow-hidden h-[500px]">
+      <div className="border rounded-md overflow-hidden h-[400px] sm:h-[500px] md:h-[600px] touch-none">
         <Editor
           height="100%"
           language={language}
@@ -250,12 +250,12 @@ export default function CollaborativeEditor({
           theme="vs-dark"
           options={{
             minimap: { enabled: false },
-            fontSize: 14,
+            fontSize: typeof window !== 'undefined' && window.innerWidth < 640 ? 16 : 14,
             wordWrap: 'on',
             automaticLayout: true,
             tabSize: 2,
             scrollBeyondLastLine: false,
-            lineNumbers: 'on',
+            lineNumbers: typeof window !== 'undefined' && window.innerWidth < 640 ? 'off' : 'on',
             renderLineHighlight: 'line',
             folding: true,
             bracketPairColorization: { enabled: true },
@@ -263,27 +263,45 @@ export default function CollaborativeEditor({
             // Disable default undo/redo - Yjs handles this
             undoStopBefore: false,
             undoStopAfter: false,
+            // Mobile optimizations
+            mouseWheelZoom: false,
+            contextmenu: true,
+            quickSuggestions: true,
+            suggestOnTriggerCharacters: true,
+            acceptSuggestionOnEnter: 'on',
+            tabCompletion: 'on',
+            // Touch optimizations
+            multiCursorModifier: 'ctrlCmd',
+            dragAndDrop: true,
           }}
         />
       </div>
 
       <div className="flex gap-2 flex-wrap">
         {isExecuting ? (
-          <Button onClick={onStop} variant="destructive" className="gap-2">
+          <Button 
+            onClick={onStop} 
+            variant="destructive" 
+            className="gap-2 min-h-[44px] sm:min-h-0 touch-manipulation"
+          >
             <Square className="h-4 w-4" />
             Stop
           </Button>
         ) : (
           <Button
             onClick={() => onExecute(getCode())}
-            className="gap-2"
+            className="gap-2 min-h-[44px] sm:min-h-0 touch-manipulation"
             disabled={!canUserEdit()}
           >
             <Play className="h-4 w-4" />
             Run Code
           </Button>
         )}
-        <Button variant="outline" onClick={copyCode} className="gap-2">
+        <Button 
+          variant="outline" 
+          onClick={copyCode} 
+          className="gap-2 min-h-[44px] sm:min-h-0 touch-manipulation"
+        >
           <Copy className="h-4 w-4" />
           Copy
         </Button>

@@ -45,15 +45,15 @@ export default function CollaborationChat() {
   }
 
   return (
-    <Card className="h-full flex flex-col">
-      <CardHeader className="pb-3">
-        <CardTitle className="text-lg flex items-center gap-2">
+    <Card className="h-full flex flex-col min-h-[400px] sm:min-h-0">
+      <CardHeader className="pb-2 sm:pb-3 px-3 sm:px-6">
+        <CardTitle className="text-base sm:text-lg flex items-center gap-2">
           <MessageSquare className="h-4 w-4" />
           Chat
         </CardTitle>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col p-0">
-        <div className="flex-1 px-4 overflow-y-auto">
+        <div className="flex-1 px-2 sm:px-4 overflow-y-auto touch-pan-y">
           <div className="space-y-3 py-4">
             {state.messages.length === 0 ? (
               <div className="text-center text-sm text-muted-foreground py-8">
@@ -80,7 +80,7 @@ export default function CollaborationChat() {
                     key={msg.id}
                     className={`flex gap-2 ${isCurrentUser ? 'flex-row-reverse' : ''}`}
                   >
-                    <Avatar className="h-8 w-8">
+                    <Avatar className="h-7 w-7 sm:h-8 sm:w-8 flex-shrink-0">
                       <AvatarFallback
                         className="text-xs"
                         style={{
@@ -121,12 +121,12 @@ export default function CollaborationChat() {
                         )
                       ) : (
                         <div
-                          className={`text-sm rounded-lg px-3 py-2 ${
+                          className={`text-xs sm:text-sm rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 break-words ${
                             isCurrentUser
                               ? 'bg-primary text-primary-foreground ml-auto'
                               : 'bg-muted'
                           }`}
-                          style={{ maxWidth: '80%', display: 'inline-block' }}
+                          style={{ maxWidth: '85%', display: 'inline-block' }}
                         >
                           {msg.message}
                         </div>
@@ -139,7 +139,7 @@ export default function CollaborationChat() {
             <div ref={messagesEndRef} />
           </div>
         </div>
-        <div className="p-4 border-t space-y-2">
+        <div className="p-2 sm:p-4 border-t space-y-2">
           <VoiceNoteRecorder
             onRecordComplete={sendVoiceNote}
             disabled={!state.isConnected}
@@ -152,11 +152,13 @@ export default function CollaborationChat() {
               onChange={(e) => setMessage(e.target.value)}
               onKeyPress={handleKeyPress}
               disabled={!state.isConnected}
+              className="text-sm sm:text-base min-h-[44px] sm:min-h-0"
             />
             <Button
               onClick={handleSendMessage}
               disabled={!message.trim() || !state.isConnected}
               size="icon"
+              className="min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0"
             >
               <Send className="h-4 w-4" />
             </Button>
