@@ -22,6 +22,16 @@ const envSchema = z.object({
     .default('http://localhost:3000/api'),
   NEXT_PUBLIC_API_TIMEOUT: z.coerce.number().positive().default(10000),
 
+  // WebSocket Configuration (for collaboration)
+  NEXT_PUBLIC_WS_URL: z.string().url().default('http://localhost:3001'),
+  WS_PORT: z.coerce.number().positive().default(3001),
+
+  // Redis Configuration (for session management)
+  REDIS_URL: z.string().url().optional(),
+  REDIS_HOST: z.string().optional(),
+  REDIS_PORT: z.coerce.number().positive().optional(),
+  REDIS_PASSWORD: z.string().optional(),
+
   // External Services
   NEXT_PUBLIC_COINGECKO_API_URL: z
     .string()
@@ -87,6 +97,12 @@ export const env = envSchema.parse({
   NEXT_PUBLIC_APP_VERSION: process.env.NEXT_PUBLIC_APP_VERSION,
   NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
   NEXT_PUBLIC_API_TIMEOUT: process.env.NEXT_PUBLIC_API_TIMEOUT,
+  NEXT_PUBLIC_WS_URL: process.env.NEXT_PUBLIC_WS_URL,
+  WS_PORT: process.env.WS_PORT,
+  REDIS_URL: process.env.REDIS_URL,
+  REDIS_HOST: process.env.REDIS_HOST,
+  REDIS_PORT: process.env.REDIS_PORT,
+  REDIS_PASSWORD: process.env.REDIS_PASSWORD,
   NEXT_PUBLIC_COINGECKO_API_URL: process.env.NEXT_PUBLIC_COINGECKO_API_URL,
   NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
   NEXTAUTH_URL: process.env.NEXTAUTH_URL,
@@ -195,8 +211,9 @@ export function validateEnvironment(): void {
     console.error('❌ Environment validation failed:');
     if (error instanceof z.ZodError) {
       console.error('Missing or invalid environment variables:');
-      error.errors.forEach((err) => {
-        console.error(`  - ${err.path.join('.')}: ${err.message}`);
+      error.issues.forEach((issue: z.ZodIssue) => {
+        const path = issue.path.length > 0 ? issue.path.join('.') : 'root';
+        console.error(`  - ${path}: ${issue.message}`);
       });
     } else {
       console.error(error);
