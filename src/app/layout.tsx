@@ -11,6 +11,7 @@ import { Providers } from '../lib/providers';
 import EnvironmentValidator from '../components/EnvironmentValidator';
 import { initializeServerEnvironment } from '../lib/env-server';
 import StyledComponentsRegistry from '../lib/registry';
+import MainLayoutWrapper from '../components/MainLayoutWrapper';
 
 // Initialize server environment validation
 initializeServerEnvironment();
@@ -162,9 +163,9 @@ export default function RootLayout({
               Skip to content
             </a>
 
-            <Navbar />
-            {children}
-            <Footer />
+            <MainLayoutWrapper>
+              {children}
+            </MainLayoutWrapper>
             <Toaster position="top-right" />
 
             {/* Privacy-compliant Analytics */}
