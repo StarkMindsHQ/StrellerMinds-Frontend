@@ -78,7 +78,7 @@ export default function LoginPage() {
               <input
                 {...register('email')}
                 type="email"
-                placeholder="Enter"
+                placeholder="Enter your email"
                 className={`w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 ${
                   errors.email
                     ? 'border-red-500 ring-red-400'
@@ -95,7 +95,7 @@ export default function LoginPage() {
                 <input
                   {...register('password')}
                   type={showPassword ? 'text' : 'password'}
-                  placeholder="Enter"
+                  placeholder="Enter your password"
                   className={`w-full border rounded-lg px-4 py-2 pr-10 focus:outline-none focus:ring-2 ${
                     errors.password
                       ? 'border-red-500 ring-red-400'
