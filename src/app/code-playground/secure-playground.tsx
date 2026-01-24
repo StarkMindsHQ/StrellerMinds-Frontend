@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Toaster } from 'sonner';
-import { Shield, Zap, Clock, Code2 } from 'lucide-react';
+import { Shield, Zap, Clock, Code2, Users } from 'lucide-react';
 
 import LanguageSelector from '@/components/code-playground/language-selector';
 import EnhancedTemplateSelector from '@/components/code-playground/enhanced-template-selector';
@@ -19,6 +19,8 @@ import SecureCodeEditor from '@/components/code-playground/secure-code-editor';
 import EnhancedOutputPanel from '@/components/code-playground/enhanced-output-panel';
 import SaveCodeForm from '@/components/code-playground/save-code-form';
 import DocumentationPanel from '@/components/code-playground/documentation-panel';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 import {
   type SupportedLanguage,
@@ -169,7 +171,7 @@ export default function SecureCodePlayground() {
                 Execute code safely in an isolated sandbox environment
               </CardDescription>
             </div>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <Badge variant="outline" className="gap-1">
                 <Shield className="h-3 w-3" />
                 Sandboxed
@@ -182,6 +184,12 @@ export default function SecureCodePlayground() {
                 <Clock className="h-3 w-3" />
                 Resource Limited
               </Badge>
+              <Link href="/code-playground/collaborative">
+                <Button variant="outline" size="sm" className="gap-2">
+                  <Users className="h-3 w-3" />
+                  Try Collaborative Mode
+                </Button>
+              </Link>
             </div>
           </div>
         </CardHeader>

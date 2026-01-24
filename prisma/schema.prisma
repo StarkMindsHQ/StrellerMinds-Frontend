@@ -1,0 +1,110 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  phone         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  notifications           Notification[]
+  notificationPreferences NotificationPreferences?
+  pushSubscriptions       PushSubscription[]
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  type      NotificationType
+  title     String
+  message   String   @db.Text
+  priority  NotificationPriority @default(MEDIUM)
+  status    NotificationStatus   @default(UNREAD)
+  
+  metadata  Json?
+  actionUrl String?
+  imageUrl  String?
+  
+  createdAt DateTime  @default(now())
+  readAt    DateTime?
+  expiresAt DateTime?
+  
+  @@index([userId, status])
+  @@index([userId, createdAt])
+  @@index([type])
+}
+
+model NotificationPreferences {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Channel preferences stored as JSON
+  channels Json @default("{\"in_app\":{\"enabled\":true,\"types\":{}},\"email\":{\"enabled\":true,\"types\":{}},\"push\":{\"enabled\":false,\"types\":{}},\"sms\":{\"enabled\":false,\"types\":{}}}")
+  
+  // Quiet hours
+  quietHoursEnabled Boolean @default(false)
+  quietHoursStart   String? // "22:00"
+  quietHoursEnd     String? // "08:00"
+  quietHoursTimezone String @default("UTC")
+  
+  // Frequency controls
+  digestEnabled Boolean @default(false)
+  digestTime    String? // "09:00"
+  maxPerHour    Int     @default(10)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PushSubscription {
+  id       String @id @default(cuid())
+  userId   String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  endpoint       String @unique
+  p256dh         String
+  auth           String
+  expirationTime DateTime?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@index([userId])
+}
+
+enum NotificationType {
+  COURSE_UPDATE
+  ASSIGNMENT_DEADLINE
+  QUIZ_RESULT
+  ACHIEVEMENT
+  SYSTEM_MAINTENANCE
+  ANNOUNCEMENT
+  REMINDER
+  FEEDBACK
+}
+
+enum NotificationPriority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum NotificationStatus {
+  UNREAD
+  READ
+  ARCHIVED
+}
