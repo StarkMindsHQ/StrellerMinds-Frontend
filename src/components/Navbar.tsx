@@ -131,7 +131,7 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 768) setIsMenuOpen(false);
+      if (window.innerWidth >= 1024) setIsMenuOpen(false);
     };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -197,7 +197,7 @@ const Navbar = () => {
           </div>
 
           {/* Hamburger button */}
-          <div className="md:hidden">
+          <div className="lg:hidden">
             <button
               onClick={toggleMenu}
               aria-label={
@@ -217,7 +217,7 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center justify-center flex-1">
+          <div className="hidden lg:flex items-center justify-center flex-1">
             <ul
               className="flex space-x-4 lg:space-x-6 xl:space-x-6"
               role="menubar"
@@ -250,7 +250,7 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Auth Buttons and Theme Toggle */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden lg:flex items-center space-x-4">
             <ThemeToggle />
             <SignInButton />
             <CustomGetStartedButton />
@@ -263,7 +263,7 @@ const Navbar = () => {
             id="mobile-menu"
             role="menu"
             aria-label="Mobile navigation menu"
-            className="md:hidden mt-4 h-[90vh]"
+            className="lg:hidden mt-4 h-[90vh]"
           >
             {/* Mobile Crypto Ticker */}
             <div className="mb-4 pb-4 border-b border-[#dfb1cc]/30">
