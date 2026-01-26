@@ -38,9 +38,9 @@ export default function LanguageSelector({
       onValueChange={(value) => onLanguageChange(value as SupportedLanguage)}
       disabled={disabled}
     >
-      <SelectTrigger className="w-[160px]">
+      <SelectTrigger className="w-[140px] sm:w-[160px] min-h-[36px] sm:min-h-0 touch-manipulation">
         <SelectValue placeholder="Select language">
-          <span className="flex items-center gap-2">
+          <span className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
             <span>{languageIcons[selectedLanguage]}</span>
             <span>{getLanguageDisplayName(selectedLanguage)}</span>
           </span>

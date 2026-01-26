@@ -18,6 +18,22 @@
   animation: fadeIn 0.6s ease-in-out forwards;
 }
 
+/* Mobile touch optimizations */
+@layer utilities {
+  .touch-manipulation {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .touch-pan-y {
+    touch-action: pan-y;
+  }
+  
+  .touch-none {
+    touch-action: none;
+  }
+}
+
 @layer base {
   :root {
     --radius: 0.625rem;
