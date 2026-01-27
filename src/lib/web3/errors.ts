@@ -78,7 +78,7 @@ export function handleWeb3Error(error: any): void {
 
   // Show appropriate toast notification
   toast.error(web3Error.message, {
-    description: web3.action,
+    description: web3Error.action,
     duration: 5000,
   });
 

@@ -98,7 +98,7 @@ const LoginForm = () => {
         <div className="bg-white shadow-lg p-8 rounded-lg w-full">
           <h2 className="text-2xl font-bold mb-2">Sign In</h2>
           <h2 className="mb-5 text-[#777]">
-            Enter your credencials to acces your account
+            Enter your credentials to access your account
           </h2>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {/* ARIA live region for screen reader announcements */}
@@ -142,7 +142,7 @@ const LoginForm = () => {
               <Input
                 className="w-full px-3 py-2 border rounded-lg outline-none"
                 id="password"
-                placeholder="password"
+                placeholder="Enter your password"
                 type="password"
                 {...register('password')}
                 aria-invalid={!!errors.password}
@@ -191,14 +191,14 @@ const LoginForm = () => {
                 className="shadow-xl border-1 border-#777 rounded-[9px] text-[#777] flex gap-2 py-[10.5px] px-[37.6px] my-[30px]"
               >
                 <LuGithub className="mt-[2px]" />
-                <span>Github</span>
+                <span>GitHub</span>
               </button>
               <button
                 onClick={signInWithStella}
                 className="shadow-xl border-1 border-#777 rounded-[9px] text-[#777] flex gap-2 py-[10.5px] px-[37.6px] my-[30px]"
               >
                 <FaRegStar className="mt-[3px]" color="#155dfc" />
-                <span>Stella</span>
+                <span>Stellar</span>
               </button>
             </div>
             <p className="text-center">

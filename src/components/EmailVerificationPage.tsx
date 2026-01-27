@@ -99,7 +99,7 @@ export default function EmailVerificationPage() {
 
               <div className="text-center mb-6">
                 <p className="text-sm text-gray-600">
-                  Didnt receive a code?{' '}
+                  Didn&apos;t receive a code?
                   <button
                     type="button"
                     className="text-blue-600 font-medium hover:underline"
@@ -133,7 +133,7 @@ export default function EmailVerificationPage() {
                   href="#"
                   className="text-blue-600 font-medium hover:underline"
                 >
-                  Sign in
+                  Sign In
                 </a>
               </p>
             </div>
