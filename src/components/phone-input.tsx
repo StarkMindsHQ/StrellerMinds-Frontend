@@ -34,7 +34,7 @@ export function PhoneInput({
         id="phone"
         name="phone"
         type="tel"
-        placeholder="Enter"
+        placeholder="Enter phone number"
         className={cn(
           'flex-1 min-w-0 px-3 py-2 border border-l-0 rounded-r-md focus:outline-none focus:ring-2 text-sm',
           error

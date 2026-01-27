@@ -50,7 +50,7 @@ export default function CookieBanner() {
                       <div className="mt-3 flex items-center gap-2 text-xs text-gray-500 dark:text-gray-500">
                         <Shield className="h-4 w-4" />
                         <span>
-                          Privacy-first • GDPR Compliant • No tracking cookies
+                          Privacy-First • GDPR Compliant • No Tracking Cookies
                         </span>
                       </div>
                     </div>

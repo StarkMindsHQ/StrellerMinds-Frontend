@@ -70,7 +70,7 @@ export default function Register() {
           <FormField label="Name" name="name" error={errors.name?.message}>
             <Input
               id="name"
-              placeholder="Enter"
+              placeholder="Enter your full name"
               {...register('name')}
               error={!!errors.name}
             />
@@ -80,7 +80,7 @@ export default function Register() {
             <Input
               id="email"
               type="email"
-              placeholder="Enter"
+              placeholder="name@example.com"
               {...register('email')}
               error={!!errors.email}
             />
@@ -105,7 +105,7 @@ export default function Register() {
               <Input
                 id="password"
                 type={showPassword ? 'text' : 'password'}
-                placeholder="Enter"
+                placeholder="Enter your password"
                 {...register('password')}
                 error={!!errors.password}
               />
@@ -132,7 +132,7 @@ export default function Register() {
               <Input
                 id="confirmPassword"
                 type={showPassword ? 'text' : 'password'}
-                placeholder="Confirm password"
+                placeholder="Confirm your password"
                 {...register('confirmPassword')}
                 error={!!errors.confirmPassword}
               />

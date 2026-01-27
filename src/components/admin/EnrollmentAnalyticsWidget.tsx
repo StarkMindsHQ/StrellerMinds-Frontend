@@ -360,7 +360,7 @@ export const EnrollmentAnalyticsWidget = ({
                 <CardHeader className="pb-3">
                   <CardTitle className="text-base">At-Risk Course</CardTitle>
                   <CardDescription>
-                    Least enrolled elective to watch.
+                    Elective with the lowest enrollment.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="flex flex-col gap-3">
