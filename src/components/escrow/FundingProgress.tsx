@@ -29,7 +29,7 @@ export default function FundingProgress({ total, funded }: Props) {
 
       <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-md h-3 overflow-hidden">
         <div
-          className="h-3 bg-gradient-to-r from-amber-400 to-amber-600 dark:from-amber-500 dark:to-amber-600 transition-[width] duration-1000"
+          className="h-3 bg-linear-to-r from-amber-400 to-amber-600 dark:from-amber-500 dark:to-amber-600 transition-[width] duration-1000"
           style={{ width: `${animPct}%` }}
         />
       </div>

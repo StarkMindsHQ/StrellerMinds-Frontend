@@ -67,7 +67,7 @@ export default function EscrowCard() {
             />
             <div className="mt-5 flex flex-wrap gap-3">
               <button
-                className="px-4 py-2 rounded-md bg-gradient-to-r from-purple-600 to-purple-700 text-white font-medium transition-all hover:from-purple-700 hover:to-purple-800 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-2 rounded-md bg-linear-to-r from-purple-600 to-purple-700 text-white font-medium transition-all hover:from-purple-700 hover:to-purple-800 disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={!funded || role !== 'creator'}
               >
                 {role === 'creator' ? 'Release Funds' : 'Creator Only'}

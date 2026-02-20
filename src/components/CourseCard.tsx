@@ -94,7 +94,7 @@ export function CourseCard({
   return (
     <div className={cn(getCardClasses(), className)}>
       {/* Card Header with Image */}
-      <div className="relative flex-shrink-0">
+      <div className="relative shrink-0">
         <div className="absolute right-3 top-3 z-10">
           <span
             className={`inline-flex rounded-full px-3 py-1.5 text-xs font-semibold ${getBadgeStyles(level)}`}
@@ -121,7 +121,7 @@ export function CourseCard({
 
         <div
           className={cn(
-            'flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800',
+            'flex items-center justify-center bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800',
             variant === 'compact' ? 'h-40' : 'h-48',
           )}
         >
@@ -149,7 +149,7 @@ export function CourseCard({
       {/* Card Content */}
       <div className="flex flex-1 flex-col p-6">
         {/* Title and Description */}
-        <div className="mb-4 flex-grow">
+        <div className="mb-4 grow">
           <h3
             className={cn(
               'font-bold text-gray-900 dark:text-gray-100 mb-2 line-clamp-2',
@@ -183,7 +183,7 @@ export function CourseCard({
               <ul className="space-y-2">
                 {displayFeatures.map((feature, index) => (
                   <li key={index} className="flex items-start gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
+                    <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 shrink-0" />
                     <span className="text-sm text-gray-600 dark:text-gray-400">
                       {feature}
                     </span>
@@ -249,7 +249,7 @@ export function CourseCard({
             className={cn(
               'inline-flex w-full items-center justify-center rounded-lg font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
               variant === 'featured'
-                ? 'bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-3 text-white hover:from-blue-700 hover:to-blue-800 hover:shadow-lg'
+                ? 'bg-linear-to-r from-blue-600 to-blue-700 px-6 py-3 text-white hover:from-blue-700 hover:to-blue-800 hover:shadow-lg'
                 : 'bg-blue-600 px-4 py-2.5 text-white hover:bg-blue-700',
               variant === 'compact' ? 'text-sm py-2' : 'text-sm',
             )}
