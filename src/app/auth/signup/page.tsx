@@ -138,7 +138,7 @@ export default function SignUpPage() {
         damping: 10,
       },
     },
-  };
+  } as any;
 
   const slideVariants = {
     enter: (direction: number) => ({
@@ -161,7 +161,7 @@ export default function SignUpPage() {
         duration: 0.3,
       },
     }),
-  };
+  } as any;
 
   return (
     <div className="min-h-screen flex flex-col">
