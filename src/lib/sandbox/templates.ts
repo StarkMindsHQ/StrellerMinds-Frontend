@@ -6,6 +6,7 @@
  */
 
 import type { CodeTemplate, SupportedLanguage } from './types';
+export type { CodeTemplate } from './types';
 
 // JavaScript Templates
 const javascriptTemplates: CodeTemplate[] = [
