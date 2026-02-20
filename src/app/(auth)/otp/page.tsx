@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useRef, useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { otpSchema } from "@/schemas/otp.schema";
-import { verifyOtp, resendOtp } from "@/services/auth.service";
-import { useRouter } from "next/navigation";
-import { z } from "zod";
+import { useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { otpSchema } from '@/schemas/otp.schema';
+import { verifyOtp } from '@/services/auth.service';
+import { useRouter } from 'next/navigation';
+import { z } from 'zod';
 
 type FormData = z.infer<typeof otpSchema>;
 
@@ -33,7 +33,7 @@ export default function OtpPage() {
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(otpSchema),
-    defaultValues: { otp: "" },
+    defaultValues: { code: '' },
   });
 
   /* ================= EFFECTS ================= */
@@ -57,14 +57,11 @@ export default function OtpPage() {
   const handleChange = (value: string, index: number) => {
     if (!/^\d?$/.test(value)) return;
 
-    const otpArray = inputsRef.current.map(
-      (input) => input?.value || ""
-    );
-
+    const otpArray = inputsRef.current.map((input) => input?.value || '');
     otpArray[index] = value;
 
-    const otpString = otpArray.join("");
-    setValue("otp", otpString);
+    const otpString = otpArray.join('');
+    setValue('code', otpString);
 
     if (value && index < 5) {
       inputsRef.current[index + 1]?.focus();
@@ -73,9 +70,9 @@ export default function OtpPage() {
 
   const handleKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>,
-    index: number
+    index: number,
   ) => {
-    if (e.key === "Backspace" && !e.currentTarget.value && index > 0) {
+    if (e.key === 'Backspace' && !e.currentTarget.value && index > 0) {
       inputsRef.current[index - 1]?.focus();
     }
   };
@@ -84,42 +81,26 @@ export default function OtpPage() {
     e: React.ClipboardEvent<HTMLInputElement>
   ) => {
     e.preventDefault();
-
-    const pasted = e.clipboardData
-      .getData("text")
-      .slice(0, 6);
+    const pasted = e.clipboardData.getData('text').slice(0, 6);
 
     if (!/^\d+$/.test(pasted)) return;
 
-    pasted.split("").forEach((digit, index) => {
+    pasted.split('').forEach((digit, index) => {
       if (inputsRef.current[index]) {
         inputsRef.current[index]!.value = digit;
       }
     });
 
-    setValue("otp", pasted);
-  };
-
-  const handleResend = async () => {
-    if (!canResend) return;
-
-    try {
-      setResending(true);
-      await resendOtp();
-      setTimer(60);
-      setCanResend(false);
-    } finally {
-      setResending(false);
-    }
+    setValue('code', pasted);
   };
 
   const onSubmit = async (data: FormData) => {
     try {
       setLoading(true);
-      await verifyOtp(data.otp);
-      router.replace("/dashboard");
+      await verifyOtp(data.code);
+      router.replace('/dashboard');
     } catch (err: any) {
-      setError("otp", { message: err.message });
+      setError('code', { message: err.message });
     } finally {
       setLoading(false);
     }
@@ -128,11 +109,8 @@ export default function OtpPage() {
   /* ================= JSX ================= */
 
   return (
-    <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-md transition-all duration-300 ease-in-out">
-      <h1 className="text-xl font-semibold mb-2 text-center">
-        Verify OTP
-      </h1>
-
+    <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-md">
+      <h1 className="text-xl font-semibold mb-2 text-center">Verify OTP</h1>
       <p className="text-sm text-gray-500 text-center mb-6">
         Enter the 6-digit code sent to your email
       </p>
@@ -145,23 +123,22 @@ export default function OtpPage() {
               ref={(el) => {
                 inputsRef.current[index] = el;
               }}
+              ref={(el) => {
+                inputsRef.current[index] = el;
+              }}
               maxLength={1}
               inputMode="numeric"
               className="w-12 h-12 text-center border rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-black transition"
-              onChange={(e) =>
-                handleChange(e.target.value, index)
-              }
-              onKeyDown={(e) =>
-                handleKeyDown(e, index)
-              }
+              onChange={(e) => handleChange(e.target.value, index)}
+              onKeyDown={(e) => handleKeyDown(e, index)}
               onPaste={handlePaste}
             />
           ))}
         </div>
 
-        {errors.otp && (
+        {errors.code && (
           <p className="text-red-500 text-sm text-center mb-4">
-            {errors.otp.message}
+            {errors.code.message}
           </p>
         )}
 
@@ -170,7 +147,7 @@ export default function OtpPage() {
           disabled={loading}
           className="w-full bg-black text-white py-3 rounded-lg transition disabled:opacity-50"
         >
-          {loading ? "Verifying..." : "Verify"}
+          {loading ? 'Verifying...' : 'Verify'}
         </button>
 
         <div className="mt-4 text-center text-sm">
