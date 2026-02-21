@@ -1,177 +1,63 @@
-import React from 'react';
-import type { Metadata } from 'next';
-import { Inter, Source_Code_Pro } from 'next/font/google';
-import './globals.css';
-import Footer from '../components/Footer';
-import Navbar from '../components/Navbar';
-import CookieBanner from '../components/CookieBanner';
-import Analytics from '../components/Analytics';
-import { Toaster } from 'sonner';
-import { Providers } from '../lib/providers';
-import EnvironmentValidator from '../components/EnvironmentValidator';
-import { initializeServerEnvironment } from '../lib/env-server';
-import StyledComponentsRegistry from '../lib/registry';
-import MainLayoutWrapper from '../components/MainLayoutWrapper';
+"use client";
 
-// Initialize server environment validation
-initializeServerEnvironment();
+import { ReactNode, useState } from "react";
+import { CourseProvider } from "@/contexts/CourseContext";
+import LessonSidebar from "@/components/course/LessonSidebar";
+import { Menu, X } from "lucide-react";
 
+export default function CourseLayout({ children }: { children: ReactNode }) {
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-
-// Determine the base URL based on environment
-const getBaseUrl = () => {
-  if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
-    return 'https://strellerminds.com';
-  }
-  if (process.env.NEXT_PUBLIC_VERCEL_URL) {
-    return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
-  }
-  return 'http://localhost:3000';
-};
-
-const baseUrl = getBaseUrl();
-
-export const metadata: Metadata = {
-  metadataBase: new URL(baseUrl),
-
-  title: {
-    default: 'StrellerMinds | Leading Blockchain & DeFi Education',
-    template: '%s | StrellerMinds',
-  },
-
-  description:
-    'Empowering minds through cutting-edge blockchain education. Master DeFi, Smart Contracts, and Web3 development with expert-led, interactive courses.',
-
-  keywords: [
-    'blockchain',
-    'education',
-    'DeFi',
-    'smart contracts',
-    'cryptocurrency',
-    'web3',
-    'learning platform',
-    'blockchain courses',
-    'crypto education',
-    'decentralized finance',
-  ],
-
-  authors: [{ name: 'StrellerMinds Team' }],
-  creator: 'StrellerMinds',
-  publisher: 'StrellerMinds',
-
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-
-  alternates: {
-    canonical: '/',
-    languages: {
-      'en-US': '/en-US',
-    },
-  },
-
-  openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    url: baseUrl,
-    siteName: 'StrellerMinds',
-    title: 'StrellerMinds | Leading Blockchain & DeFi Education',
-    description:
-      'Master DeFi, Smart Contracts, and Web3 development with expert-led, interactive blockchain courses.',
-    images: [
-      {
-        url: '/opengraph-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'StrellerMinds - Blockchain Education Platform',
-      },
-    ],
-  },
-
-  twitter: {
-    card: 'summary_large_image',
-    site: '@strellerminds',
-    title: 'StrellerMinds | Leading Blockchain & DeFi Education',
-    description:
-      'Master DeFi, Smart Contracts, and Web3 development with expert-led, interactive blockchain courses.',
-    creator: '@strellerminds',
-    images: ['/opengraph-image.png'],
-  },
-
-  robots: {
-    index: true,
-    follow: true,
-    nocache: false,
-    googleBot: {
-      index: true,
-      follow: true,
-      noimageindex: false,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
-
-  verification: {
-    google: 'your-google-verification-code', // TODO: Replace with actual code from Google Search Console
-  },
-
-  // Additional metadata for better SEO
-  category: 'education',
-  classification: 'Education',
-
-  // App-specific metadata
-  applicationName: 'StrellerMinds',
-  referrer: 'origin-when-cross-origin',
-
-  // Apple-specific
-  appleWebApp: {
-    capable: true,
-    title: 'StrellerMinds',
-    statusBarStyle: 'black-translucent',
-  },
-
-  // Other metadata
-  other: {
-    'msapplication-TileColor': '#0a0a0a',
-  },
-};
-
-// Initialize server environment validation
-initializeServerEnvironment();
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
   return (
-    <html lang="en" suppressHydrationWarning>
-  <body className={`${inter.variable} ${sourceCodePro.variable}`}>
-    <StyledComponentsRegistry>
-      <Providers>
-        <EnvironmentValidator />
+    <CourseProvider>
+      <div className="min-h-screen bg-gray-50 flex flex-col">
+        
+        {/* Header */}
+        <header className="h-16 border-b bg-white flex items-center justify-between px-4 md:px-8">
+          <h1 className="text-lg md:text-xl font-semibold">
+            Course Title
+          </h1>
 
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-16 focus:bg-[#5c0f49] focus:text-white focus:p-4 focus:outline-none focus:z-50"
-        >
-          Skip to content
-        </a>
+          <button
+            onClick={() => setMobileOpen(true)}
+            className="md:hidden"
+          >
+            <Menu className="w-6 h-6" />
+          </button>
+        </header>
 
-        <MainLayoutWrapper>
-          {children}
-        </MainLayoutWrapper>
+        <div className="flex flex-1 overflow-hidden">
+          
+          {/* Desktop Sidebar */}
+          <aside className="hidden md:flex md:w-72 lg:w-80 border-r bg-white overflow-y-auto">
+            <LessonSidebar />
+          </aside>
 
-        <Toaster position="top-right" />
-        <Analytics />
-        <CookieBanner />
-      </Providers>
-    </StyledComponentsRegistry>
-  </body>
-</html>
+          {/* Main Content */}
+          <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+            {children}
+          </main>
+        </div>
 
+        {/* Mobile Drawer */}
+        {mobileOpen && (
+          <div className="fixed inset-0 z-50 flex">
+            <div
+              className="absolute inset-0 bg-black/40"
+              onClick={() => setMobileOpen(false)}
+            />
+            <div className="relative w-72 bg-white h-full shadow-lg p-4 animate-slide-in">
+              <button
+                onClick={() => setMobileOpen(false)}
+                className="mb-4"
+              >
+                <X className="w-6 h-6" />
+              </button>
+              <LessonSidebar />
+            </div>
+          </div>
+        )}
+      </div>
+    </CourseProvider>
   );
 }

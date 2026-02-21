@@ -1,20 +1,31 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { otpSchema } from "@/schemas/otp.schema";
-import { verifyOtp } from "@/services/auth.service";
+import { verifyOtp, resendOtp } from "@/services/auth.service";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 
 type FormData = z.infer<typeof otpSchema>;
 
 export default function OtpPage() {
+  /* ================= ROUTER ================= */
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const inputsRef = useRef<Array<HTMLInputElement | null>>([]);
 
+  /* ================= REFS ================= */
+  const inputsRef = useRef<(HTMLInputElement | null)[]>(
+    Array(6).fill(null)
+  );
+
+  /* ================= STATE ================= */
+  const [loading, setLoading] = useState(false);
+  const [timer, setTimer] = useState(60);
+  const [canResend, setCanResend] = useState(false);
+  const [resending, setResending] = useState(false);
+
+  /* ================= FORM ================= */
   const {
     handleSubmit,
     setValue,
@@ -25,10 +36,31 @@ export default function OtpPage() {
     defaultValues: { otp: "" },
   });
 
+  /* ================= EFFECTS ================= */
+
+  // Countdown Timer (Optimized: single interval)
+  useEffect(() => {
+    if (timer <= 0) {
+      setCanResend(true);
+      return;
+    }
+
+    const interval = setInterval(() => {
+      setTimer((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [timer]);
+
+  /* ================= HANDLERS ================= */
+
   const handleChange = (value: string, index: number) => {
     if (!/^\d?$/.test(value)) return;
 
-    const otpArray = inputsRef.current.map((input) => input?.value || "");
+    const otpArray = inputsRef.current.map(
+      (input) => input?.value || ""
+    );
+
     otpArray[index] = value;
 
     const otpString = otpArray.join("");
@@ -48,9 +80,14 @@ export default function OtpPage() {
     }
   };
 
-  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+  const handlePaste = (
+    e: React.ClipboardEvent<HTMLInputElement>
+  ) => {
     e.preventDefault();
-    const pasted = e.clipboardData.getData("text").slice(0, 6);
+
+    const pasted = e.clipboardData
+      .getData("text")
+      .slice(0, 6);
 
     if (!/^\d+$/.test(pasted)) return;
 
@@ -61,6 +98,19 @@ export default function OtpPage() {
     });
 
     setValue("otp", pasted);
+  };
+
+  const handleResend = async () => {
+    if (!canResend) return;
+
+    try {
+      setResending(true);
+      await resendOtp();
+      setTimer(60);
+      setCanResend(false);
+    } finally {
+      setResending(false);
+    }
   };
 
   const onSubmit = async (data: FormData) => {
@@ -75,11 +125,14 @@ export default function OtpPage() {
     }
   };
 
+  /* ================= JSX ================= */
+
   return (
-    <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-md">
+    <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-md transition-all duration-300 ease-in-out">
       <h1 className="text-xl font-semibold mb-2 text-center">
         Verify OTP
       </h1>
+
       <p className="text-sm text-gray-500 text-center mb-6">
         Enter the 6-digit code sent to your email
       </p>
@@ -89,16 +142,18 @@ export default function OtpPage() {
           {Array.from({ length: 6 }).map((_, index) => (
             <input
               key={index}
-ref={(el) => {
-  inputsRef.current[index] = el;
-}}
+              ref={(el) => {
+                inputsRef.current[index] = el;
+              }}
               maxLength={1}
               inputMode="numeric"
               className="w-12 h-12 text-center border rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-black transition"
               onChange={(e) =>
                 handleChange(e.target.value, index)
               }
-              onKeyDown={(e) => handleKeyDown(e, index)}
+              onKeyDown={(e) =>
+                handleKeyDown(e, index)
+              }
               onPaste={handlePaste}
             />
           ))}
@@ -117,6 +172,26 @@ ref={(el) => {
         >
           {loading ? "Verifying..." : "Verify"}
         </button>
+
+        <div className="mt-4 text-center text-sm">
+          {canResend ? (
+            <button
+              type="button"
+              onClick={handleResend}
+              disabled={resending}
+              className="text-black font-medium hover:underline disabled:opacity-50"
+            >
+              {resending ? "Resending..." : "Resend OTP"}
+            </button>
+          ) : (
+            <p className="text-gray-500">
+              Resend available in{" "}
+              <span className="font-medium text-black">
+                {timer}s
+              </span>
+            </p>
+          )}
+        </div>
       </form>
     </div>
   );
