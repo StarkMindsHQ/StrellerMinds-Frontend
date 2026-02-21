@@ -99,8 +99,9 @@ export default function OtpPage() {
       setLoading(true);
       await verifyOtp(data.code);
       router.replace('/dashboard');
-    } catch (err: any) {
-      setError('code', { message: err.message });
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Verification failed';
+      setError('code', { message: errorMessage });
     } finally {
       setLoading(false);
     }

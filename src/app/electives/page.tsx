@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { AlertCircle, RefreshCw, Loader2 } from 'lucide-react';
 import MainLayout from '@/components/MainLayout';
-import { ElectiveCard } from '@/components/electiveCard';
+import { ElectiveCard } from '@/components/ElectiveCard';
 import { ElectiveFilters } from '@/components/ElectiveFilters';
 import { ElectivePagination } from '@/components/ElectivePagination';
 import { allElectives } from '@/lib/electives-data';
