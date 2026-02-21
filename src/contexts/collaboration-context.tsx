@@ -8,7 +8,7 @@ import React, {
   useCallback,
   useRef,
 } from 'react';
-import { io, Socket } from 'socket.io-client';
+import type { Socket } from 'socket.io-client';
 import type {
   CollaborationState,
   CollaborationSession,
@@ -28,6 +28,17 @@ import {
   isAdmin,
 } from '@/lib/collaboration/utils';
 import { toast } from 'sonner';
+
+// Dynamically import socket.io-client to avoid SSR issues
+let io: typeof import('socket.io-client').io | null = null;
+
+async function getSocketIO() {
+  if (!io) {
+    const socketIO = await import('socket.io-client');
+    io = socketIO.io;
+  }
+  return io;
+}
 
 interface CollaborationContextValue {
   state: CollaborationState;
@@ -132,7 +143,7 @@ export function CollaborationProvider({
   };
 
   // Connect to WebSocket server
-  const connect = useCallback(() => {
+  const connect = useCallback(async () => {
     if (socketRef.current?.connected) {
       return;
     }
@@ -149,7 +160,17 @@ export function CollaborationProvider({
       return;
     }
 
-    const socket = io(wsUrl, {
+    const socketIO = await getSocketIO();
+    if (!socketIO) {
+      setState((prev) => ({
+        ...prev,
+        isConnecting: false,
+        error: 'Failed to load socket.io client',
+      }));
+      return;
+    }
+
+    const socket = socketIO(wsUrl, {
       transports: ['websocket', 'polling'],
       reconnection: true,
       reconnectionAttempts: maxReconnectAttempts,
