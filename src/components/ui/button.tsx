@@ -5,31 +5,33 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-bold transition-all duration-300 disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-bold transition-all duration-300 disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background',
   {
     variants: {
       variant: {
+        default:
+          'bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 transform hover:scale-105',
         primary:
-          'bg-gradient-to-r from-[#ffcc00] to-yellow-400 hover:from-yellow-400 hover:to-[#ffcc00] text-[#5c0f49] shadow-lg hover:shadow-xl transform hover:scale-105 focus-visible:ring-yellow-400',
+          'bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 transform hover:scale-105',
         secondary:
-          'bg-gradient-to-r from-[#5c0f49] to-purple-600 hover:from-purple-600 hover:to-[#5c0f49] text-white shadow-lg hover:shadow-xl transform hover:scale-105 focus-visible:ring-purple-400',
+          'bg-secondary text-secondary-foreground shadow-lg hover:bg-secondary/80 transform hover:scale-105',
         outline:
-          'border-2 border-[#5c0f49] bg-transparent text-[#5c0f49] hover:bg-[#5c0f49] hover:text-white shadow-md hover:shadow-lg transform hover:scale-105 focus-visible:ring-[#5c0f49]',
+          'border-2 border-primary bg-background text-primary hover:bg-primary hover:text-primary-foreground shadow-md hover:shadow-lg transform hover:scale-105',
         ghost:
-          'bg-transparent text-[#5c0f49] hover:bg-[#5c0f49]/10 hover:text-[#5c0f49] focus-visible:ring-[#5c0f49]',
+          'hover:bg-accent hover:text-accent-foreground',
         destructive:
-          'bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-500 text-white shadow-lg hover:shadow-xl transform hover:scale-105 focus-visible:ring-red-400',
-        link: 'text-[#5c0f49] underline-offset-4 hover:underline focus-visible:ring-[#5c0f49]',
+          'bg-destructive text-destructive-foreground shadow-lg hover:bg-destructive/90 transform hover:scale-105',
+        link: 'text-primary underline-offset-4 hover:underline',
       },
       size: {
-        sm: 'h-8 px-3 py-1 text-xs rounded-lg',
         default: 'h-10 px-6 py-2',
+        sm: 'h-8 px-3 py-1 text-xs rounded-lg',
         lg: 'h-12 px-10 py-4 text-base',
         icon: 'h-10 w-10',
       },
     },
     defaultVariants: {
-      variant: 'primary',
+      variant: 'default',
       size: 'default',
     },
   },

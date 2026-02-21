@@ -2,6 +2,8 @@
 
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Moon, Sun } from 'lucide-react';
 
 export default function ThemeToggle() {
   const { theme, setTheme, resolvedTheme } = useTheme();
@@ -15,10 +17,10 @@ export default function ThemeToggle() {
   // Prevent hydration mismatch by not rendering until mounted
   if (!mounted) {
     return (
-      <button className="p-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#5c0f49]">
+      <Button variant="ghost" size="icon" className="rounded-lg">
         <span className="sr-only">Toggle theme</span>
-        🌙
-      </button>
+        <Moon className="h-[1.2rem] w-[1.2rem]" />
+      </Button>
     );
   }
 
@@ -27,12 +29,18 @@ export default function ThemeToggle() {
   };
 
   return (
-    <button
+    <Button
+      variant="ghost"
+      size="icon"
       onClick={toggleTheme}
-      className="p-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#5c0f49]"
+      className="rounded-lg"
       aria-label={`Switch to ${resolvedTheme === 'dark' ? 'light' : 'dark'} mode`}
     >
-      {resolvedTheme === 'dark' ? '☀️' : '🌙'}
-    </button>
+      {resolvedTheme === 'dark' ? (
+        <Sun className="h-[1.2rem] w-[1.2rem]" />
+      ) : (
+        <Moon className="h-[1.2rem] w-[1.2rem]" />
+      )}
+    </Button>
   );
 }
