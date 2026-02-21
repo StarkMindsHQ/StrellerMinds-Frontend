@@ -100,7 +100,8 @@ export default function OtpPage() {
       await verifyOtp(data.code);
       router.replace('/dashboard');
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : 'Verification failed';
+      const errorMessage =
+        err instanceof Error ? err.message : 'Verification failed';
       setError('code', { message: errorMessage });
     } finally {
       setLoading(false);

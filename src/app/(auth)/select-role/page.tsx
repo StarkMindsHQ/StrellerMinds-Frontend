@@ -8,8 +8,16 @@ export default function SelectRolePage() {
   const [selectedRole, setSelectedRole] = useState<string | null>(null);
 
   const roles = [
-    { id: 'student', label: 'Student', description: 'Learn and explore courses' },
-    { id: 'instructor', label: 'Instructor', description: 'Create and teach courses' },
+    {
+      id: 'student',
+      label: 'Student',
+      description: 'Learn and explore courses',
+    },
+    {
+      id: 'instructor',
+      label: 'Instructor',
+      description: 'Create and teach courses',
+    },
     { id: 'admin', label: 'Admin', description: 'Manage the platform' },
   ];
 
@@ -22,7 +30,9 @@ export default function SelectRolePage() {
 
   return (
     <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-md">
-      <h1 className="text-xl font-semibold mb-2 text-center">Select Your Role</h1>
+      <h1 className="text-xl font-semibold mb-2 text-center">
+        Select Your Role
+      </h1>
       <p className="text-gray-600 text-center mb-6">
         Choose how you want to use the platform
       </p>
