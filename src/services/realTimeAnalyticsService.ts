@@ -49,15 +49,18 @@ class RealTimeAnalyticsService {
 
   private intervalId: NodeJS.Timeout | null = null;
 
-  constructor() {
-    this.startSimulation();
-  }
-
   private startSimulation() {
+    if (this.intervalId) return;
     this.intervalId = setInterval(() => {
       this.updateState();
       this.notifySubscribers();
     }, 3000);
+  }
+
+  private stopSimulation() {
+    if (!this.intervalId) return;
+    clearInterval(this.intervalId);
+    this.intervalId = null;
   }
 
   private updateState() {
@@ -123,10 +126,17 @@ class RealTimeAnalyticsService {
   }
 
   public subscribe(callback: (state: RealTimeState) => void) {
+    if (this.subscribers.length === 0) {
+      this.startSimulation();
+    }
+
     this.subscribers.push(callback);
     callback(this.state); // Initial call
     return () => {
       this.subscribers = this.subscribers.filter((s) => s !== callback);
+      if (this.subscribers.length === 0) {
+        this.stopSimulation();
+      }
     };
   }
 
@@ -135,9 +145,7 @@ class RealTimeAnalyticsService {
   }
 
   public stop() {
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
-    }
+    this.stopSimulation();
   }
 }
 

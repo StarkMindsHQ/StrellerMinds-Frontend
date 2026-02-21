@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, useCallback } from 'react';
-import Editor from '@monaco-editor/react';
+import dynamic from 'next/dynamic';
 import * as Y from 'yjs';
 import { MonacoBinding } from 'y-monaco';
 import { useCollaboration } from '@/contexts/collaboration-context';
@@ -10,6 +10,13 @@ import { Copy, Play, Square, Users } from 'lucide-react';
 import { toast } from 'sonner';
 import type { SupportedLanguage } from '@/lib/sandbox';
 import { SocketIOProvider } from '@/lib/collaboration/yjs-socket-provider';
+
+const Editor = dynamic(() => import('@monaco-editor/react'), {
+  ssr: false,
+  loading: () => (
+    <div className="h-full w-full animate-pulse bg-muted rounded-md" />
+  ),
+});
 
 interface CollaborativeEditorProps {
   language: SupportedLanguage;
@@ -27,6 +34,7 @@ export default function CollaborativeEditor({
   onStop,
 }: CollaborativeEditorProps) {
   const editorRef = useRef<any>(null);
+  const initializeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const yDocRef = useRef<Y.Doc | null>(null);
   const yTextRef = useRef<Y.Text | null>(null);
   const bindingRef = useRef<MonacoBinding | null>(null);
@@ -72,7 +80,7 @@ export default function CollaborativeEditor({
 
     // Initialize with current session code if available (only if Yjs is empty)
     // Wait a bit for sync to complete, then initialize if still empty
-    setTimeout(() => {
+    initializeTimeoutRef.current = setTimeout(() => {
       if (yText.length === 0 && state.session.code) {
         yText.insert(0, state.session.code);
       }
@@ -95,6 +103,10 @@ export default function CollaborativeEditor({
         bindingRef.current.destroy();
         bindingRef.current = null;
       }
+      if (initializeTimeoutRef.current) {
+        clearTimeout(initializeTimeoutRef.current);
+        initializeTimeoutRef.current = null;
+      }
       if (providerRef.current) {
         providerRef.current.destroy();
         providerRef.current = null;
@@ -111,12 +123,15 @@ export default function CollaborativeEditor({
   const handleEditorDidMount = useCallback(
     (editor: any, monaco: any) => {
       editorRef.current = editor;
+      let isUnmounted = false;
+      let retryTimeout: NodeJS.Timeout | null = null;
 
       // Wait for Yjs to be ready, then create binding
       const setupBinding = () => {
+        if (isUnmounted) return;
         if (!yTextRef.current || !state.session || !providerRef.current) {
           // Retry after a short delay if Yjs isn't ready yet
-          setTimeout(setupBinding, 100);
+          retryTimeout = setTimeout(setupBinding, 100);
           return;
         }
 
@@ -190,6 +205,13 @@ export default function CollaborativeEditor({
 
       // Make editor read-only if user can't edit
       editor.updateOptions({ readOnly: !canUserEdit() });
+
+      editor.onDidDispose(() => {
+        isUnmounted = true;
+        if (retryTimeout) {
+          clearTimeout(retryTimeout);
+        }
+      });
     },
     [state.session, state.currentUser, canUserEdit, updateCursor, updateSelection],
   );

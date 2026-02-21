@@ -17,7 +17,16 @@
  * @see https://github.com/StarkMindsHQ/StrellerMinds-Frontend/issues/170
  */
 
-import SecureCodePlayground from './secure-playground';
+import dynamic from 'next/dynamic';
+
+const SecureCodePlayground = dynamic(() => import('./secure-playground'), {
+  ssr: false,
+  loading: () => (
+    <div className="container mx-auto p-4 max-w-7xl">
+      <div className="h-[70vh] animate-pulse rounded-lg bg-muted" />
+    </div>
+  ),
+});
 
 export default function CodePlaygroundPage() {
   return <SecureCodePlayground />;

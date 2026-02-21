@@ -14,7 +14,7 @@ interface AnalyticsMetricCardProps {
   loading?: boolean;
 }
 
-export const AnalyticsMetricCard: React.FC<AnalyticsMetricCardProps> = ({
+export const AnalyticsMetricCard: React.FC<AnalyticsMetricCardProps> = React.memo(({
   title,
   value,
   description,
@@ -86,4 +86,4 @@ export const AnalyticsMetricCard: React.FC<AnalyticsMetricCardProps> = ({
       </CardContent>
     </Card>
   );
-};
+});

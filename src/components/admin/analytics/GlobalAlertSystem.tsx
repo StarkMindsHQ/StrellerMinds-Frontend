@@ -37,7 +37,7 @@ const eventTypeStyles = {
   },
 };
 
-export const GlobalAlertSystem: React.FC<GlobalAlertSystemProps> = ({
+export const GlobalAlertSystem: React.FC<GlobalAlertSystemProps> = React.memo(({
   events,
   className,
 }) => {
@@ -97,4 +97,4 @@ export const GlobalAlertSystem: React.FC<GlobalAlertSystemProps> = ({
       </CardContent>
     </Card>
   );
-};
+});

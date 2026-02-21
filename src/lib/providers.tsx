@@ -6,14 +6,25 @@ import { useState } from 'react';
 import { Web3Provider } from './web3/providers';
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  const [client] = useState(() => new QueryClient());
+  const [client] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            retry: false,
+            refetchOnWindowFocus: false,
+          },
+        },
+      }),
+  );
+
   return (
-    <Web3Provider>
-      <QueryClientProvider client={client}>
+    <QueryClientProvider client={client}>
+      <Web3Provider>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
         </ThemeProvider>
-      </QueryClientProvider>
-    </Web3Provider>
+      </Web3Provider>
+    </QueryClientProvider>
   );
 }

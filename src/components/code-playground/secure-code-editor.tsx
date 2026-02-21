@@ -2,7 +2,7 @@
 
 import type React from 'react';
 import { useRef, useState, useEffect, useCallback } from 'react';
-import Editor from '@monaco-editor/react';
+import dynamic from 'next/dynamic';
 import { Button } from '@/components/ui/button';
 import {
   Copy,
@@ -23,6 +23,13 @@ import {
   type ExecutionStatus,
   type ValidationResult,
 } from '@/lib/sandbox';
+
+const Editor = dynamic(() => import('@monaco-editor/react'), {
+  ssr: false,
+  loading: () => (
+    <div className="h-full w-full animate-pulse bg-muted rounded-md" />
+  ),
+});
 
 interface SecureCodeEditorProps {
   code: string;

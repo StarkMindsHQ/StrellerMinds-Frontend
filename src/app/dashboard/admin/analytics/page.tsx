@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { Suspense, lazy, useCallback, useMemo, useState } from 'react';
 import Link from 'next/link';
 import {
   ArrowLeft,
@@ -36,18 +36,33 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useRealTimeMetrics } from '@/hooks/useRealTimeMetrics';
-import { AnalyticsMetricCard } from '@/components/admin/analytics/AnalyticsMetricCard';
-import { RealTimeChart } from '@/components/admin/analytics/RealTimeChart';
-import { GlobalAlertSystem } from '@/components/admin/analytics/GlobalAlertSystem';
 import { exportAnalyticsData, type ExportFormat } from '@/utils/exportUtils';
 import { toast } from 'sonner';
+
+const AnalyticsMetricCard = lazy(() =>
+  import('@/components/admin/analytics/AnalyticsMetricCard').then((module) => ({
+    default: module.AnalyticsMetricCard,
+  })),
+);
+
+const RealTimeChart = lazy(() =>
+  import('@/components/admin/analytics/RealTimeChart').then((module) => ({
+    default: module.RealTimeChart,
+  })),
+);
+
+const GlobalAlertSystem = lazy(() =>
+  import('@/components/admin/analytics/GlobalAlertSystem').then((module) => ({
+    default: module.GlobalAlertSystem,
+  })),
+);
 
 export default function AdminAnalyticsPage() {
   const { data, isLoading } = useRealTimeMetrics();
   const [activeRange, setActiveRange] = useState('24h');
   const [isExporting, setIsExporting] = useState(false);
 
-  const handleExport = async (format: ExportFormat) => {
+  const handleExport = useCallback(async (format: ExportFormat) => {
     if (!data) return;
 
     setIsExporting(true);
@@ -60,10 +75,10 @@ export default function AdminAnalyticsPage() {
     } finally {
       setIsExporting(false);
     }
-  };
+  }, [data]);
 
   // Prepare chart data
-  const usersChartData = {
+  const usersChartData = useMemo(() => ({
     labels: data?.metricsHistory.activeUsers.map((_, i) => i.toString()) || [],
     datasets: [
       {
@@ -77,9 +92,9 @@ export default function AdminAnalyticsPage() {
         borderWidth: 2,
       },
     ],
-  };
+  }), [data?.metricsHistory.activeUsers]);
 
-  const revenueChartData = {
+  const revenueChartData = useMemo(() => ({
     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
     datasets: [
       {
@@ -95,9 +110,9 @@ export default function AdminAnalyticsPage() {
         borderRadius: 4,
       },
     ],
-  };
+  }), []);
 
-  const distributionData = {
+  const distributionData = useMemo(() => ({
     labels: ['Smart Contracts', 'Defi', 'NFTs', 'Rust Fundamentals', 'Others'],
     datasets: [
       {
@@ -112,7 +127,13 @@ export default function AdminAnalyticsPage() {
         borderWidth: 0,
       },
     ],
-  };
+  }), []);
+
+  const cardFallback = (
+    <Card className="animate-pulse">
+      <CardContent className="h-28" />
+    </Card>
+  );
 
   return (
     <MainLayout variant="container" padding="medium">
@@ -190,42 +211,50 @@ export default function AdminAnalyticsPage() {
 
       {/* Real-time Metrics Grid */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
-        <AnalyticsMetricCard
-          title="Active Users"
-          value={data?.activeUsers || 0}
-          icon={<Users className="h-5 w-5" />}
-          trend="up"
-          change={12.5}
-          description="from last hour"
-          loading={isLoading}
-        />
-        <AnalyticsMetricCard
-          title="Course Enrollments"
-          value={data?.totalEnrollments.toLocaleString() || 0}
-          icon={<Layers className="h-5 w-5" />}
-          trend="up"
-          change={8.2}
-          description="this week"
-          loading={isLoading}
-        />
-        <AnalyticsMetricCard
-          title="Daily Revenue"
-          value={`$${(data?.revenue || 0).toLocaleString()}`}
-          icon={<DollarSign className="h-5 w-5" />}
-          trend="down"
-          change={2.4}
-          description="vs yesterday"
-          loading={isLoading}
-        />
-        <AnalyticsMetricCard
-          title="Completion Rate"
-          value={`${data?.completionRate}%`}
-          icon={<Activity className="h-5 w-5" />}
-          trend="stable"
-          change={0.1}
-          description="avg. session"
-          loading={isLoading}
-        />
+        <Suspense fallback={cardFallback}>
+          <AnalyticsMetricCard
+            title="Active Users"
+            value={data?.activeUsers || 0}
+            icon={<Users className="h-5 w-5" />}
+            trend="up"
+            change={12.5}
+            description="from last hour"
+            loading={isLoading}
+          />
+        </Suspense>
+        <Suspense fallback={cardFallback}>
+          <AnalyticsMetricCard
+            title="Course Enrollments"
+            value={data?.totalEnrollments.toLocaleString() || 0}
+            icon={<Layers className="h-5 w-5" />}
+            trend="up"
+            change={8.2}
+            description="this week"
+            loading={isLoading}
+          />
+        </Suspense>
+        <Suspense fallback={cardFallback}>
+          <AnalyticsMetricCard
+            title="Daily Revenue"
+            value={`$${(data?.revenue || 0).toLocaleString()}`}
+            icon={<DollarSign className="h-5 w-5" />}
+            trend="down"
+            change={2.4}
+            description="vs yesterday"
+            loading={isLoading}
+          />
+        </Suspense>
+        <Suspense fallback={cardFallback}>
+          <AnalyticsMetricCard
+            title="Completion Rate"
+            value={`${data?.completionRate}%`}
+            icon={<Activity className="h-5 w-5" />}
+            trend="stable"
+            change={0.1}
+            description="avg. session"
+            loading={isLoading}
+          />
+        </Suspense>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3 mb-8">
@@ -247,19 +276,23 @@ export default function AdminAnalyticsPage() {
             </div>
           </CardHeader>
           <CardContent className="pt-4 h-[350px] md:h-[400px]">
-            <RealTimeChart
-              type="line"
-              data={usersChartData}
-              className="w-full h-full"
-            />
+            <Suspense fallback={<div className="h-full w-full animate-pulse bg-muted rounded-md" />}>
+              <RealTimeChart
+                type="line"
+                data={usersChartData}
+                className="w-full h-full"
+              />
+            </Suspense>
           </CardContent>
         </Card>
 
         {/* Live Feed */}
-        <GlobalAlertSystem
-          events={data?.recentEvents || []}
-          className="h-full"
-        />
+        <Suspense fallback={<Card className="h-full animate-pulse"><CardContent className="h-full min-h-[280px]" /></Card>}>
+          <GlobalAlertSystem
+            events={data?.recentEvents || []}
+            className="h-full"
+          />
+        </Suspense>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 mb-8">
@@ -274,11 +307,13 @@ export default function AdminAnalyticsPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="h-[300px]">
-            <RealTimeChart
-              type="bar"
-              data={revenueChartData}
-              className="w-full h-full"
-            />
+            <Suspense fallback={<div className="h-full w-full animate-pulse bg-muted rounded-md" />}>
+              <RealTimeChart
+                type="bar"
+                data={revenueChartData}
+                className="w-full h-full"
+              />
+            </Suspense>
           </CardContent>
         </Card>
 
@@ -294,11 +329,13 @@ export default function AdminAnalyticsPage() {
           </CardHeader>
           <CardContent className="flex items-center justify-center h-[300px]">
             <div className="w-full h-full max-w-[300px]">
-              <RealTimeChart
-                type="doughnut"
-                data={distributionData}
-                className="w-full h-full"
-              />
+              <Suspense fallback={<div className="h-full w-full animate-pulse bg-muted rounded-md" />}>
+                <RealTimeChart
+                  type="doughnut"
+                  data={distributionData}
+                  className="w-full h-full"
+                />
+              </Suspense>
             </div>
           </CardContent>
         </Card>

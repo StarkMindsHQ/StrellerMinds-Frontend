@@ -39,7 +39,7 @@ interface RealTimeChartProps {
   className?: string;
 }
 
-export const RealTimeChart: React.FC<RealTimeChartProps> = ({
+export const RealTimeChart: React.FC<RealTimeChartProps> = React.memo(({
   type,
   data,
   options,
@@ -120,4 +120,4 @@ export const RealTimeChart: React.FC<RealTimeChartProps> = ({
       {renderChart()}
     </div>
   );
-};
+});
