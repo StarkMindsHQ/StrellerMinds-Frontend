@@ -3,8 +3,6 @@ import type { Metadata } from 'next';
 import { Inter, Source_Code_Pro } from 'next/font/google';
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
-const sourceCodePro = Source_Code_Pro({ subsets: ['latin'] });
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 import CookieBanner from '../components/CookieBanner';
@@ -16,17 +14,23 @@ import { initializeServerEnvironment } from '../lib/env-server';
 import StyledComponentsRegistry from '../lib/registry';
 import MainLayoutWrapper from '../components/MainLayoutWrapper';
 
-// Initialize server environment validation
+// Initialize fonts (ONLY ONCE)
+const inter = Inter({ subsets: ['latin'], display: 'swap' });
+const sourceCodePro = Source_Code_Pro({ subsets: ['latin'], display: 'swap' });
+
+// Initialize server environment validation (ONLY ONCE)
 initializeServerEnvironment();
 
-// Determine the base URL based on environment
+// Determine base URL dynamically
 const getBaseUrl = () => {
   if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
     return 'https://strellerminds.com';
   }
+
   if (process.env.NEXT_PUBLIC_VERCEL_URL) {
     return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
   }
+
   return 'http://localhost:3000';
 };
 
@@ -60,19 +64,6 @@ export const metadata: Metadata = {
   creator: 'StrellerMinds',
   publisher: 'StrellerMinds',
 
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-
-  alternates: {
-    canonical: '/',
-    languages: {
-      'en-US': '/en-US',
-    },
-  },
-
   openGraph: {
     type: 'website',
     locale: 'en_US',
@@ -80,7 +71,7 @@ export const metadata: Metadata = {
     siteName: 'StrellerMinds',
     title: 'StrellerMinds | Leading Blockchain & DeFi Education',
     description:
-      'Master DeFi, Smart Contracts, and Web3 development with expert-led, interactive blockchain courses.',
+      'Master DeFi, Smart Contracts, and Web3 development with expert-led blockchain courses.',
     images: [
       {
         url: '/opengraph-image.png',
@@ -94,9 +85,6 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     site: '@strellerminds',
-    title: 'StrellerMinds | Leading Blockchain & DeFi Education',
-    description:
-      'Master DeFi, Smart Contracts, and Web3 development with expert-led, interactive blockchain courses.',
     creator: '@strellerminds',
     images: ['/opengraph-image.png'],
   },
@@ -104,44 +92,10 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-    nocache: false,
-    googleBot: {
-      index: true,
-      follow: true,
-      noimageindex: false,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
   },
 
-  verification: {
-    google: 'your-google-verification-code', // TODO: Replace with actual code from Google Search Console
-  },
-
-  // Additional metadata for better SEO
-  category: 'education',
-  classification: 'Education',
-
-  // App-specific metadata
   applicationName: 'StrellerMinds',
-  referrer: 'origin-when-cross-origin',
-
-  // Apple-specific
-  appleWebApp: {
-    capable: true,
-    title: 'StrellerMinds',
-    statusBarStyle: 'black-translucent',
-  },
-
-  // Other metadata
-  other: {
-    'msapplication-TileColor': '#0a0a0a',
-  },
 };
-
-// Initialize server environment validation
-initializeServerEnvironment();
 
 export default function RootLayout({
   children,
@@ -150,9 +104,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-      // className={`${inter.variable} ${sourceCodePro.variable}`}
-      >
+      <body className={`${inter.className} ${sourceCodePro.className}`}>
         <StyledComponentsRegistry>
           <Providers>
             <EnvironmentValidator />
@@ -164,7 +116,9 @@ export default function RootLayout({
               Skip to content
             </a>
 
+            <Navbar />
             <MainLayoutWrapper>{children}</MainLayoutWrapper>
+            <Footer />
 
             <Toaster position="top-right" />
             <Analytics />
