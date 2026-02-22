@@ -35,8 +35,8 @@ export default function AboutPage() {
 
           <h2>Our Mission</h2>
           <p>
-            We&apos;re dedicated to providing world-class blockchain education that
-            bridges the gap between traditional learning and emerging
+            We&apos;re dedicated to providing world-class blockchain education
+            that bridges the gap between traditional learning and emerging
             technologies. Through our carefully crafted courses and hands-on
             approach, we help students master the skills needed to succeed in
             the decentralized future.

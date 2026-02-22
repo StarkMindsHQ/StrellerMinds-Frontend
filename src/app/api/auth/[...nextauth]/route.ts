@@ -1,7 +1,7 @@
-import NextAuth from "next-auth";
-import Google from "next-auth/providers/google";
-import GitHub from "next-auth/providers/github";
-import type { NextAuthOptions } from "next-auth";
+import NextAuth from 'next-auth';
+import Google from 'next-auth/providers/google';
+import GitHub from 'next-auth/providers/github';
+import type { NextAuthOptions } from 'next-auth';
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -16,13 +16,13 @@ export const authOptions: NextAuthOptions = {
   ],
 
   session: {
-    strategy: "jwt",
+    strategy: 'jwt',
   },
 
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.role = (user as any).role ?? "user";
+        token.role = (user as any).role ?? 'user';
         token.permissions = (user as any).permissions ?? [];
       }
       return token;
@@ -38,8 +38,8 @@ export const authOptions: NextAuthOptions = {
   },
 
   pages: {
-    signIn: "/login",
-    error: "/auth/error",
+    signIn: '/login',
+    error: '/auth/error',
   },
 
   secret: process.env.NEXTAUTH_SECRET,

@@ -3,9 +3,22 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  LayoutDashboard, BookOpen, Layers, Users, BarChart3, 
-  Settings, HelpCircle, ChevronLeft, Search, Bell, 
-  LogOut, Menu, X, PlusCircle, Sparkles, Folder
+  LayoutDashboard,
+  BookOpen,
+  Layers,
+  Users,
+  BarChart3,
+  Settings,
+  HelpCircle,
+  ChevronLeft,
+  Search,
+  Bell,
+  LogOut,
+  Menu,
+  X,
+  PlusCircle,
+  Sparkles,
+  Folder,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -28,11 +41,19 @@ export function CMSLayout({ children }: CMSLayoutProps) {
 
   const navItems = [
     { icon: <LayoutDashboard size={20} />, label: 'Dashboard', href: '/cms' },
-    { icon: <BookOpen size={20} />, label: 'All Courses', href: '/cms/courses' },
+    {
+      icon: <BookOpen size={20} />,
+      label: 'All Courses',
+      href: '/cms/courses',
+    },
     { icon: <Layers size={20} />, label: 'Modules', href: '/cms/modules' },
     { icon: <Folder size={20} />, label: 'Media Library', href: '/cms/media' },
     { icon: <Users size={20} />, label: 'Students', href: '/cms/students' },
-    { icon: <BarChart3 size={20} />, label: 'Analytics', href: '/cms/analytics' },
+    {
+      icon: <BarChart3 size={20} />,
+      label: 'Analytics',
+      href: '/cms/analytics',
+    },
     { icon: <Settings size={20} />, label: 'Settings', href: '/cms/settings' },
   ];
 
@@ -49,7 +70,7 @@ export function CMSLayout({ children }: CMSLayoutProps) {
             <Sparkles size={18} fill="currentColor" />
           </div>
           {sidebarOpen && (
-            <motion.span 
+            <motion.span
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               className="text-lg font-bold tracking-tight"
@@ -85,7 +106,10 @@ export function CMSLayout({ children }: CMSLayoutProps) {
             onClick={toggleSidebar}
             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-muted-foreground hover:bg-muted transition-all"
           >
-            <ChevronLeft size={20} className={`transform transition-transform ${!sidebarOpen ? 'rotate-180 mx-auto' : ''}`} />
+            <ChevronLeft
+              size={20}
+              className={`transform transition-transform ${!sidebarOpen ? 'rotate-180 mx-auto' : ''}`}
+            />
             {sidebarOpen && <span className="text-sm">Collapse Sidebar</span>}
           </button>
         </div>
@@ -96,7 +120,7 @@ export function CMSLayout({ children }: CMSLayoutProps) {
         {/* Top Header */}
         <header className="h-16 border-b bg-background/80 backdrop-blur-md flex items-center justify-between px-6 sticky top-0 z-20">
           <div className="flex items-center gap-4">
-            <button 
+            <button
               className="md:hidden p-2 -ml-2 hover:bg-muted rounded-lg"
               onClick={() => setIsMobileMenuOpen(true)}
             >
@@ -104,19 +128,23 @@ export function CMSLayout({ children }: CMSLayoutProps) {
             </button>
             <div className="hidden sm:flex items-center bg-muted/50 rounded-full px-4 py-1.5 focus-within:ring-2 ring-primary/20 transition-all border border-transparent focus-within:border-primary/20">
               <Search size={16} className="text-muted-foreground" />
-              <input 
-                placeholder="Search courses, assets, students..." 
+              <input
+                placeholder="Search courses, assets, students..."
                 className="bg-transparent border-none outline-none text-sm ml-2 w-[240px]"
               />
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="icon" className="relative text-muted-foreground">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="relative text-muted-foreground"
+            >
               <Bell size={20} />
               <span className="absolute top-2 right-2 w-2 h-2 bg-destructive rounded-full border-2 border-background"></span>
             </Button>
-            
+
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="flex items-center gap-2 p-1.5 rounded-full hover:bg-muted transition-all">
@@ -124,8 +152,12 @@ export function CMSLayout({ children }: CMSLayoutProps) {
                     {currentUser?.name?.[0] || 'A'}
                   </div>
                   <div className="hidden sm:block text-left mr-1">
-                    <p className="text-sm font-semibold leading-none">{currentUser?.name || 'Administrator'}</p>
-                    <p className="text-[10px] text-muted-foreground leading-tight">{currentUser?.role || 'Author'}</p>
+                    <p className="text-sm font-semibold leading-none">
+                      {currentUser?.name || 'Administrator'}
+                    </p>
+                    <p className="text-[10px] text-muted-foreground leading-tight">
+                      {currentUser?.role || 'Author'}
+                    </p>
                   </div>
                 </button>
               </DropdownMenuTrigger>
@@ -169,7 +201,11 @@ export function CMSLayout({ children }: CMSLayoutProps) {
                 <span className="text-lg font-bold tracking-tight">
                   Streller<span className="text-primary font-black">CMS</span>
                 </span>
-                <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(false)}>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
                   <X size={20} />
                 </Button>
               </div>

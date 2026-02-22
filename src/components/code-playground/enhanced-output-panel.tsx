@@ -90,7 +90,9 @@ export default function EnhancedOutputPanel({
         <div className="flex justify-between items-center flex-wrap gap-2">
           <div className="flex items-center gap-2 sm:gap-3 min-w-0">
             <CardTitle className="text-base sm:text-lg">Output</CardTitle>
-            <Badge className={`${statusColors[status]} text-white text-xs sm:text-sm flex-shrink-0`}>
+            <Badge
+              className={`${statusColors[status]} text-white text-xs sm:text-sm flex-shrink-0`}
+            >
               {statusLabels[status]}
             </Badge>
             {executionTime !== undefined && status === 'completed' && (

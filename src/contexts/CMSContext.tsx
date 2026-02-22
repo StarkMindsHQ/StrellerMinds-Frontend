@@ -1,6 +1,13 @@
 'use client';
 
-import React, { createContext, useContext, useReducer, useCallback, useEffect, ReactNode } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useReducer,
+  useCallback,
+  useEffect,
+  ReactNode,
+} from 'react';
 import type {
   CMSState,
   CMSUser,
@@ -27,15 +34,27 @@ type CMSAction =
   | { type: 'SET_CURRENT_COURSE'; payload: Course | null }
   | { type: 'UPDATE_COURSE'; payload: Partial<Course> }
   | { type: 'ADD_MODULE'; payload: CourseModule }
-  | { type: 'UPDATE_MODULE'; payload: { moduleId: string; data: Partial<CourseModule> } }
+  | {
+      type: 'UPDATE_MODULE';
+      payload: { moduleId: string; data: Partial<CourseModule> };
+    }
   | { type: 'DELETE_MODULE'; payload: string }
   | { type: 'REORDER_MODULES'; payload: CourseModule[] }
   | { type: 'ADD_LESSON'; payload: { moduleId: string; lesson: Lesson } }
-  | { type: 'UPDATE_LESSON'; payload: { moduleId: string; lessonId: string; data: Partial<Lesson> } }
+  | {
+      type: 'UPDATE_LESSON';
+      payload: { moduleId: string; lessonId: string; data: Partial<Lesson> };
+    }
   | { type: 'DELETE_LESSON'; payload: { moduleId: string; lessonId: string } }
-  | { type: 'REORDER_LESSONS'; payload: { moduleId: string; lessons: Lesson[] } }
+  | {
+      type: 'REORDER_LESSONS';
+      payload: { moduleId: string; lessons: Lesson[] };
+    }
   | { type: 'ADD_QUIZ'; payload: { moduleId: string; quiz: Quiz } }
-  | { type: 'UPDATE_QUIZ'; payload: { moduleId: string; quizId: string; data: Partial<Quiz> } }
+  | {
+      type: 'UPDATE_QUIZ';
+      payload: { moduleId: string; quizId: string; data: Partial<Quiz> };
+    }
   | { type: 'DELETE_QUIZ'; payload: { moduleId: string; quizId: string } }
   | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'SET_SAVING'; payload: boolean }
@@ -48,8 +67,14 @@ type CMSAction =
   | { type: 'ADD_NOTIFICATION'; payload: CMSNotification }
   | { type: 'MARK_NOTIFICATION_READ'; payload: string }
   | { type: 'CLEAR_NOTIFICATIONS' }
-  | { type: 'ADD_VERSION'; payload: { contentId: string; version: ContentVersion } }
-  | { type: 'RESTORE_VERSION'; payload: { contentId: string; version: ContentVersion } };
+  | {
+      type: 'ADD_VERSION';
+      payload: { contentId: string; version: ContentVersion };
+    }
+  | {
+      type: 'RESTORE_VERSION';
+      payload: { contentId: string; version: ContentVersion };
+    };
 
 // Initial State
 const initialState: CMSState = {
@@ -76,7 +101,11 @@ function cmsReducer(state: CMSState, action: CMSAction): CMSState {
       return { ...state, courses: action.payload };
 
     case 'SET_CURRENT_COURSE':
-      return { ...state, currentCourse: action.payload, hasUnsavedChanges: false };
+      return {
+        ...state,
+        currentCourse: action.payload,
+        hasUnsavedChanges: false,
+      };
 
     case 'UPDATE_COURSE':
       if (!state.currentCourse) return state;
@@ -104,7 +133,9 @@ function cmsReducer(state: CMSState, action: CMSAction): CMSState {
         currentCourse: {
           ...state.currentCourse,
           modules: state.currentCourse.modules.map((m) =>
-            m.id === action.payload.moduleId ? { ...m, ...action.payload.data } : m
+            m.id === action.payload.moduleId
+              ? { ...m, ...action.payload.data }
+              : m,
           ),
         },
         hasUnsavedChanges: true,
@@ -116,7 +147,9 @@ function cmsReducer(state: CMSState, action: CMSAction): CMSState {
         ...state,
         currentCourse: {
           ...state.currentCourse,
-          modules: state.currentCourse.modules.filter((m) => m.id !== action.payload),
+          modules: state.currentCourse.modules.filter(
+            (m) => m.id !== action.payload,
+          ),
         },
         hasUnsavedChanges: true,
       };
@@ -141,7 +174,7 @@ function cmsReducer(state: CMSState, action: CMSAction): CMSState {
           modules: state.currentCourse.modules.map((m) =>
             m.id === action.payload.moduleId
               ? { ...m, lessons: [...m.lessons, action.payload.lesson] }
-              : m
+              : m,
           ),
         },
         hasUnsavedChanges: true,
@@ -158,10 +191,12 @@ function cmsReducer(state: CMSState, action: CMSAction): CMSState {
               ? {
                   ...m,
                   lessons: m.lessons.map((l) =>
-                    l.id === action.payload.lessonId ? { ...l, ...action.payload.data } : l
+                    l.id === action.payload.lessonId
+                      ? { ...l, ...action.payload.data }
+                      : l,
                   ),
                 }
-              : m
+              : m,
           ),
         },
         hasUnsavedChanges: true,
@@ -175,8 +210,13 @@ function cmsReducer(state: CMSState, action: CMSAction): CMSState {
           ...state.currentCourse,
           modules: state.currentCourse.modules.map((m) =>
             m.id === action.payload.moduleId
-              ? { ...m, lessons: m.lessons.filter((l) => l.id !== action.payload.lessonId) }
-              : m
+              ? {
+                  ...m,
+                  lessons: m.lessons.filter(
+                    (l) => l.id !== action.payload.lessonId,
+                  ),
+                }
+              : m,
           ),
         },
         hasUnsavedChanges: true,
@@ -189,7 +229,9 @@ function cmsReducer(state: CMSState, action: CMSAction): CMSState {
         currentCourse: {
           ...state.currentCourse,
           modules: state.currentCourse.modules.map((m) =>
-            m.id === action.payload.moduleId ? { ...m, lessons: action.payload.lessons } : m
+            m.id === action.payload.moduleId
+              ? { ...m, lessons: action.payload.lessons }
+              : m,
           ),
         },
         hasUnsavedChanges: true,
@@ -204,7 +246,7 @@ function cmsReducer(state: CMSState, action: CMSAction): CMSState {
           modules: state.currentCourse.modules.map((m) =>
             m.id === action.payload.moduleId
               ? { ...m, quizzes: [...m.quizzes, action.payload.quiz] }
-              : m
+              : m,
           ),
         },
         hasUnsavedChanges: true,
@@ -221,10 +263,12 @@ function cmsReducer(state: CMSState, action: CMSAction): CMSState {
               ? {
                   ...m,
                   quizzes: m.quizzes.map((q) =>
-                    q.id === action.payload.quizId ? { ...q, ...action.payload.data } : q
+                    q.id === action.payload.quizId
+                      ? { ...q, ...action.payload.data }
+                      : q,
                   ),
                 }
-              : m
+              : m,
           ),
         },
         hasUnsavedChanges: true,
@@ -238,8 +282,13 @@ function cmsReducer(state: CMSState, action: CMSAction): CMSState {
           ...state.currentCourse,
           modules: state.currentCourse.modules.map((m) =>
             m.id === action.payload.moduleId
-              ? { ...m, quizzes: m.quizzes.filter((q) => q.id !== action.payload.quizId) }
-              : m
+              ? {
+                  ...m,
+                  quizzes: m.quizzes.filter(
+                    (q) => q.id !== action.payload.quizId,
+                  ),
+                }
+              : m,
           ),
         },
         hasUnsavedChanges: true,
@@ -282,7 +331,7 @@ function cmsReducer(state: CMSState, action: CMSAction): CMSState {
       return {
         ...state,
         notifications: state.notifications.map((n) =>
-          n.id === action.payload ? { ...n, read: true } : n
+          n.id === action.payload ? { ...n, read: true } : n,
         ),
       };
 
@@ -298,55 +347,61 @@ function cmsReducer(state: CMSState, action: CMSAction): CMSState {
 interface CMSContextValue extends CMSState {
   // User actions
   setUser: (user: CMSUser | null) => void;
-  
+
   // Course actions
   setCourses: (courses: Course[]) => void;
   setCurrentCourse: (course: Course | null) => void;
   updateCourse: (data: Partial<Course>) => void;
   saveCourse: () => Promise<void>;
   publishCourse: () => Promise<void>;
-  
+
   // Module actions
   addModule: (module: CourseModule) => void;
   updateModule: (moduleId: string, data: Partial<CourseModule>) => void;
   deleteModule: (moduleId: string) => void;
   reorderModules: (modules: CourseModule[]) => void;
-  
+
   // Lesson actions
   addLesson: (moduleId: string, lesson: Lesson) => void;
-  updateLesson: (moduleId: string, lessonId: string, data: Partial<Lesson>) => void;
+  updateLesson: (
+    moduleId: string,
+    lessonId: string,
+    data: Partial<Lesson>,
+  ) => void;
   deleteLesson: (moduleId: string, lessonId: string) => void;
   reorderLessons: (moduleId: string, lessons: Lesson[]) => void;
-  
+
   // Quiz actions
   addQuiz: (moduleId: string, quiz: Quiz) => void;
   updateQuiz: (moduleId: string, quizId: string, data: Partial<Quiz>) => void;
   deleteQuiz: (moduleId: string, quizId: string) => void;
-  
+
   // UI actions
   toggleSidebar: () => void;
   togglePreview: () => void;
   setLoading: (loading: boolean) => void;
-  
+
   // Draft actions
   saveDraft: () => Promise<void>;
   loadDraft: (draftId: string) => Promise<void>;
   clearDraft: () => void;
-  
+
   // Version control
   createVersion: (message?: string) => Promise<ContentVersion>;
   restoreVersion: (version: ContentVersion) => void;
   compareVersions: (fromVersion: number, toVersion: number) => void;
-  
+
   // Collaboration
   addComment: (comment: Comment) => void;
   resolveComment: (commentId: string) => void;
-  
+
   // Notifications
-  addNotification: (notification: Omit<CMSNotification, 'id' | 'createdAt' | 'read'>) => void;
+  addNotification: (
+    notification: Omit<CMSNotification, 'id' | 'createdAt' | 'read'>,
+  ) => void;
   markNotificationRead: (id: string) => void;
   clearNotifications: () => void;
-  
+
   // Activity
   logActivity: (activity: Omit<ActivityLog, 'id' | 'timestamp'>) => void;
 }
@@ -406,7 +461,7 @@ export function CMSProvider({ children }: CMSProviderProps) {
 
   const saveCourse = useCallback(async () => {
     if (!state.currentCourse) return;
-    
+
     dispatch({ type: 'SET_SAVING', payload: true });
     try {
       // API call would go here
@@ -430,7 +485,7 @@ export function CMSProvider({ children }: CMSProviderProps) {
 
   const publishCourse = useCallback(async () => {
     if (!state.currentCourse) return;
-    
+
     dispatch({ type: 'SET_SAVING', payload: true });
     try {
       // API call would go here
@@ -461,9 +516,12 @@ export function CMSProvider({ children }: CMSProviderProps) {
     dispatch({ type: 'ADD_MODULE', payload: module });
   }, []);
 
-  const updateModule = useCallback((moduleId: string, data: Partial<CourseModule>) => {
-    dispatch({ type: 'UPDATE_MODULE', payload: { moduleId, data } });
-  }, []);
+  const updateModule = useCallback(
+    (moduleId: string, data: Partial<CourseModule>) => {
+      dispatch({ type: 'UPDATE_MODULE', payload: { moduleId, data } });
+    },
+    [],
+  );
 
   const deleteModule = useCallback((moduleId: string) => {
     dispatch({ type: 'DELETE_MODULE', payload: moduleId });
@@ -480,9 +538,12 @@ export function CMSProvider({ children }: CMSProviderProps) {
 
   const updateLesson = useCallback(
     (moduleId: string, lessonId: string, data: Partial<Lesson>) => {
-      dispatch({ type: 'UPDATE_LESSON', payload: { moduleId, lessonId, data } });
+      dispatch({
+        type: 'UPDATE_LESSON',
+        payload: { moduleId, lessonId, data },
+      });
     },
-    []
+    [],
   );
 
   const deleteLesson = useCallback((moduleId: string, lessonId: string) => {
@@ -502,7 +563,7 @@ export function CMSProvider({ children }: CMSProviderProps) {
     (moduleId: string, quizId: string, data: Partial<Quiz>) => {
       dispatch({ type: 'UPDATE_QUIZ', payload: { moduleId, quizId, data } });
     },
-    []
+    [],
   );
 
   const deleteQuiz = useCallback((moduleId: string, quizId: string) => {
@@ -525,7 +586,7 @@ export function CMSProvider({ children }: CMSProviderProps) {
   // Draft actions
   const saveDraft = useCallback(async () => {
     if (!state.currentCourse) return;
-    
+
     const draft: Draft = {
       id: `draft-${state.currentCourse.id}`,
       contentType: 'course',
@@ -536,7 +597,10 @@ export function CMSProvider({ children }: CMSProviderProps) {
     };
 
     // Save to localStorage for now
-    localStorage.setItem(`cms-draft-${state.currentCourse.id}`, JSON.stringify(draft));
+    localStorage.setItem(
+      `cms-draft-${state.currentCourse.id}`,
+      JSON.stringify(draft),
+    );
     dispatch({ type: 'SET_DRAFT', payload: draft });
   }, [state.currentCourse, state.currentUser]);
 
@@ -557,38 +621,44 @@ export function CMSProvider({ children }: CMSProviderProps) {
   }, [state.currentCourse]);
 
   // Version control
-  const createVersion = useCallback(async (message?: string): Promise<ContentVersion> => {
-    if (!state.currentCourse || !state.currentUser) {
-      throw new Error('No course or user');
-    }
+  const createVersion = useCallback(
+    async (message?: string): Promise<ContentVersion> => {
+      if (!state.currentCourse || !state.currentUser) {
+        throw new Error('No course or user');
+      }
 
-    const version: ContentVersion = {
-      id: `v-${Date.now()}`,
-      contentType: 'course',
-      contentId: state.currentCourse.id,
-      version: state.currentCourse.version + 1,
-      changes: [], // Would be computed from diff
-      snapshot: state.currentCourse,
-      message,
-      createdBy: state.currentUser.id,
-      createdAt: new Date(),
-      restorable: true,
-    };
+      const version: ContentVersion = {
+        id: `v-${Date.now()}`,
+        contentType: 'course',
+        contentId: state.currentCourse.id,
+        version: state.currentCourse.version + 1,
+        changes: [], // Would be computed from diff
+        snapshot: state.currentCourse,
+        message,
+        createdBy: state.currentUser.id,
+        createdAt: new Date(),
+        restorable: true,
+      };
 
-    dispatch({
-      type: 'ADD_VERSION',
-      payload: { contentId: state.currentCourse.id, version },
-    });
+      dispatch({
+        type: 'ADD_VERSION',
+        payload: { contentId: state.currentCourse.id, version },
+      });
 
-    return version;
-  }, [state.currentCourse, state.currentUser]);
+      return version;
+    },
+    [state.currentCourse, state.currentUser],
+  );
 
   const restoreVersion = useCallback((version: ContentVersion) => {
     dispatch({
       type: 'RESTORE_VERSION',
       payload: { contentId: version.contentId, version },
     });
-    dispatch({ type: 'SET_CURRENT_COURSE', payload: version.snapshot as Course });
+    dispatch({
+      type: 'SET_CURRENT_COURSE',
+      payload: version.snapshot as Course,
+    });
   }, []);
 
   const compareVersions = useCallback(
@@ -596,7 +666,7 @@ export function CMSProvider({ children }: CMSProviderProps) {
       // Would implement version comparison logic
       console.log('Comparing versions:', fromVersion, 'to', toVersion);
     },
-    []
+    [],
   );
 
   // Collaboration
@@ -623,7 +693,7 @@ export function CMSProvider({ children }: CMSProviderProps) {
         },
       });
     },
-    []
+    [],
   );
 
   const markNotificationRead = useCallback((id: string) => {
@@ -646,7 +716,7 @@ export function CMSProvider({ children }: CMSProviderProps) {
         },
       });
     },
-    []
+    [],
   );
 
   const value: CMSContextValue = {
@@ -704,7 +774,13 @@ export function useCMSCourse() {
 }
 
 export function useCMSModules() {
-  const { currentCourse, addModule, updateModule, deleteModule, reorderModules } = useCMS();
+  const {
+    currentCourse,
+    addModule,
+    updateModule,
+    deleteModule,
+    reorderModules,
+  } = useCMS();
   return {
     modules: currentCourse?.modules || [],
     addModule,

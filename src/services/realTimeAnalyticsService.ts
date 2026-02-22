@@ -53,7 +53,7 @@ class RealTimeAnalyticsService {
     if (this.intervalId) return;
     this.intervalId = setInterval(() => {
       this.updateState();
-      this.notifySubscribers();
+      this.subscribers.forEach((callback) => callback(this.state));
     }, 3000);
   }
 

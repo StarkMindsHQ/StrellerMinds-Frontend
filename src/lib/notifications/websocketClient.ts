@@ -20,7 +20,7 @@ class WebSocketClient {
 
     this.isIntentionallyClosed = false;
     const wsUrl = `${process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:3001'}/notifications?userId=${userId}`;
-    
+
     this.ws = new WebSocket(wsUrl);
 
     this.ws.onopen = () => {
@@ -32,16 +32,20 @@ class WebSocketClient {
     this.ws.onmessage = (event) => {
       try {
         const message: WebSocketMessage = JSON.parse(event.data);
-        
+
         if (message.type === 'notification' && message.payload) {
           const notification: Notification = {
             ...message.payload,
             createdAt: new Date(message.payload.createdAt),
-            readAt: message.payload.readAt ? new Date(message.payload.readAt) : undefined,
-            expiresAt: message.payload.expiresAt ? new Date(message.payload.expiresAt) : undefined,
+            readAt: message.payload.readAt
+              ? new Date(message.payload.readAt)
+              : undefined,
+            expiresAt: message.payload.expiresAt
+              ? new Date(message.payload.expiresAt)
+              : undefined,
           };
-          
-          this.messageHandlers.forEach(handler => handler(notification));
+
+          this.messageHandlers.forEach((handler) => handler(notification));
         } else if (message.type === 'ping') {
           this.send({ type: 'pong', timestamp: Date.now() });
         }
@@ -57,7 +61,7 @@ class WebSocketClient {
     this.ws.onclose = () => {
       console.log('WebSocket disconnected');
       this.stopPing();
-      
+
       if (!this.isIntentionallyClosed) {
         this.reconnect(userId);
       }
@@ -67,10 +71,13 @@ class WebSocketClient {
   private reconnect(userId: string): void {
     if (this.reconnectAttempts < this.maxReconnectAttempts) {
       this.reconnectAttempts++;
-      const delay = this.reconnectDelay * Math.pow(2, this.reconnectAttempts - 1);
-      
-      console.log(`Reconnecting in ${delay}ms... (Attempt ${this.reconnectAttempts})`);
-      
+      const delay =
+        this.reconnectDelay * Math.pow(2, this.reconnectAttempts - 1);
+
+      console.log(
+        `Reconnecting in ${delay}ms... (Attempt ${this.reconnectAttempts})`,
+      );
+
       setTimeout(() => {
         this.connect(userId);
       }, delay);
@@ -97,7 +104,7 @@ class WebSocketClient {
   disconnect(): void {
     this.isIntentionallyClosed = true;
     this.stopPing();
-    
+
     if (this.ws) {
       this.ws.close();
       this.ws = null;
@@ -106,7 +113,7 @@ class WebSocketClient {
 
   onMessage(handler: MessageHandler): () => void {
     this.messageHandlers.add(handler);
-    
+
     // Return unsubscribe function
     return () => {
       this.messageHandlers.delete(handler);

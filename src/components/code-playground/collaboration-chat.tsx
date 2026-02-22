@@ -63,7 +63,7 @@ export default function CollaborationChat() {
               state.messages.map((msg) => {
                 const user = state.users.get(msg.userId);
                 const isCurrentUser = msg.userId === state.currentUser?.id;
-                
+
                 // Debug: Log voice note messages
                 if (msg.type === 'voice') {
                   console.log('Voice note message:', {
@@ -91,9 +91,13 @@ export default function CollaborationChat() {
                         {user?.name.charAt(0).toUpperCase() || 'U'}
                       </AvatarFallback>
                     </Avatar>
-                    <div className={`flex-1 ${isCurrentUser ? 'text-right' : ''}`}>
+                    <div
+                      className={`flex-1 ${isCurrentUser ? 'text-right' : ''}`}
+                    >
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-sm font-medium">{msg.userName}</span>
+                        <span className="text-sm font-medium">
+                          {msg.userName}
+                        </span>
                         <span className="text-xs text-muted-foreground">
                           {formatTimestamp(msg.timestamp)}
                         </span>

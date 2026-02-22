@@ -6,19 +6,19 @@ const originalEnv = process.env;
 describe('Environment Validation', () => {
   beforeEach(() => {
     // Reset environment variables
-    process.env = { ...originalEnv };
+    (process as any).env = { ...originalEnv };
     vi.resetModules();
   });
 
   afterEach(() => {
     // Restore original environment variables
-    process.env = originalEnv;
+    (process as any).env = originalEnv;
     vi.resetModules();
   });
 
   it('should validate with default values', async () => {
     // Clear all environment variables to test defaults
-    process.env = {};
+    (process as any).env = {};
 
     // This should not throw an error as all variables have defaults
     try {
@@ -31,9 +31,9 @@ describe('Environment Validation', () => {
 
   it('should validate required environment variables', async () => {
     // Set valid environment variables
-    process.env.NODE_ENV = 'development';
-    process.env.NEXT_PUBLIC_APP_NAME = 'Test App';
-    process.env.NEXT_PUBLIC_APP_URL = 'http://localhost:3000';
+    (process.env as any).NODE_ENV = 'development';
+    (process.env as any).NEXT_PUBLIC_APP_NAME = 'Test App';
+    (process.env as any).NEXT_PUBLIC_APP_URL = 'http://localhost:3000';
 
     try {
       await import('../env');
@@ -44,7 +44,7 @@ describe('Environment Validation', () => {
   });
 
   it('should handle NODE_ENV validation', async () => {
-    process.env.NODE_ENV = 'development';
+    (process.env as any).NODE_ENV = 'development';
 
     try {
       await import('../env');
@@ -56,7 +56,7 @@ describe('Environment Validation', () => {
   });
 
   it('should handle URL validation', async () => {
-    process.env.NEXT_PUBLIC_APP_URL = 'http://localhost:3000';
+    (process.env as any).NEXT_PUBLIC_APP_URL = 'http://localhost:3000';
 
     try {
       await import('../env');
@@ -67,7 +67,7 @@ describe('Environment Validation', () => {
   });
 
   it('should validate Stellar network values', async () => {
-    process.env.NEXT_PUBLIC_STELLAR_NETWORK = 'mainnet';
+    (process.env as any).NEXT_PUBLIC_STELLAR_NETWORK = 'mainnet';
 
     try {
       await import('../env');
@@ -79,8 +79,8 @@ describe('Environment Validation', () => {
   });
 
   it('should handle Stellar network configuration', async () => {
-    process.env.NEXT_PUBLIC_STELLAR_NETWORK = 'testnet';
-    process.env.STELLAR_NETWORK_PASSPHRASE =
+    (process.env as any).NEXT_PUBLIC_STELLAR_NETWORK = 'testnet';
+    (process.env as any).STELLAR_NETWORK_PASSPHRASE =
       'Test SDF Network ; September 2015';
 
     try {

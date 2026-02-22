@@ -7,9 +7,5 @@ export default function CMSLayoutWrapper({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <CMSProvider>
-      {children}
-    </CMSProvider>
-  );
+  return <CMSProvider>{children}</CMSProvider>;
 }

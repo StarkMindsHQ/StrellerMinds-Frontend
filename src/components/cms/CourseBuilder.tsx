@@ -3,17 +3,42 @@
 import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence, Reorder } from 'framer-motion';
 import {
-  Plus, GripVertical, ChevronDown, ChevronRight, Edit2, Trash2,
-  Video, FileText, HelpCircle, ClipboardList, Download, MoreVertical,
-  Copy, Eye, Lock, Unlock, Clock, CheckCircle, AlertCircle,
+  Plus,
+  GripVertical,
+  ChevronDown,
+  ChevronRight,
+  Edit2,
+  Trash2,
+  Video,
+  FileText,
+  HelpCircle,
+  ClipboardList,
+  Download,
+  MoreVertical,
+  Copy,
+  Eye,
+  Lock,
+  Unlock,
+  Clock,
+  CheckCircle,
+  AlertCircle,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
-  DropdownMenu, DropdownMenuContent, DropdownMenuItem,
-  DropdownMenuTrigger, DropdownMenuSeparator,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
-import type { CourseModule, Lesson, Quiz, Assignment, LessonType } from '@/types/cms';
+import type {
+  CourseModule,
+  Lesson,
+  Quiz,
+  Assignment,
+  LessonType,
+} from '@/types/cms';
 
 interface CourseBuilderProps {
   modules: CourseModule[];
@@ -24,7 +49,11 @@ interface CourseBuilderProps {
   readOnly?: boolean;
 }
 
-const LESSON_TYPES: { type: LessonType; icon: React.ReactNode; label: string }[] = [
+const LESSON_TYPES: {
+  type: LessonType;
+  icon: React.ReactNode;
+  label: string;
+}[] = [
   { type: 'video', icon: <Video size={16} />, label: 'Video Lesson' },
   { type: 'text', icon: <FileText size={16} />, label: 'Text Lesson' },
   { type: 'interactive', icon: <HelpCircle size={16} />, label: 'Interactive' },
@@ -39,14 +68,17 @@ export function CourseBuilder({
   onEditAssignment,
   readOnly = false,
 }: CourseBuilderProps) {
-  const [expandedModules, setExpandedModules] = useState<Set<string>>(new Set(modules.map(m => m.id)));
+  const [expandedModules, setExpandedModules] = useState<Set<string>>(
+    new Set(modules.map((m) => m.id)),
+  );
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editingValue, setEditingValue] = useState('');
 
-  const generateId = () => `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  const generateId = () =>
+    `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
   const toggleModule = (moduleId: string) => {
-    setExpandedModules(prev => {
+    setExpandedModules((prev) => {
       const next = new Set(prev);
       if (next.has(moduleId)) next.delete(moduleId);
       else next.add(moduleId);
@@ -71,7 +103,7 @@ export function CourseBuilder({
       updatedAt: new Date(),
     };
     onModulesChange([...modules, newModule]);
-    setExpandedModules(prev => new Set(prev).add(newModule.id));
+    setExpandedModules((prev) => new Set(prev).add(newModule.id));
     setEditingId(newModule.id);
     setEditingValue('New Module');
   };
@@ -83,7 +115,7 @@ export function CourseBuilder({
       title: 'New Lesson',
       description: '',
       type,
-      order: modules.find(m => m.id === moduleId)?.lessons.length || 0,
+      order: modules.find((m) => m.id === moduleId)?.lessons.length || 0,
       duration: 0,
       content: {},
       status: 'draft',
@@ -96,9 +128,11 @@ export function CourseBuilder({
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    onModulesChange(modules.map(m => 
-      m.id === moduleId ? { ...m, lessons: [...m.lessons, newLesson] } : m
-    ));
+    onModulesChange(
+      modules.map((m) =>
+        m.id === moduleId ? { ...m, lessons: [...m.lessons, newLesson] } : m,
+      ),
+    );
   };
 
   const addQuiz = (moduleId: string) => {
@@ -108,7 +142,7 @@ export function CourseBuilder({
       title: 'New Quiz',
       description: '',
       type: 'graded',
-      order: modules.find(m => m.id === moduleId)?.quizzes.length || 0,
+      order: modules.find((m) => m.id === moduleId)?.quizzes.length || 0,
       questions: [],
       settings: {
         shuffleQuestions: false,
@@ -129,61 +163,107 @@ export function CourseBuilder({
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    onModulesChange(modules.map(m => 
-      m.id === moduleId ? { ...m, quizzes: [...m.quizzes, newQuiz] } : m
-    ));
+    onModulesChange(
+      modules.map((m) =>
+        m.id === moduleId ? { ...m, quizzes: [...m.quizzes, newQuiz] } : m,
+      ),
+    );
   };
 
   const deleteModule = (moduleId: string) => {
-    onModulesChange(modules.filter(m => m.id !== moduleId));
+    onModulesChange(modules.filter((m) => m.id !== moduleId));
   };
 
   const deleteLesson = (moduleId: string, lessonId: string) => {
-    onModulesChange(modules.map(m => 
-      m.id === moduleId ? { ...m, lessons: m.lessons.filter(l => l.id !== lessonId) } : m
-    ));
+    onModulesChange(
+      modules.map((m) =>
+        m.id === moduleId
+          ? { ...m, lessons: m.lessons.filter((l) => l.id !== lessonId) }
+          : m,
+      ),
+    );
   };
 
   const deleteQuiz = (moduleId: string, quizId: string) => {
-    onModulesChange(modules.map(m => 
-      m.id === moduleId ? { ...m, quizzes: m.quizzes.filter(q => q.id !== quizId) } : m
-    ));
+    onModulesChange(
+      modules.map((m) =>
+        m.id === moduleId
+          ? { ...m, quizzes: m.quizzes.filter((q) => q.id !== quizId) }
+          : m,
+      ),
+    );
   };
 
-  const updateTitle = (type: 'module' | 'lesson' | 'quiz', id: string, moduleId?: string) => {
+  const updateTitle = (
+    type: 'module' | 'lesson' | 'quiz',
+    id: string,
+    moduleId?: string,
+  ) => {
     if (type === 'module') {
-      onModulesChange(modules.map(m => m.id === id ? { ...m, title: editingValue } : m));
+      onModulesChange(
+        modules.map((m) => (m.id === id ? { ...m, title: editingValue } : m)),
+      );
     } else if (type === 'lesson' && moduleId) {
-      onModulesChange(modules.map(m => 
-        m.id === moduleId ? { ...m, lessons: m.lessons.map(l => l.id === id ? { ...l, title: editingValue } : l) } : m
-      ));
+      onModulesChange(
+        modules.map((m) =>
+          m.id === moduleId
+            ? {
+                ...m,
+                lessons: m.lessons.map((l) =>
+                  l.id === id ? { ...l, title: editingValue } : l,
+                ),
+              }
+            : m,
+        ),
+      );
     } else if (type === 'quiz' && moduleId) {
-      onModulesChange(modules.map(m => 
-        m.id === moduleId ? { ...m, quizzes: m.quizzes.map(q => q.id === id ? { ...q, title: editingValue } : q) } : m
-      ));
+      onModulesChange(
+        modules.map((m) =>
+          m.id === moduleId
+            ? {
+                ...m,
+                quizzes: m.quizzes.map((q) =>
+                  q.id === id ? { ...q, title: editingValue } : q,
+                ),
+              }
+            : m,
+        ),
+      );
     }
     setEditingId(null);
   };
 
   const duplicateModule = (module: CourseModule) => {
-    const newModule = { ...module, id: generateId(), title: `${module.title} (Copy)`, order: modules.length };
+    const newModule = {
+      ...module,
+      id: generateId(),
+      title: `${module.title} (Copy)`,
+      order: modules.length,
+    };
     onModulesChange([...modules, newModule]);
   };
 
   const toggleLock = (moduleId: string) => {
-    onModulesChange(modules.map(m => m.id === moduleId ? { ...m, isLocked: !m.isLocked } : m));
+    onModulesChange(
+      modules.map((m) =>
+        m.id === moduleId ? { ...m, isLocked: !m.isLocked } : m,
+      ),
+    );
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'published': return <CheckCircle size={14} className="text-green-500" />;
-      case 'review': return <AlertCircle size={14} className="text-yellow-500" />;
-      default: return <Clock size={14} className="text-muted-foreground" />;
+      case 'published':
+        return <CheckCircle size={14} className="text-green-500" />;
+      case 'review':
+        return <AlertCircle size={14} className="text-yellow-500" />;
+      default:
+        return <Clock size={14} className="text-muted-foreground" />;
     }
   };
 
   const getLessonIcon = (type: LessonType) => {
-    const found = LESSON_TYPES.find(t => t.type === type);
+    const found = LESSON_TYPES.find((t) => t.type === type);
     return found?.icon || <FileText size={16} />;
   };
 
@@ -192,7 +272,9 @@ export function CourseBuilder({
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="text-xl font-bold">Course Structure</h2>
-          <p className="text-sm text-muted-foreground">Organize modules, lessons, and quizzes</p>
+          <p className="text-sm text-muted-foreground">
+            Organize modules, lessons, and quizzes
+          </p>
         </div>
         {!readOnly && (
           <Button onClick={addModule} className="gap-2">
@@ -201,7 +283,12 @@ export function CourseBuilder({
         )}
       </div>
 
-      <Reorder.Group axis="y" values={modules} onReorder={onModulesChange} className="space-y-4">
+      <Reorder.Group
+        axis="y"
+        values={modules}
+        onReorder={onModulesChange}
+        className="space-y-4"
+      >
         {modules.map((module, moduleIndex) => (
           <Reorder.Item key={module.id} value={module} className="list-none">
             <motion.div
@@ -215,8 +302,15 @@ export function CourseBuilder({
                     <GripVertical size={20} />
                   </div>
                 )}
-                <button onClick={() => toggleModule(module.id)} className="p-1 hover:bg-muted rounded">
-                  {expandedModules.has(module.id) ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
+                <button
+                  onClick={() => toggleModule(module.id)}
+                  className="p-1 hover:bg-muted rounded"
+                >
+                  {expandedModules.has(module.id) ? (
+                    <ChevronDown size={20} />
+                  ) : (
+                    <ChevronRight size={20} />
+                  )}
                 </button>
                 <div className="flex-1 min-w-0">
                   {editingId === module.id ? (
@@ -224,15 +318,21 @@ export function CourseBuilder({
                       value={editingValue}
                       onChange={(e) => setEditingValue(e.target.value)}
                       onBlur={() => updateTitle('module', module.id)}
-                      onKeyDown={(e) => e.key === 'Enter' && updateTitle('module', module.id)}
+                      onKeyDown={(e) =>
+                        e.key === 'Enter' && updateTitle('module', module.id)
+                      }
                       className="h-8 font-semibold"
                       autoFocus
                     />
                   ) : (
                     <h3 className="font-semibold truncate flex items-center gap-2">
-                      <span className="text-primary/70">Module {moduleIndex + 1}:</span>
+                      <span className="text-primary/70">
+                        Module {moduleIndex + 1}:
+                      </span>
                       {module.title}
-                      {module.isLocked && <Lock size={14} className="text-muted-foreground" />}
+                      {module.isLocked && (
+                        <Lock size={14} className="text-muted-foreground" />
+                      )}
                     </h3>
                   )}
                 </div>
@@ -249,18 +349,30 @@ export function CourseBuilder({
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={() => { setEditingId(module.id); setEditingValue(module.title); }}>
+                      <DropdownMenuItem
+                        onClick={() => {
+                          setEditingId(module.id);
+                          setEditingValue(module.title);
+                        }}
+                      >
                         <Edit2 size={14} className="mr-2" /> Rename
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => duplicateModule(module)}>
                         <Copy size={14} className="mr-2" /> Duplicate
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => toggleLock(module.id)}>
-                        {module.isLocked ? <Unlock size={14} className="mr-2" /> : <Lock size={14} className="mr-2" />}
+                        {module.isLocked ? (
+                          <Unlock size={14} className="mr-2" />
+                        ) : (
+                          <Lock size={14} className="mr-2" />
+                        )}
                         {module.isLocked ? 'Unlock' : 'Lock'}
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem onClick={() => deleteModule(module.id)} className="text-destructive">
+                      <DropdownMenuItem
+                        onClick={() => deleteModule(module.id)}
+                        className="text-destructive"
+                      >
                         <Trash2 size={14} className="mr-2" /> Delete
                       </DropdownMenuItem>
                     </DropdownMenuContent>
@@ -280,33 +392,69 @@ export function CourseBuilder({
                     <div className="p-4 space-y-2">
                       {/* Lessons */}
                       {module.lessons.map((lesson, lessonIndex) => (
-                        <div key={lesson.id} className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors group">
-                          <div className="text-muted-foreground">{getLessonIcon(lesson.type)}</div>
+                        <div
+                          key={lesson.id}
+                          className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors group"
+                        >
+                          <div className="text-muted-foreground">
+                            {getLessonIcon(lesson.type)}
+                          </div>
                           <div className="flex-1 min-w-0">
                             {editingId === lesson.id ? (
                               <Input
                                 value={editingValue}
-                                onChange={(e) => setEditingValue(e.target.value)}
-                                onBlur={() => updateTitle('lesson', lesson.id, module.id)}
-                                onKeyDown={(e) => e.key === 'Enter' && updateTitle('lesson', lesson.id, module.id)}
+                                onChange={(e) =>
+                                  setEditingValue(e.target.value)
+                                }
+                                onBlur={() =>
+                                  updateTitle('lesson', lesson.id, module.id)
+                                }
+                                onKeyDown={(e) =>
+                                  e.key === 'Enter' &&
+                                  updateTitle('lesson', lesson.id, module.id)
+                                }
                                 className="h-7 text-sm"
                                 autoFocus
                               />
                             ) : (
-                              <p className="text-sm font-medium truncate">{lessonIndex + 1}. {lesson.title}</p>
+                              <p className="text-sm font-medium truncate">
+                                {lessonIndex + 1}. {lesson.title}
+                              </p>
                             )}
                           </div>
                           <div className="flex items-center gap-2">
                             {getStatusIcon(lesson.status)}
-                            {lesson.isFree && <span className="text-xs bg-green-500/20 text-green-600 px-2 py-0.5 rounded">Free</span>}
-                            {lesson.duration > 0 && <span className="text-xs text-muted-foreground">{lesson.duration}m</span>}
+                            {lesson.isFree && (
+                              <span className="text-xs bg-green-500/20 text-green-600 px-2 py-0.5 rounded">
+                                Free
+                              </span>
+                            )}
+                            {lesson.duration > 0 && (
+                              <span className="text-xs text-muted-foreground">
+                                {lesson.duration}m
+                              </span>
+                            )}
                           </div>
                           {!readOnly && (
                             <div className="opacity-0 group-hover:opacity-100 flex items-center gap-1">
-                              <Button size="sm" variant="ghost" className="h-7 w-7 p-0" onClick={() => onEditLesson?.(module.id, lesson)}>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                className="h-7 w-7 p-0"
+                                onClick={() =>
+                                  onEditLesson?.(module.id, lesson)
+                                }
+                              >
                                 <Edit2 size={14} />
                               </Button>
-                              <Button size="sm" variant="ghost" className="h-7 w-7 p-0 text-destructive" onClick={() => deleteLesson(module.id, lesson.id)}>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                className="h-7 w-7 p-0 text-destructive"
+                                onClick={() =>
+                                  deleteLesson(module.id, lesson.id)
+                                }
+                              >
                                 <Trash2 size={14} />
                               </Button>
                             </div>
@@ -316,21 +464,38 @@ export function CourseBuilder({
 
                       {/* Quizzes */}
                       {module.quizzes.map((quiz, quizIndex) => (
-                        <div key={quiz.id} className="flex items-center gap-3 p-3 bg-yellow-500/10 rounded-lg hover:bg-yellow-500/20 transition-colors group">
+                        <div
+                          key={quiz.id}
+                          className="flex items-center gap-3 p-3 bg-yellow-500/10 rounded-lg hover:bg-yellow-500/20 transition-colors group"
+                        >
                           <HelpCircle size={16} className="text-yellow-600" />
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium truncate">Quiz: {quiz.title}</p>
+                            <p className="text-sm font-medium truncate">
+                              Quiz: {quiz.title}
+                            </p>
                           </div>
                           <div className="flex items-center gap-2">
                             {getStatusIcon(quiz.status)}
-                            <span className="text-xs text-muted-foreground">{quiz.questions.length} questions</span>
+                            <span className="text-xs text-muted-foreground">
+                              {quiz.questions.length} questions
+                            </span>
                           </div>
                           {!readOnly && (
                             <div className="opacity-0 group-hover:opacity-100 flex items-center gap-1">
-                              <Button size="sm" variant="ghost" className="h-7 w-7 p-0" onClick={() => onEditQuiz?.(module.id, quiz)}>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                className="h-7 w-7 p-0"
+                                onClick={() => onEditQuiz?.(module.id, quiz)}
+                              >
                                 <Edit2 size={14} />
                               </Button>
-                              <Button size="sm" variant="ghost" className="h-7 w-7 p-0 text-destructive" onClick={() => deleteQuiz(module.id, quiz.id)}>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                className="h-7 w-7 p-0 text-destructive"
+                                onClick={() => deleteQuiz(module.id, quiz.id)}
+                              >
                                 <Trash2 size={14} />
                               </Button>
                             </div>
@@ -343,19 +508,31 @@ export function CourseBuilder({
                         <div className="flex items-center gap-2 pt-2">
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                              <Button variant="outline" size="sm" className="gap-2">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="gap-2"
+                              >
                                 <Plus size={14} /> Add Lesson
                               </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
                               {LESSON_TYPES.map(({ type, icon, label }) => (
-                                <DropdownMenuItem key={type} onClick={() => addLesson(module.id, type)}>
+                                <DropdownMenuItem
+                                  key={type}
+                                  onClick={() => addLesson(module.id, type)}
+                                >
                                   {icon} <span className="ml-2">{label}</span>
                                 </DropdownMenuItem>
                               ))}
                             </DropdownMenuContent>
                           </DropdownMenu>
-                          <Button variant="outline" size="sm" className="gap-2" onClick={() => addQuiz(module.id)}>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="gap-2"
+                            onClick={() => addQuiz(module.id)}
+                          >
                             <HelpCircle size={14} /> Add Quiz
                           </Button>
                         </div>
@@ -375,7 +552,9 @@ export function CourseBuilder({
             <Plus size={32} className="text-primary" />
           </div>
           <h3 className="text-lg font-semibold mb-2">No modules yet</h3>
-          <p className="text-muted-foreground mb-4">Start building your course by adding modules</p>
+          <p className="text-muted-foreground mb-4">
+            Start building your course by adding modules
+          </p>
           {!readOnly && (
             <Button onClick={addModule} className="gap-2">
               <Plus size={18} /> Add First Module

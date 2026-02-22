@@ -3,10 +3,28 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Upload, File, Image as ImageIcon, Video, Music, MoreVertical,
-  Search, Grid, List as ListIcon, Trash2, Download, ExternalLink,
-  Folder, FolderPlus, X, Check, Filter, SortAsc, LayoutGrid,
-  Info, Copy
+  Upload,
+  File,
+  Image as ImageIcon,
+  Video,
+  Music,
+  MoreVertical,
+  ChevronRight,
+  Search,
+  Grid,
+  List as ListIcon,
+  Trash2,
+  Download,
+  ExternalLink,
+  Folder,
+  FolderPlus,
+  X,
+  Check,
+  Filter,
+  SortAsc,
+  LayoutGrid,
+  Info,
+  Copy,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -26,7 +44,11 @@ interface MediaManagerProps {
   multiSelect?: boolean;
 }
 
-export function MediaManager({ onSelect, allowSelection = false, multiSelect = false }: MediaManagerProps) {
+export function MediaManager({
+  onSelect,
+  allowSelection = false,
+  multiSelect = false,
+}: MediaManagerProps) {
   const [view, setView] = useState<'grid' | 'list'>('grid');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentFolderId, setCurrentFolderId] = useState<string | null>(null);
@@ -36,9 +58,27 @@ export function MediaManager({ onSelect, allowSelection = false, multiSelect = f
 
   // Mock data for demonstration
   const [folders, setFolders] = useState<MediaFolder[]>([
-    { id: '1', name: 'Course Thumbnails', path: '/thumbnails', assetCount: 12, createdAt: new Date() },
-    { id: '2', name: 'Lesson Videos', path: '/videos', assetCount: 8, createdAt: new Date() },
-    { id: '3', name: 'PDF Resources', path: '/resources', assetCount: 25, createdAt: new Date() },
+    {
+      id: '1',
+      name: 'Course Thumbnails',
+      path: '/thumbnails',
+      assetCount: 12,
+      createdAt: new Date(),
+    },
+    {
+      id: '2',
+      name: 'Lesson Videos',
+      path: '/videos',
+      assetCount: 8,
+      createdAt: new Date(),
+    },
+    {
+      id: '3',
+      name: 'PDF Resources',
+      path: '/resources',
+      assetCount: 25,
+      createdAt: new Date(),
+    },
   ]);
 
   const [assets, setAssets] = useState<MediaAsset[]>([
@@ -50,7 +90,8 @@ export function MediaManager({ onSelect, allowSelection = false, multiSelect = f
       mimeType: 'image/jpeg',
       size: 1024 * 512,
       url: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=300&fit=crop',
-      thumbnailUrl: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=100&h=100&fit=crop',
+      thumbnailUrl:
+        'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=100&h=100&fit=crop',
       metadata: {},
       tags: ['intro', 'course'],
       uploadedBy: 'user-1',
@@ -88,14 +129,18 @@ export function MediaManager({ onSelect, allowSelection = false, multiSelect = f
   const handleUpload = useCallback((files: FileList | null) => {
     if (!files) return;
     setIsUploading(true);
-    
+
     // Simulate upload
     setTimeout(() => {
       const newAssets: MediaAsset[] = Array.from(files).map((file, index) => ({
         id: `new-${Date.now()}-${index}`,
         name: file.name,
         originalName: file.name,
-        type: file.type.startsWith('image/') ? 'image' : file.type.startsWith('video/') ? 'video' : 'document',
+        type: file.type.startsWith('image/')
+          ? 'image'
+          : file.type.startsWith('video/')
+            ? 'video'
+            : 'document',
         mimeType: file.type,
         size: file.size,
         url: URL.createObjectURL(file),
@@ -105,7 +150,7 @@ export function MediaManager({ onSelect, allowSelection = false, multiSelect = f
         createdAt: new Date(),
       }));
 
-      setAssets(prev => [...newAssets, ...prev]);
+      setAssets((prev) => [...newAssets, ...prev]);
       setIsUploading(false);
       toast.success(`${files.length} file(s) uploaded successfully`);
     }, 1500);
@@ -114,7 +159,7 @@ export function MediaManager({ onSelect, allowSelection = false, multiSelect = f
   const toggleSelect = (id: string, e: React.MouseEvent) => {
     if (!allowSelection) return;
     e.stopPropagation();
-    setSelectedIds(prev => {
+    setSelectedIds((prev) => {
       const next = new Set(prev);
       if (next.has(id)) next.delete(id);
       else {
@@ -126,7 +171,7 @@ export function MediaManager({ onSelect, allowSelection = false, multiSelect = f
   };
 
   const deleteAsset = (id: string) => {
-    setAssets(prev => prev.filter(a => a.id !== id));
+    setAssets((prev) => prev.filter((a) => a.id !== id));
     toast.success('Asset deleted');
   };
 
@@ -137,16 +182,23 @@ export function MediaManager({ onSelect, allowSelection = false, multiSelect = f
 
   const getFileIcon = (type: string) => {
     switch (type) {
-      case 'image': return <ImageIcon className="text-blue-500" />;
-      case 'video': return <Video className="text-purple-500" />;
-      case 'audio': return <Music className="text-pink-500" />;
-      default: return <File className="text-gray-500" />;
+      case 'image':
+        return <ImageIcon className="text-blue-500" />;
+      case 'video':
+        return <Video className="text-purple-500" />;
+      case 'audio':
+        return <Music className="text-pink-500" />;
+      default:
+        return <File className="text-gray-500" />;
     }
   };
 
-  const filteredAssets = assets.filter(asset => 
-    asset.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    asset.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+  const filteredAssets = assets.filter(
+    (asset) =>
+      asset.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      asset.tags.some((tag) =>
+        tag.toLowerCase().includes(searchQuery.toLowerCase()),
+      ),
   );
 
   return (
@@ -156,8 +208,8 @@ export function MediaManager({ onSelect, allowSelection = false, multiSelect = f
         <div className="flex items-center gap-2">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4" />
-            <Input 
-              placeholder="Search media..." 
+            <Input
+              placeholder="Search media..."
               className="pl-9 w-[260px] h-9"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -180,38 +232,52 @@ export function MediaManager({ onSelect, allowSelection = false, multiSelect = f
 
         <div className="flex items-center gap-2">
           <div className="flex bg-muted p-1 rounded-md border mr-2">
-            <button 
+            <button
               className={`p-1.5 rounded ${view === 'grid' ? 'bg-background shadow-sm' : 'hover:bg-background/50'}`}
               onClick={() => setView('grid')}
             >
               <LayoutGrid className="w-4 h-4" />
             </button>
-            <button 
+            <button
               className={`p-1.5 rounded ${view === 'list' ? 'bg-background shadow-sm' : 'hover:bg-background/50'}`}
               onClick={() => setView('list')}
             >
               <ListIcon className="w-4 h-4" />
             </button>
           </div>
-          
-          <Button variant="outline" size="sm" className="h-9 gap-2" onClick={() => toast('Folder creation coming soon')}>
+
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-9 gap-2"
+            onClick={() => toast('Folder creation coming soon')}
+          >
             <FolderPlus className="w-4 h-4" /> New Folder
           </Button>
-          
-          <input 
-            type="file" 
-            ref={fileInputRef} 
-            className="hidden" 
-            multiple 
+
+          <input
+            type="file"
+            ref={fileInputRef}
+            className="hidden"
+            multiple
             onChange={(e) => handleUpload(e.target.files)}
           />
-          <Button 
-            size="sm" 
-            className="h-9 gap-2" 
+          <Button
+            size="sm"
+            className="h-9 gap-2"
             onClick={() => fileInputRef.current?.click()}
             disabled={isUploading}
           >
-            {isUploading ? <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1 }}><Upload className="w-4 h-4" /></motion.div> : <Upload className="w-4 h-4" />}
+            {isUploading ? (
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ repeat: Infinity, duration: 1 }}
+              >
+                <Upload className="w-4 h-4" />
+              </motion.div>
+            ) : (
+              <Upload className="w-4 h-4" />
+            )}
             Upload
           </Button>
         </div>
@@ -219,12 +285,14 @@ export function MediaManager({ onSelect, allowSelection = false, multiSelect = f
 
       {/* Breadcrumbs / Navigation */}
       <div className="px-4 py-2 border-b text-sm flex items-center gap-2 text-muted-foreground">
-        <button className="hover:text-primary transition-colors">All Files</button>
+        <button className="hover:text-primary transition-colors">
+          All Files
+        </button>
         {currentFolderId && (
           <>
             <ChevronRight className="w-4 h-4" />
             <span className="text-foreground font-medium">
-              {folders.find(f => f.id === currentFolderId)?.name}
+              {folders.find((f) => f.id === currentFolderId)?.name}
             </span>
           </>
         )}
@@ -235,7 +303,7 @@ export function MediaManager({ onSelect, allowSelection = false, multiSelect = f
         {/* Folders */}
         {!searchQuery && (
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
-            {folders.map(folder => (
+            {folders.map((folder) => (
               <motion.div
                 whileHover={{ scale: 1.02 }}
                 key={folder.id}
@@ -243,16 +311,26 @@ export function MediaManager({ onSelect, allowSelection = false, multiSelect = f
                 onClick={() => setCurrentFolderId(folder.id)}
               >
                 <Folder className="w-12 h-12 text-primary/60 mb-2 group-hover:text-primary" />
-                <span className="text-sm font-medium text-center truncate w-full">{folder.name}</span>
-                <span className="text-xs text-muted-foreground">{folder.assetCount} items</span>
+                <span className="text-sm font-medium text-center truncate w-full">
+                  {folder.name}
+                </span>
+                <span className="text-xs text-muted-foreground">
+                  {folder.assetCount} items
+                </span>
               </motion.div>
             ))}
           </div>
         )}
 
         {/* Assets Grid */}
-        <div className={view === 'grid' ? "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4" : "space-y-2"}>
-          {filteredAssets.map(asset => (
+        <div
+          className={
+            view === 'grid'
+              ? 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4'
+              : 'space-y-2'
+          }
+        >
+          {filteredAssets.map((asset) => (
             <motion.div
               layout
               key={asset.id}
@@ -262,67 +340,112 @@ export function MediaManager({ onSelect, allowSelection = false, multiSelect = f
                 ${view === 'list' ? 'flex items-center p-2' : 'flex flex-col'}
                 transition-all cursor-pointer
               `}
-              onClick={(e) => onSelect ? onSelect(asset) : toggleSelect(asset.id, e)}
+              onClick={(e) =>
+                onSelect ? onSelect(asset) : toggleSelect(asset.id, e)
+              }
             >
               {/* Selection Checkbox */}
               {allowSelection && (
-                <div className={`
+                <div
+                  className={`
                   absolute top-2 left-2 z-10 w-5 h-5 rounded-full border bg-background flex items-center justify-center 
                   ${selectedIds.has(asset.id) ? 'bg-primary border-primary text-white' : 'opacity-0 group-hover:opacity-100'}
                   transition-opacity
-                `}>
+                `}
+                >
                   {selectedIds.has(asset.id) && <Check className="w-3 h-3" />}
                 </div>
               )}
 
               {/* Asset Preview */}
-              <div className={`
+              <div
+                className={`
                 relative bg-muted/30 flex-shrink-0
                 ${view === 'grid' ? 'aspect-video' : 'w-12 h-12 rounded-lg mr-4'}
                 flex items-center justify-center
-              `}>
+              `}
+              >
                 {asset.type === 'image' ? (
-                  <img src={asset.url} alt={asset.name} className="w-full h-full object-cover" />
+                  <img
+                    src={asset.url}
+                    alt={asset.name}
+                    className="w-full h-full object-cover"
+                  />
                 ) : (
                   getFileIcon(asset.type)
                 )}
-                
+
                 {asset.type === 'video' && view === 'grid' && (
                   <div className="absolute bottom-1 right-1 bg-black/70 text-[10px] text-white px-1.5 py-0.5 rounded">
-                    {Math.floor(asset.duration! / 60)}:{(asset.duration! % 60).toString().padStart(2, '0')}
+                    {Math.floor(asset.duration! / 60)}:
+                    {(asset.duration! % 60).toString().padStart(2, '0')}
                   </div>
                 )}
               </div>
 
               {/* Asset Info */}
-              <div className={`p-3 min-w-0 flex-1 flex flex-col ${view === 'list' ? 'flex-row items-center justify-between' : ''}`}>
+              <div
+                className={`p-3 min-w-0 flex-1 flex flex-col ${view === 'list' ? 'flex-row items-center justify-between' : ''}`}
+              >
                 <div className="min-w-0">
-                  <p className="text-sm font-medium truncate mb-0.5" title={asset.name}>
+                  <p
+                    className="text-sm font-medium truncate mb-0.5"
+                    title={asset.name}
+                  >
                     {asset.name}
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    {(asset.size / 1024).toFixed(1)} KB • {asset.type.charAt(0).toUpperCase() + asset.type.slice(1)}
+                    {(asset.size / 1024).toFixed(1)} KB •{' '}
+                    {asset.type.charAt(0).toUpperCase() + asset.type.slice(1)}
                   </p>
                 </div>
 
-                <div className={`${view === 'grid' ? 'mt-2 flex opacity-0 group-hover:opacity-100' : 'flex'} transition-opacity gap-1`}>
-                  <Button variant="ghost" size="icon" className="w-7 h-7" onClick={(e) => { e.stopPropagation(); copyUrl(asset.url); }}>
+                <div
+                  className={`${view === 'grid' ? 'mt-2 flex opacity-0 group-hover:opacity-100' : 'flex'} transition-opacity gap-1`}
+                >
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="w-7 h-7"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      copyUrl(asset.url);
+                    }}
+                  >
                     <Copy className="w-3.5 h-3.5" />
                   </Button>
-                  <Button variant="ghost" size="icon" className="w-7 h-7" onClick={(e) => e.stopPropagation()}>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="w-7 h-7"
+                    onClick={(e) => e.stopPropagation()}
+                  >
                     <Info className="w-3.5 h-3.5" />
                   </Button>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon" className="w-7 h-7" onClick={(e) => e.stopPropagation()}>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="w-7 h-7"
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         <MoreVertical className="w-3.5 h-3.5" />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem><Download className="w-4 h-4 mr-2" /> Download</DropdownMenuItem>
-                      <DropdownMenuItem><ExternalLink className="w-4 h-4 mr-2" /> Open in New Tab</DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Download className="w-4 h-4 mr-2" /> Download
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <ExternalLink className="w-4 h-4 mr-2" /> Open in New
+                        Tab
+                      </DropdownMenuItem>
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem className="text-destructive" onClick={() => deleteAsset(asset.id)}>
+                      <DropdownMenuItem
+                        className="text-destructive"
+                        onClick={() => deleteAsset(asset.id)}
+                      >
                         <Trash2 className="w-4 h-4 mr-2" /> Delete
                       </DropdownMenuItem>
                     </DropdownMenuContent>
@@ -337,7 +460,9 @@ export function MediaManager({ onSelect, allowSelection = false, multiSelect = f
           <div className="flex flex-col items-center justify-center h-[300px] text-muted-foreground">
             <Search className="w-12 h-12 mb-4 opacity-20" />
             <p className="text-lg font-medium">No assets found</p>
-            <p className="text-sm">Try searching for something else or upload a new file</p>
+            <p className="text-sm">
+              Try searching for something else or upload a new file
+            </p>
           </div>
         )}
       </div>
@@ -349,15 +474,22 @@ export function MediaManager({ onSelect, allowSelection = false, multiSelect = f
             {selectedIds.size} item{selectedIds.size > 1 ? 's' : ''} selected
           </p>
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" onClick={() => setSelectedIds(new Set())}>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setSelectedIds(new Set())}
+            >
               Cancel
             </Button>
-            <Button size="sm" onClick={() => {
-              if (onSelect) {
-                const selected = assets.find(a => selectedIds.has(a.id));
-                if (selected) onSelect(selected);
-              }
-            }}>
+            <Button
+              size="sm"
+              onClick={() => {
+                if (onSelect) {
+                  const selected = assets.find((a) => selectedIds.has(a.id));
+                  if (selected) onSelect(selected);
+                }
+              }}
+            >
               {multiSelect ? 'Use Selected Items' : 'Use Selected Item'}
             </Button>
           </div>

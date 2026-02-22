@@ -63,14 +63,14 @@ export async function validateRequestBody<T>(
     const validation = validateRequest(schema, body);
 
     if (!validation.success) {
-      const errorMessage = validation.error.errors
-        .map((err) => `${err.path.join('.')}: ${err.message}`)
+      const errorMessage = validation.error.issues
+        .map((err: z.ZodIssue) => `${err.path.join('.')}: ${err.message}`)
         .join(', ');
 
       return {
         success: false,
         response: createApiError(`Validation failed: ${errorMessage}`, 400, {
-          validationErrors: validation.error.errors,
+          validationErrors: validation.error.issues,
         }),
       };
     }
@@ -95,8 +95,8 @@ export function validateQueryParams<T>(
   const validation = validateRequest(schema, queryObject);
 
   if (!validation.success) {
-    const errorMessage = validation.error.errors
-      .map((err) => `${err.path.join('.')}: ${err.message}`)
+    const errorMessage = validation.error.issues
+      .map((err: z.ZodIssue) => `${err.path.join('.')}: ${err.message}`)
       .join(', ');
 
     return {
@@ -105,7 +105,7 @@ export function validateQueryParams<T>(
         `Query validation failed: ${errorMessage}`,
         400,
         {
-          validationErrors: validation.error.errors,
+          validationErrors: validation.error.issues,
         },
       ),
     };
@@ -120,7 +120,7 @@ export function handleApiError(error: unknown, context: string): NextResponse {
 
   if (error instanceof z.ZodError) {
     return createApiError('Validation failed', 400, {
-      validationErrors: error.errors,
+      validationErrors: error.issues,
     });
   }
 

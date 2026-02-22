@@ -1,6 +1,6 @@
 // public/service-worker.js
 
-self.addEventListener('push', function(event) {
+self.addEventListener('push', function (event) {
   if (!event.data) return;
 
   try {
@@ -20,22 +20,21 @@ self.addEventListener('push', function(event) {
       vibrate: data.priority === 'critical' ? [200, 100, 200] : [100],
     };
 
-    event.waitUntil(
-      self.registration.showNotification(data.title, options)
-    );
+    event.waitUntil(self.registration.showNotification(data.title, options));
   } catch (error) {
     console.error('Error processing push notification:', error);
   }
 });
 
-self.addEventListener('notificationclick', function(event) {
+self.addEventListener('notificationclick', function (event) {
   event.notification.close();
 
   const urlToOpen = event.notification.data?.url || '/';
 
   event.waitUntil(
-    clients.matchAll({ type: 'window', includeUncontrolled: true })
-      .then(function(clientList) {
+    clients
+      .matchAll({ type: 'window', includeUncontrolled: true })
+      .then(function (clientList) {
         // If a window is already open, focus it
         for (let i = 0; i < clientList.length; i++) {
           const client = clientList[i];
@@ -43,33 +42,35 @@ self.addEventListener('notificationclick', function(event) {
             return client.focus();
           }
         }
-        
+
         // Otherwise, open a new window
         if (clients.openWindow) {
           return clients.openWindow(urlToOpen);
         }
-      })
+      }),
   );
 });
 
-self.addEventListener('pushsubscriptionchange', function(event) {
+self.addEventListener('pushsubscriptionchange', function (event) {
   event.waitUntil(
-    self.registration.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: self.registration.pushManager.applicationServerKey
-    })
-    .then(function(subscription) {
-      return fetch('/api/notifications/push-subscription', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(subscription)
-      });
-    })
+    self.registration.pushManager
+      .subscribe({
+        userVisibleOnly: true,
+        applicationServerKey:
+          self.registration.pushManager.applicationServerKey,
+      })
+      .then(function (subscription) {
+        return fetch('/api/notifications/push-subscription', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(subscription),
+        });
+      }),
   );
 });
 
 // Background sync for offline notifications
-self.addEventListener('sync', function(event) {
+self.addEventListener('sync', function (event) {
   if (event.tag === 'sync-notifications') {
     event.waitUntil(syncNotifications());
   }
@@ -79,9 +80,9 @@ async function syncNotifications() {
   try {
     const response = await fetch('/api/notifications/sync');
     const notifications = await response.json();
-    
+
     // Process any missed notifications
-    notifications.forEach(notification => {
+    notifications.forEach((notification) => {
       self.registration.showNotification(notification.title, {
         body: notification.message,
         icon: notification.icon || '/icon-192x192.png',

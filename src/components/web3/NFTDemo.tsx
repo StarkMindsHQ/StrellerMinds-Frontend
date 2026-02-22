@@ -94,12 +94,12 @@ export function NFTDemo() {
           </Label>
           <div className="mt-1 p-2 bg-background rounded border text-xs font-mono break-all">
             {isReading ? (
-              <div className="flex items-center gap-2">
+              <span className="flex items-center gap-2">
                 <Loader2 className="h-4 w-4 animate-spin" />
                 Loading...
-              </div>
+              </span>
             ) : (
-              storedTokenURI || 'No token URI found'
+              (storedTokenURI as string | undefined) || 'No token URI found'
             )}
           </div>
         </div>

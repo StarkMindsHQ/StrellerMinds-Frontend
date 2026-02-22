@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Input } from './ui/inputt';
+import { Input } from './ui/input';
 import { toast } from 'sonner';
 
 export default function Card() {

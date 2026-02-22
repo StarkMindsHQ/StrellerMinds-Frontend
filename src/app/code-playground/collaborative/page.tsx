@@ -11,7 +11,10 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Toaster } from 'sonner';
 import { Code2, Users } from 'lucide-react';
-import { CollaborationProvider, useCollaboration } from '@/contexts/collaboration-context';
+import {
+  CollaborationProvider,
+  useCollaboration,
+} from '@/contexts/collaboration-context';
 import SessionManager from '@/components/code-playground/session-manager';
 import CollaborativeEditor from '@/components/code-playground/collaborative-editor';
 import CollaborationChat from '@/components/code-playground/collaboration-chat';
@@ -160,9 +163,12 @@ function CollaborativePlaygroundContent() {
         <Card>
           <CardContent className="py-8 sm:py-12 text-center px-4">
             <Users className="h-10 w-10 sm:h-12 sm:w-12 mx-auto mb-3 sm:mb-4 text-muted-foreground" />
-            <h3 className="text-base sm:text-lg font-semibold mb-2">No Active Session</h3>
+            <h3 className="text-base sm:text-lg font-semibold mb-2">
+              No Active Session
+            </h3>
             <p className="text-sm sm:text-base text-muted-foreground mb-4">
-              Create a new session or join an existing one to start collaborating
+              Create a new session or join an existing one to start
+              collaborating
             </p>
           </CardContent>
         </Card>
@@ -173,7 +179,9 @@ function CollaborativePlaygroundContent() {
             <Card>
               <CardHeader className="pb-2 sm:pb-3 px-3 sm:px-6">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4">
-                  <CardTitle className="text-base sm:text-lg">Collaborative Editor</CardTitle>
+                  <CardTitle className="text-base sm:text-lg">
+                    Collaborative Editor
+                  </CardTitle>
                   <LanguageSelector
                     selectedLanguage={language}
                     onLanguageChange={handleLanguageChange}

@@ -4,10 +4,7 @@
  */
 
 import { createClient, RedisClientType } from 'redis';
-import type {
-  CollaborationSession,
-  ChatMessage,
-} from './types';
+import type { CollaborationSession, ChatMessage } from './types';
 
 export class RedisStore {
   private client: RedisClientType | null = null;

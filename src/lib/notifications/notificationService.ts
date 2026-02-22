@@ -1,27 +1,29 @@
 // src/lib/notifications/notificationService.ts
 
-import { 
-  Notification, 
-  NotificationFilter, 
+import {
+  Notification as AppNotification,
+  NotificationFilter,
   NotificationPreferences,
   NotificationChannel,
-  NotificationType 
+  NotificationType,
 } from '@/types/notification.types';
 
 class NotificationService {
   private baseUrl = '/api/notifications';
 
-  async getNotifications(filter?: NotificationFilter): Promise<Notification[]> {
+  async getNotifications(
+    filter?: NotificationFilter,
+  ): Promise<AppNotification[]> {
     const params = new URLSearchParams();
-    
+
     if (filter?.status) params.append('status', filter.status);
     if (filter?.type) params.append('type', filter.type);
     if (filter?.priority) params.append('priority', filter.priority);
     if (filter?.search) params.append('search', filter.search);
-    
+
     const response = await fetch(`${this.baseUrl}?${params.toString()}`);
     if (!response.ok) throw new Error('Failed to fetch notifications');
-    
+
     const data = await response.json();
     return data.notifications.map((n: any) => ({
       ...n,
@@ -65,7 +67,9 @@ class NotificationService {
     return response.json();
   }
 
-  async updatePreferences(preferences: Partial<NotificationPreferences>): Promise<void> {
+  async updatePreferences(
+    preferences: Partial<NotificationPreferences>,
+  ): Promise<void> {
     const response = await fetch(`${this.baseUrl}/preferences`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -88,8 +92,8 @@ class NotificationService {
     const subscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: this.urlBase64ToUint8Array(
-        process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || ''
-      ),
+        process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || '',
+      ) as unknown as BufferSource,
     });
 
     await fetch(`${this.baseUrl}/push-subscription`, {
@@ -116,9 +120,9 @@ class NotificationService {
     return outputArray;
   }
 
-  showBrowserNotification(notification: Notification): void {
+  showBrowserNotification(notification: AppNotification): void {
     if ('Notification' in window && Notification.permission === 'granted') {
-      new Notification(notification.title, {
+      new window.Notification(notification.title, {
         body: notification.message,
         icon: notification.imageUrl || '/icon-192x192.png',
         badge: '/badge-72x72.png',

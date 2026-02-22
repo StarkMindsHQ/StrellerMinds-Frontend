@@ -66,12 +66,18 @@ export function canChangePermissions(permission: UserPermission): boolean {
 /**
  * Validate session name
  */
-export function validateSessionName(name: string): { valid: boolean; error?: string } {
+export function validateSessionName(name: string): {
+  valid: boolean;
+  error?: string;
+} {
   if (!name || name.trim().length === 0) {
     return { valid: false, error: 'Session name is required' };
   }
   if (name.length > 100) {
-    return { valid: false, error: 'Session name must be less than 100 characters' };
+    return {
+      valid: false,
+      error: 'Session name must be less than 100 characters',
+    };
   }
   return { valid: true };
 }

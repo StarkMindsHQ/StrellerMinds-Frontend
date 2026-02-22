@@ -43,11 +43,11 @@
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
   }
-  
+
   .touch-pan-y {
     touch-action: pan-y;
   }
-  
+
   .touch-none {
     touch-action: none;
   }

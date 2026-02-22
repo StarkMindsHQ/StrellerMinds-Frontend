@@ -1,16 +1,25 @@
 'use client';
 import Link from 'next/link';
 import { Course } from '@/services/electiveService';
+import type { ElectiveData } from '@/lib/electives-data';
 import { Clock, User } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface CourseCardProps {
-  course: Course;
+  course: Course | ElectiveData;
+  className?: string;
 }
 
-export const CourseCard = ({ course }: CourseCardProps) => {
+export const CourseCard = ({ course, className }: CourseCardProps) => {
+  const title = (course as any).title ?? (course as any).name ?? 'Untitled';
   return (
     <Link href={`/electives/${course.id}`}>
-      <div className="group relative bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-xl hover:border-[#5c0f49] transition-all duration-300 overflow-hidden cursor-pointer">
+      <div
+        className={cn(
+          'group relative bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-xl hover:border-[#5c0f49] transition-all duration-300 overflow-hidden cursor-pointer',
+          className,
+        )}
+      >
         {/* Top Gradient Bar */}
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-900 to-[#5c0f49] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
 
@@ -18,7 +27,7 @@ export const CourseCard = ({ course }: CourseCardProps) => {
           <div className="flex items-start justify-between mb-3">
             <div className="flex-1">
               <h3 className="text-xl text-nowrap font-semibold text-gray-900 group-hover:text-[#5c0f49] transition-colors duration-200 mb-1">
-                {course.title}
+                {title}
               </h3>
               <span className="inline-block px-3 py-1 text-xs font-medium text-[#ffcc09] bg-[#5c0f49] rounded-full">
                 {course.category}
@@ -65,3 +74,6 @@ export const CourseCard = ({ course }: CourseCardProps) => {
     </Link>
   );
 };
+
+// Backwards-compatible alias: some modules import `ElectiveCard`
+export const ElectiveCard = CourseCard;

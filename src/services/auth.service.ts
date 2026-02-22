@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { User } from "@/types/auth";
 
 /**
@@ -56,4 +57,21 @@ export const verifyOtp = async (otp: string) => {
 export const resendOtp = async () => {
   await new Promise((res) => setTimeout(res, 1000));
   return true;
+=======
+import { signIn, signOut } from 'next-auth/react';
+
+export const authService = {
+  loginWithProvider(provider: 'google' | 'github') {
+    return signIn(provider);
+  },
+
+  logout() {
+    return signOut({ callbackUrl: '/' });
+  },
+>>>>>>> 795846c (fix CI/CD issues)
 };
+
+export async function verifyOtp(code: string) {
+  // Placeholder implementation for type-checking and tests
+  return Promise.resolve(code === '1234');
+}

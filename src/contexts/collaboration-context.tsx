@@ -1,6 +1,13 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+} from 'react';
 import { io, Socket } from 'socket.io-client';
 import type {
   CollaborationState,
@@ -40,9 +47,18 @@ interface CollaborationContextValue {
   // Permissions
   changeUserPermission: (userId: string, permission: UserPermission) => void;
   // WebRTC signaling
-  sendWebRTCOffer: (offer: RTCSessionDescriptionInit, toUserId?: string) => void;
-  sendWebRTCAnswer: (answer: RTCSessionDescriptionInit, toUserId: string) => void;
-  sendWebRTCIceCandidate: (candidate: RTCIceCandidateInit, toUserId: string) => void;
+  sendWebRTCOffer: (
+    offer: RTCSessionDescriptionInit,
+    toUserId?: string,
+  ) => void;
+  sendWebRTCAnswer: (
+    answer: RTCSessionDescriptionInit,
+    toUserId: string,
+  ) => void;
+  sendWebRTCIceCandidate: (
+    candidate: RTCIceCandidateInit,
+    toUserId: string,
+  ) => void;
   endWebRTCCall: () => void;
   getSocket: () => Socket | null;
   // Connection
@@ -54,7 +70,9 @@ interface CollaborationContextValue {
   getCurrentCode: () => string;
 }
 
-const CollaborationContext = createContext<CollaborationContextValue | null>(null);
+const CollaborationContext = createContext<CollaborationContextValue | null>(
+  null,
+);
 
 const initialState: CollaborationState = {
   session: null,
@@ -193,15 +211,18 @@ export function CollaborationProvider({
     socket.on('connect_error', (error) => {
       console.error('Connection error:', error);
       const errorMessage = error.message || 'Failed to connect to server';
-      
+
       // Provide helpful error message if server is not running
-      if (errorMessage.includes('ECONNREFUSED') || errorMessage.includes('failed')) {
+      if (
+        errorMessage.includes('ECONNREFUSED') ||
+        errorMessage.includes('failed')
+      ) {
         toast.error(
           'Collaboration server not running. Please start it with: npm run dev:server',
-          { duration: 5000 }
+          { duration: 5000 },
         );
       }
-      
+
       setState((prev) => ({
         ...prev,
         isConnecting: false,
@@ -218,7 +239,8 @@ export function CollaborationProvider({
         return {
           ...prev,
           session,
-          currentUser: session.users.find((u) => u.id === session.ownerId) || null,
+          currentUser:
+            session.users.find((u) => u.id === session.ownerId) || null,
           users,
           error: null,
         };
@@ -256,7 +278,10 @@ export function CollaborationProvider({
       localStorage.setItem('collaboration-session', JSON.stringify(session));
       localStorage.setItem('collaboration-user', JSON.stringify(user));
       if (messages) {
-        localStorage.setItem('collaboration-messages', JSON.stringify(messages));
+        localStorage.setItem(
+          'collaboration-messages',
+          JSON.stringify(messages),
+        );
       }
       toast.success(`Joined session: ${session.name}`);
     });
@@ -290,11 +315,11 @@ export function CollaborationProvider({
         cursors.delete(userId);
         const selections = new Map(prev.selections);
         selections.delete(userId);
-        
+
         if (user) {
           toast.info(`${user.name} left the session`);
         }
-        
+
         return {
           ...prev,
           users,
@@ -321,7 +346,10 @@ export function CollaborationProvider({
             updatedAt: Date.now(),
           };
           // Update localStorage
-          localStorage.setItem('collaboration-session', JSON.stringify(updatedSession));
+          localStorage.setItem(
+            'collaboration-session',
+            JSON.stringify(updatedSession),
+          );
           return {
             ...prev,
             session: updatedSession,
@@ -362,7 +390,7 @@ export function CollaborationProvider({
 
     socket.on('chat-message', (data: WebSocketMessage) => {
       const message = data.payload as ChatMessage;
-      
+
       // Debug: Log received messages
       if (message.type === 'voice') {
         console.log('Received voice note:', {
@@ -373,11 +401,14 @@ export function CollaborationProvider({
           duration: message.audioDuration,
         });
       }
-      
+
       setState((prev) => {
         const newMessages = [...prev.messages, message].slice(-100);
         // Update localStorage
-        localStorage.setItem('collaboration-messages', JSON.stringify(newMessages));
+        localStorage.setItem(
+          'collaboration-messages',
+          JSON.stringify(newMessages),
+        );
         return {
           ...prev,
           messages: newMessages,
@@ -439,7 +470,8 @@ export function CollaborationProvider({
       }
 
       const userId = state.currentUser?.id || generateUserId();
-      const user = state.currentUser || createCollaborationUser(userId, 'User', 'admin');
+      const user =
+        state.currentUser || createCollaborationUser(userId, 'User', 'admin');
 
       return new Promise((resolve) => {
         socketRef.current?.emit('create-session', {
@@ -511,7 +543,11 @@ export function CollaborationProvider({
   // Update code
   const updateCode = useCallback(
     (code: string) => {
-      if (!socketRef.current?.connected || !state.session || !state.currentUser) {
+      if (
+        !socketRef.current?.connected ||
+        !state.session ||
+        !state.currentUser
+      ) {
         return;
       }
 
@@ -527,7 +563,11 @@ export function CollaborationProvider({
   // Update language
   const updateLanguage = useCallback(
     (language: string) => {
-      if (!socketRef.current?.connected || !state.session || !state.currentUser) {
+      if (
+        !socketRef.current?.connected ||
+        !state.session ||
+        !state.currentUser
+      ) {
         return;
       }
 
@@ -548,7 +588,11 @@ export function CollaborationProvider({
   // Update cursor position
   const updateCursor = useCallback(
     (position: CursorPosition) => {
-      if (!socketRef.current?.connected || !state.session || !state.currentUser) {
+      if (
+        !socketRef.current?.connected ||
+        !state.session ||
+        !state.currentUser
+      ) {
         return;
       }
 
@@ -563,7 +607,11 @@ export function CollaborationProvider({
   // Update selection
   const updateSelection = useCallback(
     (selection: Selection | null) => {
-      if (!socketRef.current?.connected || !state.session || !state.currentUser) {
+      if (
+        !socketRef.current?.connected ||
+        !state.session ||
+        !state.currentUser
+      ) {
         return;
       }
 
@@ -578,7 +626,11 @@ export function CollaborationProvider({
   // Send chat message
   const sendMessage = useCallback(
     (message: string) => {
-      if (!socketRef.current?.connected || !state.session || !state.currentUser) {
+      if (
+        !socketRef.current?.connected ||
+        !state.session ||
+        !state.currentUser
+      ) {
         return;
       }
 
@@ -594,7 +646,11 @@ export function CollaborationProvider({
   // Send voice note
   const sendVoiceNote = useCallback(
     async (audioBlob: Blob, duration: number) => {
-      if (!socketRef.current?.connected || !state.session || !state.currentUser) {
+      if (
+        !socketRef.current?.connected ||
+        !state.session ||
+        !state.currentUser
+      ) {
         return;
       }
 
@@ -624,7 +680,11 @@ export function CollaborationProvider({
   // Change user permission
   const changeUserPermission = useCallback(
     (userId: string, permission: UserPermission) => {
-      if (!socketRef.current?.connected || !state.session || !state.currentUser) {
+      if (
+        !socketRef.current?.connected ||
+        !state.session ||
+        !state.currentUser
+      ) {
         return;
       }
 
@@ -659,7 +719,11 @@ export function CollaborationProvider({
   // WebRTC signaling functions
   const sendWebRTCOffer = useCallback(
     (offer: RTCSessionDescriptionInit, toUserId?: string) => {
-      if (!socketRef.current?.connected || !state.session || !state.currentUser) {
+      if (
+        !socketRef.current?.connected ||
+        !state.session ||
+        !state.currentUser
+      ) {
         return;
       }
 
@@ -675,7 +739,11 @@ export function CollaborationProvider({
 
   const sendWebRTCAnswer = useCallback(
     (answer: RTCSessionDescriptionInit, toUserId: string) => {
-      if (!socketRef.current?.connected || !state.session || !state.currentUser) {
+      if (
+        !socketRef.current?.connected ||
+        !state.session ||
+        !state.currentUser
+      ) {
         return;
       }
 
@@ -691,7 +759,11 @@ export function CollaborationProvider({
 
   const sendWebRTCIceCandidate = useCallback(
     (candidate: RTCIceCandidateInit, toUserId: string) => {
-      if (!socketRef.current?.connected || !state.session || !state.currentUser) {
+      if (
+        !socketRef.current?.connected ||
+        !state.session ||
+        !state.currentUser
+      ) {
         return;
       }
 
@@ -762,7 +834,9 @@ export function CollaborationProvider({
 export function useCollaboration() {
   const context = useContext(CollaborationContext);
   if (!context) {
-    throw new Error('useCollaboration must be used within CollaborationProvider');
+    throw new Error(
+      'useCollaboration must be used within CollaborationProvider',
+    );
   }
   return context;
 }

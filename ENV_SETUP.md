@@ -156,6 +156,7 @@ contract MyNFT is ERC721 {
 ## Support
 
 For additional help:
+
 - Check the [wagmi documentation](https://wagmi.sh/)
 - Review the [viem documentation](https://viem.sh/)
 - Join our Discord community

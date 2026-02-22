@@ -7,7 +7,7 @@ class NotificationWebSocketServer {
   constructor(server) {
     this.wss = new WebSocket.Server({ server });
     this.clients = new Map(); // userId -> Set of WebSocket connections
-    
+
     this.setupServer();
   }
 
@@ -25,10 +25,12 @@ class NotificationWebSocketServer {
       this.addClient(userId, ws);
 
       // Send initial connection success
-      ws.send(JSON.stringify({
-        type: 'connected',
-        timestamp: Date.now(),
-      }));
+      ws.send(
+        JSON.stringify({
+          type: 'connected',
+          timestamp: Date.now(),
+        }),
+      );
 
       // Setup ping/pong for connection health
       ws.isAlive = true;
@@ -61,7 +63,7 @@ class NotificationWebSocketServer {
         if (ws.isAlive === false) {
           return ws.terminate();
         }
-        
+
         ws.isAlive = false;
         ws.ping();
       });
@@ -104,7 +106,7 @@ class NotificationWebSocketServer {
 
   sendToUser(userId, notification) {
     const userConnections = this.clients.get(userId);
-    
+
     if (!userConnections || userConnections.size === 0) {
       console.log(`No active connections for user: ${userId}`);
       return false;
@@ -136,10 +138,10 @@ class NotificationWebSocketServer {
 
     if (userIds) {
       // Send to specific users
-      userIds.forEach(userId => {
+      userIds.forEach((userId) => {
         const userConnections = this.clients.get(userId);
         if (userConnections) {
-          userConnections.forEach(ws => {
+          userConnections.forEach((ws) => {
             if (ws.readyState === WebSocket.OPEN) {
               ws.send(message);
             }
@@ -179,12 +181,12 @@ const wsServer = new NotificationWebSocketServer(server);
 // Example endpoint to send notification
 app.post('/api/internal/notify', express.json(), (req, res) => {
   const { userId, notification } = req.body;
-  
+
   const sent = wsServer.sendToUser(userId, notification);
-  
-  res.json({ 
+
+  res.json({
     success: sent,
-    message: sent ? 'Notification sent' : 'User not connected'
+    message: sent ? 'Notification sent' : 'User not connected',
   });
 });
 

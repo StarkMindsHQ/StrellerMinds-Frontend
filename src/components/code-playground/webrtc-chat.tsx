@@ -4,13 +4,21 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { useCollaboration } from '@/contexts/collaboration-context';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Phone, PhoneOff, Video, VideoOff, Mic, MicOff, Users } from 'lucide-react';
+import {
+  Phone,
+  PhoneOff,
+  Video,
+  VideoOff,
+  Mic,
+  MicOff,
+  Users,
+} from 'lucide-react';
 import { toast } from 'sonner';
 import { io, Socket } from 'socket.io-client';
 
 /**
  * WebRTC Voice/Video Chat Component
- * 
+ *
  * Supports peer-to-peer voice/video calls with WebRTC signaling
  * Uses mesh architecture (each user connects to all others)
  */
@@ -26,7 +34,9 @@ export default function WebRTCChat() {
   const [isVideoEnabled, setIsVideoEnabled] = useState(false);
   const [isAudioEnabled, setIsAudioEnabled] = useState(true);
   const [isCallActive, setIsCallActive] = useState(false);
-  const [activeParticipants, setActiveParticipants] = useState<Set<string>>(new Set());
+  const [activeParticipants, setActiveParticipants] = useState<Set<string>>(
+    new Set(),
+  );
 
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const remoteVideosRef = useRef<Map<string, HTMLVideoElement>>(new Map());
@@ -90,7 +100,9 @@ export default function WebRTCChat() {
         }
 
         // Set remote description and create answer
-        await peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
+        await peerConnection.setRemoteDescription(
+          new RTCSessionDescription(offer),
+        );
         const answer = await peerConnection.createAnswer();
         await peerConnection.setLocalDescription(answer);
 
@@ -110,7 +122,9 @@ export default function WebRTCChat() {
       try {
         const peerConnection = peerConnectionsRef.current.get(fromUserId);
         if (peerConnection) {
-          await peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
+          await peerConnection.setRemoteDescription(
+            new RTCSessionDescription(answer),
+          );
         }
       } catch (error) {
         console.error('Error handling WebRTC answer:', error);
@@ -173,7 +187,14 @@ export default function WebRTCChat() {
         socket.off('webrtc-call-state');
       }
     };
-  }, [state.session, state.isConnected, state.currentUser, sendWebRTCAnswer, sendWebRTCIceCandidate, getSocket]);
+  }, [
+    state.session,
+    state.isConnected,
+    state.currentUser,
+    sendWebRTCAnswer,
+    sendWebRTCIceCandidate,
+    getSocket,
+  ]);
 
   // Initialize local media stream
   const initializeLocalStream = useCallback(async () => {
@@ -257,7 +278,10 @@ export default function WebRTCChat() {
           await peerConnection.setLocalDescription(offer);
           sendWebRTCOffer(offer, user.id);
         } catch (error) {
-          console.error(`Error creating peer connection with ${user.name}:`, error);
+          console.error(
+            `Error creating peer connection with ${user.name}:`,
+            error,
+          );
         }
       }
 
@@ -267,7 +291,15 @@ export default function WebRTCChat() {
       console.error('Error starting call:', error);
       toast.error('Failed to start call');
     }
-  }, [state.session, state.isConnected, state.currentUser, state.users, initializeLocalStream, sendWebRTCOffer, sendWebRTCIceCandidate]);
+  }, [
+    state.session,
+    state.isConnected,
+    state.currentUser,
+    state.users,
+    initializeLocalStream,
+    sendWebRTCOffer,
+    sendWebRTCIceCandidate,
+  ]);
 
   // End call
   const endCall = useCallback(() => {
@@ -429,7 +461,11 @@ export default function WebRTCChat() {
         {/* Controls */}
         <div className="flex items-center justify-center gap-2">
           {!isCallActive ? (
-            <Button onClick={startCall} className="gap-2" disabled={otherUsers.length === 0}>
+            <Button
+              onClick={startCall}
+              className="gap-2"
+              disabled={otherUsers.length === 0}
+            >
               <Phone className="h-4 w-4" />
               Start Call
             </Button>
@@ -437,7 +473,7 @@ export default function WebRTCChat() {
             <>
               <Button
                 onClick={toggleVideo}
-                variant={isVideoEnabled ? 'default' : 'outline'}
+                variant={isVideoEnabled ? 'primary' : 'outline'}
                 size="icon"
                 title={isVideoEnabled ? 'Turn off video' : 'Turn on video'}
               >
@@ -449,7 +485,7 @@ export default function WebRTCChat() {
               </Button>
               <Button
                 onClick={toggleAudio}
-                variant={isAudioEnabled ? 'default' : 'outline'}
+                variant={isAudioEnabled ? 'primary' : 'outline'}
                 size="icon"
                 title={isAudioEnabled ? 'Mute' : 'Unmute'}
               >
@@ -459,7 +495,12 @@ export default function WebRTCChat() {
                   <MicOff className="h-4 w-4" />
                 )}
               </Button>
-              <Button onClick={endCall} variant="destructive" size="icon" title="End call">
+              <Button
+                onClick={endCall}
+                variant="destructive"
+                size="icon"
+                title="End call"
+              >
                 <PhoneOff className="h-4 w-4" />
               </Button>
             </>

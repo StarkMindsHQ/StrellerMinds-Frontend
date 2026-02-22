@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { AlertCircle, RefreshCw, Loader2 } from 'lucide-react';
 import MainLayout from '@/components/MainLayout';
-import { ElectiveCard } from '@/components/ElectiveCard';
+import { ElectiveCard } from '@/components/electiveCard';
 import { ElectiveFilters } from '@/components/ElectiveFilters';
 import { ElectivePagination } from '@/components/ElectivePagination';
 import { allElectives } from '@/lib/electives-data';
@@ -336,7 +336,7 @@ export default function ElectivesPage() {
           {filteredElectives.map((elective) => (
             <ElectiveCard
               key={elective.id}
-              {...elective}
+              course={elective}
               className="transition-transform duration-300 hover:scale-[1.02]"
             />
           ))}
@@ -388,7 +388,7 @@ export default function ElectivesPage() {
             {inactiveCourses.map((elective) => (
               <div key={elective.id} className="relative">
                 <ElectiveCard
-                  {...elective}
+                  course={elective}
                   className="opacity-60 transition-opacity duration-300 hover:opacity-80"
                 />
                 <div className="absolute top-4 right-4 bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium">

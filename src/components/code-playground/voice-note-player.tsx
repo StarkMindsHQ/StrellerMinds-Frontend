@@ -87,9 +87,7 @@ export default function VoiceNotePlayer({
     return (
       <div
         className={`flex items-center gap-2 p-3 rounded-lg ${
-          isCurrentUser
-            ? 'bg-primary text-primary-foreground'
-            : 'bg-muted'
+          isCurrentUser ? 'bg-primary text-primary-foreground' : 'bg-muted'
         }`}
         style={{ maxWidth: '80%', minWidth: '200px' }}
       >
@@ -102,9 +100,7 @@ export default function VoiceNotePlayer({
   return (
     <div
       className={`flex items-center gap-2 p-2 sm:p-3 rounded-lg ${
-        isCurrentUser
-          ? 'bg-primary text-primary-foreground'
-          : 'bg-muted'
+        isCurrentUser ? 'bg-primary text-primary-foreground' : 'bg-muted'
       }`}
       style={{ maxWidth: '100%', minWidth: '180px' }}
     >
@@ -125,9 +121,13 @@ export default function VoiceNotePlayer({
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-1 sm:gap-2 mb-1">
           <Mic className="h-3 w-3 sm:h-3.5 sm:w-3.5 opacity-70 flex-shrink-0" />
-          <span className="text-xs sm:text-sm font-mono whitespace-nowrap">{formatDuration(currentTime)}</span>
+          <span className="text-xs sm:text-sm font-mono whitespace-nowrap">
+            {formatDuration(currentTime)}
+          </span>
           <span className="text-xs opacity-70">/</span>
-          <span className="text-xs sm:text-sm font-mono opacity-70 whitespace-nowrap">{formatDuration(duration)}</span>
+          <span className="text-xs sm:text-sm font-mono opacity-70 whitespace-nowrap">
+            {formatDuration(duration)}
+          </span>
         </div>
         <div className="h-1.5 sm:h-1 bg-black/20 rounded-full overflow-hidden touch-none">
           <div

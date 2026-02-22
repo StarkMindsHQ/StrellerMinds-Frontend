@@ -37,14 +37,19 @@ export default function VoiceNoteRecorder({
 
   // Check if pause/resume is supported
   const isPauseSupported = () => {
-    return mediaRecorderRef.current?.state && 'pause' in mediaRecorderRef.current;
+    return (
+      mediaRecorderRef.current?.state && 'pause' in mediaRecorderRef.current
+    );
   };
 
   // Start recording
   const startRecording = async () => {
     try {
       // Stop any existing recording first
-      if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+      if (
+        mediaRecorderRef.current &&
+        mediaRecorderRef.current.state !== 'inactive'
+      ) {
         mediaRecorderRef.current.stop();
       }
 
@@ -103,7 +108,9 @@ export default function VoiceNoteRecorder({
       // Update duration every 100ms
       durationIntervalRef.current = setInterval(() => {
         if (!isPaused) {
-          const elapsed = (Date.now() - startTimeRef.current - pausedDurationRef.current) / 1000;
+          const elapsed =
+            (Date.now() - startTimeRef.current - pausedDurationRef.current) /
+            1000;
           setDuration(elapsed);
         }
       }, 100);
@@ -115,7 +122,10 @@ export default function VoiceNoteRecorder({
 
   // Stop recording
   const stopRecording = () => {
-    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+    if (
+      mediaRecorderRef.current &&
+      mediaRecorderRef.current.state !== 'inactive'
+    ) {
       try {
         mediaRecorderRef.current.stop();
       } catch (error) {
@@ -254,7 +264,10 @@ export default function VoiceNoteRecorder({
   // Cleanup on unmount
   useEffect(() => {
     return () => {
-      if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+      if (
+        mediaRecorderRef.current &&
+        mediaRecorderRef.current.state !== 'inactive'
+      ) {
         try {
           mediaRecorderRef.current.stop();
         } catch (error) {
@@ -299,7 +312,9 @@ export default function VoiceNoteRecorder({
           <div className="flex items-center justify-between p-2 sm:p-3 bg-muted rounded-md">
             <div className="flex items-center gap-2">
               <div className="h-3 w-3 rounded-full bg-red-500 animate-pulse" />
-              <span className="text-sm sm:text-base font-mono">{formatDuration(duration)}</span>
+              <span className="text-sm sm:text-base font-mono">
+                {formatDuration(duration)}
+              </span>
             </div>
             <div className="flex gap-1 sm:gap-2">
               {isPauseSupported() && (
@@ -349,7 +364,9 @@ export default function VoiceNoteRecorder({
                 )}
               </Button>
               <div className="flex items-center gap-1 sm:gap-2 min-w-0">
-                <span className="text-xs sm:text-sm font-mono whitespace-nowrap">{formatDuration(duration)}</span>
+                <span className="text-xs sm:text-sm font-mono whitespace-nowrap">
+                  {formatDuration(duration)}
+                </span>
                 <span className="text-xs text-muted-foreground hidden sm:inline">
                   ({(audioBlob.size / 1024).toFixed(1)} KB)
                 </span>

@@ -76,7 +76,11 @@ export async function createCollaborationServer(httpServer: HTTPServer) {
         } = data;
 
         const sessionId = generateSessionId();
-        const owner = createCollaborationUser(ownerId, userName || 'Owner', 'admin');
+        const owner = createCollaborationUser(
+          ownerId,
+          userName || 'Owner',
+          'admin',
+        );
 
         const session: CollaborationSession = {
           id: sessionId,
@@ -123,7 +127,8 @@ export async function createCollaborationServer(httpServer: HTTPServer) {
       } catch (error) {
         socket.emit('error', {
           type: 'error',
-          payload: error instanceof Error ? error.message : 'Failed to create session',
+          payload:
+            error instanceof Error ? error.message : 'Failed to create session',
           timestamp: Date.now(),
         });
       }
@@ -159,7 +164,11 @@ export async function createCollaborationServer(httpServer: HTTPServer) {
         if (existingUser) {
           existingUser.isActive = true;
         } else {
-          const user = createCollaborationUser(userId, userName, permission as UserPermission);
+          const user = createCollaborationUser(
+            userId,
+            userName,
+            permission as UserPermission,
+          );
           session.users.push(user);
         }
 
@@ -209,7 +218,8 @@ export async function createCollaborationServer(httpServer: HTTPServer) {
       } catch (error) {
         socket.emit('error', {
           type: 'error',
-          payload: error instanceof Error ? error.message : 'Failed to join session',
+          payload:
+            error instanceof Error ? error.message : 'Failed to join session',
           timestamp: Date.now(),
         });
       }
@@ -226,7 +236,7 @@ export async function createCollaborationServer(httpServer: HTTPServer) {
           if (user) {
             user.isActive = false;
             socket.leave(sessionId);
-            
+
             // Update user-session mapping
             if (redisStore.isUsingRedis()) {
               await redisStore.deleteUserSession(userId);
@@ -360,7 +370,8 @@ export async function createCollaborationServer(httpServer: HTTPServer) {
     // Chat message
     socket.on('chat-message', async (data: any) => {
       try {
-        const { sessionId, userId, message, type, audioUrl, audioDuration } = data;
+        const { sessionId, userId, message, type, audioUrl, audioDuration } =
+          data;
         const session = sessions.get(sessionId);
 
         if (!session) return;
@@ -634,8 +645,8 @@ export async function createCollaborationServer(httpServer: HTTPServer) {
     // Handle disconnect
     socket.on('disconnect', () => {
       console.log('Client disconnected:', socket.id);
-      const userId = Array.from(userSessions.entries()).find(
-        ([_, sessionId]) => socket.rooms.has(sessionId),
+      const userId = Array.from(userSessions.entries()).find(([_, sessionId]) =>
+        socket.rooms.has(sessionId),
       )?.[0];
 
       if (userId) {
@@ -674,7 +685,9 @@ export async function createCollaborationServer(httpServer: HTTPServer) {
 }
 
 // Helper function to get session
-export async function getSession(sessionId: string): Promise<CollaborationSession | undefined> {
+export async function getSession(
+  sessionId: string,
+): Promise<CollaborationSession | undefined> {
   if (redisStore.isUsingRedis()) {
     return (await redisStore.getSession(sessionId)) || undefined;
   }
@@ -684,7 +697,9 @@ export async function getSession(sessionId: string): Promise<CollaborationSessio
 // Helper function to get all sessions (only works with in-memory, Redis requires scanning)
 export function getAllSessions(): CollaborationSession[] {
   if (redisStore.isUsingRedis()) {
-    console.warn('getAllSessions() not supported with Redis - use Redis SCAN instead');
+    console.warn(
+      'getAllSessions() not supported with Redis - use Redis SCAN instead',
+    );
     return [];
   }
   return Array.from(sessions.values());

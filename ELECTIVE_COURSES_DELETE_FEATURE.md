@@ -1,9 +1,11 @@
 # Elective Course Delete Feature Implementation
 
 ## Overview
+
 This implementation adds the ability for admins to delete elective courses with a mock delete function until the API is ready. The feature includes delete buttons on both list and detail pages, a confirmation dialog, and toast notifications.
 
 ## Issue Reference
+
 Closes #149: Add Delete Elective Course Action (mock delete)
 
 ## Changes Made
@@ -11,6 +13,7 @@ Closes #149: Add Delete Elective Course Action (mock delete)
 ### 1. New Files Created
 
 #### `/src/lib/elective-course-data.ts`
+
 - **Purpose**: Contains elective course data structure and mock functions
 - **Key Components**:
   - `ElectiveCourseData` interface: Defines the structure for elective courses
@@ -19,6 +22,7 @@ Closes #149: Add Delete Elective Course Action (mock delete)
   - `getElectiveCourseById()`: Helper function to retrieve a course by ID
 
 #### `/src/components/DeleteCourseDialog.tsx`
+
 - **Purpose**: Reusable confirmation dialog for course deletion
 - **Features**:
   - Alert icon with visual warning
@@ -28,6 +32,7 @@ Closes #149: Add Delete Elective Course Action (mock delete)
   - Uses Radix UI Dialog component for accessibility
 
 #### `/src/components/ElectiveCourseCard.tsx`
+
 - **Purpose**: Course card component with delete functionality
 - **Features**:
   - Similar to existing CourseCard but with admin delete button
@@ -38,6 +43,7 @@ Closes #149: Add Delete Elective Course Action (mock delete)
   - Responsive design with hover effects
 
 #### `/src/app/dashboard/admin/elective-courses/page.tsx`
+
 - **Purpose**: Admin page listing all elective courses
 - **Features**:
   - Grid layout displaying all elective courses
@@ -48,6 +54,7 @@ Closes #149: Add Delete Elective Course Action (mock delete)
   - Placeholder "Add New Course" button (disabled)
 
 #### `/src/app/dashboard/admin/elective-courses/[id]/page.tsx`
+
 - **Purpose**: Detailed view of a single elective course
 - **Features**:
   - Full course information display
@@ -63,18 +70,22 @@ Closes #149: Add Delete Elective Course Action (mock delete)
 ### 2. Modified Files
 
 #### `/src/components/ui/input.tsx`
+
 - **Fix**: Removed duplicate Input component definition
 - **Reason**: Build was failing due to duplicate declarations
 
 #### `/src/app/register/page.tsx`
+
 - **Fix**: Changed import from `@/components/ui/inputt` to `@/components/ui/input`
 - **Reason**: Typo in import path
 
 #### `/src/app/settings/page.tsx`
+
 - **Fix**: Changed import from `@/components/ui/inputt` to `@/components/ui/input`
 - **Reason**: Typo in import path
 
 #### `/src/app/settings/profile/profile.tsx`
+
 - **Fix**: Changed import from `@/components/ui/inputt` to `@/components/ui/input`
 - **Reason**: Typo in import path
 
@@ -110,11 +121,13 @@ Closes #149: Add Delete Elective Course Action (mock delete)
 ## How to Access
 
 1. Start the development server:
+
    ```bash
    pnpm run dev
    ```
 
 2. Navigate to the admin elective courses page:
+
    ```
    http://localhost:3000/dashboard/admin/elective-courses
    ```
@@ -127,6 +140,7 @@ Closes #149: Add Delete Elective Course Action (mock delete)
 ## Testing the Feature
 
 ### Test Case 1: Delete from List Page
+
 1. Go to `/dashboard/admin/elective-courses`
 2. Click the trash icon on any course card
 3. Verify confirmation dialog appears
@@ -135,6 +149,7 @@ Closes #149: Add Delete Elective Course Action (mock delete)
 6. ✅ Success toast should appear
 
 ### Test Case 2: Delete from Detail Page
+
 1. Go to `/dashboard/admin/elective-courses`
 2. Click "View Details" on any course
 3. Click "Delete Course" button in header
@@ -145,12 +160,14 @@ Closes #149: Add Delete Elective Course Action (mock delete)
 8. ✅ Course should be removed from list
 
 ### Test Case 3: Cancel Deletion
+
 1. Initiate deletion from either page
 2. Click "Cancel" in the dialog
 3. ✅ Dialog should close
 4. ✅ Course should remain in the list
 
 ### Test Case 4: Empty State
+
 1. Delete all courses from the list
 2. ✅ Empty state message should appear
 3. ✅ "No Elective Courses" heading should be visible
@@ -166,6 +183,7 @@ The implementation includes 5 sample elective courses:
 5. **Applied Cryptography for Blockchain** (Advanced)
 
 Each course has:
+
 - Title, description, and instructor
 - Level, duration, and ratings
 - Student count and features
@@ -179,7 +197,10 @@ When the real API is ready, replace the mock function in `/src/lib/elective-cour
 // Current mock implementation
 export const mockDeleteElectiveCourse = async (courseId: string) => {
   await new Promise((resolve) => setTimeout(resolve, 500));
-  return { success: true, message: `Course "${courseId}" has been successfully deleted.` };
+  return {
+    success: true,
+    message: `Course "${courseId}" has been successfully deleted.`,
+  };
 };
 
 // Future API implementation
@@ -220,16 +241,19 @@ export const deleteElectiveCourse = async (courseId: string) => {
 ## Screenshots
 
 ### List Page
+
 - Grid of elective courses with delete buttons
 - Admin notice banner
 - Empty state when all deleted
 
 ### Detail Page
+
 - Full course information
 - Delete button in header
 - Confirmation dialog
 
 ### Confirmation Dialog
+
 - Warning icon
 - Course title display
 - Cancel/Delete actions

@@ -50,7 +50,7 @@ export class SocketIOProvider {
     // Listen for updates from server
     this.socket.on('connect', () => {
       this.socket.emit('join-yjs-room', { room });
-      
+
       // Request sync state when connected
       this.socket.emit('yjs-sync-request', { room });
     });
@@ -76,11 +76,14 @@ export class SocketIOProvider {
       }
     });
 
-    this.socket.on('yjs-awareness', (data: { awareness: any, userId?: string }) => {
-      // Update awareness from other clients
-      // Note: Full awareness sync requires proper encoding/decoding
-      // For now, we'll handle cursor/selection through separate events
-    });
+    this.socket.on(
+      'yjs-awareness',
+      (data: { awareness: any; userId?: string }) => {
+        // Update awareness from other clients
+        // Note: Full awareness sync requires proper encoding/decoding
+        // For now, we'll handle cursor/selection through separate events
+      },
+    );
 
     // Start syncing
     this.doc.on('update', this._updateHandler);

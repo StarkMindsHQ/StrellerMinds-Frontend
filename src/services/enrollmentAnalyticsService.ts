@@ -66,17 +66,19 @@ const buildAnalyticsSnapshot = (): EnrollmentAnalytics => {
   });
 
   const topCourses = sortedByEnrollment.slice(0, 3).map(toSummary);
-  const mostPopular = sortedByEnrollment[0]
+  const mostPopular: EnrollmentSummary = sortedByEnrollment[0]
     ? toSummary(sortedByEnrollment[0])
     : {
         id: '',
         title: 'No courses available',
         enrollments: 0,
-        level: 'Beginner',
+        level: 'Beginner' as const,
         category: 'N/A',
       };
 
-  const leastPopular = sortedByEnrollment[sortedByEnrollment.length - 1]
+  const leastPopular: EnrollmentSummary = sortedByEnrollment[
+    sortedByEnrollment.length - 1
+  ]
     ? toSummary(sortedByEnrollment[sortedByEnrollment.length - 1])
     : mostPopular;
 

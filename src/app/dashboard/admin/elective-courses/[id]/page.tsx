@@ -25,7 +25,7 @@ import {
 export default function ElectiveCourseDetailPage() {
   const router = useRouter();
   const params = useParams();
-  const courseId = params.id as string;
+  const courseId = (params?.id as string) || '';
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
