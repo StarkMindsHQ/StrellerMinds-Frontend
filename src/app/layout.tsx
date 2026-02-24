@@ -26,8 +26,8 @@ import StyledComponentsRegistry from '../lib/registry';
 import MainLayoutWrapper from '../components/MainLayoutWrapper';
 
 // Initialize fonts
-const inter = Inter({ subsets: ['latin'] });
-const sourceCodePro = Source_Code_Pro({ subsets: ['latin'] });
+// const inter = Inter({ subsets: ['latin'] });
+// const sourceCodePro = Source_Code_Pro({ subsets: ['latin'] });
 
 // Initialize server environment validation
 initializeServerEnvironment();
@@ -175,9 +175,7 @@ export default function RootLayout({
               Skip to content
             </a>
 
-            <MainLayoutWrapper>
-              {children}
-            </MainLayoutWrapper>
+            <MainLayoutWrapper>{children}</MainLayoutWrapper>
 
             <Toaster position="top-right" />
             <Analytics />
@@ -186,6 +184,5 @@ export default function RootLayout({
         </StyledComponentsRegistry>
       </body>
     </html>
-
   );
 }
