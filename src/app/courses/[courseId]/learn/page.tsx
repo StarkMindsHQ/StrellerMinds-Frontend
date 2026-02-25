@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'next/navigation';
 import { CourseProgressProvider, useCourseProgress } from '@/contexts/CourseProgressContext';
 import { LessonSidebar } from '@/components/learning/LessonSidebar';
@@ -8,7 +8,7 @@ import { MobileLessonNav } from '@/components/learning/MobileLessonNav';
 import { LessonContent } from '@/components/learning/LessonContent';
 import { CourseOverview } from '@/components/learning/CourseOverview';
 import { getCourseById } from '@/lib/mock-course-data';
-import { Course, Lesson } from '@/types/lesson';
+import { Course } from '@/types/lesson';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
@@ -149,7 +149,7 @@ function LearningInterface({ course }: { course: Course }) {
 
 export default function LearnPage() {
   const params = useParams();
-  const courseId = params.courseId as string;
+  const courseId = params?.courseId as string;
 
   // Fetch the course data based on courseId
   const course = getCourseById(courseId);

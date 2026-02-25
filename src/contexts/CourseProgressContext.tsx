@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
-import { CourseProgressState, LessonProgress } from '@/types/lesson';
+import { CourseProgressState } from '@/types/lesson';
 
 interface CourseProgressContextType {
   state: CourseProgressState;

@@ -14,7 +14,7 @@ interface VideoContainerProps {
   onVideoComplete?: () => void;
 }
 
-export function VideoContainer({ videoUrl, lessonId, title, onVideoComplete }: VideoContainerProps) {
+export function VideoContainer({ videoUrl, lessonId, onVideoComplete }: VideoContainerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const { updateLessonProgress } = useCourseProgress();
@@ -25,7 +25,6 @@ export function VideoContainer({ videoUrl, lessonId, title, onVideoComplete }: V
   const [isMuted, setIsMuted] = useState(false);
   const [volume, setVolume] = useState(1);
   const [showControls, setShowControls] = useState(true);
-  const [isFullscreen, setIsFullscreen] = useState(false);
   const [playbackRate, setPlaybackRate] = useState(1);
 
   let controlsTimeout: NodeJS.Timeout;
@@ -132,10 +131,8 @@ export function VideoContainer({ videoUrl, lessonId, title, onVideoComplete }: V
 
     if (!document.fullscreenElement) {
       container.requestFullscreen();
-      setIsFullscreen(true);
     } else {
       document.exitFullscreen();
-      setIsFullscreen(false);
     }
   };
 
