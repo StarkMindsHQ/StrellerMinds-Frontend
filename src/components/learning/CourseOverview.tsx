@@ -5,15 +5,15 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { 
-  Play, 
-  Clock, 
-  Users, 
-  Star, 
-  BookOpen, 
-  Trophy, 
+import {
+  Play,
+  Clock,
+  Users,
+  Star,
+  BookOpen,
+  Trophy,
   Target,
-  CheckCircle
+  CheckCircle,
 } from 'lucide-react';
 import { Course } from '@/types/lesson';
 import { useCourseProgress } from '@/contexts/CourseProgressContext';
@@ -24,13 +24,19 @@ interface CourseOverviewProps {
   onStartLearning: () => void;
 }
 
-export function CourseOverview({ course, onStartLearning }: CourseOverviewProps) {
+export function CourseOverview({
+  course,
+  onStartLearning,
+}: CourseOverviewProps) {
   const { state } = useCourseProgress();
-  
-  const totalDuration = course.lessons.reduce((acc, lesson) => acc + lesson.duration, 0);
+
+  const totalDuration = course.lessons.reduce(
+    (acc, lesson) => acc + lesson.duration,
+    0,
+  );
   const completedCount = state.completedLessons.length;
   const isCompleted = completedCount === course.lessons.length;
-  
+
   const formatDuration = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
@@ -39,11 +45,11 @@ export function CourseOverview({ course, onStartLearning }: CourseOverviewProps)
 
   const getNextLesson = () => {
     if (completedCount === 0) return course.lessons[0];
-    
+
     const nextIncompleteLesson = course.lessons
       .sort((a, b) => a.order - b.order)
-      .find(lesson => !state.completedLessons.includes(lesson.id));
-    
+      .find((lesson) => !state.completedLessons.includes(lesson.id));
+
     return nextIncompleteLesson || course.lessons[course.lessons.length - 1];
   };
 
@@ -58,12 +64,12 @@ export function CourseOverview({ course, onStartLearning }: CourseOverviewProps)
             <BookOpen className="w-6 h-6 text-primary" />
             <Badge variant="secondary">Course Overview</Badge>
           </div>
-          
+
           <h1 className="text-2xl sm:text-4xl font-bold">{course.title}</h1>
           <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
             {course.description}
           </p>
-          
+
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 text-sm text-muted-foreground">
             <div className="flex items-center gap-1">
               <Clock className="w-4 h-4" />
@@ -97,13 +103,15 @@ export function CourseOverview({ course, onStartLearning }: CourseOverviewProps)
                 {Math.round(state.overallProgress)}%
               </span>
             </div>
-            
+
             <Progress value={state.overallProgress} className="h-3" />
-            
+
             {isCompleted ? (
               <div className="flex items-center gap-2 text-green-600 bg-green-50 p-3 rounded-lg">
                 <Trophy className="w-5 h-5" />
-                <span className="font-medium">Congratulations! You've completed this course!</span>
+                <span className="font-medium">
+                  Congratulations! You&apos;ve completed this course!
+                </span>
               </div>
             ) : (
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-muted/50 rounded-lg gap-4">
@@ -113,7 +121,10 @@ export function CourseOverview({ course, onStartLearning }: CourseOverviewProps)
                     Next: {nextLesson?.title}
                   </p>
                 </div>
-                <Button onClick={onStartLearning} className="gap-2 w-full sm:w-auto">
+                <Button
+                  onClick={onStartLearning}
+                  className="gap-2 w-full sm:w-auto"
+                >
                   <Play className="w-4 h-4" />
                   {completedCount === 0 ? 'Start Course' : 'Continue'}
                 </Button>
@@ -137,41 +148,57 @@ export function CourseOverview({ course, onStartLearning }: CourseOverviewProps)
               {course.lessons
                 .sort((a, b) => a.order - b.order)
                 .map((lesson, index) => {
-                  const isCompleted = state.completedLessons.includes(lesson.id);
-                  const isLocked = index > 0 && !state.completedLessons.includes(course.lessons[index - 1].id);
-                  
+                  const isCompleted = state.completedLessons.includes(
+                    lesson.id,
+                  );
+                  const isLocked =
+                    index > 0 &&
+                    !state.completedLessons.includes(
+                      course.lessons[index - 1].id,
+                    );
+
                   return (
                     <div
                       key={lesson.id}
                       className="flex items-center gap-3 p-3 rounded-lg border bg-card hover:bg-accent/50 transition-colors"
                     >
-                      <div className={`
+                      <div
+                        className={`
                         w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium
-                        ${isCompleted 
-                          ? 'bg-green-100 text-green-600' 
-                          : isLocked 
-                            ? 'bg-muted text-muted-foreground' 
-                            : 'bg-primary/10 text-primary'
+                        ${
+                          isCompleted
+                            ? 'bg-green-100 text-green-600'
+                            : isLocked
+                              ? 'bg-muted text-muted-foreground'
+                              : 'bg-primary/10 text-primary'
                         }
-                      `}>
+                      `}
+                      >
                         {isCompleted ? (
                           <CheckCircle className="w-4 h-4" />
                         ) : (
                           <span>{lesson.order}</span>
                         )}
                       </div>
-                      
+
                       <div className="flex-1">
-                        <h3 className={`font-medium ${isLocked ? 'text-muted-foreground' : ''}`}>
+                        <h3
+                          className={`font-medium ${isLocked ? 'text-muted-foreground' : ''}`}
+                        >
                           {lesson.title}
                         </h3>
                         <p className="text-sm text-muted-foreground">
                           {formatDuration(lesson.duration)}
                         </p>
                       </div>
-                      
+
                       <div className="flex items-center gap-2">
-                        <Badge variant={lesson.type === 'video' ? 'default' : 'secondary'} className="text-xs">
+                        <Badge
+                          variant={
+                            lesson.type === 'video' ? 'default' : 'secondary'
+                          }
+                          className="text-xs"
+                        >
                           {lesson.type}
                         </Badge>
                         {isLocked && (
@@ -192,7 +219,7 @@ export function CourseOverview({ course, onStartLearning }: CourseOverviewProps)
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Star className="w-5 h-5" />
-              What You'll Learn
+              What You&apos;ll Learn
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -200,37 +227,53 @@ export function CourseOverview({ course, onStartLearning }: CourseOverviewProps)
               <div className="space-y-2">
                 <div className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">Understand blockchain fundamentals and core concepts</span>
+                  <span className="text-sm">
+                    Understand blockchain fundamentals and core concepts
+                  </span>
                 </div>
                 <div className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">Learn about cryptographic principles and security</span>
+                  <span className="text-sm">
+                    Learn about cryptographic principles and security
+                  </span>
                 </div>
                 <div className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">Explore distributed ledger technology</span>
+                  <span className="text-sm">
+                    Explore distributed ledger technology
+                  </span>
                 </div>
                 <div className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">Master consensus mechanisms and algorithms</span>
+                  <span className="text-sm">
+                    Master consensus mechanisms and algorithms
+                  </span>
                 </div>
               </div>
               <div className="space-y-2">
                 <div className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">Introduction to smart contracts</span>
+                  <span className="text-sm">
+                    Introduction to smart contracts
+                  </span>
                 </div>
                 <div className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">Understand different blockchain networks</span>
+                  <span className="text-sm">
+                    Understand different blockchain networks
+                  </span>
                 </div>
                 <div className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">Learn about security and vulnerabilities</span>
+                  <span className="text-sm">
+                    Learn about security and vulnerabilities
+                  </span>
                 </div>
                 <div className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">Explore the future of blockchain technology</span>
+                  <span className="text-sm">
+                    Explore the future of blockchain technology
+                  </span>
                 </div>
               </div>
             </div>
