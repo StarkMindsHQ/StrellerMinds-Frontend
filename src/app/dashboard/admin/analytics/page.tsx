@@ -57,77 +57,106 @@ const GlobalAlertSystem = lazy(() =>
   })),
 );
 
+const CohortAnalyticsPanel = lazy(() =>
+  import('@/components/admin/analytics/CohortAnalyticsPanel').then(
+    (module) => ({
+      default: module.CohortAnalyticsPanel,
+    }),
+  ),
+);
+
 export default function AdminAnalyticsPage() {
   const { data, isLoading } = useRealTimeMetrics();
   const [activeRange, setActiveRange] = useState('24h');
   const [isExporting, setIsExporting] = useState(false);
 
-  const handleExport = useCallback(async (format: ExportFormat) => {
-    if (!data) return;
+  const handleExport = useCallback(
+    async (format: ExportFormat) => {
+      if (!data) return;
 
-    setIsExporting(true);
-    try {
-      await exportAnalyticsData(format, data, 'StarkMinds_Analytics');
-      toast.success(`Report exported successfully as ${format.toUpperCase()}`);
-    } catch (error) {
-      console.error('Export failed:', error);
-      toast.error('Failed to export report. Please try again.');
-    } finally {
-      setIsExporting(false);
-    }
-  }, [data]);
+      setIsExporting(true);
+      try {
+        await exportAnalyticsData(format, data, 'StarkMinds_Analytics');
+        toast.success(
+          `Report exported successfully as ${format.toUpperCase()}`,
+        );
+      } catch (error) {
+        console.error('Export failed:', error);
+        toast.error('Failed to export report. Please try again.');
+      } finally {
+        setIsExporting(false);
+      }
+    },
+    [data],
+  );
 
   // Prepare chart data
-  const usersChartData = useMemo(() => ({
-    labels: data?.metricsHistory.activeUsers.map((_, i) => i.toString()) || [],
-    datasets: [
-      {
-        label: 'Active Users',
-        data: data?.metricsHistory.activeUsers || [],
-        borderColor: '#8b5cf6',
-        backgroundColor: 'rgba(139, 92, 246, 0.1)',
-        fill: true,
-        tension: 0.4,
-        pointRadius: 0,
-        borderWidth: 2,
-      },
-    ],
-  }), [data?.metricsHistory.activeUsers]);
+  const usersChartData = useMemo(
+    () => ({
+      labels:
+        data?.metricsHistory.activeUsers.map((_, i) => i.toString()) || [],
+      datasets: [
+        {
+          label: 'Active Users',
+          data: data?.metricsHistory.activeUsers || [],
+          borderColor: '#8b5cf6',
+          backgroundColor: 'rgba(139, 92, 246, 0.1)',
+          fill: true,
+          tension: 0.4,
+          pointRadius: 0,
+          borderWidth: 2,
+        },
+      ],
+    }),
+    [data?.metricsHistory.activeUsers],
+  );
 
-  const revenueChartData = useMemo(() => ({
-    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-    datasets: [
-      {
-        label: 'Weekly Revenue',
-        data: [1200, 1900, 1500, 2400, 3200, 2800, 3100],
-        backgroundColor: 'rgba(236, 72, 153, 0.8)',
-        borderRadius: 4,
-      },
-      {
-        label: 'Projected',
-        data: [1500, 2200, 1800, 2600, 3500, 3000, 3400],
-        backgroundColor: 'rgba(236, 72, 153, 0.2)',
-        borderRadius: 4,
-      },
-    ],
-  }), []);
+  const revenueChartData = useMemo(
+    () => ({
+      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      datasets: [
+        {
+          label: 'Weekly Revenue',
+          data: [1200, 1900, 1500, 2400, 3200, 2800, 3100],
+          backgroundColor: 'rgba(236, 72, 153, 0.8)',
+          borderRadius: 4,
+        },
+        {
+          label: 'Projected',
+          data: [1500, 2200, 1800, 2600, 3500, 3000, 3400],
+          backgroundColor: 'rgba(236, 72, 153, 0.2)',
+          borderRadius: 4,
+        },
+      ],
+    }),
+    [],
+  );
 
-  const distributionData = useMemo(() => ({
-    labels: ['Smart Contracts', 'Defi', 'NFTs', 'Rust Fundamentals', 'Others'],
-    datasets: [
-      {
-        data: [35, 25, 20, 15, 5],
-        backgroundColor: [
-          '#8b5cf6',
-          '#ec4899',
-          '#3b82f6',
-          '#10b981',
-          '#f59e0b',
-        ],
-        borderWidth: 0,
-      },
-    ],
-  }), []);
+  const distributionData = useMemo(
+    () => ({
+      labels: [
+        'Smart Contracts',
+        'Defi',
+        'NFTs',
+        'Rust Fundamentals',
+        'Others',
+      ],
+      datasets: [
+        {
+          data: [35, 25, 20, 15, 5],
+          backgroundColor: [
+            '#8b5cf6',
+            '#ec4899',
+            '#3b82f6',
+            '#10b981',
+            '#f59e0b',
+          ],
+          borderWidth: 0,
+        },
+      ],
+    }),
+    [],
+  );
 
   const cardFallback = (
     <Card className="animate-pulse">
@@ -276,7 +305,11 @@ export default function AdminAnalyticsPage() {
             </div>
           </CardHeader>
           <CardContent className="pt-4 h-[350px] md:h-[400px]">
-            <Suspense fallback={<div className="h-full w-full animate-pulse bg-muted rounded-md" />}>
+            <Suspense
+              fallback={
+                <div className="h-full w-full animate-pulse bg-muted rounded-md" />
+              }
+            >
               <RealTimeChart
                 type="line"
                 data={usersChartData}
@@ -287,7 +320,13 @@ export default function AdminAnalyticsPage() {
         </Card>
 
         {/* Live Feed */}
-        <Suspense fallback={<Card className="h-full animate-pulse"><CardContent className="h-full min-h-[280px]" /></Card>}>
+        <Suspense
+          fallback={
+            <Card className="h-full animate-pulse">
+              <CardContent className="h-full min-h-[280px]" />
+            </Card>
+          }
+        >
           <GlobalAlertSystem
             events={data?.recentEvents || []}
             className="h-full"
@@ -307,7 +346,11 @@ export default function AdminAnalyticsPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="h-[300px]">
-            <Suspense fallback={<div className="h-full w-full animate-pulse bg-muted rounded-md" />}>
+            <Suspense
+              fallback={
+                <div className="h-full w-full animate-pulse bg-muted rounded-md" />
+              }
+            >
               <RealTimeChart
                 type="bar"
                 data={revenueChartData}
@@ -329,7 +372,11 @@ export default function AdminAnalyticsPage() {
           </CardHeader>
           <CardContent className="flex items-center justify-center h-[300px]">
             <div className="w-full h-full max-w-[300px]">
-              <Suspense fallback={<div className="h-full w-full animate-pulse bg-muted rounded-md" />}>
+              <Suspense
+                fallback={
+                  <div className="h-full w-full animate-pulse bg-muted rounded-md" />
+                }
+              >
                 <RealTimeChart
                   type="doughnut"
                   data={distributionData}
@@ -340,6 +387,16 @@ export default function AdminAnalyticsPage() {
           </CardContent>
         </Card>
       </div>
+
+      <Suspense
+        fallback={
+          <Card className="animate-pulse">
+            <CardContent className="h-[380px]" />
+          </Card>
+        }
+      >
+        <CohortAnalyticsPanel className="mb-8" />
+      </Suspense>
     </MainLayout>
   );
 }

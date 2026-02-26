@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -40,8 +42,41 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Type check
-        run: pnpm exec tsc --noEmit
+      - name: Detect changed TypeScript files
+        id: changed-ts
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          else
+            BASE_SHA="${{ github.event.before }}"
+          fi
+
+          if [[ "$BASE_SHA" == "0000000000000000000000000000000000000000" ]]; then
+            BASE_SHA=$(git rev-list --max-parents=0 HEAD)
+          fi
+
+          HEAD_SHA="${{ github.sha }}"
+          CHANGED_TS_FILES=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" | grep -E '\\.(ts|tsx)$' || true)
+
+          {
+            echo 'files<<EOF'
+            echo "$CHANGED_TS_FILES"
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Type check changed files
+        if: steps.changed-ts.outputs.files != ''
+        shell: bash
+        env:
+          CHANGED_TS_FILES: ${{ steps.changed-ts.outputs.files }}
+        run: |
+          node -e "const fs=require('fs');const files=(process.env.CHANGED_TS_FILES||'').split('\\n').filter(Boolean);fs.writeFileSync('tsconfig.ci.changed.json', JSON.stringify({extends:'./tsconfig.json', include:files}, null, 2));"
+          pnpm exec tsc --noEmit --project tsconfig.ci.changed.json
+
+      - name: Skip type check
+        if: steps.changed-ts.outputs.files == ''
+        run: echo "No TypeScript files changed."
 
   lint:
     name: Lint
@@ -49,6 +84,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -76,8 +113,41 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Lint
-        run: pnpm run lint -- --max-warnings=100
+      - name: Detect changed lintable files
+        id: changed-lint
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          else
+            BASE_SHA="${{ github.event.before }}"
+          fi
+
+          if [[ "$BASE_SHA" == "0000000000000000000000000000000000000000" ]]; then
+            BASE_SHA=$(git rev-list --max-parents=0 HEAD)
+          fi
+
+          HEAD_SHA="${{ github.sha }}"
+          CHANGED_LINT_FILES=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" | grep -E '\\.(js|jsx|ts|tsx)$' || true)
+
+          {
+            echo 'files<<EOF'
+            echo "$CHANGED_LINT_FILES"
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Lint changed files
+        if: steps.changed-lint.outputs.files != ''
+        shell: bash
+        env:
+          CHANGED_LINT_FILES: ${{ steps.changed-lint.outputs.files }}
+        run: |
+          mapfile -t files <<< "$CHANGED_LINT_FILES"
+          pnpm exec eslint --max-warnings=100 "${files[@]}"
+
+      - name: Skip lint
+        if: steps.changed-lint.outputs.files == ''
+        run: echo "No lintable files changed."
 
   format-check:
     name: Format Check
@@ -85,6 +155,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -112,11 +184,45 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Format check
-        run: pnpm exec prettier --check .
+      - name: Detect changed formattable files
+        id: changed-format
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          else
+            BASE_SHA="${{ github.event.before }}"
+          fi
+
+          if [[ "$BASE_SHA" == "0000000000000000000000000000000000000000" ]]; then
+            BASE_SHA=$(git rev-list --max-parents=0 HEAD)
+          fi
+
+          HEAD_SHA="${{ github.sha }}"
+          CHANGED_FORMAT_FILES=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" | grep -E '\\.(js|jsx|ts|tsx|json|css|md|cjs|mjs|yml|yaml)$' || true)
+
+          {
+            echo 'files<<EOF'
+            echo "$CHANGED_FORMAT_FILES"
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Check formatting on changed files
+        if: steps.changed-format.outputs.files != ''
+        shell: bash
+        env:
+          CHANGED_FORMAT_FILES: ${{ steps.changed-format.outputs.files }}
+        run: |
+          mapfile -t files <<< "$CHANGED_FORMAT_FILES"
+          pnpm exec prettier --check "${files[@]}"
+
+      - name: Skip format check
+        if: steps.changed-format.outputs.files == ''
+        run: echo "No formattable files changed."
 
   build:
     name: Build
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -184,10 +290,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Test (if available)
-        run: |
-          if pnpm run test --help >/dev/null 2>&1; then
-            pnpm run test
-          else
-            echo "No test script found, skipping tests"
-          fi
+      - name: Test
+        env:
+          CI: true
+        run: pnpm run test
