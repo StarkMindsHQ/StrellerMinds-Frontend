@@ -57,6 +57,14 @@ const GlobalAlertSystem = lazy(() =>
   })),
 );
 
+const CohortAnalyticsPanel = lazy(() =>
+  import('@/components/admin/analytics/CohortAnalyticsPanel').then(
+    (module) => ({
+      default: module.CohortAnalyticsPanel,
+    }),
+  ),
+);
+
 export default function AdminAnalyticsPage() {
   const { data, isLoading } = useRealTimeMetrics();
   const [activeRange, setActiveRange] = useState('24h');
@@ -340,6 +348,16 @@ export default function AdminAnalyticsPage() {
           </CardContent>
         </Card>
       </div>
+
+      <Suspense
+        fallback={
+          <Card className="animate-pulse">
+            <CardContent className="h-[380px]" />
+          </Card>
+        }
+      >
+        <CohortAnalyticsPanel className="mb-8" />
+      </Suspense>
     </MainLayout>
   );
 }

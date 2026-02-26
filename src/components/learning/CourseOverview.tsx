@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { Course } from '@/types/lesson';
 import { useCourseProgress } from '@/contexts/CourseProgressContext';
+import { RecommendationEngine } from './RecommendationEngine';
 
 interface CourseOverviewProps {
   course: Course;
@@ -120,6 +121,8 @@ export function CourseOverview({ course, onStartLearning }: CourseOverviewProps)
             )}
           </CardContent>
         </Card>
+
+        <RecommendationEngine learnerId={`${course.id}-active-learner`} />
 
         {/* Course Content */}
         <Card>
