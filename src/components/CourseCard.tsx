@@ -245,7 +245,7 @@ export function CourseCard({
 
           {/* CTA Button */}
           <Link
-            href={`/courses/${id}`}
+            href={`/courses/${id}/learn`}
             className={cn(
               'inline-flex w-full items-center justify-center rounded-lg font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
               variant === 'featured'
@@ -254,7 +254,7 @@ export function CourseCard({
               variant === 'compact' ? 'text-sm py-2' : 'text-sm',
             )}
           >
-            {variant === 'featured' ? 'Start Learning' : 'Enroll Now'}
+            Start Learning
             <span className="ml-2">→</span>
           </Link>
         </div>
