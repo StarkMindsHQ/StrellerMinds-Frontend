@@ -45,6 +45,7 @@ module.exports = {
       animation: {
         skeleton: 'skeleton 2s ease-in-out infinite alternate',
         'pulse-skeleton': 'pulse-skeleton 1.5s ease-in-out infinite',
+        shimmer: 'shimmer 2s linear infinite',
       },
       keyframes: {
         skeleton: {
@@ -61,6 +62,14 @@ module.exports = {
           },
           '50%': {
             opacity: '0.5',
+          },
+        },
+        shimmer: {
+          '0%': {
+            backgroundPosition: '-200% 0',
+          },
+          '100%': {
+            backgroundPosition: '200% 0',
           },
         },
       },
