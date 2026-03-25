@@ -3,7 +3,7 @@
 import * as React from 'react';
 import * as ToastPrimitives from '@radix-ui/react-toast';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { X, CheckCircle, AlertCircle, Info } from 'lucide-react';
+import { X, CheckCircle, AlertCircle, Info, TriangleAlert } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
@@ -34,6 +34,8 @@ const toastVariants = cva(
           'destructive group border-destructive bg-destructive text-destructive-foreground',
         success:
           'border-green-200 bg-green-50 text-green-900 dark:border-green-800 dark:bg-green-900/20 dark:text-green-100',
+        warning:
+          'border-amber-200 bg-amber-50 text-amber-950 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-100',
         info: 'border-blue-200 bg-blue-50 text-blue-900 dark:border-blue-800 dark:bg-blue-900/20 dark:text-blue-100',
       },
     },
@@ -118,12 +120,16 @@ ToastDescription.displayName = ToastPrimitives.Description.displayName;
 const ToastIcon = ({
   variant,
 }: {
-  variant?: 'default' | 'destructive' | 'success' | 'info';
+  variant?: 'default' | 'destructive' | 'success' | 'warning' | 'info';
 }) => {
   switch (variant) {
     case 'success':
       return (
         <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
+      );
+    case 'warning':
+      return (
+        <TriangleAlert className="h-5 w-5 text-amber-600 dark:text-amber-400" />
       );
     case 'destructive':
       return <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400" />;
