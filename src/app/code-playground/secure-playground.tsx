@@ -10,7 +10,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Toaster } from 'sonner';
 import { Shield, Zap, Clock, Code2, Users } from 'lucide-react';
 
 import LanguageSelector from '@/components/code-playground/language-selector';
@@ -156,8 +155,6 @@ export default function SecureCodePlayground() {
 
   return (
     <div className="container mx-auto p-4 max-w-7xl">
-      <Toaster position="top-right" />
-
       {/* Header Card */}
       <Card className="mb-6">
         <CardHeader>
