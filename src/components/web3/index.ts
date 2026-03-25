@@ -6,3 +6,5 @@ export { SimpleStorageDemo } from './SimpleStorageDemo';
 export { TokenDemo } from './TokenDemo';
 export { NFTDemo } from './NFTDemo';
 export { TransactionManager } from './TransactionManager';
+export { TransactionTable } from './TransactionTable';
+export { TransactionCostEstimator } from './TransactionCostEstimator';
