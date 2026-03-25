@@ -2,17 +2,21 @@ import { cn } from '@/lib/utils';
 
 interface SkeletonProps {
   className?: string;
+  variant?: 'default' | 'shimmer';
 }
 
 // Base skeleton component
 export function Skeleton({
   className,
+  variant = 'default',
   ...props
 }: SkeletonProps & React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
       className={cn(
-        'animate-skeleton rounded-md bg-gray-200 dark:bg-gray-800',
+        variant === 'shimmer'
+          ? 'skeleton-shimmer rounded-md'
+          : 'animate-skeleton rounded-md bg-gray-200 dark:bg-gray-800',
         className,
       )}
       {...props}
