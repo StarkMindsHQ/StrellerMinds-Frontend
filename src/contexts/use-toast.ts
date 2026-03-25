@@ -51,9 +51,24 @@ type Action =
 
 interface State {
   toasts: ToasterToast[];
+  queue: ToasterToast[];
 }
 
 const toastTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
+
+const fillToastSlots = (state: State): State => {
+  if (state.toasts.length >= TOAST_LIMIT || state.queue.length === 0) {
+    return state;
+  }
+
+  const availableSlots = TOAST_LIMIT - state.toasts.length;
+  const nextToasts = state.queue.slice(0, availableSlots);
+
+  return {
+    toasts: [...state.toasts, ...nextToasts],
+    queue: state.queue.slice(availableSlots),
+  };
+};
 
 const addToRemoveQueue = (toastId: string) => {
   if (toastTimeouts.has(toastId)) {
@@ -73,16 +88,27 @@ const addToRemoveQueue = (toastId: string) => {
 
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
-    case 'ADD_TOAST':
+    case 'ADD_TOAST': {
+      if (state.toasts.length < TOAST_LIMIT) {
+        return {
+          ...state,
+          toasts: [action.toast, ...state.toasts],
+        };
+      }
+
       return {
         ...state,
-        toasts: [action.toast, ...state.toasts].slice(0, TOAST_LIMIT),
+        queue: [...state.queue, action.toast],
       };
+    }
 
     case 'UPDATE_TOAST':
       return {
         ...state,
         toasts: state.toasts.map((t) =>
+          t.id === action.toast.id ? { ...t, ...action.toast } : t,
+        ),
+        queue: state.queue.map((t) =>
           t.id === action.toast.id ? { ...t, ...action.toast } : t,
         ),
       };
@@ -112,23 +138,31 @@ export const reducer = (state: State, action: Action): State => {
         ),
       };
     }
-    case 'REMOVE_TOAST':
+    case 'REMOVE_TOAST': {
       if (action.toastId === undefined) {
         return {
           ...state,
           toasts: [],
+          queue: [],
         };
       }
-      return {
+
+      toastTimeouts.delete(action.toastId);
+
+      return fillToastSlots({
         ...state,
         toasts: state.toasts.filter((t) => t.id !== action.toastId),
-      };
+        queue: state.queue.filter((t) => t.id !== action.toastId),
+      });
+    }
+    default:
+      return state;
   }
 };
 
 const listeners: Array<(state: State) => void> = [];
 
-let memoryState: State = { toasts: [] };
+let memoryState: State = { toasts: [], queue: [] };
 
 function dispatch(action: Action) {
   memoryState = reducer(memoryState, action);
@@ -168,6 +202,18 @@ function toast({ ...props }: Toast) {
   };
 }
 
+const success = (props: Omit<Toast, 'variant'>) =>
+  toast({ ...props, variant: 'success' });
+
+const error = (props: Omit<Toast, 'variant'>) =>
+  toast({ ...props, variant: 'destructive' });
+
+const warning = (props: Omit<Toast, 'variant'>) =>
+  toast({ ...props, variant: 'warning' });
+
+const info = (props: Omit<Toast, 'variant'>) =>
+  toast({ ...props, variant: 'info' });
+
 function useToast() {
   const [state, setState] = React.useState<State>(memoryState);
 
@@ -179,19 +225,20 @@ function useToast() {
         listeners.splice(index, 1);
       }
     };
-  }, [state]);
+  }, []);
 
   return {
     ...state,
     toast,
     dismiss: (toastId?: string) => dispatch({ type: 'DISMISS_TOAST', toastId }),
-    success: (props: Omit<Toast, 'variant'>) =>
-      toast({ ...props, variant: 'success' }),
-    error: (props: Omit<Toast, 'variant'>) =>
-      toast({ ...props, variant: 'destructive' }),
-    info: (props: Omit<Toast, 'variant'>) =>
-      toast({ ...props, variant: 'info' }),
+    success,
+    error,
+    warning,
+    info,
   };
 }
 
-export { useToast, toast };
+type UseToast = ReturnType<typeof useToast>;
+
+export { useToast, toast, success, error, warning, info };
+export type { UseToast };
