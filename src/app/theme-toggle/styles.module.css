@@ -1,0 +1,20 @@
+.toggleButton {
+    padding: 8px 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    background: var(--bg);
+    color: var(--text);
+    transition: all 0.3s ease;
+  }
+  
+  /* Optional global theme variables */
+  :root[data-theme="light"] {
+    --bg: #fff;
+    --text: #000;
+  }
+  
+  :root[data-theme="dark"] {
+    --bg: #1e1e1e;
+    --text: #fff;
+  }
