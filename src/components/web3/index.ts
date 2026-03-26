@@ -8,3 +8,4 @@ export { NFTDemo } from './NFTDemo';
 export { TransactionManager } from './TransactionManager';
 export { TransactionTable } from './TransactionTable';
 export { TransactionCostEstimator } from './TransactionCostEstimator';
+export { TokenBalance } from './TokenBalance';
