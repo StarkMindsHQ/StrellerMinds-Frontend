@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import * as z from 'zod';
 import { CreditCard, ShieldCheck, User } from 'lucide-react';
@@ -29,7 +31,7 @@ const enrollmentSteps: StepConfig[] = [
     icon: <CreditCard className="h-5 w-5" />,
     schema: z.object({
       paymentMethod: z.enum(['credit-card', 'paypal', 'crypto'], {
-        error: 'Please select a payment method',
+        required_error: 'Please select a payment method',
       }),
     }),
     fields: [
