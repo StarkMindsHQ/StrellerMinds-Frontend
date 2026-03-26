@@ -5,6 +5,9 @@ import { ThemeProvider } from 'next-themes';
 import { useState } from 'react';
 import { Web3Provider } from './web3/providers';
 
+import { TourProvider } from '@/contexts/TourContext';
+import { TourOverlay } from '@/components/ui/TourOverlay';
+
 export function Providers({ children }: { children: React.ReactNode }) {
   const [client] = useState(
     () =>
@@ -22,7 +25,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <QueryClientProvider client={client}>
       <Web3Provider>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          {children}
+          <TourProvider>
+            {children}
+            <TourOverlay />
+          </TourProvider>
         </ThemeProvider>
       </Web3Provider>
     </QueryClientProvider>
