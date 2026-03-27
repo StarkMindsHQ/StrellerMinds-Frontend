@@ -14,7 +14,11 @@ export interface MonitoredLessonPlayerProps {
   videoUrl: string;
   videoTitle: string;
   showEngagementMeter?: boolean;
-  engagementMeterPosition?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
+  engagementMeterPosition?:
+    | 'top-right'
+    | 'top-left'
+    | 'bottom-right'
+    | 'bottom-left';
   onEngagementChange?: (score: number) => void;
   className?: string;
 }
@@ -48,7 +52,7 @@ export const MonitoredLessonPlayer: React.FC<MonitoredLessonPlayerProps> = ({
     userId,
     onEngagementScoreChange: (score) => {
       onEngagementChange?.(score);
-      
+
       // Alert if engagement drops below 40%
       if (score < 40) {
         console.warn('Low engagement detected:', score);
@@ -60,13 +64,13 @@ export const MonitoredLessonPlayer: React.FC<MonitoredLessonPlayerProps> = ({
   useEffect(() => {
     logIntervalRef.current = setInterval(() => {
       const summary = getActivitySummary();
-      
+
       activityLogger.logActivity(
         userId,
         lessonId,
         summary,
         summary.activityLog,
-        courseId
+        courseId,
       );
     }, 60000); // Log every minute
 
@@ -86,7 +90,7 @@ export const MonitoredLessonPlayer: React.FC<MonitoredLessonPlayerProps> = ({
         lessonId,
         summary,
         summary.activityLog,
-        courseId
+        courseId,
       );
     };
   }, [userId, lessonId, courseId, getActivitySummary]);
@@ -117,7 +121,7 @@ export const MonitoredLessonPlayer: React.FC<MonitoredLessonPlayerProps> = ({
   };
 
   return (
-    <div className={cn("relative", className)}>
+    <div className={cn('relative', className)}>
       {/* Video Player */}
       <div className="mb-6">
         <VideoPlayer
@@ -132,7 +136,7 @@ export const MonitoredLessonPlayer: React.FC<MonitoredLessonPlayerProps> = ({
 
       {/* Engagement Meter Overlay */}
       {showEngagementMeter && (
-        <div className={cn("fixed z-50", getPositionClasses())}>
+        <div className={cn('fixed z-50', getPositionClasses())}>
           <EngagementMeter
             metrics={metrics}
             isActive={isActive}

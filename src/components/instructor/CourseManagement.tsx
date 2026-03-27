@@ -9,7 +9,10 @@ import { MOCK_COURSES, type MockCourse } from '@/data/mockInstructorData';
 import { Search, Users, BookOpen, Calendar } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-const statusVariant: Record<MockCourse['status'], 'default' | 'secondary' | 'outline'> = {
+const statusVariant: Record<
+  MockCourse['status'],
+  'default' | 'secondary' | 'outline'
+> = {
   published: 'default',
   draft: 'secondary',
   archived: 'outline',
@@ -17,7 +20,9 @@ const statusVariant: Record<MockCourse['status'], 'default' | 'secondary' | 'out
 
 export default function CourseManagement() {
   const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState<MockCourse['status'] | 'all'>('all');
+  const [statusFilter, setStatusFilter] = useState<
+    MockCourse['status'] | 'all'
+  >('all');
 
   const filtered = useMemo(() => {
     return MOCK_COURSES.filter((c) => {
@@ -51,9 +56,7 @@ export default function CourseManagement() {
               onClick={() => setStatusFilter(s)}
               className={cn(
                 'capitalize',
-                statusFilter === s
-                  ? 'text-white'
-                  : 'text-[#5c0f49]'
+                statusFilter === s ? 'text-white' : 'text-[#5c0f49]',
               )}
             >
               {s === 'all' ? 'All' : s.charAt(0).toUpperCase() + s.slice(1)}
@@ -64,13 +67,20 @@ export default function CourseManagement() {
 
       <div className="grid gap-4 sm:grid-cols-1 lg:grid-cols-2">
         {filtered.map((course) => (
-          <Card key={course.id} className="overflow-hidden border-[#5c0f49]/15 hover:shadow-md transition-shadow">
+          <Card
+            key={course.id}
+            className="overflow-hidden border-[#5c0f49]/15 hover:shadow-md transition-shadow"
+          >
             <CardHeader className="pb-2">
               <div className="flex flex-wrap items-start justify-between gap-2">
                 <CardTitle className="text-lg">{course.title}</CardTitle>
-                <Badge variant={statusVariant[course.status]}>{course.status}</Badge>
+                <Badge variant={statusVariant[course.status]}>
+                  {course.status}
+                </Badge>
               </div>
-              <p className="text-sm text-muted-foreground font-mono">{course.slug}</p>
+              <p className="text-sm text-muted-foreground font-mono">
+                {course.slug}
+              </p>
             </CardHeader>
             <CardContent className="flex flex-wrap gap-4 text-sm text-muted-foreground">
               <span className="flex items-center gap-1.5 text-[#5c0f49] font-medium">
@@ -91,7 +101,9 @@ export default function CourseManagement() {
       </div>
 
       {filtered.length === 0 && (
-        <p className="text-center text-muted-foreground py-8">No courses match your filters.</p>
+        <p className="text-center text-muted-foreground py-8">
+          No courses match your filters.
+        </p>
       )}
     </div>
   );

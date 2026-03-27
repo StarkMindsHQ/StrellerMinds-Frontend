@@ -68,7 +68,7 @@ const DynamicVideoGrid: React.FC<DynamicVideoGridProps> = ({
         }
       });
     },
-    []
+    [],
   );
 
   // Set up Intersection Observer
@@ -122,7 +122,7 @@ const DynamicVideoGrid: React.FC<DynamicVideoGridProps> = ({
     ...(gridConfig.columns.xl && { 'grid-cols-xl': gridConfig.columns.xl }),
   };
 
-  const renderPlaceholders = () => (
+  const renderPlaceholders = () =>
     Array.from({ length: placeholderCount }).map((_, index) => (
       <div key={`skeleton-${index}`} className={itemClassName}>
         <Card className="overflow-hidden">
@@ -133,18 +133,12 @@ const DynamicVideoGrid: React.FC<DynamicVideoGridProps> = ({
           </CardContent>
         </Card>
       </div>
-    ))
-  );
+    ));
 
   return (
     <div
       ref={containerRef}
-      className={cn(
-        'grid',
-        gridConfig.gap || 'gap-4',
-        gridColumns,
-        className
-      )}
+      className={cn('grid', gridConfig.gap || 'gap-4', gridColumns, className)}
     >
       {videos.length > 0
         ? videos.map((video) => (

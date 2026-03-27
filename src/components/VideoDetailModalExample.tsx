@@ -84,7 +84,8 @@ export default function VideoDetailModalExample() {
             Video Detail Modal Demo
           </h1>
           <p className="text-gray-600 dark:text-gray-400">
-            Experience smooth modal animations with dynamic content loading and interactive features.
+            Experience smooth modal animations with dynamic content loading and
+            interactive features.
           </p>
         </div>
 
@@ -103,7 +104,12 @@ export default function VideoDetailModalExample() {
                   <input
                     type="checkbox"
                     checked={modalConfig.showRelatedVideos}
-                    onChange={(e) => setModalConfig(prev => ({ ...prev, showRelatedVideos: e.target.checked }))}
+                    onChange={(e) =>
+                      setModalConfig((prev) => ({
+                        ...prev,
+                        showRelatedVideos: e.target.checked,
+                      }))
+                    }
                     className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
                   Show Related Videos
@@ -118,7 +124,12 @@ export default function VideoDetailModalExample() {
                   <input
                     type="checkbox"
                     checked={modalConfig.enableComments}
-                    onChange={(e) => setModalConfig(prev => ({ ...prev, enableComments: e.target.checked }))}
+                    onChange={(e) =>
+                      setModalConfig((prev) => ({
+                        ...prev,
+                        enableComments: e.target.checked,
+                      }))
+                    }
                     className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
                   Enable Comments
@@ -133,7 +144,12 @@ export default function VideoDetailModalExample() {
                   <input
                     type="checkbox"
                     checked={modalConfig.enableStats}
-                    onChange={(e) => setModalConfig(prev => ({ ...prev, enableStats: e.target.checked }))}
+                    onChange={(e) =>
+                      setModalConfig((prev) => ({
+                        ...prev,
+                        enableStats: e.target.checked,
+                      }))
+                    }
                     className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
                   Show Statistics
@@ -148,11 +164,13 @@ export default function VideoDetailModalExample() {
 
         {/* Video Grid */}
         <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">Click any video to view details</h2>
+          <h2 className="text-xl font-semibold mb-4">
+            Click any video to view details
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {mockVideos.map((video) => (
-              <Card 
-                key={video.id} 
+              <Card
+                key={video.id}
                 className="group cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
                 onClick={() => openVideoModal(video.id)}
               >
@@ -173,10 +191,12 @@ export default function VideoDetailModalExample() {
                     <span>{video.views} views</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className={cn(
-                      "text-xs font-semibold px-2 py-1 rounded-full",
-                      getLevelColor(video.level)
-                    )}>
+                    <span
+                      className={cn(
+                        'text-xs font-semibold px-2 py-1 rounded-full',
+                        getLevelColor(video.level),
+                      )}
+                    >
                       {video.level}
                     </span>
                     <Button
@@ -252,7 +272,9 @@ export default function VideoDetailModalExample() {
           <CardContent className="space-y-4">
             <div>
               <code className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-sm">
-                {'<VideoDetailModal videoId="video-123" isOpen={isOpen} onClose={handleClose} />'}
+                {
+                  '<VideoDetailModal videoId="video-123" isOpen={isOpen} onClose={handleClose} />'
+                }
               </code>
             </div>
             <ul className="list-disc list-inside space-y-2 text-sm text-gray-600 dark:text-gray-400">

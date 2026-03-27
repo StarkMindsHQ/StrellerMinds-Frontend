@@ -2,7 +2,13 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { LessonCard } from './LessonCard';
@@ -15,14 +21,21 @@ interface MobileLessonNavProps {
   onLessonSelect: (lessonId: string) => void;
 }
 
-export function MobileLessonNav({ course, onLessonSelect }: MobileLessonNavProps) {
+export function MobileLessonNav({
+  course,
+  onLessonSelect,
+}: MobileLessonNavProps) {
   const { state } = useCourseProgress();
   const [isOpen, setIsOpen] = useState(false);
 
   const isLessonLocked = (lessonOrder: number) => {
     if (lessonOrder === 1) return false;
-    const previousLesson = course.lessons.find(l => l.order === lessonOrder - 1);
-    return previousLesson ? !state.completedLessons.includes(previousLesson.id) : true;
+    const previousLesson = course.lessons.find(
+      (l) => l.order === lessonOrder - 1,
+    );
+    return previousLesson
+      ? !state.completedLessons.includes(previousLesson.id)
+      : true;
   };
 
   const completedCount = state.completedLessons.length;
@@ -41,7 +54,7 @@ export function MobileLessonNav({ course, onLessonSelect }: MobileLessonNavProps
           <span className="ml-2">Lessons</span>
         </Button>
       </SheetTrigger>
-      
+
       <SheetContent side="left" className="w-80 p-0">
         <div className="h-full flex flex-col">
           {/* Course Header */}
@@ -58,7 +71,7 @@ export function MobileLessonNav({ course, onLessonSelect }: MobileLessonNavProps
             <p className="text-sm text-muted-foreground mb-4 line-clamp-2 text-left">
               {course.description}
             </p>
-            
+
             {/* Progress Section */}
             <div className="space-y-3">
               <div className="flex items-center justify-between text-sm">
@@ -91,7 +104,9 @@ export function MobileLessonNav({ course, onLessonSelect }: MobileLessonNavProps
                   .sort((a, b) => a.order - b.order)
                   .map((lesson) => {
                     const isActive = state.currentLessonId === lesson.id;
-                    const isCompleted = state.completedLessons.includes(lesson.id);
+                    const isCompleted = state.completedLessons.includes(
+                      lesson.id,
+                    );
                     const isLocked = isLessonLocked(lesson.order);
 
                     return (
@@ -119,7 +134,13 @@ export function MobileLessonNav({ course, onLessonSelect }: MobileLessonNavProps
               <div className="flex justify-between">
                 <span>Total Duration:</span>
                 <span className="font-medium">
-                  {Math.round(course.lessons.reduce((acc, lesson) => acc + lesson.duration, 0) / 60)} min
+                  {Math.round(
+                    course.lessons.reduce(
+                      (acc, lesson) => acc + lesson.duration,
+                      0,
+                    ) / 60,
+                  )}{' '}
+                  min
                 </span>
               </div>
             </div>

@@ -9,6 +9,8 @@ interface MainLayoutProps {
   background?: 'default' | 'gray' | 'transparent';
 }
 
+import { Breadcrumbs } from './ui/Breadcrumbs';
+
 const MainLayout: React.FC<MainLayoutProps> = ({
   children,
   className,
@@ -40,9 +42,16 @@ const MainLayout: React.FC<MainLayoutProps> = ({
   if (variant === 'full-width') {
     return (
       <main
-        className={cn(baseClasses, backgroundClasses[background], className)}
+        className={cn(
+          baseClasses,
+          backgroundClasses[background as keyof typeof backgroundClasses],
+          className,
+        )}
         id="main-content"
       >
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+          <Breadcrumbs />
+        </div>
         {children}
       </main>
     );
@@ -51,9 +60,19 @@ const MainLayout: React.FC<MainLayoutProps> = ({
   return (
     <main
       id="main-content"
-      className={cn(baseClasses, backgroundClasses[background], className)}
+      className={cn(
+        baseClasses,
+        backgroundClasses[background as keyof typeof backgroundClasses],
+        className,
+      )}
     >
-      <div className={cn(variantClasses[variant], paddingClasses[padding])}>
+      <div
+        className={cn(
+          variantClasses[variant as keyof typeof variantClasses],
+          paddingClasses[padding as keyof typeof paddingClasses],
+        )}
+      >
+        <Breadcrumbs />
         {children}
       </div>
     </main>

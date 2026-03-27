@@ -34,11 +34,31 @@ const generateMockVideo = (index: number): VideoItem => {
     'William Davis',
   ];
 
-  const levels: Array<'Beginner' | 'Intermediate' | 'Advanced'> = ['Beginner', 'Intermediate', 'Advanced'];
+  const levels: Array<'Beginner' | 'Intermediate' | 'Advanced'> = [
+    'Beginner',
+    'Intermediate',
+    'Advanced',
+  ];
   const tags = [
-    'React', 'JavaScript', 'TypeScript', 'Node.js', 'Python', 'Docker', 
-    'AWS', 'GraphQL', 'Vue', 'CSS', 'HTML', 'MongoDB', 'PostgreSQL', 
-    'Redis', 'Kubernetes', 'Machine Learning', 'AI', 'Blockchain', 'Web3'
+    'React',
+    'JavaScript',
+    'TypeScript',
+    'Node.js',
+    'Python',
+    'Docker',
+    'AWS',
+    'GraphQL',
+    'Vue',
+    'CSS',
+    'HTML',
+    'MongoDB',
+    'PostgreSQL',
+    'Redis',
+    'Kubernetes',
+    'Machine Learning',
+    'AI',
+    'Blockchain',
+    'Web3',
   ];
 
   const title = titles[index % titles.length];
@@ -59,7 +79,9 @@ const generateMockVideo = (index: number): VideoItem => {
     level,
     tags: videoTags,
     views: Math.floor(Math.random() * 1000000) + 10000,
-    createdAt: new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000).toISOString(),
+    createdAt: new Date(
+      Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000,
+    ).toISOString(),
     isLive: Math.random() > 0.9, // 10% chance of being live
   };
 };
@@ -71,14 +93,14 @@ class MockVideoService {
 
   async fetchVideos(cursor?: string, limit = 12): Promise<FetchVideosResponse> {
     // Simulate network delay
-    await new Promise(resolve => setTimeout(resolve, this.delay));
+    await new Promise((resolve) => setTimeout(resolve, this.delay));
 
     // Parse cursor to get starting index
     const startIndex = cursor ? parseInt(cursor, 10) : 0;
-    
+
     // Calculate end index
     const endIndex = Math.min(startIndex + limit, this.totalVideos);
-    
+
     // Generate videos for this batch
     const videos = [];
     for (let i = startIndex; i < endIndex; i++) {
@@ -87,7 +109,7 @@ class MockVideoService {
 
     // Determine if there are more videos
     const hasMore = endIndex < this.totalVideos;
-    
+
     // Generate next cursor
     const nextCursor = hasMore ? endIndex.toString() : undefined;
 
@@ -106,38 +128,42 @@ class MockVideoService {
 
   // Method to simulate real-time updates
   async fetchNewVideos(since?: string): Promise<VideoItem[]> {
-    await new Promise(resolve => setTimeout(resolve, this.delay));
-    
+    await new Promise((resolve) => setTimeout(resolve, this.delay));
+
     // Occasionally return new videos
     if (Math.random() > 0.7) {
       const newVideoCount = Math.floor(Math.random() * 3) + 1;
       const newVideos = [];
-      
+
       for (let i = 0; i < newVideoCount; i++) {
         newVideos.push(generateMockVideo(this.totalVideos + i));
       }
-      
+
       this.totalVideos += newVideoCount;
       return newVideos;
     }
-    
+
     return [];
   }
 
   // Method to search videos (for future features)
   async searchVideos(query: string, limit = 12): Promise<FetchVideosResponse> {
-    await new Promise(resolve => setTimeout(resolve, this.delay));
-    
-    const allVideos = Array.from({ length: Math.min(50, this.totalVideos) }, (_, i) => 
-      generateMockVideo(i)
+    await new Promise((resolve) => setTimeout(resolve, this.delay));
+
+    const allVideos = Array.from(
+      { length: Math.min(50, this.totalVideos) },
+      (_, i) => generateMockVideo(i),
     );
-    
-    const filteredVideos = allVideos.filter(video => 
-      video.title.toLowerCase().includes(query.toLowerCase()) ||
-      video.description.toLowerCase().includes(query.toLowerCase()) ||
-      video.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
+
+    const filteredVideos = allVideos.filter(
+      (video) =>
+        video.title.toLowerCase().includes(query.toLowerCase()) ||
+        video.description.toLowerCase().includes(query.toLowerCase()) ||
+        video.tags.some((tag) =>
+          tag.toLowerCase().includes(query.toLowerCase()),
+        ),
     );
-    
+
     return {
       videos: filteredVideos.slice(0, limit),
       hasMore: filteredVideos.length > limit,

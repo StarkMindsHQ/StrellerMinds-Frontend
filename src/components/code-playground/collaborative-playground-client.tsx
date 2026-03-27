@@ -9,7 +9,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Toaster } from 'sonner';
 import { Code2, Users } from 'lucide-react';
 import {
   CollaborationProvider,
@@ -124,8 +123,6 @@ function CollaborativePlaygroundContent() {
 
   return (
     <div className="container mx-auto p-2 sm:p-4 max-w-7xl">
-      <Toaster position="top-right" />
-
       {/* Header Card */}
       <Card className="mb-4 sm:mb-6">
         <CardHeader className="px-3 sm:px-6 py-3 sm:py-6">

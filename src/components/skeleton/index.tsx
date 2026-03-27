@@ -10,3 +10,8 @@ export * from './CodePlaygroundSkeleton';
 // Additional skeleton components
 export * from './TestimonialSkeleton';
 export * from './HeroSkeleton';
+
+// New skeleton components
+export * from './TableSkeleton';
+export * from './ElectiveCardSkeleton';
+export * from './TextPlaceholderSkeleton';
