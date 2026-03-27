@@ -3,12 +3,8 @@
 import React, { Suspense, lazy, useCallback, useMemo, useState } from 'react';
 import Link from 'next/link';
 import {
-  ArrowLeft,
-  BarChart3,
   Download,
-  Filter,
   Layers,
-  TrendingUp,
   Users,
   DollarSign,
   Activity,
@@ -25,7 +21,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import {
   DropdownMenu,
@@ -61,6 +56,14 @@ const CohortAnalyticsPanel = lazy(() =>
   import('@/components/admin/analytics/CohortAnalyticsPanel').then(
     (module) => ({
       default: module.CohortAnalyticsPanel,
+    }),
+  ),
+);
+
+const DynamicLearningAnalyticsDashboard = lazy(() =>
+  import('@/components/analytics/DynamicLearningAnalyticsDashboard').then(
+    (module) => ({
+      default: module.DynamicLearningAnalyticsDashboard,
     }),
   ),
 );
@@ -285,6 +288,16 @@ export default function AdminAnalyticsPage() {
           />
         </Suspense>
       </div>
+
+      <Suspense
+        fallback={
+          <Card className="animate-pulse mb-8">
+            <CardContent className="h-[420px]" />
+          </Card>
+        }
+      >
+        <DynamicLearningAnalyticsDashboard role="admin" className="mb-8" />
+      </Suspense>
 
       <div className="grid gap-6 lg:grid-cols-3 mb-8">
         {/* Main Chart */}

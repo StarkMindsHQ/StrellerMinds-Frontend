@@ -5,8 +5,8 @@ export const authService = {
     return signIn(provider);
   },
 
-  logout() {
-    return signOut({ callbackUrl: '/' });
+  logout(callbackUrl: string = '/') {
+    return signOut({ callbackUrl });
   },
 };
 

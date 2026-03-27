@@ -18,7 +18,8 @@ import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 import CookieBanner from '../components/CookieBanner';
 import Analytics from '../components/Analytics';
-import { Toaster } from 'sonner';
+import { Toaster as AppToaster } from '@/components/ui/toaster';
+import { Toaster as SonnerToaster } from 'sonner';
 import { Providers } from '../lib/providers';
 import EnvironmentValidator from '../components/EnvironmentValidator';
 import { initializeServerEnvironment } from '../lib/env-server';
@@ -177,7 +178,8 @@ export default function RootLayout({
 
             <MainLayoutWrapper>{children}</MainLayoutWrapper>
 
-            <Toaster position="top-right" />
+            <AppToaster />
+            <SonnerToaster position="top-right" />
             <Analytics />
             <CookieBanner />
           </Providers>

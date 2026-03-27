@@ -64,17 +64,21 @@ const containerVariants = {
 // Mock API service
 class RecommendationService {
   private websocket: WebSocket | null = null;
-  private subscribers: ((recommendations: VideoRecommendation[]) => void)[] = [];
+  private subscribers: ((recommendations: VideoRecommendation[]) => void)[] =
+    [];
 
-  async fetchRecommendations(currentVideoId: string): Promise<VideoRecommendation[]> {
+  async fetchRecommendations(
+    currentVideoId: string,
+  ): Promise<VideoRecommendation[]> {
     // Simulate API call with mock data
-    await new Promise(resolve => setTimeout(resolve, 300));
-    
+    await new Promise((resolve) => setTimeout(resolve, 300));
+
     const mockRecommendations: VideoRecommendation[] = [
       {
         id: 'rec-1',
         title: 'Advanced Smart Contract Patterns',
-        description: 'Learn advanced patterns for secure smart contract development',
+        description:
+          'Learn advanced patterns for secure smart contract development',
         duration: 1800,
         thumbnailUrl: undefined,
         instructor: 'Dr. Sarah Chen',
@@ -119,7 +123,7 @@ class RecommendationService {
     ];
 
     return mockRecommendations
-      .filter(rec => rec.id !== currentVideoId)
+      .filter((rec) => rec.id !== currentVideoId)
       .sort((a, b) => (b.relevanceScore || 0) - (a.relevanceScore || 0));
   }
 
@@ -128,19 +132,23 @@ class RecommendationService {
 
     try {
       this.websocket = new WebSocket('ws://localhost:3001/recommendations');
-      
+
       this.websocket.onopen = () => {
         console.log('Connected to recommendations WebSocket');
-        this.websocket?.send(JSON.stringify({ 
-          type: 'subscribe', 
-          videoId: currentVideoId 
-        }));
+        this.websocket?.send(
+          JSON.stringify({
+            type: 'subscribe',
+            videoId: currentVideoId,
+          }),
+        );
       };
 
       this.websocket.onmessage = (event) => {
         const data = JSON.parse(event.data);
         if (data.type === 'recommendations_update') {
-          this.subscribers.forEach(callback => callback(data.recommendations));
+          this.subscribers.forEach((callback) =>
+            callback(data.recommendations),
+          );
         }
       };
 
@@ -168,7 +176,7 @@ class RecommendationService {
   subscribe(callback: (recommendations: VideoRecommendation[]) => void) {
     this.subscribers.push(callback);
     return () => {
-      this.subscribers = this.subscribers.filter(cb => cb !== callback);
+      this.subscribers = this.subscribers.filter((cb) => cb !== callback);
     };
   }
 }
@@ -188,7 +196,7 @@ const RecommendationCard: React.FC<{
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
     const remainingMinutes = minutes % 60;
-    
+
     if (hours > 0) {
       return `${hours}h ${remainingMinutes}m`;
     }
@@ -221,15 +229,15 @@ const RecommendationCard: React.FC<{
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ 
-        duration: 0.5, 
+      transition={{
+        duration: 0.5,
         delay: index * 0.1,
-        type: "spring",
-        stiffness: 100 
+        type: 'spring',
+        stiffness: 100,
       }}
-      whileHover={{ 
+      whileHover={{
         scale: 1.02,
-        transition: { duration: 0.2 }
+        transition: { duration: 0.2 },
       }}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
@@ -300,10 +308,12 @@ const RecommendationCard: React.FC<{
             <span className="text-sm text-blue-600 dark:text-blue-400 font-medium">
               {recommendation.instructor}
             </span>
-            <span className={cn(
-              'text-xs font-semibold px-2 py-1 rounded-full',
-              getLevelColor(recommendation.level)
-            )}>
+            <span
+              className={cn(
+                'text-xs font-semibold px-2 py-1 rounded-full',
+                getLevelColor(recommendation.level),
+              )}
+            >
               {recommendation.level}
             </span>
           </div>
@@ -346,7 +356,9 @@ const RecommendationCard: React.FC<{
 };
 
 // Main Component
-export const RealTimeRecommendations: React.FC<RealTimeRecommendationsProps> = ({
+export const RealTimeRecommendations: React.FC<
+  RealTimeRecommendationsProps
+> = ({
   currentVideoId,
   onVideoSelect,
   maxRecommendations = 3,
@@ -355,7 +367,9 @@ export const RealTimeRecommendations: React.FC<RealTimeRecommendationsProps> = (
   showRelevanceScore = false,
   enableWebSocket = false,
 }) => {
-  const [recommendations, setRecommendations] = useState<VideoRecommendation[]>([]);
+  const [recommendations, setRecommendations] = useState<VideoRecommendation[]>(
+    [],
+  );
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
@@ -367,14 +381,17 @@ export const RealTimeRecommendations: React.FC<RealTimeRecommendationsProps> = (
     try {
       setIsLoading(true);
       setError(null);
-      const recs = await recommendationService.fetchRecommendations(currentVideoId);
+      const recs =
+        await recommendationService.fetchRecommendations(currentVideoId);
       setRecommendations(recs.slice(0, maxRecommendations));
       setLastUpdated(new Date());
-      
+
       // Trigger animation
       await controls.start('show');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch recommendations');
+      setError(
+        err instanceof Error ? err.message : 'Failed to fetch recommendations',
+      );
     } finally {
       setIsLoading(false);
     }
@@ -384,11 +401,13 @@ export const RealTimeRecommendations: React.FC<RealTimeRecommendationsProps> = (
   useEffect(() => {
     if (enableWebSocket) {
       recommendationService.connectWebSocket(currentVideoId);
-      
-      const unsubscribe = recommendationService.subscribe((newRecommendations) => {
-        setRecommendations(newRecommendations.slice(0, maxRecommendations));
-        setLastUpdated(new Date());
-      });
+
+      const unsubscribe = recommendationService.subscribe(
+        (newRecommendations) => {
+          setRecommendations(newRecommendations.slice(0, maxRecommendations));
+          setLastUpdated(new Date());
+        },
+      );
 
       return () => {
         unsubscribe();
@@ -408,13 +427,16 @@ export const RealTimeRecommendations: React.FC<RealTimeRecommendationsProps> = (
   }, [fetchRecommendations, enableWebSocket, refreshInterval]);
 
   // Handle video selection
-  const handleVideoSelect = useCallback((videoId: string) => {
-    onVideoSelect(videoId);
-  }, [onVideoSelect]);
+  const handleVideoSelect = useCallback(
+    (videoId: string) => {
+      onVideoSelect(videoId);
+    },
+    [onVideoSelect],
+  );
 
   if (error) {
     return (
-      <div className={cn("p-6 text-center", className)}>
+      <div className={cn('p-6 text-center', className)}>
         <div className="text-red-600 dark:text-red-400 mb-2">
           <Sparkles className="w-8 h-8 mx-auto mb-2 opacity-50" />
         </div>
@@ -430,7 +452,7 @@ export const RealTimeRecommendations: React.FC<RealTimeRecommendationsProps> = (
   }
 
   return (
-    <div ref={containerRef} className={cn("w-full", className)}>
+    <div ref={containerRef} className={cn('w-full', className)}>
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
@@ -439,7 +461,7 @@ export const RealTimeRecommendations: React.FC<RealTimeRecommendationsProps> = (
             Recommended for You
           </h2>
         </div>
-        
+
         {lastUpdated && (
           <div className="text-xs text-gray-500 dark:text-gray-400">
             Updated {lastUpdated.toLocaleTimeString()}

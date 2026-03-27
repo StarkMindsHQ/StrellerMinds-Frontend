@@ -10,26 +10,42 @@ import {
 interface CourseProgressContextType {
   state: CourseProgressState;
   completeLesson: (lessonId: string) => void;
-  updateLessonProgress: (lessonId: string, watchedSeconds: number, totalSeconds: number) => void;
+  updateLessonProgress: (
+    lessonId: string,
+    watchedSeconds: number,
+    totalSeconds: number,
+  ) => void;
   setCurrentLesson: (lessonId: string) => void;
   resetProgress: () => void;
 }
 
-const CourseProgressContext = createContext<CourseProgressContextType | undefined>(undefined);
+const CourseProgressContext = createContext<
+  CourseProgressContextType | undefined
+>(undefined);
 
 type Action =
   | { type: 'COMPLETE_LESSON'; payload: string }
-  | { type: 'UPDATE_LESSON_PROGRESS'; payload: { lessonId: string; watchedSeconds: number; totalSeconds: number } }
+  | {
+      type: 'UPDATE_LESSON_PROGRESS';
+      payload: {
+        lessonId: string;
+        watchedSeconds: number;
+        totalSeconds: number;
+      };
+    }
   | { type: 'SET_CURRENT_LESSON'; payload: string }
   | { type: 'RESET_PROGRESS' }
   | { type: 'LOAD_PROGRESS'; payload: CourseProgressState };
 
-function courseProgressReducer(state: CourseProgressState, action: Action): CourseProgressState {
+function courseProgressReducer(
+  state: CourseProgressState,
+  action: Action,
+): CourseProgressState {
   switch (action.type) {
     case 'COMPLETE_LESSON': {
       const lessonId = action.payload;
       const newCompletedLessons = [...state.completedLessons];
-      
+
       if (!newCompletedLessons.includes(lessonId)) {
         newCompletedLessons.push(lessonId);
       }
@@ -112,7 +128,10 @@ interface CourseProgressProviderProps {
   courseId: string;
 }
 
-export function CourseProgressProvider({ children, courseId }: CourseProgressProviderProps) {
+export function CourseProgressProvider({
+  children,
+  courseId,
+}: CourseProgressProviderProps) {
   const initialState: CourseProgressState = {
     courseId,
     currentLessonId: 'lesson-1',
@@ -202,10 +221,14 @@ export function CourseProgressProvider({ children, courseId }: CourseProgressPro
     dispatch({ type: 'COMPLETE_LESSON', payload: lessonId });
   };
 
-  const updateLessonProgress = (lessonId: string, watchedSeconds: number, totalSeconds: number) => {
-    dispatch({ 
-      type: 'UPDATE_LESSON_PROGRESS', 
-      payload: { lessonId, watchedSeconds, totalSeconds } 
+  const updateLessonProgress = (
+    lessonId: string,
+    watchedSeconds: number,
+    totalSeconds: number,
+  ) => {
+    dispatch({
+      type: 'UPDATE_LESSON_PROGRESS',
+      payload: { lessonId, watchedSeconds, totalSeconds },
     });
   };
 
@@ -235,7 +258,9 @@ export function CourseProgressProvider({ children, courseId }: CourseProgressPro
 export function useCourseProgress() {
   const context = useContext(CourseProgressContext);
   if (context === undefined) {
-    throw new Error('useCourseProgress must be used within a CourseProgressProvider');
+    throw new Error(
+      'useCourseProgress must be used within a CourseProgressProvider',
+    );
   }
   return context;
 }

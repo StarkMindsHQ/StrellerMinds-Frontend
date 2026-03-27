@@ -32,7 +32,7 @@ const mockVideos: Video[] = [
 describe('DynamicVideoGrid', () => {
   it('renders video cards', () => {
     render(<DynamicVideoGrid videos={mockVideos} />);
-    
+
     expect(screen.getByText('Test Video 1')).toBeInTheDocument();
     expect(screen.getByText('Test Video 2')).toBeInTheDocument();
   });
@@ -40,10 +40,7 @@ describe('DynamicVideoGrid', () => {
   it('calls onVideoSelect when card is clicked', () => {
     const handleSelect = vi.fn();
     render(
-      <DynamicVideoGrid
-        videos={mockVideos}
-        onVideoSelect={handleSelect}
-      />
+      <DynamicVideoGrid videos={mockVideos} onVideoSelect={handleSelect} />,
     );
 
     const firstCard = screen.getByText('Test Video 1').closest('div');
@@ -55,20 +52,20 @@ describe('DynamicVideoGrid', () => {
 
   it('shows loading skeleton when loading prop is true', () => {
     render(<DynamicVideoGrid videos={[]} loading={true} />);
-    
+
     const skeletons = document.querySelectorAll('.animate-pulse');
     expect(skeletons.length).toBeGreaterThan(0);
   });
 
   it('shows empty state when no videos', () => {
     render(<DynamicVideoGrid videos={[]} />);
-    
+
     expect(screen.getByText('No videos available')).toBeInTheDocument();
   });
 
   it('displays video metadata correctly', () => {
     render(<DynamicVideoGrid videos={mockVideos} />);
-    
+
     expect(screen.getByText('Instructor 1')).toBeInTheDocument();
     expect(screen.getByText('Beginner')).toBeInTheDocument();
     expect(screen.getByText('100')).toBeInTheDocument();
@@ -76,7 +73,7 @@ describe('DynamicVideoGrid', () => {
 
   it('formats duration correctly', () => {
     render(<DynamicVideoGrid videos={mockVideos} />);
-    
+
     // 1800 seconds = 30 minutes
     expect(screen.getByText('30m')).toBeInTheDocument();
     // 3600 seconds = 1 hour
@@ -90,10 +87,7 @@ describe('DynamicVideoGrid', () => {
     };
 
     const { container } = render(
-      <DynamicVideoGrid
-        videos={mockVideos}
-        gridConfig={customConfig}
-      />
+      <DynamicVideoGrid videos={mockVideos} gridConfig={customConfig} />,
     );
 
     const grid = container.querySelector('.grid');
@@ -102,10 +96,7 @@ describe('DynamicVideoGrid', () => {
 
   it('disables virtual scroll for small lists', () => {
     const { container } = render(
-      <DynamicVideoGrid
-        videos={mockVideos}
-        enableVirtualScroll={false}
-      />
+      <DynamicVideoGrid videos={mockVideos} enableVirtualScroll={false} />,
     );
 
     // Should not have scroll container

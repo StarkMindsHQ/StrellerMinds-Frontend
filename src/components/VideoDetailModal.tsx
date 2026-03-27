@@ -2,15 +2,15 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  X, 
-  Clock, 
-  Users, 
-  Star, 
-  Play, 
-  Heart, 
-  Share2, 
-  Download, 
+import {
+  X,
+  Clock,
+  Users,
+  Star,
+  Play,
+  Heart,
+  Share2,
+  Download,
   ThumbsUp,
   MessageCircle,
   Calendar,
@@ -18,9 +18,9 @@ import {
   Award,
   BookOpen,
   Loader2,
-  User
+  User,
 } from 'lucide-react';
-import { 
+import {
   Dialog,
   DialogContent,
   DialogHeader,
@@ -97,41 +97,41 @@ interface VideoLikeState {
 
 // Animation variants
 const modalVariants = {
-  hidden: { 
+  hidden: {
     opacity: 0,
     scale: 0.9,
     y: 20,
   },
-  visible: { 
+  visible: {
     opacity: 1,
     scale: 1,
     y: 0,
     transition: {
-      type: "spring",
+      type: 'spring',
       stiffness: 300,
       damping: 30,
       mass: 0.8,
-    }
+    },
   },
-  exit: { 
+  exit: {
     opacity: 0,
     scale: 0.9,
     y: 20,
     transition: {
       duration: 0.2,
-    }
+    },
   },
 };
 
 const contentVariants = {
   hidden: { opacity: 0, y: 10 },
-  visible: { 
-    opacity: 1, 
+  visible: {
+    opacity: 1,
     y: 0,
     transition: {
       staggerChildren: 0.1,
       delayChildren: 0.1,
-    }
+    },
   },
 };
 
@@ -197,7 +197,7 @@ const CommentItem: React.FC<{ comment: VideoComment }> = ({ comment }) => {
 
   const handleLike = () => {
     setIsLiked(!isLiked);
-    setLikesCount(prev => isLiked ? prev - 1 : prev + 1);
+    setLikesCount((prev) => (isLiked ? prev - 1 : prev + 1));
   };
 
   const formatTimestamp = (timestamp: string) => {
@@ -215,11 +215,14 @@ const CommentItem: React.FC<{ comment: VideoComment }> = ({ comment }) => {
   };
 
   return (
-    <motion.div variants={itemVariants} className="flex gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+    <motion.div
+      variants={itemVariants}
+      className="flex gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+    >
       <div className="flex-shrink-0">
         {comment.userAvatar ? (
-          <img 
-            src={comment.userAvatar} 
+          <img
+            src={comment.userAvatar}
             alt={comment.userName}
             className="w-10 h-10 rounded-full object-cover"
           />
@@ -229,7 +232,7 @@ const CommentItem: React.FC<{ comment: VideoComment }> = ({ comment }) => {
           </div>
         )}
       </div>
-      
+
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-1">
           <span className="font-medium text-sm text-gray-900 dark:text-gray-100">
@@ -239,25 +242,25 @@ const CommentItem: React.FC<{ comment: VideoComment }> = ({ comment }) => {
             {formatTimestamp(comment.timestamp)}
           </span>
         </div>
-        
+
         <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
           {comment.content}
         </p>
-        
+
         <div className="flex items-center gap-4">
           <button
             onClick={handleLike}
             className={cn(
-              "flex items-center gap-1 text-xs transition-colors",
-              isLiked 
-                ? "text-red-600 dark:text-red-400" 
-                : "text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400"
+              'flex items-center gap-1 text-xs transition-colors',
+              isLiked
+                ? 'text-red-600 dark:text-red-400'
+                : 'text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400',
             )}
           >
-            <ThumbsUp className={cn("w-4 h-4", isLiked && "fill-current")} />
+            <ThumbsUp className={cn('w-4 h-4', isLiked && 'fill-current')} />
             <span>{likesCount}</span>
           </button>
-          
+
           <button className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
             <MessageCircle className="w-4 h-4" />
             <span>Reply</span>
@@ -272,27 +275,28 @@ const CommentItem: React.FC<{ comment: VideoComment }> = ({ comment }) => {
 class VideoDetailService {
   async fetchVideoDetails(videoId: string): Promise<VideoDetail> {
     // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 800));
-    
+    await new Promise((resolve) => setTimeout(resolve, 800));
+
     // Mock data
     const mockVideo: VideoDetail = {
       id: videoId,
-      title: "Advanced React Patterns and Performance Optimization",
-      description: "Dive deep into advanced React patterns that will take your development skills to the next level. This comprehensive course covers everything from custom hooks and context optimization to advanced state management patterns and performance tuning techniques. Learn how to build scalable, maintainable React applications that perform flawlessly even with complex requirements. We'll explore real-world scenarios and best practices used by top tech companies, including code splitting, lazy loading, memoization strategies, and much more. By the end of this course, you'll have the confidence and skills to tackle any React challenge that comes your way.",
+      title: 'Advanced React Patterns and Performance Optimization',
+      description:
+        "Dive deep into advanced React patterns that will take your development skills to the next level. This comprehensive course covers everything from custom hooks and context optimization to advanced state management patterns and performance tuning techniques. Learn how to build scalable, maintainable React applications that perform flawlessly even with complex requirements. We'll explore real-world scenarios and best practices used by top tech companies, including code splitting, lazy loading, memoization strategies, and much more. By the end of this course, you'll have the confidence and skills to tackle any React challenge that comes your way.",
       duration: 3600,
       thumbnailUrl: undefined,
       instructor: {
-        id: "instructor-1",
-        name: "Dr. Sarah Chen",
+        id: 'instructor-1',
+        name: 'Dr. Sarah Chen',
         avatar: undefined,
-        bio: "Senior React Engineer with 10+ years of experience",
+        bio: 'Senior React Engineer with 10+ years of experience',
         subscribers: 125000,
       },
-      category: "Web Development",
-      level: "Advanced",
-      tags: ["React", "JavaScript", "Performance", "Hooks", "State Management"],
-      createdAt: "2024-01-15T10:00:00Z",
-      updatedAt: "2024-01-20T15:30:00Z",
+      category: 'Web Development',
+      level: 'Advanced',
+      tags: ['React', 'JavaScript', 'Performance', 'Hooks', 'State Management'],
+      createdAt: '2024-01-15T10:00:00Z',
+      updatedAt: '2024-01-20T15:30:00Z',
       isLive: false,
       stats: {
         views: 45230,
@@ -305,28 +309,31 @@ class VideoDetailService {
       },
       comments: [
         {
-          id: "comment-1",
-          userId: "user-1",
-          userName: "Alex Johnson",
-          content: "This is exactly what I was looking for! The explanations are clear and the examples are practical. Thank you for creating such high-quality content.",
+          id: 'comment-1',
+          userId: 'user-1',
+          userName: 'Alex Johnson',
+          content:
+            'This is exactly what I was looking for! The explanations are clear and the examples are practical. Thank you for creating such high-quality content.',
           timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
           likes: 24,
           isLiked: false,
         },
         {
-          id: "comment-2",
-          userId: "user-2",
-          userName: "Maria Garcia",
-          content: "The section on custom hooks was particularly helpful. I've already started implementing these patterns in my current project and seeing great results.",
+          id: 'comment-2',
+          userId: 'user-2',
+          userName: 'Maria Garcia',
+          content:
+            "The section on custom hooks was particularly helpful. I've already started implementing these patterns in my current project and seeing great results.",
           timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
           likes: 18,
           isLiked: true,
         },
         {
-          id: "comment-3",
-          userId: "user-3",
-          userName: "David Kim",
-          content: "Would love to see a follow-up video covering React Server Components and how they integrate with these patterns. Keep up the great work!",
+          id: 'comment-3',
+          userId: 'user-3',
+          userName: 'David Kim',
+          content:
+            'Would love to see a follow-up video covering React Server Components and how they integrate with these patterns. Keep up the great work!',
           timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
           likes: 12,
           isLiked: false,
@@ -343,12 +350,12 @@ class VideoDetailService {
   }
 
   async likeVideo(videoId: string): Promise<void> {
-    await new Promise(resolve => setTimeout(resolve, 300));
+    await new Promise((resolve) => setTimeout(resolve, 300));
     // API call to like video
   }
 
   async shareVideo(videoId: string): Promise<string> {
-    await new Promise(resolve => setTimeout(resolve, 300));
+    await new Promise((resolve) => setTimeout(resolve, 300));
     return `https://strellerminds.com/videos/${videoId}`;
   }
 }
@@ -412,7 +419,9 @@ export const VideoDetailModal: React.FC<VideoDetailModalProps> = ({
         likesCount: details.stats.likes,
       });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load video details');
+      setError(
+        err instanceof Error ? err.message : 'Failed to load video details',
+      );
     } finally {
       setIsLoading(false);
     }
@@ -420,7 +429,7 @@ export const VideoDetailModal: React.FC<VideoDetailModalProps> = ({
 
   const handleLike = async () => {
     if (!videoDetail) return;
-    
+
     try {
       await applyLikeUpdate((currentState) => ({
         isLiked: !currentState.isLiked,
@@ -433,7 +442,7 @@ export const VideoDetailModal: React.FC<VideoDetailModalProps> = ({
 
   const handleShare = async () => {
     if (!videoDetail) return;
-    
+
     try {
       const shareUrl = await videoDetailService.shareVideo(videoDetail.id);
       if (navigator.share) {
@@ -454,7 +463,7 @@ export const VideoDetailModal: React.FC<VideoDetailModalProps> = ({
   const formatDuration = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
-    
+
     if (hours > 0) {
       return `${hours}h ${minutes}m`;
     }
@@ -485,10 +494,9 @@ export const VideoDetailModal: React.FC<VideoDetailModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className={cn(
-        "max-w-4xl max-h-[90vh] overflow-hidden",
-        className
-      )}>
+      <DialogContent
+        className={cn('max-w-4xl max-h-[90vh] overflow-hidden', className)}
+      >
         <motion.div
           variants={modalVariants}
           initial="hidden"
@@ -528,7 +536,9 @@ export const VideoDetailModal: React.FC<VideoDetailModalProps> = ({
                   <div className="text-red-600 dark:text-red-400 mb-4">
                     <X className="w-8 h-8 mx-auto" />
                   </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{error}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                    {error}
+                  </p>
                   <Button onClick={fetchVideoDetails} variant="outline">
                     Try Again
                   </Button>
@@ -538,10 +548,12 @@ export const VideoDetailModal: React.FC<VideoDetailModalProps> = ({
                   {/* Video Info */}
                   <motion.div variants={itemVariants} className="space-y-4">
                     <div className="flex items-center gap-4 flex-wrap">
-                      <span className={cn(
-                        "text-xs font-semibold px-2 py-1 rounded-full",
-                        getLevelColor(videoDetail.level)
-                      )}>
+                      <span
+                        className={cn(
+                          'text-xs font-semibold px-2 py-1 rounded-full',
+                          getLevelColor(videoDetail.level),
+                        )}
+                      >
                         {videoDetail.level}
                       </span>
                       <div className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400">
@@ -550,7 +562,9 @@ export const VideoDetailModal: React.FC<VideoDetailModalProps> = ({
                       </div>
                       <div className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400">
                         <Calendar className="w-4 h-4" />
-                        <span>{new Date(videoDetail.createdAt).toLocaleDateString()}</span>
+                        <span>
+                          {new Date(videoDetail.createdAt).toLocaleDateString()}
+                        </span>
                       </div>
                       {videoDetail.isLive && (
                         <div className="flex items-center gap-1 bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs font-semibold">
@@ -584,9 +598,11 @@ export const VideoDetailModal: React.FC<VideoDetailModalProps> = ({
                           <div className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                             {formatNumber(videoDetail.stats.views)}
                           </div>
-                          <div className="text-xs text-gray-500 dark:text-gray-400">Views</div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400">
+                            Views
+                          </div>
                         </div>
-                        
+
                         <div className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                           <div className="flex items-center justify-center gap-1 text-gray-600 dark:text-gray-400 mb-1">
                             <ThumbsUp className="w-4 h-4" />
@@ -594,9 +610,11 @@ export const VideoDetailModal: React.FC<VideoDetailModalProps> = ({
                           <div className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                             {formatNumber(optimisticLikeState.likesCount)}
                           </div>
-                          <div className="text-xs text-gray-500 dark:text-gray-400">Likes</div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400">
+                            Likes
+                          </div>
                         </div>
-                        
+
                         <div className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                           <div className="flex items-center justify-center gap-1 text-gray-600 dark:text-gray-400 mb-1">
                             <MessageCircle className="w-4 h-4" />
@@ -604,9 +622,11 @@ export const VideoDetailModal: React.FC<VideoDetailModalProps> = ({
                           <div className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                             {formatNumber(videoDetail.stats.comments)}
                           </div>
-                          <div className="text-xs text-gray-500 dark:text-gray-400">Comments</div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400">
+                            Comments
+                          </div>
                         </div>
-                        
+
                         <div className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                           <div className="flex items-center justify-center gap-1 text-gray-600 dark:text-gray-400 mb-1">
                             <Award className="w-4 h-4" />
@@ -614,7 +634,9 @@ export const VideoDetailModal: React.FC<VideoDetailModalProps> = ({
                           <div className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                             {videoDetail.stats.completionRate}%
                           </div>
-                          <div className="text-xs text-gray-500 dark:text-gray-400">Completion</div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400">
+                            Completion
+                          </div>
                         </div>
                       </div>
                     </motion.div>
@@ -624,27 +646,28 @@ export const VideoDetailModal: React.FC<VideoDetailModalProps> = ({
                   <motion.div variants={itemVariants} className="flex gap-2">
                     <Button
                       onClick={handleLike}
-                      variant={optimisticLikeState.isLiked ? "default" : "outline"}
+                      variant={optimisticLikeState.isLiked ? 'default' : 'outline'}
                       size="sm"
                       disabled={isLikePending}
                       className={cn(
-                        "flex items-center gap-2",
-                        optimisticLikeState.isLiked && "bg-red-600 hover:bg-red-700 text-white"
+                        'flex items-center gap-2',
+                        optimisticLikeState.isLiked &&
+                          'bg-red-600 hover:bg-red-700 text-white',
                       )}
                     >
                       <Heart
                         className={cn(
-                          "w-4 h-4",
-                          optimisticLikeState.isLiked && "fill-current"
+                          'w-4 h-4',
+                          optimisticLikeState.isLiked && 'fill-current',
                         )}
                       />
                       {isLikePending
                         ? 'Saving...'
                         : optimisticLikeState.isLiked
-                          ? "Liked"
-                          : "Like"}
+                          ? 'Liked'
+                          : 'Like'}
                     </Button>
-                    
+
                     <Button
                       onClick={handleShare}
                       variant="outline"
@@ -654,7 +677,7 @@ export const VideoDetailModal: React.FC<VideoDetailModalProps> = ({
                       <Share2 className="w-4 h-4" />
                       Share
                     </Button>
-                    
+
                     <Button
                       variant="outline"
                       size="sm"
@@ -688,8 +711,8 @@ export const VideoDetailModal: React.FC<VideoDetailModalProps> = ({
                     <div className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
                       <div className="flex-shrink-0">
                         {videoDetail.instructor.avatar ? (
-                          <img 
-                            src={videoDetail.instructor.avatar} 
+                          <img
+                            src={videoDetail.instructor.avatar}
                             alt={videoDetail.instructor.name}
                             className="w-12 h-12 rounded-full object-cover"
                           />
@@ -709,7 +732,10 @@ export const VideoDetailModal: React.FC<VideoDetailModalProps> = ({
                         {videoDetail.instructor.subscribers && (
                           <div className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
                             <Users className="w-4 h-4" />
-                            <span>{formatNumber(videoDetail.instructor.subscribers)} subscribers</span>
+                            <span>
+                              {formatNumber(videoDetail.instructor.subscribers)}{' '}
+                              subscribers
+                            </span>
                           </div>
                         )}
                       </div>
@@ -727,7 +753,7 @@ export const VideoDetailModal: React.FC<VideoDetailModalProps> = ({
                           Add Comment
                         </Button>
                       </div>
-                      
+
                       <VisibilityAwareRenderer
                         placeholder={
                           <div className="space-y-3">

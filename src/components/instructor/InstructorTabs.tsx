@@ -11,7 +11,11 @@ import { cn } from '@/lib/utils';
 
 type InstructorTabValue = 'courses' | 'students' | 'applications' | 'analytics';
 
-const tabs: { value: InstructorTabValue; label: string; icon: React.ElementType }[] = [
+const tabs: {
+  value: InstructorTabValue;
+  label: string;
+  icon: React.ElementType;
+}[] = [
   { value: 'courses', label: 'Courses', icon: BookOpen },
   { value: 'students', label: 'Students', icon: Users },
   { value: 'applications', label: 'Applications', icon: FileCheck },
@@ -35,7 +39,7 @@ export default function InstructorTabs() {
             className={cn(
               'flex items-center gap-2 px-4 py-2.5 rounded-lg transition-all duration-300 border border-transparent',
               'data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#5c0f49] data-[state=active]:to-purple-600',
-              'data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:border-[#ffcc00]/50'
+              'data-[state=active]:text-white data-[state=active]:shadow-md data-[state=active]:border-[#ffcc00]/50',
             )}
           >
             <Icon className="size-4 shrink-0" />

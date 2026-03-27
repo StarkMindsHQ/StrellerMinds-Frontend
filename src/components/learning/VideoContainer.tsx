@@ -1,7 +1,15 @@
 'use client';
 
 import React, { useRef, useEffect, useState } from 'react';
-import { Play, Pause, Volume2, VolumeX, Maximize, RotateCcw, SkipForward } from 'lucide-react';
+import {
+  Play,
+  Pause,
+  Volume2,
+  VolumeX,
+  Maximize,
+  RotateCcw,
+  SkipForward,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
@@ -14,7 +22,11 @@ interface VideoContainerProps {
   onVideoComplete?: () => void;
 }
 
-export function VideoContainer({ videoUrl, lessonId, onVideoComplete }: VideoContainerProps) {
+export function VideoContainer({
+  videoUrl,
+  lessonId,
+  onVideoComplete,
+}: VideoContainerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const { updateLessonProgress } = useCourseProgress();
@@ -39,10 +51,10 @@ export function VideoContainer({ videoUrl, lessonId, onVideoComplete }: VideoCon
 
     const handleTimeUpdate = () => {
       setCurrentTime(video.currentTime);
-      
+
       // Update progress in context
       updateLessonProgress(lessonId, video.currentTime, video.duration);
-      
+
       // Check if video is completed (90% watched)
       if (video.currentTime >= video.duration * 0.9 && onVideoComplete) {
         onVideoComplete();
@@ -143,7 +155,7 @@ export function VideoContainer({ videoUrl, lessonId, onVideoComplete }: VideoCon
     const rates = [0.5, 0.75, 1, 1.25, 1.5, 2];
     const currentIndex = rates.indexOf(playbackRate);
     const nextRate = rates[(currentIndex + 1) % rates.length];
-    
+
     video.playbackRate = nextRate;
     setPlaybackRate(nextRate);
   };
@@ -167,7 +179,7 @@ export function VideoContainer({ videoUrl, lessonId, onVideoComplete }: VideoCon
   };
 
   return (
-    <div 
+    <div
       ref={containerRef}
       className="relative bg-black rounded-lg overflow-hidden group aspect-video"
       onMouseMove={handleMouseMove}
@@ -188,10 +200,12 @@ export function VideoContainer({ videoUrl, lessonId, onVideoComplete }: VideoCon
       )}
 
       {/* Controls Overlay */}
-      <div className={cn(
-        'absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent transition-opacity duration-300',
-        showControls ? 'opacity-100' : 'opacity-0'
-      )}>
+      <div
+        className={cn(
+          'absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent transition-opacity duration-300',
+          showControls ? 'opacity-100' : 'opacity-0',
+        )}
+      >
         {/* Center Play Button */}
         {!isPlaying && (
           <div className="absolute inset-0 flex items-center justify-center">
@@ -208,13 +222,16 @@ export function VideoContainer({ videoUrl, lessonId, onVideoComplete }: VideoCon
         {/* Bottom Controls */}
         <div className="absolute bottom-0 left-0 right-0 p-4 space-y-2">
           {/* Progress Bar */}
-          <div className="group/progress cursor-pointer" onClick={(e) => {
-            const rect = e.currentTarget.getBoundingClientRect();
-            const percentage = ((e.clientX - rect.left) / rect.width) * 100;
-            handleSeek(percentage);
-          }}>
-            <Progress 
-              value={progressPercentage} 
+          <div
+            className="group/progress cursor-pointer"
+            onClick={(e) => {
+              const rect = e.currentTarget.getBoundingClientRect();
+              const percentage = ((e.clientX - rect.left) / rect.width) * 100;
+              handleSeek(percentage);
+            }}
+          >
+            <Progress
+              value={progressPercentage}
               className="h-1 group-hover/progress:h-2 transition-all duration-200"
             />
           </div>
@@ -228,7 +245,11 @@ export function VideoContainer({ videoUrl, lessonId, onVideoComplete }: VideoCon
                 className="text-white hover:bg-white/20"
                 onClick={togglePlay}
               >
-                {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                {isPlaying ? (
+                  <Pause className="w-4 h-4" />
+                ) : (
+                  <Play className="w-4 h-4" />
+                )}
               </Button>
 
               <Button
@@ -256,16 +277,22 @@ export function VideoContainer({ videoUrl, lessonId, onVideoComplete }: VideoCon
                   className="text-white hover:bg-white/20"
                   onClick={toggleMute}
                 >
-                  {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                  {isMuted ? (
+                    <VolumeX className="w-4 h-4" />
+                  ) : (
+                    <Volume2 className="w-4 h-4" />
+                  )}
                 </Button>
-                
+
                 <input
                   type="range"
                   min="0"
                   max="1"
                   step="0.1"
                   value={isMuted ? 0 : volume}
-                  onChange={(e) => handleVolumeChange(parseFloat(e.target.value))}
+                  onChange={(e) =>
+                    handleVolumeChange(parseFloat(e.target.value))
+                  }
                   className="w-16 h-1 bg-white/30 rounded-lg appearance-none cursor-pointer"
                 />
               </div>

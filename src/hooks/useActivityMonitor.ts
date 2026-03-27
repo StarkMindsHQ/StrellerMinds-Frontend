@@ -3,7 +3,14 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 
 export interface ActivityEvent {
-  type: 'tab_switch' | 'video_pause' | 'video_play' | 'inactivity' | 'mouse_move' | 'key_press' | 'scroll';
+  type:
+    | 'tab_switch'
+    | 'video_pause'
+    | 'video_play'
+    | 'inactivity'
+    | 'mouse_move'
+    | 'key_press'
+    | 'scroll';
   timestamp: number;
   metadata?: Record<string, any>;
 }
@@ -59,29 +66,35 @@ export const useActivityMonitor = (options: UseActivityMonitorOptions = {}) => {
   const metricsUpdateTimer = useRef<NodeJS.Timeout | null>(null);
 
   // Log activity event
-  const logActivity = useCallback((event: ActivityEvent) => {
-    if (!enableTracking) return;
+  const logActivity = useCallback(
+    (event: ActivityEvent) => {
+      if (!enableTracking) return;
 
-    activityLog.current.push(event);
-    lastActivityTime.current = Date.now();
+      activityLog.current.push(event);
+      lastActivityTime.current = Date.now();
 
-    // Keep only last 1000 events to prevent memory issues
-    if (activityLog.current.length > 1000) {
-      activityLog.current = activityLog.current.slice(-1000);
-    }
-  }, [enableTracking]);
+      // Keep only last 1000 events to prevent memory issues
+      if (activityLog.current.length > 1000) {
+        activityLog.current = activityLog.current.slice(-1000);
+      }
+    },
+    [enableTracking],
+  );
 
   // Calculate engagement score
   const calculateEngagementScore = useCallback((): number => {
     const now = Date.now();
     const totalDuration = now - startTime.current;
-    
+
     if (totalDuration === 0) return 100;
 
     const activeRatio = metrics.activeTime / totalDuration;
     const tabSwitchPenalty = Math.min(metrics.tabSwitches * 2, 30);
     const pausePenalty = Math.min(metrics.videoPauses * 1.5, 20);
-    const inactivityPenalty = Math.min((metrics.inactiveTime / totalDuration) * 50, 40);
+    const inactivityPenalty = Math.min(
+      (metrics.inactiveTime / totalDuration) * 50,
+      40,
+    );
 
     let score = 100;
     score -= tabSwitchPenalty;
@@ -98,7 +111,7 @@ export const useActivityMonitor = (options: UseActivityMonitorOptions = {}) => {
     const totalTime = now - startTime.current;
     const engagementScore = calculateEngagementScore();
 
-    setMetrics(prev => {
+    setMetrics((prev) => {
       const updated = {
         ...prev,
         totalTime,
@@ -107,7 +120,7 @@ export const useActivityMonitor = (options: UseActivityMonitorOptions = {}) => {
       };
 
       onActivityChange?.(updated);
-      
+
       if (prev.engagementScore !== engagementScore) {
         onEngagementScoreChange?.(engagementScore);
       }
@@ -128,7 +141,7 @@ export const useActivityMonitor = (options: UseActivityMonitorOptions = {}) => {
 
     if (wasInactive) {
       const inactiveDuration = now - lastActivityTime.current;
-      setMetrics(prev => ({
+      setMetrics((prev) => ({
         ...prev,
         inactiveTime: prev.inactiveTime + inactiveDuration,
       }));
@@ -183,7 +196,7 @@ export const useActivityMonitor = (options: UseActivityMonitorOptions = {}) => {
     setIsTabVisible(isVisible);
 
     if (!isVisible) {
-      setMetrics(prev => ({
+      setMetrics((prev) => ({
         ...prev,
         tabSwitches: prev.tabSwitches + 1,
       }));
@@ -204,7 +217,7 @@ export const useActivityMonitor = (options: UseActivityMonitorOptions = {}) => {
 
   // Track video pause
   const trackVideoPause = useCallback(() => {
-    setMetrics(prev => ({
+    setMetrics((prev) => ({
       ...prev,
       videoPauses: prev.videoPauses + 1,
     }));
@@ -227,7 +240,7 @@ export const useActivityMonitor = (options: UseActivityMonitorOptions = {}) => {
   const getActivitySummary = useCallback(() => {
     const now = Date.now();
     const totalDuration = now - startTime.current;
-    
+
     return {
       ...metrics,
       totalTime: totalDuration,
@@ -244,7 +257,7 @@ export const useActivityMonitor = (options: UseActivityMonitorOptions = {}) => {
     startTime.current = Date.now();
     lastActivityTime.current = Date.now();
     activityLog.current = [];
-    
+
     setMetrics({
       totalTime: 0,
       activeTime: 0,

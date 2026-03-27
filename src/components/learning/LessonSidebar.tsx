@@ -18,10 +18,14 @@ export function LessonSidebar({ course, onLessonSelect }: LessonSidebarProps) {
 
   const isLessonLocked = (lessonOrder: number) => {
     if (lessonOrder === 1) return false; // First lesson is always unlocked
-    
+
     // Check if previous lesson is completed
-    const previousLesson = course.lessons.find(l => l.order === lessonOrder - 1);
-    return previousLesson ? !state.completedLessons.includes(previousLesson.id) : true;
+    const previousLesson = course.lessons.find(
+      (l) => l.order === lessonOrder - 1,
+    );
+    return previousLesson
+      ? !state.completedLessons.includes(previousLesson.id)
+      : true;
   };
 
   const completedCount = state.completedLessons.length;
@@ -43,7 +47,7 @@ export function LessonSidebar({ course, onLessonSelect }: LessonSidebarProps) {
         <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
           {course.description}
         </p>
-        
+
         {/* Progress Section */}
         <div className="space-y-3">
           <div className="flex items-center justify-between text-sm">
@@ -104,7 +108,13 @@ export function LessonSidebar({ course, onLessonSelect }: LessonSidebarProps) {
           <div className="flex justify-between">
             <span>Total Duration:</span>
             <span className="font-medium">
-              {Math.round(course.lessons.reduce((acc, lesson) => acc + lesson.duration, 0) / 60)} min
+              {Math.round(
+                course.lessons.reduce(
+                  (acc, lesson) => acc + lesson.duration,
+                  0,
+                ) / 60,
+              )}{' '}
+              min
             </span>
           </div>
         </div>

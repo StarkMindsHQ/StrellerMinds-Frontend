@@ -16,13 +16,13 @@ A dynamic video recommendations component for the StrellerMinds platform that pr
 
 ```typescript
 interface RealTimeRecommendationsProps {
-  currentVideoId: string;           // ID of currently playing video
-  onVideoSelect: (videoId: string) => void;  // Callback for video selection
-  maxRecommendations?: number;     // Max recommendations to show (default: 3)
-  refreshInterval?: number;         // Auto-refresh interval in ms (default: 30000)
-  className?: string;               // Additional CSS classes
-  showRelevanceScore?: boolean;     // Show relevance scores (default: false)
-  enableWebSocket?: boolean;        // Enable WebSocket updates (default: false)
+  currentVideoId: string; // ID of currently playing video
+  onVideoSelect: (videoId: string) => void; // Callback for video selection
+  maxRecommendations?: number; // Max recommendations to show (default: 3)
+  refreshInterval?: number; // Auto-refresh interval in ms (default: 30000)
+  className?: string; // Additional CSS classes
+  showRelevanceScore?: boolean; // Show relevance scores (default: false)
+  enableWebSocket?: boolean; // Enable WebSocket updates (default: false)
 }
 ```
 
@@ -65,23 +65,27 @@ function VideoPage({ videoId }: { videoId: string }) {
 ## Component Structure
 
 ### Main Component
+
 - `RealTimeRecommendations`: Main container with state management
 - Handles API/WebSocket connections
 - Manages loading states and error handling
 - Coordinates animations and updates
 
 ### Sub-Components
+
 - `RecommendationCard`: Individual recommendation card with hover effects
 - `RecommendationService`: Service class for API/WebSocket communication
 
 ## Animation Features
 
 ### CLS-Friendly Design
+
 - Fixed aspect ratios prevent layout shifts
 - Skeleton loaders maintain space during loading
 - Smooth transitions with proper exit animations
 
 ### Animation Variants
+
 - **Staggered Entry**: Cards appear with sequential delays
 - **Hover Effects**: Scale and overlay animations on interaction
 - **Exit Animations**: Smooth removal when recommendations change
@@ -89,6 +93,7 @@ function VideoPage({ videoId }: { videoId: string }) {
 ## API Integration
 
 ### Mock Service
+
 The component includes a mock `RecommendationService` that simulates API calls:
 
 ```typescript
@@ -111,6 +116,7 @@ interface VideoRecommendation {
 ```
 
 ### WebSocket Integration
+
 When `enableWebSocket` is true, the component connects to a WebSocket endpoint:
 
 ```typescript
@@ -124,12 +130,14 @@ When `enableWebSocket` is true, the component connects to a WebSocket endpoint:
 ## Styling
 
 ### Design System Integration
+
 - Uses Tailwind CSS for styling
 - Integrates with existing design tokens
 - Supports dark/light themes
 - Responsive breakpoints for mobile/tablet/desktop
 
 ### Customization
+
 The component accepts a `className` prop for additional styling:
 
 ```tsx
@@ -142,12 +150,14 @@ The component accepts a `className` prop for additional styling:
 ## Performance Considerations
 
 ### Optimization Features
+
 - **Debounced Updates**: Prevents excessive re-renders
 - **Memoized Callbacks**: Reduces unnecessary function recreations
 - **Lazy Loading**: Images load on demand
 - **Efficient Animations**: GPU-accelerated transforms
 
 ### Bundle Size
+
 - Tree-shakable imports from Framer Motion
 - Minimal external dependencies
 - Optimized SVG icons from Lucide React
@@ -155,6 +165,7 @@ The component accepts a `className` prop for additional styling:
 ## Error Handling
 
 ### Graceful Degradation
+
 - Shows retry buttons on API failures
 - Maintains UI state during errors
 - Automatic WebSocket reconnection
@@ -163,6 +174,7 @@ The component accepts a `className` prop for additional styling:
 ## Accessibility
 
 ### Features
+
 - Semantic HTML structure
 - Keyboard navigation support
 - Screen reader friendly
@@ -172,18 +184,20 @@ The component accepts a `className` prop for additional styling:
 ## Testing
 
 ### Example Component
+
 Use the `RealTimeRecommendationsExample` component to test and demonstrate features:
 
 ```tsx
 import RealTimeRecommendationsExample from '@/components/RealTimeRecommendationsExample';
 
 // In your page or storybook
-<RealTimeRecommendationsExample />
+<RealTimeRecommendationsExample />;
 ```
 
 ## Future Enhancements
 
 ### Planned Features
+
 - [ ] Infinite scroll pagination
 - [ ] Category filtering
 - [ ] User preference learning
@@ -192,6 +206,7 @@ import RealTimeRecommendationsExample from '@/components/RealTimeRecommendations
 - [ ] Social proof indicators
 
 ### API Improvements
+
 - [ ] GraphQL support
 - [ ] Caching strategies
 - [ ] Offline support
@@ -200,6 +215,7 @@ import RealTimeRecommendationsExample from '@/components/RealTimeRecommendations
 ## Dependencies
 
 ### Required
+
 - React 18+
 - TypeScript
 - Tailwind CSS
@@ -207,6 +223,7 @@ import RealTimeRecommendationsExample from '@/components/RealTimeRecommendations
 - Lucide React
 
 ### Optional
+
 - Socket.io-client (for WebSocket support)
 
 ## Browser Support

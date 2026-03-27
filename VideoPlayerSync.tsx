@@ -41,7 +41,9 @@ const VideoPlayerSync: React.FC<VideoPlayerSyncProps> = ({
 
       // Restore progress (Per video)
       if (saveProgress) {
-        const savedTime = localStorage.getItem(`starkminds-video-progress-${videoId}`);
+        const savedTime = localStorage.getItem(
+          `starkminds-video-progress-${videoId}`,
+        );
         if (savedTime) {
           const time = parseFloat(savedTime);
           if (time < video.duration) {
@@ -51,7 +53,8 @@ const VideoPlayerSync: React.FC<VideoPlayerSyncProps> = ({
       }
 
       // Restore play state or respect autoPlay
-      const wasPlaying = localStorage.getItem(`starkminds-video-playing-${videoId}`) === 'true';
+      const wasPlaying =
+        localStorage.getItem(`starkminds-video-playing-${videoId}`) === 'true';
       if (wasPlaying || autoPlay) {
         video.play().catch((err) => {
           console.debug('Autoplay prevented:', err);
@@ -69,7 +72,10 @@ const VideoPlayerSync: React.FC<VideoPlayerSyncProps> = ({
   const onTimeUpdate = (e: React.SyntheticEvent<HTMLVideoElement>) => {
     if (saveProgress) {
       const video = e.currentTarget;
-      localStorage.setItem(`starkminds-video-progress-${videoId}`, video.currentTime.toString());
+      localStorage.setItem(
+        `starkminds-video-progress-${videoId}`,
+        video.currentTime.toString(),
+      );
     }
     props.onTimeUpdate?.(e);
   };
@@ -92,7 +98,12 @@ const VideoPlayerSync: React.FC<VideoPlayerSyncProps> = ({
   };
 
   return (
-    <div className={cn("relative overflow-hidden rounded-xl bg-black shadow-lg", className)}>
+    <div
+      className={cn(
+        'relative overflow-hidden rounded-xl bg-black shadow-lg',
+        className,
+      )}
+    >
       <AnimatePresence mode="wait">
         <motion.div
           key={src}

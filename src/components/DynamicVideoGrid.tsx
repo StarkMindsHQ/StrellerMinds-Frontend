@@ -1,6 +1,12 @@
 'use client';
 
-import React, { useState, useCallback, useRef, useEffect, useMemo } from 'react';
+import React, {
+  useState,
+  useCallback,
+  useRef,
+  useEffect,
+  useMemo,
+} from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Clock, Users, Star, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -59,26 +65,26 @@ const DEFAULT_CONFIG: Required<GridConfig> = {
 
 // Animation variants
 const cardVariants = {
-  hidden: { 
-    opacity: 0, 
+  hidden: {
+    opacity: 0,
     y: 30,
-    scale: 0.9 
+    scale: 0.9,
   },
-  visible: (custom: number) => ({ 
-    opacity: 1, 
+  visible: (custom: number) => ({
+    opacity: 1,
     y: 0,
     scale: 1,
     transition: {
-      type: "spring",
+      type: 'spring',
       stiffness: 100,
       damping: 15,
       delay: custom * 0.05,
-    }
+    },
   }),
-  exit: { 
-    opacity: 0, 
+  exit: {
+    opacity: 0,
     scale: 0.9,
-    transition: { duration: 0.2 }
+    transition: { duration: 0.2 },
   },
 };
 
@@ -95,7 +101,7 @@ const VideoCard: React.FC<{
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
     const remainingMinutes = minutes % 60;
-    
+
     if (hours > 0) {
       return `${hours}h ${remainingMinutes}m`;
     }
@@ -126,9 +132,9 @@ const VideoCard: React.FC<{
       initial="hidden"
       animate="visible"
       exit="exit"
-      whileHover={{ 
+      whileHover={{
         scale: 1.03,
-        transition: { duration: 0.2 }
+        transition: { duration: 0.2 },
       }}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
@@ -147,8 +153,8 @@ const VideoCard: React.FC<{
                 loading="lazy"
                 onLoad={() => setImageLoaded(true)}
                 className={cn(
-                  "w-full h-full object-cover transition-opacity duration-300",
-                  imageLoaded ? "opacity-100" : "opacity-0"
+                  'w-full h-full object-cover transition-opacity duration-300',
+                  imageLoaded ? 'opacity-100' : 'opacity-0',
                 )}
               />
               {!imageLoaded && (
@@ -184,10 +190,12 @@ const VideoCard: React.FC<{
 
           {/* Level Badge */}
           <div className="absolute top-2 right-2 z-10">
-            <span className={cn(
-              'text-xs font-semibold px-2 py-1 rounded-full',
-              getLevelColor(video.level)
-            )}>
+            <span
+              className={cn(
+                'text-xs font-semibold px-2 py-1 rounded-full',
+                getLevelColor(video.level),
+              )}
+            >
               {video.level}
             </span>
           </div>
@@ -234,7 +242,9 @@ const VideoCard: React.FC<{
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-1">
                 <Users className="w-3.5 h-3.5" />
-                <span className="font-medium">{video.studentsCount.toLocaleString()}</span>
+                <span className="font-medium">
+                  {video.studentsCount.toLocaleString()}
+                </span>
               </div>
               <div className="flex items-center gap-1">
                 <Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" />
@@ -242,7 +252,9 @@ const VideoCard: React.FC<{
               </div>
             </div>
             {video.views !== undefined && (
-              <span className="font-medium">{video.views.toLocaleString()} views</span>
+              <span className="font-medium">
+                {video.views.toLocaleString()} views
+              </span>
             )}
           </div>
         </div>
@@ -258,7 +270,7 @@ const useVirtualScroll = (
   itemCount: number,
   rowHeight: number,
   columns: number,
-  overscan: number = 3
+  overscan: number = 3,
 ) => {
   const [scrollTop, setScrollTop] = useState(0);
   const [containerHeight, setContainerHeight] = useState(0);
@@ -269,7 +281,7 @@ const useVirtualScroll = (
   const startRow = Math.max(0, Math.floor(scrollTop / rowHeight) - overscan);
   const endRow = Math.min(
     totalRows,
-    Math.ceil((scrollTop + containerHeight) / rowHeight) + overscan
+    Math.ceil((scrollTop + containerHeight) / rowHeight) + overscan,
   );
 
   const visibleRange = {
@@ -327,22 +339,21 @@ export const DynamicVideoGrid: React.FC<DynamicVideoGridProps> = ({
   const config = { ...DEFAULT_CONFIG, ...gridConfig };
   const currentColumns = useResponsiveColumns(config.columns);
 
-  const {
-    totalHeight,
-    visibleRange,
-    setScrollTop,
-    setContainerHeight,
-  } = useVirtualScroll(
-    videos.length,
-    config.rowHeight,
-    currentColumns,
-    config.overscan
-  );
+  const { totalHeight, visibleRange, setScrollTop, setContainerHeight } =
+    useVirtualScroll(
+      videos.length,
+      config.rowHeight,
+      currentColumns,
+      config.overscan,
+    );
 
   // Handle scroll
-  const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
-    setScrollTop(e.currentTarget.scrollTop);
-  }, [setScrollTop]);
+  const handleScroll = useCallback(
+    (e: React.UIEvent<HTMLDivElement>) => {
+      setScrollTop(e.currentTarget.scrollTop);
+    },
+    [setScrollTop],
+  );
 
   // Update container height
   useEffect(() => {
@@ -369,9 +380,10 @@ export const DynamicVideoGrid: React.FC<DynamicVideoGridProps> = ({
   }, [videos, visibleRange, enableVirtualScroll]);
 
   // Calculate offset for virtual scrolling
-  const offsetY = enableVirtualScroll && videos.length >= 20
-    ? Math.floor(visibleRange.start / currentColumns) * config.rowHeight
-    : 0;
+  const offsetY =
+    enableVirtualScroll && videos.length >= 20
+      ? Math.floor(visibleRange.start / currentColumns) * config.rowHeight
+      : 0;
 
   // Generate grid classes
   const gridClasses = cn(
@@ -381,13 +393,16 @@ export const DynamicVideoGrid: React.FC<DynamicVideoGridProps> = ({
     `sm:grid-cols-${config.columns.sm || 2}`,
     `md:grid-cols-${config.columns.md || 3}`,
     `lg:grid-cols-${config.columns.lg || 4}`,
-    `xl:grid-cols-${config.columns.xl || 5}`
+    `xl:grid-cols-${config.columns.xl || 5}`,
   );
 
   // Loading skeleton
   if (loading) {
     return (
-      <div className={cn(gridClasses, className)} style={{ gap: `${config.gap}px` }}>
+      <div
+        className={cn(gridClasses, className)}
+        style={{ gap: `${config.gap}px` }}
+      >
         {Array.from({ length: 12 }).map((_, index) => (
           <div
             key={`skeleton-${index}`}
@@ -402,7 +417,7 @@ export const DynamicVideoGrid: React.FC<DynamicVideoGridProps> = ({
   // Empty state
   if (videos.length === 0) {
     return (
-      <div className={cn("text-center py-16", className)}>
+      <div className={cn('text-center py-16', className)}>
         <div className="text-gray-300 dark:text-gray-600 mb-4">
           <Play className="w-16 h-16 mx-auto" />
         </div>
@@ -440,7 +455,7 @@ export const DynamicVideoGrid: React.FC<DynamicVideoGridProps> = ({
       <div
         ref={containerRef}
         onScroll={handleScroll}
-        className={cn("overflow-y-auto", className)}
+        className={cn('overflow-y-auto', className)}
         style={{ height: '100vh', maxHeight: '100vh' }}
       >
         <div style={{ height: `${totalHeight}px`, position: 'relative' }}>

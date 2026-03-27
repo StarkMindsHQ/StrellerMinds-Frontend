@@ -4,106 +4,116 @@ export const mockCourses: Record<string, Course> = {
   'blockchain-fundamentals': {
     id: 'blockchain-fundamentals',
     title: 'Fundamentals of Blockchain Technology',
-    description: 'Learn the core concepts of blockchain, distributed ledgers, and consensus mechanisms.',
+    description:
+      'Learn the core concepts of blockchain, distributed ledgers, and consensus mechanisms.',
     instructor: 'Dr. Sarah Chen',
     totalLessons: 8,
     completedLessons: 0,
     progress: 0,
     lessons: [
-    {
-      id: 'lesson-1',
-      title: 'Introduction to Blockchain',
-      description: 'Understanding the basics of blockchain technology and its revolutionary impact.',
-      videoUrl: '/videos/demo-video.mp4',
-      duration: 480, // 8 minutes
-      order: 1,
-      type: 'video',
-      isCompleted: false,
-      isLocked: false,
-    },
-    {
-      id: 'lesson-2',
-      title: 'Cryptographic Foundations',
-      description: 'Explore the cryptographic principles that secure blockchain networks.',
-      videoUrl: '/videos/demo-video.mp4',
-      duration: 600, // 10 minutes
-      order: 2,
-      type: 'video',
-      isCompleted: false,
-      isLocked: true,
-    },
-    {
-      id: 'lesson-3',
-      title: 'Distributed Ledger Technology',
-      description: 'Deep dive into how distributed ledgers work and their advantages.',
-      videoUrl: '/videos/demo-video.mp4',
-      duration: 720, // 12 minutes
-      order: 3,
-      type: 'video',
-      isCompleted: false,
-      isLocked: true,
-    },
-    {
-      id: 'lesson-4',
-      title: 'Consensus Mechanisms',
-      description: 'Learn about Proof of Work, Proof of Stake, and other consensus algorithms.',
-      videoUrl: '/videos/demo-video.mp4',
-      duration: 540, // 9 minutes
-      order: 4,
-      type: 'video',
-      isCompleted: false,
-      isLocked: true,
-    },
-    {
-      id: 'lesson-5',
-      title: 'Smart Contracts Basics',
-      description: 'Introduction to smart contracts and their role in blockchain ecosystems.',
-      videoUrl: '/videos/demo-video.mp4',
-      duration: 660, // 11 minutes
-      order: 5,
-      type: 'video',
-      isCompleted: false,
-      isLocked: true,
-    },
-    {
-      id: 'lesson-6',
-      title: 'Blockchain Networks',
-      description: 'Understanding public, private, and consortium blockchain networks.',
-      videoUrl: '/videos/demo-video.mp4',
-      duration: 480, // 8 minutes
-      order: 6,
-      type: 'video',
-      isCompleted: false,
-      isLocked: true,
-    },
-    {
-      id: 'lesson-7',
-      title: 'Security and Vulnerabilities',
-      description: 'Common security issues in blockchain and how to mitigate them.',
-      videoUrl: '/videos/demo-video.mp4',
-      duration: 600, // 10 minutes
-      order: 7,
-      type: 'video',
-      isCompleted: false,
-      isLocked: true,
-    },
-    {
-      id: 'lesson-8',
-      title: 'Future of Blockchain',
-      description: 'Exploring emerging trends and the future potential of blockchain technology.',
-      videoUrl: '/videos/demo-video.mp4',
-      duration: 540, // 9 minutes
-      order: 8,
-      type: 'video',
-      isCompleted: false,
-      isLocked: true,
-    },
-  ],
+      {
+        id: 'lesson-1',
+        title: 'Introduction to Blockchain',
+        description:
+          'Understanding the basics of blockchain technology and its revolutionary impact.',
+        videoUrl: '/videos/demo-video.mp4',
+        duration: 480, // 8 minutes
+        order: 1,
+        type: 'video',
+        isCompleted: false,
+        isLocked: false,
+      },
+      {
+        id: 'lesson-2',
+        title: 'Cryptographic Foundations',
+        description:
+          'Explore the cryptographic principles that secure blockchain networks.',
+        videoUrl: '/videos/demo-video.mp4',
+        duration: 600, // 10 minutes
+        order: 2,
+        type: 'video',
+        isCompleted: false,
+        isLocked: true,
+      },
+      {
+        id: 'lesson-3',
+        title: 'Distributed Ledger Technology',
+        description:
+          'Deep dive into how distributed ledgers work and their advantages.',
+        videoUrl: '/videos/demo-video.mp4',
+        duration: 720, // 12 minutes
+        order: 3,
+        type: 'video',
+        isCompleted: false,
+        isLocked: true,
+      },
+      {
+        id: 'lesson-4',
+        title: 'Consensus Mechanisms',
+        description:
+          'Learn about Proof of Work, Proof of Stake, and other consensus algorithms.',
+        videoUrl: '/videos/demo-video.mp4',
+        duration: 540, // 9 minutes
+        order: 4,
+        type: 'video',
+        isCompleted: false,
+        isLocked: true,
+      },
+      {
+        id: 'lesson-5',
+        title: 'Smart Contracts Basics',
+        description:
+          'Introduction to smart contracts and their role in blockchain ecosystems.',
+        videoUrl: '/videos/demo-video.mp4',
+        duration: 660, // 11 minutes
+        order: 5,
+        type: 'video',
+        isCompleted: false,
+        isLocked: true,
+      },
+      {
+        id: 'lesson-6',
+        title: 'Blockchain Networks',
+        description:
+          'Understanding public, private, and consortium blockchain networks.',
+        videoUrl: '/videos/demo-video.mp4',
+        duration: 480, // 8 minutes
+        order: 6,
+        type: 'video',
+        isCompleted: false,
+        isLocked: true,
+      },
+      {
+        id: 'lesson-7',
+        title: 'Security and Vulnerabilities',
+        description:
+          'Common security issues in blockchain and how to mitigate them.',
+        videoUrl: '/videos/demo-video.mp4',
+        duration: 600, // 10 minutes
+        order: 7,
+        type: 'video',
+        isCompleted: false,
+        isLocked: true,
+      },
+      {
+        id: 'lesson-8',
+        title: 'Future of Blockchain',
+        description:
+          'Exploring emerging trends and the future potential of blockchain technology.',
+        videoUrl: '/videos/demo-video.mp4',
+        duration: 540, // 9 minutes
+        order: 8,
+        type: 'video',
+        isCompleted: false,
+        isLocked: true,
+      },
+    ],
   },
   'stellar-smart-contracts': {
     id: 'stellar-smart-contracts',
     title: 'Stellar Smart Contracts Development',
-    description: 'Master smart contract development on the Stellar blockchain using Soroban.',
+    description:
+      'Master smart contract development on the Stellar blockchain using Soroban.',
     instructor: 'Miguel Rodriguez',
     totalLessons: 6,
     completedLessons: 0,
@@ -180,7 +190,8 @@ export const mockCourses: Record<string, Course> = {
   'defi-fundamentals': {
     id: 'defi-fundamentals',
     title: 'DeFi Fundamentals on Stellar',
-    description: 'Understand decentralized finance concepts and build DeFi applications on Stellar.',
+    description:
+      'Understand decentralized finance concepts and build DeFi applications on Stellar.',
     instructor: 'Aisha Patel',
     totalLessons: 7,
     completedLessons: 0,
@@ -200,7 +211,8 @@ export const mockCourses: Record<string, Course> = {
       {
         id: 'lesson-2',
         title: 'Liquidity Pools',
-        description: 'Understanding liquidity pools and automated market makers.',
+        description:
+          'Understanding liquidity pools and automated market makers.',
         videoUrl: '/videos/demo-video.mp4',
         duration: 480,
         order: 2,
@@ -268,7 +280,8 @@ export const mockCourses: Record<string, Course> = {
   'nft-development': {
     id: 'nft-development',
     title: 'NFT Development & Marketplace',
-    description: 'Learn to create, mint, and trade NFTs on blockchain platforms.',
+    description:
+      'Learn to create, mint, and trade NFTs on blockchain platforms.',
     instructor: 'Dr. Sarah Chen',
     totalLessons: 5,
     completedLessons: 0,
