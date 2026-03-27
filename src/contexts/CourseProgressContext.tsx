@@ -2,6 +2,10 @@
 
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 import { CourseProgressState } from '@/types/lesson';
+import {
+  CROSS_TAB_SYNC_EVENT_NAME,
+  type CrossTabSyncMessage,
+} from '@/components/CrossTabSyncComponent';
 
 interface CourseProgressContextType {
   state: CourseProgressState;
@@ -136,6 +140,63 @@ export function CourseProgressProvider({ children, courseId }: CourseProgressPro
   useEffect(() => {
     localStorage.setItem(`course-progress-${courseId}`, JSON.stringify(state));
   }, [state, courseId]);
+
+  useEffect(() => {
+    const storageKey = `course-progress-${courseId}`;
+
+    const loadSyncedProgress = (rawProgress: string | null) => {
+      if (!rawProgress) {
+        dispatch({ type: 'RESET_PROGRESS' });
+        return;
+      }
+
+      try {
+        const parsedProgress = JSON.parse(rawProgress) as CourseProgressState;
+        dispatch({ type: 'LOAD_PROGRESS', payload: parsedProgress });
+      } catch (error) {
+        console.error('Failed to sync course progress across tabs:', error);
+      }
+    };
+
+    const handleStorage = (event: StorageEvent) => {
+      if (event.key !== storageKey) {
+        return;
+      }
+
+      loadSyncedProgress(event.newValue);
+    };
+
+    const handleCrossTabSync = (event: Event) => {
+      const customEvent = event as CustomEvent<CrossTabSyncMessage<string>>;
+      const detail = customEvent.detail;
+
+      if (!detail || detail.key !== storageKey) {
+        return;
+      }
+
+      if (detail.action === 'set' && typeof detail.value === 'string') {
+        loadSyncedProgress(detail.value);
+      }
+
+      if (detail.action === 'remove') {
+        loadSyncedProgress(null);
+      }
+    };
+
+    window.addEventListener('storage', handleStorage);
+    window.addEventListener(
+      CROSS_TAB_SYNC_EVENT_NAME,
+      handleCrossTabSync as EventListener,
+    );
+
+    return () => {
+      window.removeEventListener('storage', handleStorage);
+      window.removeEventListener(
+        CROSS_TAB_SYNC_EVENT_NAME,
+        handleCrossTabSync as EventListener,
+      );
+    };
+  }, [courseId]);
 
   const completeLesson = (lessonId: string) => {
     dispatch({ type: 'COMPLETE_LESSON', payload: lessonId });

@@ -30,6 +30,8 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
+import VisibilityAwareRenderer from '@/components/VisibilityAwareRenderer';
+import { useOptimisticAction } from '@/components/OptimisticActionHandler';
 
 // Types
 export interface VideoComment {
@@ -86,6 +88,11 @@ export interface VideoDetailModalProps {
   showRelatedVideos?: boolean;
   enableComments?: boolean;
   enableStats?: boolean;
+}
+
+interface VideoLikeState {
+  isLiked: boolean;
+  likesCount: number;
 }
 
 // Animation variants
@@ -361,8 +368,30 @@ export const VideoDetailModal: React.FC<VideoDetailModalProps> = ({
   const [videoDetail, setVideoDetail] = useState<VideoDetail | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isLiked, setIsLiked] = useState(false);
-  const [likesCount, setLikesCount] = useState(0);
+  const [likeState, setLikeState] = useState<VideoLikeState>({
+    isLiked: false,
+    likesCount: 0,
+  });
+  const {
+    value: optimisticLikeState,
+    error: likeError,
+    isPending: isLikePending,
+    applyOptimisticUpdate: applyLikeUpdate,
+    clearError: clearLikeError,
+  } = useOptimisticAction<VideoLikeState, void>({
+    value: likeState,
+    action: async () => {
+      if (!videoDetail) {
+        throw new Error('Video details are not available yet.');
+      }
+
+      await videoDetailService.likeVideo(videoDetail.id);
+    },
+    onChange: setLikeState,
+    onError: (nextError) => {
+      console.error('Failed to like video:', nextError);
+    },
+  });
 
   // Fetch video details when modal opens
   useEffect(() => {
@@ -375,9 +404,13 @@ export const VideoDetailModal: React.FC<VideoDetailModalProps> = ({
     try {
       setIsLoading(true);
       setError(null);
+      clearLikeError();
       const details = await videoDetailService.fetchVideoDetails(videoId);
       setVideoDetail(details);
-      setLikesCount(details.stats.likes);
+      setLikeState({
+        isLiked: false,
+        likesCount: details.stats.likes,
+      });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load video details');
     } finally {
@@ -389,12 +422,13 @@ export const VideoDetailModal: React.FC<VideoDetailModalProps> = ({
     if (!videoDetail) return;
     
     try {
-      await videoDetailService.likeVideo(videoDetail.id);
-      setIsLiked(!isLiked);
-      setLikesCount(prev => isLiked ? prev - 1 : prev + 1);
-    } catch (err) {
-      console.error('Failed to like video:', err);
-    }
+      await applyLikeUpdate((currentState) => ({
+        isLiked: !currentState.isLiked,
+        likesCount: currentState.isLiked
+          ? Math.max(currentState.likesCount - 1, 0)
+          : currentState.likesCount + 1,
+      }));
+    } catch (_err) {}
   };
 
   const handleShare = async () => {
@@ -558,7 +592,7 @@ export const VideoDetailModal: React.FC<VideoDetailModalProps> = ({
                             <ThumbsUp className="w-4 h-4" />
                           </div>
                           <div className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                            {formatNumber(likesCount)}
+                            {formatNumber(optimisticLikeState.likesCount)}
                           </div>
                           <div className="text-xs text-gray-500 dark:text-gray-400">Likes</div>
                         </div>
@@ -590,15 +624,25 @@ export const VideoDetailModal: React.FC<VideoDetailModalProps> = ({
                   <motion.div variants={itemVariants} className="flex gap-2">
                     <Button
                       onClick={handleLike}
-                      variant={isLiked ? "default" : "outline"}
+                      variant={optimisticLikeState.isLiked ? "default" : "outline"}
                       size="sm"
+                      disabled={isLikePending}
                       className={cn(
                         "flex items-center gap-2",
-                        isLiked && "bg-red-600 hover:bg-red-700 text-white"
+                        optimisticLikeState.isLiked && "bg-red-600 hover:bg-red-700 text-white"
                       )}
                     >
-                      <Heart className={cn("w-4 h-4", isLiked && "fill-current")} />
-                      {isLiked ? "Liked" : "Like"}
+                      <Heart
+                        className={cn(
+                          "w-4 h-4",
+                          optimisticLikeState.isLiked && "fill-current"
+                        )}
+                      />
+                      {isLikePending
+                        ? 'Saving...'
+                        : optimisticLikeState.isLiked
+                          ? "Liked"
+                          : "Like"}
                     </Button>
                     
                     <Button
@@ -620,6 +664,15 @@ export const VideoDetailModal: React.FC<VideoDetailModalProps> = ({
                       Download
                     </Button>
                   </motion.div>
+
+                  {likeError && (
+                    <motion.p
+                      variants={itemVariants}
+                      className="text-sm text-red-600 dark:text-red-400"
+                    >
+                      {likeError.message}
+                    </motion.p>
+                  )}
 
                   {/* Description */}
                   <motion.div variants={itemVariants} className="space-y-3">
@@ -675,13 +728,34 @@ export const VideoDetailModal: React.FC<VideoDetailModalProps> = ({
                         </Button>
                       </div>
                       
-                      <div className="space-y-2">
-                        <AnimatePresence mode="popLayout">
-                          {videoDetail.comments.map((comment) => (
-                            <CommentItem key={comment.id} comment={comment} />
-                          ))}
-                        </AnimatePresence>
-                      </div>
+                      <VisibilityAwareRenderer
+                        placeholder={
+                          <div className="space-y-3">
+                            {Array.from({ length: 3 }).map((_, index) => (
+                              <div
+                                key={index}
+                                className="flex gap-3 rounded-lg border border-dashed border-gray-200 p-3 dark:border-gray-700"
+                              >
+                                <Skeleton className="h-10 w-10 rounded-full" />
+                                <div className="flex-1 space-y-2">
+                                  <Skeleton className="h-4 w-24" />
+                                  <Skeleton className="h-4 w-full" />
+                                  <Skeleton className="h-4 w-3/4" />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        }
+                        rootMargin="120px 0px"
+                      >
+                        <div className="space-y-2">
+                          <AnimatePresence mode="popLayout">
+                            {videoDetail.comments.map((comment) => (
+                              <CommentItem key={comment.id} comment={comment} />
+                            ))}
+                          </AnimatePresence>
+                        </div>
+                      </VisibilityAwareRenderer>
                     </motion.div>
                   )}
                 </>
