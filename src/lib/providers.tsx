@@ -7,6 +7,8 @@ import { Web3Provider } from './web3/providers';
 
 import { TourProvider } from '@/contexts/TourContext';
 import { TourOverlay } from '@/components/ui/TourOverlay';
+import { AuthProvider } from '@/contexts/AuthContext';
+import { SessionTimeoutManager } from '@/components/auth/SessionTimeoutManager';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [client] = useState(
@@ -24,12 +26,15 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={client}>
       <Web3Provider>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <TourProvider>
-            {children}
-            <TourOverlay />
-          </TourProvider>
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <TourProvider>
+              {children}
+              <TourOverlay />
+              <SessionTimeoutManager />
+            </TourProvider>
+          </ThemeProvider>
+        </AuthProvider>
       </Web3Provider>
     </QueryClientProvider>
   );
