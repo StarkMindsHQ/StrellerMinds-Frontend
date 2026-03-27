@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider } from 'next-themes';
 import { useState } from 'react';
 import { Web3Provider } from './web3/providers';
+import { DynamicThemeLoader } from '@/components/DynamicThemeLoader';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [client] = useState(
@@ -22,7 +23,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <QueryClientProvider client={client}>
       <Web3Provider>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          {children}
+          <DynamicThemeLoader>{children}</DynamicThemeLoader>
         </ThemeProvider>
       </Web3Provider>
     </QueryClientProvider>
