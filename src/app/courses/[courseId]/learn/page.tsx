@@ -3,10 +3,13 @@
 import React, { useState } from 'react';
 import { useParams } from 'next/navigation';
 import { CourseProgressProvider, useCourseProgress } from '@/contexts/CourseProgressContext';
-import { LessonSidebar } from '@/components/learning/LessonSidebar';
-import { MobileLessonNav } from '@/components/learning/MobileLessonNav';
-import { LessonContent } from '@/components/learning/LessonContent';
-import { CourseOverview } from '@/components/learning/CourseOverview';
+import { 
+  LessonSidebar, 
+  MobileLessonNav, 
+  LessonContent, 
+  CourseOverview,
+  DynamicCourseContentLoader 
+} from '@/components/learning';
 import { getCourseById } from '@/lib/mock-course-data';
 import { Course } from '@/types/lesson';
 import { Button } from '@/components/ui/button';
@@ -125,8 +128,10 @@ function LearningInterface({ course }: { course: Course }) {
               onStartLearning={handleStartLearning}
             />
           ) : currentLesson ? (
-            <LessonContent
-              lesson={currentLesson}
+            <DynamicCourseContentLoader
+              courseId={course.id}
+              lessonId={currentLesson.id}
+              nextLessonId={hasNext ? course.lessons[currentLessonIndex + 1].id : undefined}
               onComplete={handleLessonComplete}
               onNext={hasNext ? handleNextLesson : undefined}
               onPrevious={hasPrevious ? handlePreviousLesson : undefined}
