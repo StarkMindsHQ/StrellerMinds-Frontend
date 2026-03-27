@@ -73,7 +73,9 @@ const QuizResults: React.FC<QuizResultsProps> = ({
 
               {/* Status Text */}
               <div>
-                <p className={`text-4xl font-bold ${getScoreColor(result.percentage)}`}>
+                <p
+                  className={`text-4xl font-bold ${getScoreColor(result.percentage)}`}
+                >
                   {result.percentage}%
                 </p>
                 <p className="text-2xl font-bold text-gray-800 mt-2">
@@ -150,7 +152,10 @@ const QuizResults: React.FC<QuizResultsProps> = ({
                 <div>
                   <p className="text-sm text-gray-600">Accuracy</p>
                   <p className="text-xl font-bold text-gray-800">
-                    {Math.round((result.correctAnswers / result.totalQuestions) * 100)}%
+                    {Math.round(
+                      (result.correctAnswers / result.totalQuestions) * 100,
+                    )}
+                    %
                   </p>
                 </div>
               </div>
@@ -216,11 +221,15 @@ const QuizResults: React.FC<QuizResultsProps> = ({
                     {!questionResult.isCorrect && (
                       <div className="text-sm text-gray-700 space-y-1">
                         <p>
-                          <span className="font-semibold text-red-600">Your answer:</span>{' '}
+                          <span className="font-semibold text-red-600">
+                            Your answer:
+                          </span>{' '}
                           <span>Option {questionResult.selectedOptionId}</span>
                         </p>
                         <p>
-                          <span className="font-semibold text-green-600">Correct answer:</span>{' '}
+                          <span className="font-semibold text-green-600">
+                            Correct answer:
+                          </span>{' '}
                           <span>Option {questionResult.correctOptionId}</span>
                         </p>
                       </div>
@@ -244,10 +253,7 @@ const QuizResults: React.FC<QuizResultsProps> = ({
             </Button>
           )}
           {onExit && (
-            <Button
-              onClick={onExit}
-              variant="outline"
-            >
+            <Button onClick={onExit} variant="outline">
               Exit
             </Button>
           )}

@@ -113,9 +113,7 @@ export function ElectiveCardSkeleton({
         <div className="mt-auto">
           <div className="mb-3 flex items-baseline gap-2">
             <Skeleton className="h-7 w-16" />
-            {variant !== 'compact' && (
-              <Skeleton className="h-4 w-12" />
-            )}
+            {variant !== 'compact' && <Skeleton className="h-4 w-12" />}
           </div>
 
           <Skeleton

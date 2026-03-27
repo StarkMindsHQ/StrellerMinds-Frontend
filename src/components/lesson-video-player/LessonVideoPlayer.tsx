@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
-import { LessonVideoPlayerProps } from "./LessonVideoPlayer.types";
-import { saveProgress, getProgress } from "./videoPlayer.utils";
-import { VideoControls } from "./VideoControls";
+import React, { useEffect, useRef, useState } from 'react';
+import { LessonVideoPlayerProps } from './LessonVideoPlayer.types';
+import { saveProgress, getProgress } from './videoPlayer.utils';
+import { VideoControls } from './VideoControls';
 
 export const LessonVideoPlayer: React.FC<LessonVideoPlayerProps> = ({
   src,

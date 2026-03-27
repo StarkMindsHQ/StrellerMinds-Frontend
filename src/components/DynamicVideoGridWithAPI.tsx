@@ -24,49 +24,40 @@ interface DynamicVideoGridWithAPIProps {
   className?: string;
 }
 
-export const DynamicVideoGridWithAPI: React.FC<DynamicVideoGridWithAPIProps> = ({
-  apiEndpoint = '/api/videos',
-  filters = {},
-  gridConfig,
-  className,
-}) => {
+export const DynamicVideoGridWithAPI: React.FC<
+  DynamicVideoGridWithAPIProps
+> = ({ apiEndpoint = '/api/videos', filters = {}, gridConfig, className }) => {
   const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
   const [localFilters, setLocalFilters] = useState(filters);
 
   // Fetch videos from API
-  const {
-    data,
-    isLoading,
-    isError,
-    error,
-    refetch,
-    isFetching,
-  } = useQuery<VideoAPIResponse>({
-    queryKey: ['videos', localFilters],
-    queryFn: async () => {
-      const params = new URLSearchParams();
-      
-      if (localFilters.level) {
-        params.append('level', localFilters.level);
-      }
-      if (localFilters.instructor) {
-        params.append('instructor', localFilters.instructor);
-      }
-      if (localFilters.tags && localFilters.tags.length > 0) {
-        params.append('tags', localFilters.tags.join(','));
-      }
+  const { data, isLoading, isError, error, refetch, isFetching } =
+    useQuery<VideoAPIResponse>({
+      queryKey: ['videos', localFilters],
+      queryFn: async () => {
+        const params = new URLSearchParams();
 
-      const response = await fetch(`${apiEndpoint}?${params.toString()}`);
-      
-      if (!response.ok) {
-        throw new Error('Failed to fetch videos');
-      }
+        if (localFilters.level) {
+          params.append('level', localFilters.level);
+        }
+        if (localFilters.instructor) {
+          params.append('instructor', localFilters.instructor);
+        }
+        if (localFilters.tags && localFilters.tags.length > 0) {
+          params.append('tags', localFilters.tags.join(','));
+        }
 
-      return response.json();
-    },
-    staleTime: 1000 * 60 * 5, // 5 minutes
-    retry: 2,
-  });
+        const response = await fetch(`${apiEndpoint}?${params.toString()}`);
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch videos');
+        }
+
+        return response.json();
+      },
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      retry: 2,
+    });
 
   const handleVideoSelect = (video: Video) => {
     setSelectedVideo(video);
@@ -119,7 +110,9 @@ export const DynamicVideoGridWithAPI: React.FC<DynamicVideoGridWithAPIProps> = (
           disabled={isFetching}
           className="flex items-center gap-2 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors disabled:opacity-50"
         >
-          <RefreshCw className={`w-4 h-4 ${isFetching ? 'animate-spin' : ''}`} />
+          <RefreshCw
+            className={`w-4 h-4 ${isFetching ? 'animate-spin' : ''}`}
+          />
           Refresh
         </button>
       </div>

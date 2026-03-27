@@ -1,11 +1,6 @@
 'use client';
 
-import React, {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { CheckCircle2, CloudOff, Loader2, RefreshCw, Wifi } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Progress } from '@/components/ui/progress';
@@ -29,7 +24,13 @@ export interface CourseProgressState {
   lastSyncedAt?: Date;
 }
 
-type SyncStatus = 'idle' | 'saving' | 'saved' | 'offline' | 'error' | 'retrying';
+type SyncStatus =
+  | 'idle'
+  | 'saving'
+  | 'saved'
+  | 'offline'
+  | 'error'
+  | 'retrying';
 
 interface LiveCourseProgressSyncProps {
   initialProgress: CourseProgressState;
@@ -71,7 +72,8 @@ export function LiveCourseProgressSync({
   retryDelayMs = 4000,
   className,
 }: LiveCourseProgressSyncProps) {
-  const [progress, setProgress] = useState<CourseProgressState>(initialProgress);
+  const [progress, setProgress] =
+    useState<CourseProgressState>(initialProgress);
   const [syncStatus, setSyncStatus] = useState<SyncStatus>('idle');
   const [isOnline, setIsOnline] = useState(
     typeof navigator !== 'undefined' ? navigator.onLine : true,
@@ -134,10 +136,13 @@ export function LiveCourseProgressSync({
         setSyncStatus('retrying');
         pendingRef.current = true;
 
-        retryTimer.current = setTimeout(() => {
-          setSyncStatus('error');
-          triggerSave(latestProgressRef.current);
-        }, retryDelayMs * Math.min(nextRetry, 4));
+        retryTimer.current = setTimeout(
+          () => {
+            setSyncStatus('error');
+            triggerSave(latestProgressRef.current);
+          },
+          retryDelayMs * Math.min(nextRetry, 4),
+        );
       }
     },
     [isOnline, onSave, retryCount, retryDelayMs, syncStatus],
@@ -153,10 +158,13 @@ export function LiveCourseProgressSync({
     [debounceMs, triggerSave],
   );
 
-  useEffect(() => () => {
-    if (debounceTimer.current) clearTimeout(debounceTimer.current);
-    if (retryTimer.current) clearTimeout(retryTimer.current);
-  }, []);
+  useEffect(
+    () => () => {
+      if (debounceTimer.current) clearTimeout(debounceTimer.current);
+      if (retryTimer.current) clearTimeout(retryTimer.current);
+    },
+    [],
+  );
 
   // ── Toggle lesson complete
   const toggleLesson = (lessonId: string) => {
@@ -188,30 +196,66 @@ export function LiveCourseProgressSync({
 
   const overallPct = calcOverallProgress(progress.lessons);
 
-  const statusConfig: Record<SyncStatus, { icon: React.ReactNode; label: string; color: string }> = {
-    idle: { icon: <Wifi className="h-3.5 w-3.5" />, label: 'Live sync on', color: 'text-muted-foreground' },
-    saving: { icon: <Loader2 className="h-3.5 w-3.5 animate-spin" />, label: 'Saving…', color: 'text-sky-500' },
-    saved: { icon: <CheckCircle2 className="h-3.5 w-3.5" />, label: 'Saved', color: 'text-emerald-500' },
-    offline: { icon: <CloudOff className="h-3.5 w-3.5" />, label: 'Offline — will sync when back', color: 'text-amber-500' },
-    error: { icon: <RefreshCw className="h-3.5 w-3.5" />, label: 'Sync failed', color: 'text-destructive' },
-    retrying: { icon: <Loader2 className="h-3.5 w-3.5 animate-spin" />, label: `Retrying (${retryCount})…`, color: 'text-amber-500' },
+  const statusConfig: Record<
+    SyncStatus,
+    { icon: React.ReactNode; label: string; color: string }
+  > = {
+    idle: {
+      icon: <Wifi className="h-3.5 w-3.5" />,
+      label: 'Live sync on',
+      color: 'text-muted-foreground',
+    },
+    saving: {
+      icon: <Loader2 className="h-3.5 w-3.5 animate-spin" />,
+      label: 'Saving…',
+      color: 'text-sky-500',
+    },
+    saved: {
+      icon: <CheckCircle2 className="h-3.5 w-3.5" />,
+      label: 'Saved',
+      color: 'text-emerald-500',
+    },
+    offline: {
+      icon: <CloudOff className="h-3.5 w-3.5" />,
+      label: 'Offline — will sync when back',
+      color: 'text-amber-500',
+    },
+    error: {
+      icon: <RefreshCw className="h-3.5 w-3.5" />,
+      label: 'Sync failed',
+      color: 'text-destructive',
+    },
+    retrying: {
+      icon: <Loader2 className="h-3.5 w-3.5 animate-spin" />,
+      label: `Retrying (${retryCount})…`,
+      color: 'text-amber-500',
+    },
   };
 
   const status = statusConfig[syncStatus];
 
   return (
-    <div className={cn('rounded-xl border bg-card/90 p-5 shadow-sm', className)}>
+    <div
+      className={cn('rounded-xl border bg-card/90 p-5 shadow-sm', className)}
+    >
       {/* Header */}
       <div className="mb-4 flex flex-wrap items-start justify-between gap-2">
         <div>
-          <h3 className="font-semibold text-card-foreground">{progress.courseTitle}</h3>
+          <h3 className="font-semibold text-card-foreground">
+            {progress.courseTitle}
+          </h3>
           <p className="text-xs text-muted-foreground">
             {progress.lessons.filter((l) => l.completed).length} of{' '}
             {progress.lessons.length} lessons complete
           </p>
         </div>
 
-        <div className={cn('flex items-center gap-1.5 text-xs font-medium', status.color)}>
+        <div
+          className={cn(
+            'flex items-center gap-1.5 text-xs font-medium',
+            status.color,
+          )}
+        >
           {status.icon}
           <span>{status.label}</span>
         </div>
@@ -221,7 +265,9 @@ export function LiveCourseProgressSync({
       <div className="mb-5 space-y-1.5">
         <div className="flex items-center justify-between text-xs">
           <span className="text-muted-foreground">Overall progress</span>
-          <span className="font-semibold text-card-foreground">{overallPct}%</span>
+          <span className="font-semibold text-card-foreground">
+            {overallPct}%
+          </span>
         </div>
         <Progress value={overallPct} className="h-2" />
         {progress.lastSyncedAt && (
@@ -262,7 +308,13 @@ export function LiveCourseProgressSync({
               >
                 {lesson.completed && (
                   <svg className="h-2.5 w-2.5" viewBox="0 0 10 8" fill="none">
-                    <path d="M1 4l3 3 5-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                    <path
+                      d="M1 4l3 3 5-6"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
                   </svg>
                 )}
               </button>
@@ -272,7 +324,9 @@ export function LiveCourseProgressSync({
                 <p
                   className={cn(
                     'truncate text-sm font-medium',
-                    lesson.completed ? 'text-emerald-700 dark:text-emerald-300' : 'text-card-foreground',
+                    lesson.completed
+                      ? 'text-emerald-700 dark:text-emerald-300'
+                      : 'text-card-foreground',
                   )}
                 >
                   {lesson.title}
@@ -287,7 +341,8 @@ export function LiveCourseProgressSync({
                       />
                     </div>
                     <span className="shrink-0 text-[11px] text-muted-foreground">
-                      {formatDuration(lesson.watchedSeconds)} / {formatDuration(lesson.totalSeconds)}
+                      {formatDuration(lesson.watchedSeconds)} /{' '}
+                      {formatDuration(lesson.totalSeconds)}
                     </span>
                   </div>
                 )}
@@ -310,7 +365,9 @@ export function LiveCourseProgressSync({
       {/* Manual retry if error */}
       {syncStatus === 'error' && (
         <div className="mt-4 flex items-center justify-between rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-2.5">
-          <p className="text-xs text-destructive">Changes not saved — sync failed.</p>
+          <p className="text-xs text-destructive">
+            Changes not saved — sync failed.
+          </p>
           <Button
             size="sm"
             variant="outline"

@@ -13,7 +13,13 @@ interface LessonCardProps {
   onClick: () => void;
 }
 
-export function LessonCard({ lesson, isActive, isCompleted, isLocked, onClick }: LessonCardProps) {
+export function LessonCard({
+  lesson,
+  isActive,
+  isCompleted,
+  isLocked,
+  onClick,
+}: LessonCardProps) {
   const formatDuration = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -27,18 +33,23 @@ export function LessonCard({ lesson, isActive, isCompleted, isLocked, onClick }:
         'hover:shadow-md hover:border-primary/20',
         isActive && 'bg-primary/5 border-primary shadow-sm',
         isLocked && 'opacity-60 cursor-not-allowed',
-        !isLocked && 'hover:bg-accent/50'
+        !isLocked && 'hover:bg-accent/50',
       )}
       onClick={!isLocked ? onClick : undefined}
     >
       {/* Status Icon */}
-      <div className={cn(
-        'flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-colors',
-        isCompleted && 'bg-green-100 text-green-600',
-        isActive && !isCompleted && 'bg-primary/10 text-primary',
-        !isActive && !isCompleted && !isLocked && 'bg-muted text-muted-foreground',
-        isLocked && 'bg-muted text-muted-foreground'
-      )}>
+      <div
+        className={cn(
+          'flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-colors',
+          isCompleted && 'bg-green-100 text-green-600',
+          isActive && !isCompleted && 'bg-primary/10 text-primary',
+          !isActive &&
+            !isCompleted &&
+            !isLocked &&
+            'bg-muted text-muted-foreground',
+          isLocked && 'bg-muted text-muted-foreground',
+        )}
+      >
         {isCompleted ? (
           <CheckCircle className="w-5 h-5" />
         ) : isLocked ? (
@@ -51,11 +62,13 @@ export function LessonCard({ lesson, isActive, isCompleted, isLocked, onClick }:
       {/* Content */}
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between mb-1">
-          <h3 className={cn(
-            'font-medium text-sm truncate',
-            isActive && 'text-primary',
-            isLocked && 'text-muted-foreground'
-          )}>
+          <h3
+            className={cn(
+              'font-medium text-sm truncate',
+              isActive && 'text-primary',
+              isLocked && 'text-muted-foreground',
+            )}
+          >
             {lesson.title}
           </h3>
           <div className="flex items-center gap-1 text-xs text-muted-foreground">

@@ -5,7 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { MOCK_APPLICATIONS, type MockApplication } from '@/data/mockInstructorData';
+import {
+  MOCK_APPLICATIONS,
+  type MockApplication,
+} from '@/data/mockInstructorData';
 import { Search, Mail, Check, X, Clock } from 'lucide-react';
 import {
   Select,
@@ -26,7 +29,9 @@ const statusConfig: Record<
 
 export default function ApplicationReview() {
   const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState<MockApplication['status'] | 'all'>('all');
+  const [statusFilter, setStatusFilter] = useState<
+    MockApplication['status'] | 'all'
+  >('all');
 
   const filtered = useMemo(() => {
     return MOCK_APPLICATIONS.filter((a) => {
@@ -52,7 +57,12 @@ export default function ApplicationReview() {
             className="pl-9"
           />
         </div>
-        <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as MockApplication['status'] | 'all')}>
+        <Select
+          value={statusFilter}
+          onValueChange={(v) =>
+            setStatusFilter(v as MockApplication['status'] | 'all')
+          }
+        >
           <SelectTrigger className="w-full sm:w-[160px]">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
@@ -70,11 +80,19 @@ export default function ApplicationReview() {
           const config = statusConfig[app.status];
           const Icon = config.icon;
           return (
-            <Card key={app.id} className="overflow-hidden border-[#5c0f49]/15 hover:shadow-md transition-shadow">
+            <Card
+              key={app.id}
+              className="overflow-hidden border-[#5c0f49]/15 hover:shadow-md transition-shadow"
+            >
               <CardHeader className="pb-2">
                 <div className="flex flex-wrap items-start justify-between gap-2">
-                  <CardTitle className="text-base">{app.applicantName}</CardTitle>
-                  <Badge variant={config.variant} className="flex items-center gap-1 w-fit">
+                  <CardTitle className="text-base">
+                    {app.applicantName}
+                  </CardTitle>
+                  <Badge
+                    variant={config.variant}
+                    className="flex items-center gap-1 w-fit"
+                  >
                     <Icon className="size-3" />
                     {app.status}
                   </Badge>
@@ -83,18 +101,28 @@ export default function ApplicationReview() {
                   <Mail className="size-3.5" />
                   {app.email}
                 </p>
-                <p className="text-sm font-medium text-[#5c0f49]">{app.course}</p>
-                <p className="text-xs text-muted-foreground">Submitted {app.submittedAt}</p>
+                <p className="text-sm font-medium text-[#5c0f49]">
+                  {app.course}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Submitted {app.submittedAt}
+                </p>
               </CardHeader>
               {app.message && (
                 <CardContent className="pt-0">
-                  <p className="text-sm text-muted-foreground border-t pt-3">{app.message}</p>
+                  <p className="text-sm text-muted-foreground border-t pt-3">
+                    {app.message}
+                  </p>
                 </CardContent>
               )}
               {app.status === 'pending' && (
                 <CardContent className="pt-0 flex gap-2">
-                  <Button size="sm" variant="secondary">Approve</Button>
-                  <Button size="sm" variant="outline">Reject</Button>
+                  <Button size="sm" variant="secondary">
+                    Approve
+                  </Button>
+                  <Button size="sm" variant="outline">
+                    Reject
+                  </Button>
                 </CardContent>
               )}
             </Card>
@@ -103,7 +131,9 @@ export default function ApplicationReview() {
       </div>
 
       {filtered.length === 0 && (
-        <p className="text-center text-muted-foreground py-8">No applications match your filters.</p>
+        <p className="text-center text-muted-foreground py-8">
+          No applications match your filters.
+        </p>
       )}
     </div>
   );

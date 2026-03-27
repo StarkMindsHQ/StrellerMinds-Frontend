@@ -1,13 +1,26 @@
 'use client';
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { AlertCircle, BookOpen, MessageSquare, Star, Trophy, Wifi, WifiOff } from 'lucide-react';
+import {
+  AlertCircle,
+  BookOpen,
+  MessageSquare,
+  Star,
+  Trophy,
+  Wifi,
+  WifiOff,
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
-export type NotificationType = 'message' | 'achievement' | 'course' | 'review' | 'alert';
+export type NotificationType =
+  | 'message'
+  | 'achievement'
+  | 'course'
+  | 'review'
+  | 'alert';
 
 export interface StreamNotification {
   id: string;
@@ -35,17 +48,46 @@ interface RealTimeNotificationStreamProps {
 // ─── Mock stream (replace wsUrl + poll with real endpoints) ──────────────────
 
 const MOCK_POOL: Omit<StreamNotification, 'id' | 'timestamp' | 'read'>[] = [
-  { type: 'message', title: 'New message', body: 'Kwame replied to your question in "System Design"' },
-  { type: 'achievement', title: 'Achievement unlocked!', body: 'You completed 5 sessions this month 🎉' },
-  { type: 'course', title: 'Course updated', body: '"TypeScript Patterns" has new content available' },
-  { type: 'review', title: 'Session reviewed', body: 'Priya gave you 5 stars — view feedback' },
-  { type: 'alert', title: 'Reminder', body: 'Your session with Leon starts in 15 minutes' },
-  { type: 'message', title: 'Mentor reply', body: 'Aisha commented on your progress submission' },
+  {
+    type: 'message',
+    title: 'New message',
+    body: 'Kwame replied to your question in "System Design"',
+  },
+  {
+    type: 'achievement',
+    title: 'Achievement unlocked!',
+    body: 'You completed 5 sessions this month 🎉',
+  },
+  {
+    type: 'course',
+    title: 'Course updated',
+    body: '"TypeScript Patterns" has new content available',
+  },
+  {
+    type: 'review',
+    title: 'Session reviewed',
+    body: 'Priya gave you 5 stars — view feedback',
+  },
+  {
+    type: 'alert',
+    title: 'Reminder',
+    body: 'Your session with Leon starts in 15 minutes',
+  },
+  {
+    type: 'message',
+    title: 'Mentor reply',
+    body: 'Aisha commented on your progress submission',
+  },
 ];
 
 function makeMockNotification(): StreamNotification {
   const base = MOCK_POOL[Math.floor(Math.random() * MOCK_POOL.length)];
-  return { ...base, id: `notif-${Date.now()}-${Math.random()}`, timestamp: new Date(), read: false };
+  return {
+    ...base,
+    id: `notif-${Date.now()}-${Math.random()}`,
+    timestamp: new Date(),
+    read: false,
+  };
 }
 
 // ─── Icon map ─────────────────────────────────────────────────────────────────
@@ -60,9 +102,12 @@ const TypeIcon: Record<NotificationType, React.ReactNode> = {
 
 const TypeColor: Record<NotificationType, string> = {
   message: 'bg-sky-100 text-sky-600 dark:bg-sky-950 dark:text-sky-300',
-  achievement: 'bg-amber-100 text-amber-600 dark:bg-amber-950 dark:text-amber-300',
-  course: 'bg-violet-100 text-violet-600 dark:bg-violet-950 dark:text-violet-300',
-  review: 'bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-300',
+  achievement:
+    'bg-amber-100 text-amber-600 dark:bg-amber-950 dark:text-amber-300',
+  course:
+    'bg-violet-100 text-violet-600 dark:bg-violet-950 dark:text-violet-300',
+  review:
+    'bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-300',
   alert: 'bg-rose-100 text-rose-600 dark:bg-rose-950 dark:text-rose-300',
 };
 
@@ -180,7 +225,12 @@ export function RealTimeNotificationStream({
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   return (
-    <div className={cn('flex flex-col rounded-xl border bg-card/90 shadow-sm', className)}>
+    <div
+      className={cn(
+        'flex flex-col rounded-xl border bg-card/90 shadow-sm',
+        className,
+      )}
+    >
       {/* Header */}
       <div className="flex items-center justify-between border-b px-4 py-3">
         <div className="flex items-center gap-2">
@@ -200,8 +250,8 @@ export function RealTimeNotificationStream({
               status === 'connected'
                 ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
                 : status === 'polling'
-                ? 'bg-sky-100 text-sky-700 dark:bg-sky-950 dark:text-sky-300'
-                : 'bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300',
+                  ? 'bg-sky-100 text-sky-700 dark:bg-sky-950 dark:text-sky-300'
+                  : 'bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300',
             )}
           >
             {status === 'disconnected' ? (
@@ -259,7 +309,9 @@ export function RealTimeNotificationStream({
                 <p
                   className={cn(
                     'text-sm leading-snug',
-                    !n.read ? 'font-semibold text-card-foreground' : 'text-muted-foreground',
+                    !n.read
+                      ? 'font-semibold text-card-foreground'
+                      : 'text-muted-foreground',
                   )}
                 >
                   {n.title}
@@ -268,7 +320,9 @@ export function RealTimeNotificationStream({
                   {timeAgo(n.timestamp)}
                 </span>
               </div>
-              <p className="mt-0.5 truncate text-xs text-muted-foreground">{n.body}</p>
+              <p className="mt-0.5 truncate text-xs text-muted-foreground">
+                {n.body}
+              </p>
             </div>
 
             {/* Unread dot */}

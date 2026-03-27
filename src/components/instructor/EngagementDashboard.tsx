@@ -17,7 +17,11 @@ import {
   BarChart3,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { ActivityLog, ActivityLogSummary, activityLogger } from '@/services/activityLogger';
+import {
+  ActivityLog,
+  ActivityLogSummary,
+  activityLogger,
+} from '@/services/activityLogger';
 
 interface EngagementDashboardProps {
   lessonId?: string;
@@ -39,11 +43,17 @@ export const EngagementDashboard: React.FC<EngagementDashboardProps> = ({
   courseId,
   className,
 }) => {
-  const [dateRange, setDateRange] = useState<'today' | 'week' | 'month' | 'all'>('week');
+  const [dateRange, setDateRange] = useState<
+    'today' | 'week' | 'month' | 'all'
+  >('week');
   const [selectedStudent, setSelectedStudent] = useState<string | null>(null);
 
   // Fetch activity summary
-  const { data: summary, isLoading: summaryLoading, refetch: refetchSummary } = useQuery<ActivityLogSummary>({
+  const {
+    data: summary,
+    isLoading: summaryLoading,
+    refetch: refetchSummary,
+  } = useQuery<ActivityLogSummary>({
     queryKey: ['activity-summary', lessonId, dateRange],
     queryFn: async () => {
       const endDate = new Date();
@@ -157,14 +167,14 @@ export const EngagementDashboard: React.FC<EngagementDashboardProps> = ({
 
   if (summaryLoading) {
     return (
-      <div className={cn("flex items-center justify-center p-12", className)}>
+      <div className={cn('flex items-center justify-center p-12', className)}>
         <RefreshCw className="w-8 h-8 animate-spin text-blue-600" />
       </div>
     );
   }
 
   return (
-    <div className={cn("space-y-6", className)}>
+    <div className={cn('space-y-6', className)}>
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -217,7 +227,12 @@ export const EngagementDashboard: React.FC<EngagementDashboardProps> = ({
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
             Avg. Engagement
           </p>
-          <p className={cn("text-3xl font-bold", getScoreColor(summary?.averageEngagement || 0))}>
+          <p
+            className={cn(
+              'text-3xl font-bold',
+              getScoreColor(summary?.averageEngagement || 0),
+            )}
+          >
             {summary?.averageEngagement || 0}%
           </p>
         </motion.div>
@@ -318,7 +333,10 @@ export const EngagementDashboard: React.FC<EngagementDashboardProps> = ({
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-semibold">
-                        {student.userName.split(' ').map(n => n[0]).join('')}
+                        {student.userName
+                          .split(' ')
+                          .map((n) => n[0])
+                          .join('')}
                       </div>
                       <div className="ml-4">
                         <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
@@ -332,16 +350,24 @@ export const EngagementDashboard: React.FC<EngagementDashboardProps> = ({
                       <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-2 max-w-[100px]">
                         <div
                           className={cn(
-                            "h-2 rounded-full transition-all",
-                            student.averageScore >= 80 ? "bg-green-500" :
-                            student.averageScore >= 60 ? "bg-blue-500" :
-                            student.averageScore >= 40 ? "bg-yellow-500" :
-                            "bg-red-500"
+                            'h-2 rounded-full transition-all',
+                            student.averageScore >= 80
+                              ? 'bg-green-500'
+                              : student.averageScore >= 60
+                                ? 'bg-blue-500'
+                                : student.averageScore >= 40
+                                  ? 'bg-yellow-500'
+                                  : 'bg-red-500',
                           )}
                           style={{ width: `${student.averageScore}%` }}
                         />
                       </div>
-                      <span className={cn("text-sm font-semibold", getScoreColor(student.averageScore))}>
+                      <span
+                        className={cn(
+                          'text-sm font-semibold',
+                          getScoreColor(student.averageScore),
+                        )}
+                      >
                         {student.averageScore}%
                       </span>
                     </div>

@@ -37,64 +37,63 @@ const eventTypeStyles = {
   },
 };
 
-export const GlobalAlertSystem: React.FC<GlobalAlertSystemProps> = React.memo(({
-  events,
-  className,
-}) => {
-  return (
-    <Card className={cn('overflow-hidden', className)}>
-      <CardHeader className="pb-3 border-b">
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-sm font-semibold flex items-center gap-2">
-            <Bell className="h-4 w-4 text-primary" />
-            Live Activity Feed
-          </CardTitle>
-          <span className="text-[10px] uppercase font-bold text-muted-foreground bg-muted px-2 py-0.5 rounded">
-            Live
-          </span>
-        </div>
-      </CardHeader>
-      <CardContent className="p-0">
-        <div className="max-h-[400px] overflow-y-auto">
-          {events.length === 0 ? (
-            <div className="p-8 text-center text-muted-foreground">
-              <p className="text-sm">Waiting for live events...</p>
-            </div>
-          ) : (
-            <div className="divide-y">
-              {events.map((event) => {
-                const style =
-                  eventTypeStyles[event.type] || eventTypeStyles.alert;
-                return (
-                  <div
-                    key={event.id}
-                    className={cn(
-                      'p-3 transition-colors hover:bg-muted/50 flex gap-3 animate-in fade-in slide-in-from-right-4 duration-500',
-                    )}
-                  >
+export const GlobalAlertSystem: React.FC<GlobalAlertSystemProps> = React.memo(
+  ({ events, className }) => {
+    return (
+      <Card className={cn('overflow-hidden', className)}>
+        <CardHeader className="pb-3 border-b">
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-sm font-semibold flex items-center gap-2">
+              <Bell className="h-4 w-4 text-primary" />
+              Live Activity Feed
+            </CardTitle>
+            <span className="text-[10px] uppercase font-bold text-muted-foreground bg-muted px-2 py-0.5 rounded">
+              Live
+            </span>
+          </div>
+        </CardHeader>
+        <CardContent className="p-0">
+          <div className="max-h-[400px] overflow-y-auto">
+            {events.length === 0 ? (
+              <div className="p-8 text-center text-muted-foreground">
+                <p className="text-sm">Waiting for live events...</p>
+              </div>
+            ) : (
+              <div className="divide-y">
+                {events.map((event) => {
+                  const style =
+                    eventTypeStyles[event.type] || eventTypeStyles.alert;
+                  return (
                     <div
+                      key={event.id}
                       className={cn(
-                        'mt-0.5 rounded-full p-1 shrink-0',
-                        style.bg,
+                        'p-3 transition-colors hover:bg-muted/50 flex gap-3 animate-in fade-in slide-in-from-right-4 duration-500',
                       )}
                     >
-                      {style.icon}
+                      <div
+                        className={cn(
+                          'mt-0.5 rounded-full p-1 shrink-0',
+                          style.bg,
+                        )}
+                      >
+                        {style.icon}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-medium text-foreground leading-snug">
+                          {event.message}
+                        </p>
+                        <p className="text-[10px] text-muted-foreground mt-1">
+                          {new Date(event.timestamp).toLocaleTimeString()}
+                        </p>
+                      </div>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-xs font-medium text-foreground leading-snug">
-                        {event.message}
-                      </p>
-                      <p className="text-[10px] text-muted-foreground mt-1">
-                        {new Date(event.timestamp).toLocaleTimeString()}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      </CardContent>
-    </Card>
-  );
-});
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+    );
+  },
+);

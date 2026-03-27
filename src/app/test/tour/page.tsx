@@ -13,7 +13,8 @@ export default function TourTestPage() {
       {
         target: '#tour-step-1',
         title: 'Welcome!',
-        content: 'This is the first step of the tour. We highlight this button.',
+        content:
+          'This is the first step of the tour. We highlight this button.',
       },
       {
         target: '#tour-step-2',
@@ -39,11 +40,14 @@ export default function TourTestPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          <div id="tour-step-2" className="p-8 bg-card rounded-2xl border border-border">
+          <div
+            id="tour-step-2"
+            className="p-8 bg-card rounded-2xl border border-border"
+          >
             <h2 className="text-2xl font-bold mb-4">Highlighted Card</h2>
             <p className="text-muted-foreground">
-              This card will be highlighted in the second step of our onboarding tour.
-              Notice how the overlay smoothly transitions.
+              This card will be highlighted in the second step of our onboarding
+              tour. Notice how the overlay smoothly transitions.
             </p>
           </div>
 
@@ -56,7 +60,10 @@ export default function TourTestPage() {
         </div>
 
         <div className="flex justify-center">
-          <div id="tour-step-3" className="max-w-md text-center p-6 border-2 border-dashed border-primary rounded-xl">
+          <div
+            id="tour-step-3"
+            className="max-w-md text-center p-6 border-2 border-dashed border-primary rounded-xl"
+          >
             <h3 className="text-xl font-bold">The End!</h3>
             <p className="text-sm text-muted-foreground mt-2">
               If you see this highlighted, the tour is working perfectly.

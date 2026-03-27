@@ -17,10 +17,14 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@radix-ui/react-scroll-area';
 
-
 // ─── Types ───────────────────────────────────────────────────────────────────
 
-export type NotificationKind = 'message' | 'achievement' | 'course' | 'review' | 'alert';
+export type NotificationKind =
+  | 'message'
+  | 'achievement'
+  | 'course'
+  | 'review'
+  | 'alert';
 
 export interface BellNotification {
   id: string;
@@ -48,7 +52,8 @@ const defaultNotifications: BellNotification[] = [
     id: '1',
     kind: 'message',
     title: 'Kwame Asante replied',
-    description: 'Great question on the system design exercise — I left detailed feedback.',
+    description:
+      'Great question on the system design exercise — I left detailed feedback.',
     timestamp: new Date(Date.now() - 4 * 60 * 1000),
     read: false,
     avatarInitials: 'KA',
@@ -58,7 +63,8 @@ const defaultNotifications: BellNotification[] = [
     id: '2',
     kind: 'achievement',
     title: 'Achievement unlocked',
-    description: 'You completed your first 10 sessions — keep the momentum going!',
+    description:
+      'You completed your first 10 sessions — keep the momentum going!',
     timestamp: new Date(Date.now() - 32 * 60 * 1000),
     read: false,
     avatarInitials: '🏆',
@@ -67,7 +73,8 @@ const defaultNotifications: BellNotification[] = [
     id: '3',
     kind: 'course',
     title: 'New content available',
-    description: '"TypeScript Advanced Patterns" has 3 new lessons ready for you.',
+    description:
+      '"TypeScript Advanced Patterns" has 3 new lessons ready for you.',
     timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
     read: false,
     avatarInitials: 'TS',
@@ -87,7 +94,8 @@ const defaultNotifications: BellNotification[] = [
     id: '5',
     kind: 'review',
     title: 'Session review received',
-    description: 'Leon Fischer gave your last session 5 stars and wrote a note.',
+    description:
+      'Leon Fischer gave your last session 5 stars and wrote a note.',
     timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000),
     read: true,
     avatarInitials: 'LF',

@@ -5,7 +5,10 @@ import {
   createLearningAnalyticsSnapshot,
   detectLearningTrends,
 } from '@/services/learningAnalyticsEngine';
-import { type DailyLearningMetric, type StudentLearningRecord } from '@/types/learningAnalytics';
+import {
+  type DailyLearningMetric,
+  type StudentLearningRecord,
+} from '@/types/learningAnalytics';
 
 const now = new Date('2026-02-26T12:00:00.000Z');
 
@@ -21,7 +24,10 @@ const buildTimeline = (
 ): DailyLearningMetric[] => {
   return Array.from({ length: days }, (_, index) => {
     const day = new Date(startDate.getTime() + index * 24 * 60 * 60 * 1000);
-    const completionRate = Math.min(100, completionStart + completionGrowth * index);
+    const completionRate = Math.min(
+      100,
+      completionStart + completionGrowth * index,
+    );
     const watchTimeRatio = Math.min(1.3, watchStart + watchGrowth * index);
     const testScore = Math.min(100, scoreStart + scoreGrowth * index);
     const quizzesAssigned = index % 2 === 0 ? 1 : 2;
@@ -53,9 +59,13 @@ const createRecord = (
     (sum, point) => sum + point.quizzesAssigned,
     0,
   );
-  const quizzesMissed = timeline.reduce((sum, point) => sum + point.quizzesMissed, 0);
+  const quizzesMissed = timeline.reduce(
+    (sum, point) => sum + point.quizzesMissed,
+    0,
+  );
   const watchAverageRatio =
-    timeline.reduce((sum, point) => sum + point.watchTimeRatio, 0) / timeline.length;
+    timeline.reduce((sum, point) => sum + point.watchTimeRatio, 0) /
+    timeline.length;
   const scoreAverage =
     timeline.reduce((sum, point) => sum + point.testScore, 0) / timeline.length;
 

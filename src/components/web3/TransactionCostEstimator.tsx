@@ -3,9 +3,19 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import type { TransactionParams, TransactionCostEstimatorProps, GasEstimate } from '@/types/blockchain';
+import type {
+  TransactionParams,
+  TransactionCostEstimatorProps,
+  GasEstimate,
+} from '@/types/blockchain';
 import { formatUnits } from 'viem';
 
 function LoadingState() {
@@ -31,35 +41,38 @@ export function TransactionCostEstimator({
   const [localParams, setLocalParams] = useState<TransactionParams>(params);
 
   // Simulate fetching gas price (in production, this would call an API)
-  const fetchGasEstimate = useCallback(async (txParams: TransactionParams) => {
-    setIsLoading(true);
-    
-    try {
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      // Simulated gas estimation
-      // In production, this would use wagmi's estimateGas or call an API
-      const gasPrice = BigInt(20000000000); // 20 Gwei
-      const gasLimit = BigInt(txParams.gasLimit || 21000); // Default ETH transfer gas
-      const gasFeeWei = gasPrice * gasLimit;
-      const gasFeeEth = parseFloat(formatUnits(gasFeeWei, 18));
-      const gasFeeUsd = gasFeeEth * cryptoPrice;
-      
-      setGasEstimate({
-        gasPrice,
-        gasLimit,
-        gasFeeWei,
-        gasFeeEth,
-        gasFeeUsd,
-        gasPriceGwei: parseFloat(formatUnits(gasPrice, 9)),
-      });
-    } catch (error) {
-      console.error('Failed to estimate gas:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [cryptoPrice]);
+  const fetchGasEstimate = useCallback(
+    async (txParams: TransactionParams) => {
+      setIsLoading(true);
+
+      try {
+        // Simulate API delay
+        await new Promise((resolve) => setTimeout(resolve, 500));
+
+        // Simulated gas estimation
+        // In production, this would use wagmi's estimateGas or call an API
+        const gasPrice = BigInt(20000000000); // 20 Gwei
+        const gasLimit = BigInt(txParams.gasLimit || 21000); // Default ETH transfer gas
+        const gasFeeWei = gasPrice * gasLimit;
+        const gasFeeEth = parseFloat(formatUnits(gasFeeWei, 18));
+        const gasFeeUsd = gasFeeEth * cryptoPrice;
+
+        setGasEstimate({
+          gasPrice,
+          gasLimit,
+          gasFeeWei,
+          gasFeeEth,
+          gasFeeUsd,
+          gasPriceGwei: parseFloat(formatUnits(gasPrice, 9)),
+        });
+      } catch (error) {
+        console.error('Failed to estimate gas:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [cryptoPrice],
+  );
 
   // Fetch estimate on mount or params change
   useEffect(() => {
@@ -75,9 +88,12 @@ export function TransactionCostEstimator({
     onParamsChange?.(newParams);
   };
 
-  const handleParamsChangeDebounced = useCallback((newParams: TransactionParams) => {
-    fetchGasEstimate(newParams);
-  }, [fetchGasEstimate]);
+  const handleParamsChangeDebounced = useCallback(
+    (newParams: TransactionParams) => {
+      fetchGasEstimate(newParams);
+    },
+    [fetchGasEstimate],
+  );
 
   // Update estimate when local params change (debounced)
   useEffect(() => {
@@ -115,11 +131,15 @@ export function TransactionCostEstimator({
       <CardContent className="space-y-4">
         {/* Transaction Parameters Input */}
         <div className="space-y-3">
-          <label className="text-sm font-medium text-foreground">Transaction Parameters</label>
-          
+          <label className="text-sm font-medium text-foreground">
+            Transaction Parameters
+          </label>
+
           <div className="grid gap-3">
             <div>
-              <label className="text-xs text-muted-foreground">Recipient Address</label>
+              <label className="text-xs text-muted-foreground">
+                Recipient Address
+              </label>
               <Input
                 placeholder="0x..."
                 value={localParams.to}
@@ -127,9 +147,11 @@ export function TransactionCostEstimator({
                 className="font-mono text-sm"
               />
             </div>
-            
+
             <div>
-              <label className="text-xs text-muted-foreground">Value (ETH)</label>
+              <label className="text-xs text-muted-foreground">
+                Value (ETH)
+              </label>
               <Input
                 placeholder="0.0"
                 type="number"
@@ -138,9 +160,11 @@ export function TransactionCostEstimator({
                 onChange={(e) => handleInputChange('value', e.target.value)}
               />
             </div>
-            
+
             <div>
-              <label className="text-xs text-muted-foreground">Gas Limit (optional)</label>
+              <label className="text-xs text-muted-foreground">
+                Gas Limit (optional)
+              </label>
               <Input
                 placeholder="21000"
                 type="number"
@@ -156,8 +180,10 @@ export function TransactionCostEstimator({
 
         {/* Cost Estimate Display */}
         <div className="space-y-3">
-          <label className="text-sm font-medium text-foreground">Estimated Cost</label>
-          
+          <label className="text-sm font-medium text-foreground">
+            Estimated Cost
+          </label>
+
           {isLoading ? (
             <LoadingState />
           ) : gasEstimate ? (
@@ -168,25 +194,29 @@ export function TransactionCostEstimator({
                   {gasEstimate.gasPriceGwei.toFixed(2)} Gwei
                 </span>
               </div>
-              
+
               <div className="flex items-center justify-between">
                 <span className="text-sm text-muted-foreground">Gas Limit</span>
                 <span className="text-sm font-mono">
                   {gasEstimate.gasLimit.toString()}
                 </span>
               </div>
-              
+
               <div className="h-px bg-border" />
-              
+
               <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Network Fee</span>
+                <span className="text-sm text-muted-foreground">
+                  Network Fee
+                </span>
                 <span className="text-lg font-semibold font-mono">
                   {gasEstimate.gasFeeEth.toFixed(6)} ETH
                 </span>
               </div>
-              
+
               <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">USD Equivalent</span>
+                <span className="text-sm text-muted-foreground">
+                  USD Equivalent
+                </span>
                 <span className="text-lg font-semibold">
                   ${gasEstimate.gasFeeUsd.toFixed(2)}
                 </span>

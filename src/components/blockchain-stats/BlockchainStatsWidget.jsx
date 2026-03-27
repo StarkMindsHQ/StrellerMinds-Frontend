@@ -1,6 +1,6 @@
-import React from "react";
-import useBlockchainStats from "./useBlockchainStats";
-import StatsCard from "./StatsCard";
+import React from 'react';
+import useBlockchainStats from './useBlockchainStats';
+import StatsCard from './StatsCard';
 
 const BlockchainStatsWidget = () => {
   const { data, loading, error } = useBlockchainStats(5000);

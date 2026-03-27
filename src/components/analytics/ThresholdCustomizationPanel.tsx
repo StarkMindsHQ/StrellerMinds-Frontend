@@ -112,7 +112,10 @@ export function ThresholdCustomizationPanel({
           label="High risk starts"
           value={thresholds.highRiskMin}
           min={thresholds.mediumRiskMin + 1}
-          max={Math.max(thresholds.mediumRiskMin + 1, thresholds.criticalRiskMin - 1)}
+          max={Math.max(
+            thresholds.mediumRiskMin + 1,
+            thresholds.criticalRiskMin - 1,
+          )}
           onChange={handleHighChange}
         />
         <SliderRow

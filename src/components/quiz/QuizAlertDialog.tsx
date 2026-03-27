@@ -50,18 +50,16 @@ const QuizAlertDialog: React.FC<QuizAlertDialogProps> = ({
         </div>
 
         <div className="flex gap-3 pt-4">
-          <Button
-            onClick={onCancel}
-            variant="outline"
-            className="flex-1"
-          >
+          <Button onClick={onCancel} variant="outline" className="flex-1">
             {cancelText}
           </Button>
           <Button
             onClick={onConfirm}
             variant="default"
             className={`flex-1 ${
-              isDangerous ? 'bg-red-600 hover:bg-red-700' : 'bg-blue-600 hover:bg-blue-700'
+              isDangerous
+                ? 'bg-red-600 hover:bg-red-700'
+                : 'bg-blue-600 hover:bg-blue-700'
             }`}
           >
             {confirmText}

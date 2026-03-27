@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 type Props = {
   isPlaying: boolean;
@@ -19,29 +19,29 @@ export const VideoControls: React.FC<Props> = ({
 }) => {
   return (
     <div className="absolute inset-0 flex flex-col justify-between opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-t from-black/60 to-transparent p-4">
-      
       {/* Top Bar */}
       <div className="flex justify-end">
-        <button
-          onClick={onFullscreen}
-          className="text-white text-sm"
-        >
+        <button onClick={onFullscreen} className="text-white text-sm">
           Fullscreen
         </button>
       </div>
 
       {/* Center Controls */}
       <div className="flex justify-center items-center gap-4">
-        <button onClick={() => onSkip(-10)} className="text-white">⏪ 10s</button>
+        <button onClick={() => onSkip(-10)} className="text-white">
+          ⏪ 10s
+        </button>
 
         <button
           onClick={onPlayPause}
           className="bg-white text-black px-4 py-2 rounded-full"
         >
-          {isPlaying ? "Pause" : "Play"}
+          {isPlaying ? 'Pause' : 'Play'}
         </button>
 
-        <button onClick={() => onSkip(10)} className="text-white">10s ⏩</button>
+        <button onClick={() => onSkip(10)} className="text-white">
+          10s ⏩
+        </button>
       </div>
 
       {/* Bottom Controls */}

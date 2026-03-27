@@ -137,7 +137,11 @@ const computeSignals = (
     now,
   );
 
-  const baseIntervalRisk = clamp(((averageIntervalDays - 1.5) / 9) * 100, 0, 100);
+  const baseIntervalRisk = clamp(
+    ((averageIntervalDays - 1.5) / 9) * 100,
+    0,
+    100,
+  );
   const inactivityPenalty = clamp(daysInactive * 4.5, 0, 30);
   const completionIntervalRisk = clamp(
     baseIntervalRisk + inactivityPenalty,
@@ -260,7 +264,10 @@ export class EngagementScoreEngine {
     return this.getThresholds();
   }
 
-  assess(record: StudentLearningRecord, now = new Date()): StudentRiskAssessment {
+  assess(
+    record: StudentLearningRecord,
+    now = new Date(),
+  ): StudentRiskAssessment {
     return assessStudentRisk(record, this.config, now);
   }
 

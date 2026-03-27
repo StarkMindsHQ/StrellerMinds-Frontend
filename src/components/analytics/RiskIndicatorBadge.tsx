@@ -14,7 +14,11 @@ interface RiskIndicatorBadgeProps {
 
 const levelConfig: Record<
   RiskLevel,
-  { label: string; icon: React.ComponentType<{ className?: string }>; className: string }
+  {
+    label: string;
+    icon: React.ComponentType<{ className?: string }>;
+    className: string;
+  }
 > = {
   low: {
     label: 'Low risk',
@@ -37,7 +41,8 @@ const levelConfig: Record<
   critical: {
     label: 'Critical risk',
     icon: ShieldAlert,
-    className: 'border-rose-500/40 bg-rose-500/10 text-rose-700 dark:text-rose-300',
+    className:
+      'border-rose-500/40 bg-rose-500/10 text-rose-700 dark:text-rose-300',
   },
 };
 
@@ -50,7 +55,14 @@ export function RiskIndicatorBadge({
   const Icon = config.icon;
 
   return (
-    <Badge variant="outline" className={cn('gap-1.5 rounded-full px-2.5 py-1', config.className, className)}>
+    <Badge
+      variant="outline"
+      className={cn(
+        'gap-1.5 rounded-full px-2.5 py-1',
+        config.className,
+        className,
+      )}
+    >
       <Icon className="h-3.5 w-3.5" />
       <span>
         {config.label} ({Math.round(riskScore)}%)

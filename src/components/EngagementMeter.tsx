@@ -2,11 +2,11 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Eye, 
-  EyeOff, 
-  Activity, 
-  Pause, 
+import {
+  Eye,
+  EyeOff,
+  Activity,
+  Pause,
   Play,
   TrendingUp,
   TrendingDown,
@@ -50,7 +50,9 @@ export const EngagementMeter: React.FC<EngagementMeterProps> = ({
   }, [metrics.engagementScore, previousScore]);
 
   // Get engagement level
-  const getEngagementLevel = (score: number): {
+  const getEngagementLevel = (
+    score: number,
+  ): {
     label: string;
     color: string;
     bgColor: string;
@@ -107,7 +109,7 @@ export const EngagementMeter: React.FC<EngagementMeterProps> = ({
   // Compact view
   if (compact) {
     return (
-      <div className={cn("flex items-center gap-2", className)}>
+      <div className={cn('flex items-center gap-2', className)}>
         <div className="relative">
           <svg className="w-12 h-12 transform -rotate-90">
             <circle
@@ -130,12 +132,15 @@ export const EngagementMeter: React.FC<EngagementMeterProps> = ({
               strokeDashoffset={`${2 * Math.PI * 20 * (1 - metrics.engagementScore / 100)}`}
               className={engagementLevel.color}
               initial={{ strokeDashoffset: 2 * Math.PI * 20 }}
-              animate={{ strokeDashoffset: 2 * Math.PI * 20 * (1 - metrics.engagementScore / 100) }}
+              animate={{
+                strokeDashoffset:
+                  2 * Math.PI * 20 * (1 - metrics.engagementScore / 100),
+              }}
               transition={{ duration: 0.5, ease: 'easeOut' }}
             />
           </svg>
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className={cn("text-xs font-bold", engagementLevel.color)}>
+            <span className={cn('text-xs font-bold', engagementLevel.color)}>
               {metrics.engagementScore}
             </span>
           </div>
@@ -158,7 +163,12 @@ export const EngagementMeter: React.FC<EngagementMeterProps> = ({
 
   // Full view
   return (
-    <div className={cn("bg-white dark:bg-gray-950 rounded-xl border border-gray-200 dark:border-gray-800 p-6 shadow-sm", className)}>
+    <div
+      className={cn(
+        'bg-white dark:bg-gray-950 rounded-xl border border-gray-200 dark:border-gray-800 p-6 shadow-sm',
+        className,
+      )}
+    >
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
@@ -216,13 +226,16 @@ export const EngagementMeter: React.FC<EngagementMeterProps> = ({
               className={engagementLevel.color}
               strokeLinecap="round"
               initial={{ strokeDashoffset: 2 * Math.PI * 56 }}
-              animate={{ strokeDashoffset: 2 * Math.PI * 56 * (1 - metrics.engagementScore / 100) }}
+              animate={{
+                strokeDashoffset:
+                  2 * Math.PI * 56 * (1 - metrics.engagementScore / 100),
+              }}
               transition={{ duration: 0.8, ease: 'easeOut' }}
             />
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             <motion.span
-              className={cn("text-3xl font-bold", engagementLevel.color)}
+              className={cn('text-3xl font-bold', engagementLevel.color)}
               key={metrics.engagementScore}
               initial={{ scale: 1.2, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -239,12 +252,14 @@ export const EngagementMeter: React.FC<EngagementMeterProps> = ({
 
       {/* Engagement Level Badge */}
       <div className="flex items-center justify-center mb-6">
-        <div className={cn(
-          "flex items-center gap-2 px-4 py-2 rounded-full",
-          engagementLevel.bgColor
-        )}>
+        <div
+          className={cn(
+            'flex items-center gap-2 px-4 py-2 rounded-full',
+            engagementLevel.bgColor,
+          )}
+        >
           {engagementLevel.icon}
-          <span className={cn("text-sm font-semibold", engagementLevel.color)}>
+          <span className={cn('text-sm font-semibold', engagementLevel.color)}>
             {engagementLevel.label}
           </span>
         </div>
@@ -252,36 +267,44 @@ export const EngagementMeter: React.FC<EngagementMeterProps> = ({
 
       {/* Status Indicators */}
       <div className="grid grid-cols-2 gap-4 mb-6">
-        <div className={cn(
-          "flex items-center gap-2 p-3 rounded-lg",
-          isTabVisible 
-            ? "bg-green-50 dark:bg-green-900/20" 
-            : "bg-red-50 dark:bg-red-900/20"
-        )}>
+        <div
+          className={cn(
+            'flex items-center gap-2 p-3 rounded-lg',
+            isTabVisible
+              ? 'bg-green-50 dark:bg-green-900/20'
+              : 'bg-red-50 dark:bg-red-900/20',
+          )}
+        >
           {isTabVisible ? (
             <Eye className="w-4 h-4 text-green-600 dark:text-green-400" />
           ) : (
             <EyeOff className="w-4 h-4 text-red-600 dark:text-red-400" />
           )}
           <div>
-            <p className="text-xs text-gray-600 dark:text-gray-400">Tab Status</p>
-            <p className={cn(
-              "text-sm font-semibold",
-              isTabVisible 
-                ? "text-green-600 dark:text-green-400" 
-                : "text-red-600 dark:text-red-400"
-            )}>
+            <p className="text-xs text-gray-600 dark:text-gray-400">
+              Tab Status
+            </p>
+            <p
+              className={cn(
+                'text-sm font-semibold',
+                isTabVisible
+                  ? 'text-green-600 dark:text-green-400'
+                  : 'text-red-600 dark:text-red-400',
+              )}
+            >
               {isTabVisible ? 'Visible' : 'Hidden'}
             </p>
           </div>
         </div>
 
-        <div className={cn(
-          "flex items-center gap-2 p-3 rounded-lg",
-          isActive 
-            ? "bg-green-50 dark:bg-green-900/20" 
-            : "bg-yellow-50 dark:bg-yellow-900/20"
-        )}>
+        <div
+          className={cn(
+            'flex items-center gap-2 p-3 rounded-lg',
+            isActive
+              ? 'bg-green-50 dark:bg-green-900/20'
+              : 'bg-yellow-50 dark:bg-yellow-900/20',
+          )}
+        >
           {isActive ? (
             <Play className="w-4 h-4 text-green-600 dark:text-green-400" />
           ) : (
@@ -289,12 +312,14 @@ export const EngagementMeter: React.FC<EngagementMeterProps> = ({
           )}
           <div>
             <p className="text-xs text-gray-600 dark:text-gray-400">Activity</p>
-            <p className={cn(
-              "text-sm font-semibold",
-              isActive 
-                ? "text-green-600 dark:text-green-400" 
-                : "text-yellow-600 dark:text-yellow-400"
-            )}>
+            <p
+              className={cn(
+                'text-sm font-semibold',
+                isActive
+                  ? 'text-green-600 dark:text-green-400'
+                  : 'text-yellow-600 dark:text-yellow-400',
+              )}
+            >
               {isActive ? 'Active' : 'Inactive'}
             </p>
           </div>
@@ -305,25 +330,33 @@ export const EngagementMeter: React.FC<EngagementMeterProps> = ({
       {showDetails && (
         <div className="space-y-3 pt-4 border-t border-gray-200 dark:border-gray-800">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600 dark:text-gray-400">Total Time</span>
+            <span className="text-sm text-gray-600 dark:text-gray-400">
+              Total Time
+            </span>
             <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
               {formatTime(metrics.totalTime)}
             </span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600 dark:text-gray-400">Tab Switches</span>
+            <span className="text-sm text-gray-600 dark:text-gray-400">
+              Tab Switches
+            </span>
             <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
               {metrics.tabSwitches}
             </span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600 dark:text-gray-400">Video Pauses</span>
+            <span className="text-sm text-gray-600 dark:text-gray-400">
+              Video Pauses
+            </span>
             <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
               {metrics.videoPauses}
             </span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600 dark:text-gray-400">Inactive Time</span>
+            <span className="text-sm text-gray-600 dark:text-gray-400">
+              Inactive Time
+            </span>
             <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
               {formatTime(metrics.inactiveTime)}
             </span>

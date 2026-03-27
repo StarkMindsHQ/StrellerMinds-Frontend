@@ -71,7 +71,7 @@ export function UserInfo({
       className={cn(
         'flex items-center rounded-lg bg-card text-card-foreground',
         sizeConfig.container,
-        className
+        className,
       )}
       role="article"
       aria-label={`User profile for ${user.username || 'unknown user'}`}
@@ -92,22 +92,12 @@ export function UserInfo({
 
       {/* User Info */}
       <div className="flex flex-col min-w-0">
-        <span
-          className={cn(
-            'text-foreground truncate',
-            sizeConfig.username
-          )}
-        >
+        <span className={cn('text-foreground truncate', sizeConfig.username)}>
           {user.username || 'Unknown User'}
         </span>
 
         {showCoursesCompleted && (
-          <span
-            className={cn(
-              'text-muted-foreground',
-              sizeConfig.stat
-            )}
-          >
+          <span className={cn('text-muted-foreground', sizeConfig.stat)}>
             {user.coursesCompleted !== undefined
               ? `${user.coursesCompleted} ${
                   user.coursesCompletedLabel ||

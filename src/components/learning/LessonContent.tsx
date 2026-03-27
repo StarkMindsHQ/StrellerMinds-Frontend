@@ -17,13 +17,13 @@ interface LessonContentProps {
   hasPrevious: boolean;
 }
 
-export function LessonContent({ 
-  lesson, 
-  onComplete, 
-  onNext, 
-  onPrevious, 
-  hasNext, 
-  hasPrevious 
+export function LessonContent({
+  lesson,
+  onComplete,
+  onNext,
+  onPrevious,
+  hasNext,
+  hasPrevious,
 }: LessonContentProps) {
   const { state } = useCourseProgress();
   const isCompleted = state.completedLessons.includes(lesson.id);
@@ -37,7 +37,9 @@ export function LessonContent({
 
   const getProgressPercentage = () => {
     if (!lessonProgress) return 0;
-    return Math.round((lessonProgress.watchedSeconds / lessonProgress.totalSeconds) * 100);
+    return Math.round(
+      (lessonProgress.watchedSeconds / lessonProgress.totalSeconds) * 100,
+    );
   };
 
   return (
@@ -46,7 +48,10 @@ export function LessonContent({
       <div className="p-6 border-b border-border bg-card">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <Badge variant={lesson.type === 'video' ? 'default' : 'secondary'} className="capitalize">
+            <Badge
+              variant={lesson.type === 'video' ? 'default' : 'secondary'}
+              className="capitalize"
+            >
               <Play className="w-3 h-3 mr-1" />
               {lesson.type}
             </Badge>
@@ -61,7 +66,7 @@ export function LessonContent({
               </div>
             )}
           </div>
-          
+
           {lessonProgress && !isCompleted && (
             <div className="text-sm text-muted-foreground">
               {getProgressPercentage()}% watched
@@ -95,7 +100,7 @@ export function LessonContent({
                 Mark as Complete
               </Button>
             )}
-            
+
             {isCompleted && (
               <div className="flex items-center gap-2 text-green-600">
                 <CheckCircle className="w-5 h-5" />
@@ -106,13 +111,17 @@ export function LessonContent({
 
           <div className="flex items-center gap-2 w-full sm:w-auto">
             {hasPrevious && (
-              <Button variant="outline" onClick={onPrevious} className="flex-1 sm:flex-none">
+              <Button
+                variant="outline"
+                onClick={onPrevious}
+                className="flex-1 sm:flex-none"
+              >
                 Previous Lesson
               </Button>
             )}
-            
+
             {hasNext && (
-              <Button 
+              <Button
                 onClick={onNext}
                 disabled={!isCompleted}
                 className="gap-2 flex-1 sm:flex-none"

@@ -1,16 +1,19 @@
 'use client';
 
 import React, { useState } from 'react';
-import RealTimeRecommendations, { VideoRecommendation } from './RealTimeRecommendations';
+import RealTimeRecommendations, {
+  VideoRecommendation,
+} from './RealTimeRecommendations';
 
 // Example usage component
 export default function RealTimeRecommendationsExample() {
-  const [selectedVideo, setSelectedVideo] = useState<string>('current-video-123');
+  const [selectedVideo, setSelectedVideo] =
+    useState<string>('current-video-123');
 
   const handleVideoSelect = (videoId: string) => {
     console.log('Selected video:', videoId);
     setSelectedVideo(videoId);
-    
+
     // In a real application, you would:
     // 1. Navigate to the video page
     // 2. Update the video player
@@ -27,7 +30,8 @@ export default function RealTimeRecommendationsExample() {
             Real-Time Recommendations Demo
           </h1>
           <p className="text-gray-600 dark:text-gray-400">
-            Experience dynamic video recommendations with smooth animations and real-time updates.
+            Experience dynamic video recommendations with smooth animations and
+            real-time updates.
           </p>
         </div>
 
@@ -40,7 +44,9 @@ export default function RealTimeRecommendationsExample() {
             </div>
             <div>
               <p className="font-medium text-gray-900 dark:text-gray-100">
-                {selectedVideo === 'current-video-123' ? 'Introduction to Blockchain Technology' : 'Selected Video'}
+                {selectedVideo === 'current-video-123'
+                  ? 'Introduction to Blockchain Technology'
+                  : 'Selected Video'}
               </p>
               <p className="text-sm text-gray-600 dark:text-gray-400">
                 Video ID: {selectedVideo}
@@ -53,7 +59,9 @@ export default function RealTimeRecommendationsExample() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Standard Recommendations */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Standard Recommendations</h3>
+            <h3 className="text-lg font-semibold mb-4">
+              Standard Recommendations
+            </h3>
             <RealTimeRecommendations
               currentVideoId={selectedVideo}
               onVideoSelect={handleVideoSelect}
@@ -66,7 +74,9 @@ export default function RealTimeRecommendationsExample() {
 
           {/* Advanced Recommendations with WebSocket */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Real-Time with Relevance Scores</h3>
+            <h3 className="text-lg font-semibold mb-4">
+              Real-Time with Relevance Scores
+            </h3>
             <RealTimeRecommendations
               currentVideoId={selectedVideo}
               onVideoSelect={handleVideoSelect}
@@ -128,7 +138,9 @@ export default function RealTimeRecommendationsExample() {
           <div className="space-y-3 text-sm">
             <div>
               <code className="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">
-                {'<RealTimeRecommendations currentVideoId="video-id" onVideoSelect={handleSelect} />'}
+                {
+                  '<RealTimeRecommendations currentVideoId="video-id" onVideoSelect={handleSelect} />'
+                }
               </code>
             </div>
             <ul className="list-disc list-inside space-y-1 text-gray-600 dark:text-gray-400">

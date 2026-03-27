@@ -68,7 +68,12 @@ export function AnalyticsCard({
           <p className="text-2xl font-bold tracking-tight">{value}</p>
           <CardDescription className="text-xs">{description}</CardDescription>
           {trend && trendMeta && TrendIcon ? (
-            <div className={cn('flex items-center gap-1 text-xs font-semibold', trendMeta.textClass)}>
+            <div
+              className={cn(
+                'flex items-center gap-1 text-xs font-semibold',
+                trendMeta.textClass,
+              )}
+            >
               <TrendIcon className="h-3.5 w-3.5" />
               <span>
                 {trend.delta > 0 ? '+' : ''}

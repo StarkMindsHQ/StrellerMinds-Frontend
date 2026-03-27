@@ -14,12 +14,12 @@ export interface ThumbnailSize {
 }
 
 export interface ThumbnailSources {
-  xs?: string;    // 0-575px
-  sm?: string;    // 576-767px
-  md?: string;    // 768-991px
-  lg?: string;    // 992-1199px
-  xl?: string;    // 1200-1399px
-  xxl?: string;   // 1400px+
+  xs?: string; // 0-575px
+  sm?: string; // 576-767px
+  md?: string; // 768-991px
+  lg?: string; // 992-1199px
+  xl?: string; // 1200-1399px
+  xxl?: string; // 1400px+
 }
 
 export interface AdaptiveThumbnailProps {
@@ -106,25 +106,41 @@ class ResponsiveImageService {
   getOptimalSource(sources: ThumbnailSources): string {
     if (typeof window === 'undefined') {
       // Server-side: return largest available
-      return sources.xxl || sources.xl || sources.lg || sources.md || sources.sm || sources.xs || '';
+      return (
+        sources.xxl ||
+        sources.xl ||
+        sources.lg ||
+        sources.md ||
+        sources.sm ||
+        sources.xs ||
+        ''
+      );
     }
 
     const width = window.innerWidth;
-    
+
     if (width <= this.breakpoints.xs && sources.xs) return sources.xs;
     if (width <= this.breakpoints.sm && sources.sm) return sources.sm;
     if (width <= this.breakpoints.md && sources.md) return sources.md;
     if (width <= this.breakpoints.lg && sources.lg) return sources.lg;
     if (width <= this.breakpoints.xl && sources.xl) return sources.xl;
     if (sources.xxl) return sources.xxl;
-    
+
     // Fallback to first available source
-    return sources.xs || sources.sm || sources.md || sources.lg || sources.xl || sources.xxl || '';
+    return (
+      sources.xs ||
+      sources.sm ||
+      sources.md ||
+      sources.lg ||
+      sources.xl ||
+      sources.xxl ||
+      ''
+    );
   }
 
   generateResponsiveUrl(baseUrl: string, size: ThumbnailSize): string {
     if (!baseUrl) return '';
-    
+
     // If URL already has parameters, add to them
     const separator = baseUrl.includes('?') ? '&' : '?';
     return `${baseUrl}${separator}w=${size.width}&h=${size.height}&q=${size.quality || 75}`;
@@ -136,13 +152,13 @@ class ResponsiveImageService {
     }
 
     const width = window.innerWidth;
-    
+
     if (width <= 575) return { width: 300, height: 169, quality: 70 };
     if (width <= 767) return { width: 400, height: 225, quality: 75 };
     if (width <= 991) return { width: 500, height: 281, quality: 75 };
     if (width <= 1199) return { width: 600, height: 338, quality: 80 };
     if (width <= 1399) return { width: 700, height: 394, quality: 80 };
-    
+
     return { width: 800, height: 450, quality: 85 };
   }
 }
@@ -150,11 +166,15 @@ class ResponsiveImageService {
 const responsiveImageService = new ResponsiveImageService();
 
 // Default placeholder component
-const DefaultPlaceholder: React.FC<{ className?: string }> = ({ className }) => (
-  <div className={cn(
-    "flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700",
-    className
-  )}>
+const DefaultPlaceholder: React.FC<{ className?: string }> = ({
+  className,
+}) => (
+  <div
+    className={cn(
+      'flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700',
+      className,
+    )}
+  >
     <ImageIcon className="w-8 h-8 text-gray-400 dark:text-gray-500" />
   </div>
 );
@@ -204,7 +224,7 @@ export const AdaptiveThumbnail: React.FC<AdaptiveThumbnailProps> = ({
   const [hasError, setHasError] = useState(false);
   const [currentSrc, setCurrentSrc] = useState<string>('');
   const [isHovered, setIsHovered] = useState(false);
-  
+
   const imgRef = useRef<HTMLImageElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
@@ -215,61 +235,69 @@ export const AdaptiveThumbnail: React.FC<AdaptiveThumbnailProps> = ({
 
   // Generate cache key
   const effectiveCacheKey = cacheKey || thumbnailUrl;
-  
+
   // Get optimal image source
   const getOptimalSource = useCallback(() => {
     if (sources) {
       return responsiveImageService.getOptimalSource(sources);
     }
-    
+
     const defaultSizes = sizes || responsiveImageService.getDefaultSizes();
-    return responsiveImageService.generateResponsiveUrl(thumbnailUrl, defaultSizes);
+    return responsiveImageService.generateResponsiveUrl(
+      thumbnailUrl,
+      defaultSizes,
+    );
   }, [sources, sizes, thumbnailUrl]);
 
   // Load image
-  const loadImage = useCallback(async (src: string) => {
-    if (!src) return;
+  const loadImage = useCallback(
+    async (src: string) => {
+      if (!src) return;
 
-    // Check cache first
-    if (enableCache && effectiveCacheKey) {
-      const cached = thumbnailCache.get(effectiveCacheKey);
-      if (cached) {
-        setCurrentSrc(cached);
-        setIsLoading(false);
-        setHasError(false);
-        onLoad?.();
-        return;
-      }
-    }
-
-    setIsLoading(true);
-    setHasError(false);
-
-    try {
-      // Create new image to preload
-      const img = new Image();
-      img.src = src;
-      
-      await new Promise((resolve, reject) => {
-        img.onload = resolve;
-        img.onerror = reject;
-      });
-
-      setCurrentSrc(src);
-      
-      // Cache the loaded image
+      // Check cache first
       if (enableCache && effectiveCacheKey) {
-        thumbnailCache.set(effectiveCacheKey, src);
+        const cached = thumbnailCache.get(effectiveCacheKey);
+        if (cached) {
+          setCurrentSrc(cached);
+          setIsLoading(false);
+          setHasError(false);
+          onLoad?.();
+          return;
+        }
       }
-      
-      onLoad?.();
-    } catch (error) {
-      setHasError(true);
-      onError?.(error instanceof Error ? error : new Error('Failed to load image'));
-    } finally {
-      setIsLoading(false);
-    }
-  }, [enableCache, effectiveCacheKey, onLoad, onError]);
+
+      setIsLoading(true);
+      setHasError(false);
+
+      try {
+        // Create new image to preload
+        const img = new Image();
+        img.src = src;
+
+        await new Promise((resolve, reject) => {
+          img.onload = resolve;
+          img.onerror = reject;
+        });
+
+        setCurrentSrc(src);
+
+        // Cache the loaded image
+        if (enableCache && effectiveCacheKey) {
+          thumbnailCache.set(effectiveCacheKey, src);
+        }
+
+        onLoad?.();
+      } catch (error) {
+        setHasError(true);
+        onError?.(
+          error instanceof Error ? error : new Error('Failed to load image'),
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [enableCache, effectiveCacheKey, onLoad, onError],
+  );
 
   // Handle intersection observer and responsive changes
   useEffect(() => {
@@ -296,7 +324,15 @@ export const AdaptiveThumbnail: React.FC<AdaptiveThumbnailProps> = ({
       window.addEventListener('resize', handleResize);
       return () => window.removeEventListener('resize', handleResize);
     }
-  }, [sources, sizes, getOptimalSource, loadImage, currentSrc, priority, isInView]);
+  }, [
+    sources,
+    sizes,
+    getOptimalSource,
+    loadImage,
+    currentSrc,
+    priority,
+    isInView,
+  ]);
 
   // Start animation when image loads
   useEffect(() => {
@@ -325,7 +361,7 @@ export const AdaptiveThumbnail: React.FC<AdaptiveThumbnailProps> = ({
   const generateBlurPlaceholder = () => {
     if (blurDataURL) return blurDataURL;
     if (placeholder) return placeholder;
-    
+
     // Generate a simple blur placeholder
     return `data:image/svg+xml;base64,${btoa(`
       <svg width="400" height="225" xmlns="http://www.w3.org/2000/svg">
@@ -339,8 +375,8 @@ export const AdaptiveThumbnail: React.FC<AdaptiveThumbnailProps> = ({
     <motion.div
       ref={containerRef}
       className={cn(
-        "relative overflow-hidden rounded-lg cursor-pointer group",
-        className
+        'relative overflow-hidden rounded-lg cursor-pointer group',
+        className,
       )}
       onClick={handleClick}
       onMouseEnter={handleMouseEnter}
@@ -361,7 +397,9 @@ export const AdaptiveThumbnail: React.FC<AdaptiveThumbnailProps> = ({
       {hasError && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-800 z-10">
           <AlertCircle className="w-6 h-6 text-red-500 mb-2" />
-          <span className="text-xs text-red-500 dark:text-red-400">Failed to load</span>
+          <span className="text-xs text-red-500 dark:text-red-400">
+            Failed to load
+          </span>
         </div>
       )}
 
@@ -392,9 +430,7 @@ export const AdaptiveThumbnail: React.FC<AdaptiveThumbnailProps> = ({
           />
         </motion.div>
       ) : (
-        !isLoading && (
-          <FallbackComponent className="w-full h-full" />
-        )
+        !isLoading && <FallbackComponent className="w-full h-full" />
       )}
 
       {/* Play Button Overlay */}

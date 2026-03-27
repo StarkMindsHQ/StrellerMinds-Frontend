@@ -2,7 +2,11 @@
  * Transaction types for blockchain transactions
  */
 
-export type TransactionStatus = 'pending' | 'confirmed' | 'failed' | 'cancelled';
+export type TransactionStatus =
+  | 'pending'
+  | 'confirmed'
+  | 'failed'
+  | 'cancelled';
 
 export interface Transaction {
   id: string;

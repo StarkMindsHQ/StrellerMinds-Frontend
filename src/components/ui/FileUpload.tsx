@@ -2,7 +2,15 @@
 
 import React, { useRef, useState, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Upload, X, FileText, Image as ImageIcon, Video, AlertCircle, CheckCircle2 } from 'lucide-react';
+import {
+  Upload,
+  X,
+  FileText,
+  Image as ImageIcon,
+  Video,
+  AlertCircle,
+  CheckCircle2,
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Progress } from './progress';
 import { Button } from './button';
@@ -70,9 +78,13 @@ export function FileUpload({
         };
       });
 
-      setFiles((prev) => (multiple ? [...prev, ...validatedFiles] : validatedFiles));
+      setFiles((prev) =>
+        multiple ? [...prev, ...validatedFiles] : validatedFiles,
+      );
       if (onFilesSelected) {
-        onFilesSelected(validatedFiles.filter((f) => !f.error).map((f) => f.file));
+        onFilesSelected(
+          validatedFiles.filter((f) => !f.error).map((f) => f.file),
+        );
       }
 
       // Simulate upload for those without errors
@@ -82,12 +94,12 @@ export function FileUpload({
         }
       });
     },
-    [multiple, onFilesSelected, accept, maxSize]
+    [multiple, onFilesSelected, accept, maxSize],
   );
 
   const simulateUpload = (id: string) => {
     setFiles((prev) =>
-      prev.map((f) => (f.id === id ? { ...f, status: 'uploading' } : f))
+      prev.map((f) => (f.id === id ? { ...f, status: 'uploading' } : f)),
     );
 
     let progress = 0;
@@ -98,12 +110,12 @@ export function FileUpload({
         clearInterval(interval);
         setFiles((prev) =>
           prev.map((f) =>
-            f.id === id ? { ...f, progress: 100, status: 'completed' } : f
-          )
+            f.id === id ? { ...f, progress: 100, status: 'completed' } : f,
+          ),
         );
       } else {
         setFiles((prev) =>
-          prev.map((f) => (f.id === id ? { ...f, progress } : f))
+          prev.map((f) => (f.id === id ? { ...f, progress } : f)),
         );
       }
     }, 400);
@@ -137,7 +149,8 @@ export function FileUpload({
   };
 
   const getFileIcon = (file: File) => {
-    if (file.type.startsWith('image/')) return <ImageIcon className="w-5 h-5" />;
+    if (file.type.startsWith('image/'))
+      return <ImageIcon className="w-5 h-5" />;
     if (file.type.startsWith('video/')) return <Video className="w-5 h-5" />;
     return <FileText className="w-5 h-5" />;
   };
@@ -154,7 +167,7 @@ export function FileUpload({
           isDragging
             ? 'border-primary bg-primary/10 scale-[1.02] shadow-xl'
             : 'border-muted-foreground/20 hover:border-primary/50 hover:bg-muted/50',
-          'group overflow-hidden'
+          'group overflow-hidden',
         )}
       >
         <input
@@ -167,13 +180,21 @@ export function FileUpload({
         />
 
         <div className="p-4 rounded-full bg-secondary group-hover:bg-primary/20 transition-colors">
-          <Upload className={cn('w-8 h-8 transition-transform group-hover:scale-110', isDragging ? 'text-primary' : 'text-muted-foreground')} />
+          <Upload
+            className={cn(
+              'w-8 h-8 transition-transform group-hover:scale-110',
+              isDragging ? 'text-primary' : 'text-muted-foreground',
+            )}
+          />
         </div>
 
         <div>
-          <p className="text-lg font-semibold">Drop files here or click to upload</p>
+          <p className="text-lg font-semibold">
+            Drop files here or click to upload
+          </p>
           <p className="text-sm text-muted-foreground">
-            {accept.length > 0 ? accept.join(', ') : 'All files'} up to {maxSize}MB
+            {accept.length > 0 ? accept.join(', ') : 'All files'} up to{' '}
+            {maxSize}MB
           </p>
         </div>
 
@@ -199,8 +220,13 @@ export function FileUpload({
                 className="bg-card border rounded-xl p-4 flex items-center gap-4 group shadow-sm hover:shadow-md transition-shadow"
               >
                 <div className="relative w-12 h-12 flex-shrink-0 bg-muted rounded-lg overflow-hidden flex items-center justify-center">
-                  {fileState.preview && fileState.file.type.startsWith('image/') ? (
-                    <img src={fileState.preview} alt="preview" className="w-full h-full object-cover" />
+                  {fileState.preview &&
+                  fileState.file.type.startsWith('image/') ? (
+                    <img
+                      src={fileState.preview}
+                      alt="preview"
+                      className="w-full h-full object-cover"
+                    />
                   ) : (
                     getFileIcon(fileState.file)
                   )}
@@ -213,7 +239,9 @@ export function FileUpload({
 
                 <div className="flex-grow min-w-0 space-y-1">
                   <div className="flex items-center justify-between gap-2">
-                    <p className="text-sm font-medium truncate">{fileState.file.name}</p>
+                    <p className="text-sm font-medium truncate">
+                      {fileState.file.name}
+                    </p>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();

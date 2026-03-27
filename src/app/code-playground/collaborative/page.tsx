@@ -1,12 +1,18 @@
 import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from '@/components/ui/card';
 import { Code2, Users } from 'lucide-react';
 
 // Dynamically import the client component with SSR disabled
 const CollaborativePlaygroundClient = dynamic(
   () => import('@/components/code-playground/collaborative-playground-client'),
-  { ssr: false }
+  { ssr: false },
 );
 
 // Loading fallback

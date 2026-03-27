@@ -1,26 +1,26 @@
-"use client"
+'use client';
 
-import React, { useState, useEffect } from "react"
-import { RefreshCw, Info, AlertCircle } from "lucide-react"
-import { cn } from "@/lib/utils"
+import React, { useState, useEffect } from 'react';
+import { RefreshCw, Info, AlertCircle } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip"
-import { Skeleton } from "@/components/ui/skeleton"
-import styles from "./TokenBalance.module.css"
+} from '@/components/ui/tooltip';
+import { Skeleton } from '@/components/ui/skeleton';
+import styles from './TokenBalance.module.css';
 
 interface TokenBalanceProps {
-  balance?: string | number
-  symbol?: string
-  isLoading?: boolean
-  error?: Error | null
-  onRefresh?: () => void
-  label?: string
-  className?: string
-  lastUpdated?: Date
+  balance?: string | number;
+  symbol?: string;
+  isLoading?: boolean;
+  error?: Error | null;
+  onRefresh?: () => void;
+  label?: string;
+  className?: string;
+  lastUpdated?: Date;
 }
 
 /**
@@ -29,45 +29,45 @@ interface TokenBalanceProps {
  */
 export function TokenBalance({
   balance,
-  symbol = "TKN",
+  symbol = 'TKN',
   isLoading = false,
   error = null,
   onRefresh,
-  label = "Balance",
+  label = 'Balance',
   className,
   lastUpdated,
 }: TokenBalanceProps) {
-  const [isRefreshing, setIsRefreshing] = useState(false)
-  const [currentTime, setCurrentTime] = useState<Date>(new Date())
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [currentTime, setCurrentTime] = useState<Date>(new Date());
 
   // Handle refresh animation state
   useEffect(() => {
     if (!isLoading && isRefreshing) {
-      const timer = setTimeout(() => setIsRefreshing(false), 500)
-      return () => clearTimeout(timer)
+      const timer = setTimeout(() => setIsRefreshing(false), 500);
+      return () => clearTimeout(timer);
     }
-  }, [isLoading, isRefreshing])
+  }, [isLoading, isRefreshing]);
 
   // Update relative time every minute
   useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 60000)
-    return () => clearInterval(timer)
-  }, [])
+    const timer = setInterval(() => setCurrentTime(new Date()), 60000);
+    return () => clearInterval(timer);
+  }, []);
 
   const handleRefresh = () => {
     if (onRefresh && !isLoading && !isRefreshing) {
-      setIsRefreshing(true)
-      onRefresh()
+      setIsRefreshing(true);
+      onRefresh();
     }
-  }
+  };
 
   const formatLastUpdated = (date?: Date) => {
-    if (!date) return "Just now"
-    const diff = Math.floor((currentTime.getTime() - date.getTime()) / 1000)
-    if (diff < 60) return "Just now"
-    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`
-    return date.toLocaleTimeString()
-  }
+    if (!date) return 'Just now';
+    const diff = Math.floor((currentTime.getTime() - date.getTime()) / 1000);
+    if (diff < 60) return 'Just now';
+    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+    return date.toLocaleTimeString();
+  };
 
   if (error) {
     return (
@@ -82,17 +82,17 @@ export function TokenBalance({
           )}
         </div>
       </div>
-    )
+    );
   }
 
   return (
     <TooltipProvider>
       <div className={cn(styles.tokenBalanceContainer, className)}>
         <div className={styles.glowEffect} />
-        
+
         <div className={styles.balanceContent}>
           <span className={styles.label}>{label}</span>
-          
+
           <div className={styles.balanceWrapper}>
             {isLoading && !isRefreshing ? (
               <div className="flex gap-2 items-center">
@@ -102,7 +102,7 @@ export function TokenBalance({
             ) : (
               <>
                 <span className={styles.balanceAmount}>
-                  {balance !== undefined ? balance : "0.00"}
+                  {balance !== undefined ? balance : '0.00'}
                 </span>
                 <span className={styles.symbol}>{symbol}</span>
               </>
@@ -117,7 +117,7 @@ export function TokenBalance({
               disabled={isLoading || isRefreshing}
               className={cn(
                 styles.refreshButton,
-                (isLoading || isRefreshing) && styles.rotating
+                (isLoading || isRefreshing) && styles.rotating,
               )}
               title="Refresh Balance"
             >
@@ -135,7 +135,9 @@ export function TokenBalance({
               <div className="space-y-1">
                 <p className="font-semibold">Network Balance Info</p>
                 <div className="text-xs opacity-80">
-                  <p>Full Balance: {balance} {symbol}</p>
+                  <p>
+                    Full Balance: {balance} {symbol}
+                  </p>
                   <p>Last Sync: {formatLastUpdated(lastUpdated)}</p>
                 </div>
               </div>
@@ -144,5 +146,5 @@ export function TokenBalance({
         </div>
       </div>
     </TooltipProvider>
-  )
+  );
 }

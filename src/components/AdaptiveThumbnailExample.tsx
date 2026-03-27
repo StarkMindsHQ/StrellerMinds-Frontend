@@ -4,7 +4,16 @@ import React, { useState } from 'react';
 import AdaptiveThumbnail, { ThumbnailSources } from './AdaptiveThumbnail';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Settings, Monitor, Smartphone, Tablet, Zap, Database, Image as ImageIcon, Play } from 'lucide-react';
+import {
+  Settings,
+  Monitor,
+  Smartphone,
+  Tablet,
+  Zap,
+  Database,
+  Image as ImageIcon,
+  Play,
+} from 'lucide-react';
 
 // Example usage component
 export default function AdaptiveThumbnailExample() {
@@ -68,7 +77,7 @@ export default function AdaptiveThumbnailExample() {
     const updateSize = () => {
       setWindowSize({ width: window.innerWidth, height: window.innerHeight });
     };
-    
+
     updateSize();
     window.addEventListener('resize', updateSize);
     return () => window.removeEventListener('resize', updateSize);
@@ -111,7 +120,8 @@ export default function AdaptiveThumbnailExample() {
             Adaptive Thumbnail Demo
           </h1>
           <p className="text-gray-600 dark:text-gray-400">
-            Experience optimized thumbnail loading with lazy loading, responsive sizing, and smooth animations.
+            Experience optimized thumbnail loading with lazy loading, responsive
+            sizing, and smooth animations.
           </p>
         </div>
 
@@ -170,10 +180,12 @@ export default function AdaptiveThumbnailExample() {
                 </label>
                 <select
                   value={selectedConfig.hoverEffect}
-                  onChange={(e) => setSelectedConfig(prev => ({ 
-                    ...prev, 
-                    hoverEffect: e.target.value as any 
-                  }))}
+                  onChange={(e) =>
+                    setSelectedConfig((prev) => ({
+                      ...prev,
+                      hoverEffect: e.target.value as any,
+                    }))
+                  }
                   className="w-full px-3 py-2 border border-gray-200 rounded-lg bg-white text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300"
                 >
                   <option value="zoom">Zoom</option>
@@ -189,10 +201,12 @@ export default function AdaptiveThumbnailExample() {
                   <input
                     type="checkbox"
                     checked={selectedConfig.showPlayButton}
-                    onChange={(e) => setSelectedConfig(prev => ({ 
-                      ...prev, 
-                      showPlayButton: e.target.checked 
-                    }))}
+                    onChange={(e) =>
+                      setSelectedConfig((prev) => ({
+                        ...prev,
+                        showPlayButton: e.target.checked,
+                      }))
+                    }
                     className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
                   Show Play Button
@@ -208,10 +222,12 @@ export default function AdaptiveThumbnailExample() {
                   <input
                     type="checkbox"
                     checked={selectedConfig.enableCache}
-                    onChange={(e) => setSelectedConfig(prev => ({ 
-                      ...prev, 
-                      enableCache: e.target.checked 
-                    }))}
+                    onChange={(e) =>
+                      setSelectedConfig((prev) => ({
+                        ...prev,
+                        enableCache: e.target.checked,
+                      }))
+                    }
                     className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
                   Enable Cache
@@ -227,10 +243,12 @@ export default function AdaptiveThumbnailExample() {
                   <input
                     type="checkbox"
                     checked={selectedConfig.lazy}
-                    onChange={(e) => setSelectedConfig(prev => ({ 
-                      ...prev, 
-                      lazy: e.target.checked 
-                    }))}
+                    onChange={(e) =>
+                      setSelectedConfig((prev) => ({
+                        ...prev,
+                        lazy: e.target.checked,
+                      }))
+                    }
                     className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
                   Lazy Loading
@@ -260,7 +278,11 @@ export default function AdaptiveThumbnailExample() {
                     thumbnailUrl={video.thumbnail}
                     altText={video.title}
                     onClick={() => handleThumbnailClick(video.id)}
-                    sources={video.thumbnail === mockThumbnails.responsive ? video.thumbnail : undefined}
+                    sources={
+                      video.thumbnail === mockThumbnails.responsive
+                        ? video.thumbnail
+                        : undefined
+                    }
                     hoverEffect={selectedConfig.hoverEffect}
                     showPlayButton={selectedConfig.showPlayButton}
                     enableCache={selectedConfig.enableCache}
@@ -344,11 +366,15 @@ export default function AdaptiveThumbnailExample() {
           <CardContent className="space-y-4">
             <div>
               <code className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-sm">
-                {'<AdaptiveThumbnail thumbnailUrl="url" altText="description" onClick={handleClick} />'}
+                {
+                  '<AdaptiveThumbnail thumbnailUrl="url" altText="description" onClick={handleClick} />'
+                }
               </code>
             </div>
             <ul className="list-disc list-inside space-y-2 text-sm text-gray-600 dark:text-gray-400">
-              <li>Resize your browser window to see responsive image loading</li>
+              <li>
+                Resize your browser window to see responsive image loading
+              </li>
               <li>Scroll down and up to test lazy loading behavior</li>
               <li>Hover over thumbnails to see animation effects</li>
               <li>Toggle configuration options to see different behaviors</li>
@@ -356,7 +382,7 @@ export default function AdaptiveThumbnailExample() {
               <li>Check console for load/error callbacks</li>
               <li>Try the cache clear functionality</li>
             </ul>
-            
+
             <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
               <h4 className="font-medium mb-2">Performance Benefits:</h4>
               <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">

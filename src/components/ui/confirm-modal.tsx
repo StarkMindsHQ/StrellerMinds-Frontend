@@ -42,11 +42,7 @@ function ConfirmModal({
           >
             {cancelLabel}
           </Button>
-          <Button
-            variant={variant}
-            onClick={onConfirm}
-            disabled={isLoading}
-          >
+          <Button variant={variant} onClick={onConfirm} disabled={isLoading}>
             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {confirmLabel}
           </Button>

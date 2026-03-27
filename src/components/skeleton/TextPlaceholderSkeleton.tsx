@@ -20,12 +20,8 @@ export function TextPlaceholder({
   if (variant === 'heading') {
     return (
       <div className={cn('space-y-3', className)}>
-        <Skeleton
-          className={cn('h-8 w-3/4', animated && 'animate-pulse')}
-        />
-        <Skeleton
-          className={cn('h-6 w-1/2', animated && 'animate-pulse')}
-        />
+        <Skeleton className={cn('h-8 w-3/4', animated && 'animate-pulse')} />
+        <Skeleton className={cn('h-6 w-1/2', animated && 'animate-pulse')} />
       </div>
     );
   }
@@ -79,11 +75,7 @@ export function InlineTextSkeleton({
   width?: string;
   className?: string;
 }) {
-  return (
-    <Skeleton
-      className={cn('h-4', width || 'w-32', className)}
-    />
-  );
+  return <Skeleton className={cn('h-4', width || 'w-32', className)} />;
 }
 
 // Form field skeleton
@@ -100,25 +92,15 @@ export function FormFieldSkeleton({
 }) {
   return (
     <div className={cn('space-y-2', className)}>
-      {label && (
-        <Skeleton className="h-4 w-24" />
-      )}
-      {input && (
-        <Skeleton className="h-10 w-full rounded-md" />
-      )}
-      {error && (
-        <Skeleton className="h-3 w-48" />
-      )}
+      {label && <Skeleton className="h-4 w-24" />}
+      {input && <Skeleton className="h-10 w-full rounded-md" />}
+      {error && <Skeleton className="h-3 w-48" />}
     </div>
   );
 }
 
 // Card content placeholder
-export function CardContentSkeleton({
-  className,
-}: {
-  className?: string;
-}) {
+export function CardContentSkeleton({ className }: { className?: string }) {
   return (
     <div className={cn('space-y-4', className)}>
       <div className="flex items-center gap-4">

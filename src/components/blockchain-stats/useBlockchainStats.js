@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-const API_URL = "/api/blockchain-stats"; 
+const API_URL = '/api/blockchain-stats';
 // Replace with real endpoint (e.g. Stellar Horizon / Alchemy / custom backend)
 
 const useBlockchainStats = (interval = 5000) => {
@@ -18,7 +18,7 @@ const useBlockchainStats = (interval = 5000) => {
       setError(null);
 
       const res = await fetch(API_URL);
-      if (!res.ok) throw new Error("Failed to fetch stats");
+      if (!res.ok) throw new Error('Failed to fetch stats');
 
       const result = await res.json();
 

@@ -5,17 +5,28 @@ import { cn } from '@/lib/utils';
 import { Badge, badgeVariants } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import type { Transaction, TransactionTableProps, TransactionStatus } from '@/types/blockchain';
-import { formatTransactionHash, formatAddress, formatEtherBalance } from '@/lib/web3/utils';
+import type {
+  Transaction,
+  TransactionTableProps,
+  TransactionStatus,
+} from '@/types/blockchain';
+import {
+  formatTransactionHash,
+  formatAddress,
+  formatEtherBalance,
+} from '@/lib/web3/utils';
 
 type SortField = 'hash' | 'date' | 'amount' | 'status';
 type SortDirection = 'asc' | 'desc';
 
 const statusColors: Record<TransactionStatus, string> = {
-  pending: 'bg-yellow-500/20 text-yellow-700 dark:text-yellow-300 border-yellow-500/30',
-  confirmed: 'bg-green-500/20 text-green-700 dark:text-green-300 border-green-500/30',
+  pending:
+    'bg-yellow-500/20 text-yellow-700 dark:text-yellow-300 border-yellow-500/30',
+  confirmed:
+    'bg-green-500/20 text-green-700 dark:text-green-300 border-green-500/30',
   failed: 'bg-red-500/20 text-red-700 dark:text-red-300 border-red-500/30',
-  cancelled: 'bg-gray-500/20 text-gray-700 dark:text-gray-300 border-gray-500/30',
+  cancelled:
+    'bg-gray-500/20 text-gray-700 dark:text-gray-300 border-gray-500/30',
 };
 
 function formatDate(date: Date): string {
@@ -58,7 +69,8 @@ function TransactionRow({ transaction }: { transaction: Transaction }) {
       </td>
       <td className="py-3 px-4">
         <Badge className={cn(statusColors[transaction.status])}>
-          {transaction.status.charAt(0).toUpperCase() + transaction.status.slice(1)}
+          {transaction.status.charAt(0).toUpperCase() +
+            transaction.status.slice(1)}
         </Badge>
       </td>
     </tr>
@@ -129,7 +141,8 @@ export function TransactionTable({
           comparison = a.hash.localeCompare(b.hash);
           break;
         case 'date':
-          comparison = new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+          comparison =
+            new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
           break;
         case 'amount':
           comparison = parseFloat(a.amount) - parseFloat(b.amount);
@@ -145,7 +158,8 @@ export function TransactionTable({
     return sorted;
   }, [transactions, sortField, sortDirection]);
 
-  const totalPages = externalTotalPages || Math.ceil(sortedTransactions.length / pageSize);
+  const totalPages =
+    externalTotalPages || Math.ceil(sortedTransactions.length / pageSize);
 
   const paginatedTransactions = useMemo(() => {
     if (externalTotalPages !== undefined) {
@@ -193,7 +207,9 @@ export function TransactionTable({
         >
           <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
         </svg>
-        <h3 className="text-lg font-medium text-foreground mb-1">No Transactions</h3>
+        <h3 className="text-lg font-medium text-foreground mb-1">
+          No Transactions
+        </h3>
         <p className="text-sm text-muted-foreground">
           There are no transactions to display.
         </p>
@@ -256,13 +272,18 @@ export function TransactionTable({
       {showPagination && totalPages > 1 && (
         <div className="flex items-center justify-between py-4 px-2">
           <div className="text-sm text-muted-foreground">
-            Page {externalTotalPages ? currentPage : internalPage} of {totalPages}
+            Page {externalTotalPages ? currentPage : internalPage} of{' '}
+            {totalPages}
           </div>
           <div className="flex items-center gap-2">
             <Button
               variant="outline"
               size="sm"
-              onClick={() => handlePageChange((externalTotalPages ? currentPage : internalPage) - 1)}
+              onClick={() =>
+                handlePageChange(
+                  (externalTotalPages ? currentPage : internalPage) - 1,
+                )
+              }
               disabled={(externalTotalPages ? currentPage : internalPage) === 1}
             >
               Previous
@@ -285,7 +306,12 @@ export function TransactionTable({
               return (
                 <Button
                   key={pageNum}
-                  variant={pageNum === (externalTotalPages ? currentPage : internalPage) ? 'default' : 'outline'}
+                  variant={
+                    pageNum ===
+                    (externalTotalPages ? currentPage : internalPage)
+                      ? 'default'
+                      : 'outline'
+                  }
                   size="sm"
                   onClick={() => handlePageChange(pageNum)}
                   className="w-10"
@@ -297,8 +323,14 @@ export function TransactionTable({
             <Button
               variant="outline"
               size="sm"
-              onClick={() => handlePageChange((externalTotalPages ? currentPage : internalPage) + 1)}
-              disabled={(externalTotalPages ? currentPage : internalPage) === totalPages}
+              onClick={() =>
+                handlePageChange(
+                  (externalTotalPages ? currentPage : internalPage) + 1,
+                )
+              }
+              disabled={
+                (externalTotalPages ? currentPage : internalPage) === totalPages
+              }
             >
               Next
             </Button>

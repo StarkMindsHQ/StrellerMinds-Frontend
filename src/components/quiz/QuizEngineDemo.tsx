@@ -74,7 +74,10 @@ const EXAMPLE_QUIZ_CONFIG: QuizConfig = {
           text: 'useCallback memoizes a function, useMemo memoizes a computed value',
         },
         { id: 'opt2', text: 'They are exactly the same' },
-        { id: 'opt3', text: 'useCallback is for styling, useMemo is for logic' },
+        {
+          id: 'opt3',
+          text: 'useCallback is for styling, useMemo is for logic',
+        },
         {
           id: 'opt4',
           text: 'useMemo is deprecated in favor of useCallback',
@@ -96,7 +99,7 @@ const EXAMPLE_QUIZ_CONFIG: QuizConfig = {
       ],
       correctOptionId: 'opt1',
       explanation:
-        'The dependency array tells React when to run the effect. If it\'s empty, the effect runs once on mount. If it includes values, the effect runs when those values change.',
+        "The dependency array tells React when to run the effect. If it's empty, the effect runs once on mount. If it includes values, the effect runs when those values change.",
       difficulty: 'medium',
     },
   ],
@@ -180,7 +183,8 @@ const QuizEngineDemoPage: React.FC = () => {
             Quiz Engine Demo
           </h1>
           <p className="text-xl text-gray-600">
-            Take a quiz to test your knowledge. Your score will be calculated instantly!
+            Take a quiz to test your knowledge. Your score will be calculated
+            instantly!
           </p>
         </div>
 
@@ -194,7 +198,9 @@ const QuizEngineDemoPage: React.FC = () => {
                 <h3 className="text-2xl font-bold text-gray-800">
                   {EXAMPLE_QUIZ_CONFIG.title}
                 </h3>
-                <p className="text-gray-600 mt-2">{EXAMPLE_QUIZ_CONFIG.description}</p>
+                <p className="text-gray-600 mt-2">
+                  {EXAMPLE_QUIZ_CONFIG.description}
+                </p>
               </div>
 
               <div className="space-y-2 text-sm text-gray-600">
@@ -204,7 +210,9 @@ const QuizEngineDemoPage: React.FC = () => {
                 </p>
                 <p>
                   <span className="font-semibold">Time Limit:</span>{' '}
-                  {EXAMPLE_QUIZ_CONFIG.timeLimit ? `${EXAMPLE_QUIZ_CONFIG.timeLimit / 60} min` : 'No limit'}
+                  {EXAMPLE_QUIZ_CONFIG.timeLimit
+                    ? `${EXAMPLE_QUIZ_CONFIG.timeLimit / 60} min`
+                    : 'No limit'}
                 </p>
                 <p>
                   <span className="font-semibold">Passing Score:</span>{' '}
@@ -229,7 +237,9 @@ const QuizEngineDemoPage: React.FC = () => {
             <div className="h-32 bg-gradient-to-r from-amber-500 to-amber-600" />
             <div className="p-6 space-y-4">
               <div>
-                <h3 className="text-2xl font-bold text-gray-800">Speed Challenge</h3>
+                <h3 className="text-2xl font-bold text-gray-800">
+                  Speed Challenge
+                </h3>
                 <p className="text-gray-600 mt-2">
                   Short time limit to test quick thinking
                 </p>

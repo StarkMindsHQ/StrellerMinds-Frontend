@@ -151,7 +151,10 @@ export const generateMockLearningRecords = (
     const timeline = generateStudentTimeline(seed, now);
     const completionTimestamps = deriveLessonCompletions(timeline, seed + 77);
     const baselineWatchMinutes = 540 + (index % 4) * 60;
-    const watchRatio = getTimelineAverage(timeline, (point) => point.watchTimeRatio);
+    const watchRatio = getTimelineAverage(
+      timeline,
+      (point) => point.watchTimeRatio,
+    );
     const watchMinutes = Math.round(baselineWatchMinutes * watchRatio);
     const quizzesAssigned = timeline.reduce(
       (sum, point) => sum + point.quizzesAssigned,
@@ -163,9 +166,13 @@ export const generateMockLearningRecords = (
     );
 
     const currentProgress = timeline[timeline.length - 1]?.completionRate ?? 0;
-    const quizAverageScore = getTimelineAverage(timeline, (point) => point.testScore);
+    const quizAverageScore = getTimelineAverage(
+      timeline,
+      (point) => point.testScore,
+    );
     const lastSeenAt =
-      completionTimestamps[completionTimestamps.length - 1] ?? now.toISOString();
+      completionTimestamps[completionTimestamps.length - 1] ??
+      now.toISOString();
 
     return {
       studentId: `student-${index + 1}`,
@@ -195,7 +202,9 @@ export const simulateLearningRecordsTick = (
   const today = toIsoDay(now);
 
   return records.map((record, index) => {
-    const random = mulberry32(now.getUTCMinutes() + now.getUTCSeconds() + index * 31);
+    const random = mulberry32(
+      now.getUTCMinutes() + now.getUTCSeconds() + index * 31,
+    );
     const previousTimeline = [...record.timeline];
     const lastPoint = previousTimeline[previousTimeline.length - 1];
 
@@ -211,7 +220,11 @@ export const simulateLearningRecordsTick = (
       0.25,
       1.3,
     );
-    const testScore = clamp(lastPoint.testScore + (random() * 3.5 - 1.8), 0, 100);
+    const testScore = clamp(
+      lastPoint.testScore + (random() * 3.5 - 1.8),
+      0,
+      100,
+    );
     const quizzesAssigned = Math.floor(random() * 2);
     const quizzesMissed =
       quizzesAssigned > 0 ? Math.floor(random() * (quizzesAssigned + 1)) : 0;
@@ -241,11 +254,14 @@ export const simulateLearningRecordsTick = (
     }
 
     const nextTimeline = previousTimeline.slice(-60);
-    const additionalCompletions = Array.from({ length: lessonsCompleted }, () => {
-      const completion = new Date(now);
-      completion.setMinutes(Math.floor(random() * 60), 0, 0);
-      return completion.toISOString();
-    });
+    const additionalCompletions = Array.from(
+      { length: lessonsCompleted },
+      () => {
+        const completion = new Date(now);
+        completion.setMinutes(Math.floor(random() * 60), 0, 0);
+        return completion.toISOString();
+      },
+    );
 
     const lessonCompletionTimestamps = [
       ...record.lessonCompletionTimestamps,
@@ -273,7 +289,10 @@ export const simulateLearningRecordsTick = (
       ...record,
       currentProgress: nextPoint.completionRate,
       watchMinutes: Math.round(record.baselineWatchMinutes * nextWatchRatio),
-      quizAverageScore: getTimelineAverage(nextTimeline, (point) => point.testScore),
+      quizAverageScore: getTimelineAverage(
+        nextTimeline,
+        (point) => point.testScore,
+      ),
       quizzesAssigned: totalAssigned,
       quizzesMissed: totalMissed,
       lessonCompletionTimestamps,

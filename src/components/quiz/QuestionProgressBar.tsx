@@ -10,12 +10,16 @@ interface QuestionProgressBarProps {
   };
 }
 
-const QuestionProgressBar: React.FC<QuestionProgressBarProps> = ({ progress }) => {
+const QuestionProgressBar: React.FC<QuestionProgressBarProps> = ({
+  progress,
+}) => {
   return (
     <div className="mt-3 space-y-1">
       <div className="flex justify-between items-center text-xs text-gray-600">
         <span>Question Progress</span>
-        <span>{progress.current} / {progress.total}</span>
+        <span>
+          {progress.current} / {progress.total}
+        </span>
       </div>
       <div className="w-full bg-gray-200 rounded-full h-1.5 overflow-hidden">
         <div

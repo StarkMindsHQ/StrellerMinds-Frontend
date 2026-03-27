@@ -6,8 +6,17 @@ import { VideoDetailModal } from './VideoDetailModal';
 
 // Mock video data generator
 const generateMockVideos = (count: number): Video[] => {
-  const levels: Array<'Beginner' | 'Intermediate' | 'Advanced'> = ['Beginner', 'Intermediate', 'Advanced'];
-  const instructors = ['Dr. Sarah Chen', 'Prof. Michael Torres', 'Dr. Aisha Patel', 'Prof. James Wilson'];
+  const levels: Array<'Beginner' | 'Intermediate' | 'Advanced'> = [
+    'Beginner',
+    'Intermediate',
+    'Advanced',
+  ];
+  const instructors = [
+    'Dr. Sarah Chen',
+    'Prof. Michael Torres',
+    'Dr. Aisha Patel',
+    'Prof. James Wilson',
+  ];
   const topics = [
     'Blockchain Fundamentals',
     'Smart Contract Development',
@@ -69,7 +78,7 @@ export const DynamicVideoGridExample: React.FC = () => {
   const handleLoadMore = () => {
     setLoading(true);
     setTimeout(() => {
-      setVideoCount(prev => prev + 20);
+      setVideoCount((prev) => prev + 20);
       setLoading(false);
     }, 1000);
   };
