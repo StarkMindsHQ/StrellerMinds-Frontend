@@ -75,7 +75,7 @@ export default function CollaborativeEditor({
 
     // Initialize with current session code if available (only if Yjs is empty)
     // Wait a bit for sync to complete, then initialize if still empty
-initializeTimeoutRef.current = setTimeout(() => {
+    initializeTimeoutRef.current = setTimeout(() => {
       if (yText.length === 0 && state.session?.code) {
         yText.insert(0, state.session.code);
       }

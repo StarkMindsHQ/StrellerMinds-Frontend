@@ -32,7 +32,10 @@ export function TourStep({ step, rect, isLast, isFirst }: TourStepProps) {
 
     // Horizontal centering with bounds check
     const width = 320;
-    left = Math.max(padding, Math.min(windowWidth - width - padding, left - width / 2));
+    left = Math.max(
+      padding,
+      Math.min(windowWidth - width - padding, left - width / 2),
+    );
 
     return { top, left };
   }, [rect]);
@@ -43,10 +46,12 @@ export function TourStep({ step, rect, isLast, isFirst }: TourStepProps) {
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: 10, scale: 0.95 }}
       className="absolute z-[10000] w-[320px] bg-card text-card-foreground p-6 rounded-2xl shadow-2xl border border-border pointer-events-auto"
-      style={{
-        top: `${position.top}px`,
-        left: `${position.left}px`,
-      } as React.CSSProperties}
+      style={
+        {
+          top: `${position.top}px`,
+          left: `${position.left}px`,
+        } as React.CSSProperties
+      }
     >
       <div className="flex justify-between items-start mb-4">
         <div className="flex flex-col">

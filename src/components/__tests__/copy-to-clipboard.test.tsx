@@ -1,5 +1,11 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  act,
+} from '@testing-library/react';
 import { CopyToClipboard } from '@/components/ui/copy-to-clipboard';
 
 const mockWriteText = vi.fn();
@@ -38,12 +44,16 @@ afterEach(() => {
 describe('CopyToClipboard', () => {
   it('renders with default aria-label when no label provided', () => {
     render(<CopyToClipboard text="hello" />);
-    expect(screen.getByRole('button', { name: 'Copy to clipboard' })).toBeDefined();
+    expect(
+      screen.getByRole('button', { name: 'Copy to clipboard' }),
+    ).toBeDefined();
   });
 
   it('renders with descriptive aria-label when label provided', () => {
     render(<CopyToClipboard text="0xabc" label="wallet address" />);
-    expect(screen.getByRole('button', { name: 'Copy wallet address' })).toBeDefined();
+    expect(
+      screen.getByRole('button', { name: 'Copy wallet address' }),
+    ).toBeDefined();
   });
 
   it('calls navigator.clipboard.writeText with the correct text', async () => {
@@ -74,7 +84,9 @@ describe('CopyToClipboard', () => {
     await act(async () => {
       vi.advanceTimersByTime(2000);
     });
-    expect(screen.getByRole('button', { name: 'Copy to clipboard' })).toBeDefined();
+    expect(
+      screen.getByRole('button', { name: 'Copy to clipboard' }),
+    ).toBeDefined();
   });
 
   it('fires toast with default message', async () => {
@@ -97,7 +109,9 @@ describe('CopyToClipboard', () => {
 
   it('fires toast with custom successMessage when provided', async () => {
     mockWriteText.mockResolvedValue(undefined);
-    render(<CopyToClipboard text="abc" successMessage="Hash copied to clipboard" />);
+    render(
+      <CopyToClipboard text="abc" successMessage="Hash copied to clipboard" />,
+    );
     await act(async () => {
       fireEvent.click(screen.getByRole('button'));
     });
@@ -124,7 +138,10 @@ describe('CopyToClipboard', () => {
   });
 
   it('uses execCommand fallback when clipboard API is unavailable', async () => {
-    Object.defineProperty(window, 'isSecureContext', { value: false, configurable: true });
+    Object.defineProperty(window, 'isSecureContext', {
+      value: false,
+      configurable: true,
+    });
 
     const execCommand = vi.fn().mockReturnValue(true);
     document.execCommand = execCommand;

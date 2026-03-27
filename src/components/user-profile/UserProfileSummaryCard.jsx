@@ -1,22 +1,24 @@
-import React from "react";
+import React from 'react';
 
 const UserProfileSummaryCard = ({ user }) => {
   const {
-    name = "Anonymous User",
+    name = 'Anonymous User',
     email,
     avatar,
     coursesCompleted = 0,
   } = user || {};
 
   const getInitials = (name) => {
-    if (!name) return "?";
-    const parts = name.split(" ");
-    return parts.map((p) => p[0]).join("").toUpperCase();
+    if (!name) return '?';
+    const parts = name.split(' ');
+    return parts
+      .map((p) => p[0])
+      .join('')
+      .toUpperCase();
   };
 
   return (
     <div className="w-full max-w-md bg-gray-900 border border-gray-800 rounded-2xl p-6 shadow-sm">
-      
       {/* Top Section */}
       <div className="flex items-center gap-4">
         {/* Avatar */}
@@ -34,12 +36,8 @@ const UserProfileSummaryCard = ({ user }) => {
 
         {/* User Info */}
         <div>
-          <h2 className="text-white font-semibold text-lg">
-            {name}
-          </h2>
-          {email && (
-            <p className="text-gray-400 text-sm">{email}</p>
-          )}
+          <h2 className="text-white font-semibold text-lg">{name}</h2>
+          {email && <p className="text-gray-400 text-sm">{email}</p>}
         </div>
       </div>
 
@@ -50,9 +48,7 @@ const UserProfileSummaryCard = ({ user }) => {
       <div className="flex justify-between items-center">
         <div>
           <p className="text-gray-400 text-sm">Courses Completed</p>
-          <p className="text-green-400 text-xl font-bold">
-            {coursesCompleted}
-          </p>
+          <p className="text-green-400 text-xl font-bold">{coursesCompleted}</p>
         </div>
 
         {/* Optional Badge */}

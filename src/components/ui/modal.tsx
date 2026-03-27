@@ -35,9 +35,7 @@ function Modal({
       <DialogContent className={cn(className)}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
-          {description && (
-            <DialogDescription>{description}</DialogDescription>
-          )}
+          {description && <DialogDescription>{description}</DialogDescription>}
         </DialogHeader>
         {children && children}
         {footer && <DialogFooter>{footer}</DialogFooter>}

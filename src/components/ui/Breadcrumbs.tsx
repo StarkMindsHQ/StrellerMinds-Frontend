@@ -31,7 +31,7 @@ export function Breadcrumbs({ className }: BreadcrumbProps) {
       aria-label="Breadcrumb"
       className={cn(
         'flex items-center space-x-2 text-sm text-muted-foreground mb-6 overflow-x-auto whitespace-nowrap pb-2 no-scrollbar',
-        className
+        className,
       )}
     >
       <Link

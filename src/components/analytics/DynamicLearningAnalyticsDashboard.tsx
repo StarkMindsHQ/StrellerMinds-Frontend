@@ -50,7 +50,8 @@ interface DynamicLearningAnalyticsDashboardProps {
 const HEATMAP_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const HEATMAP_BUCKETS = [0, 4, 8, 12, 16, 20];
 
-const toPercent = (value: number, decimals = 1): string => `${value.toFixed(decimals)}%`;
+const toPercent = (value: number, decimals = 1): string =>
+  `${value.toFixed(decimals)}%`;
 
 const heatCellBackground = (intensity: number): string => {
   if (intensity <= 0) return 'rgba(148, 163, 184, 0.12)';
@@ -94,7 +95,11 @@ export function DynamicLearningAnalyticsDashboard({
   const alertRows = snapshot.highRiskAlerts.slice(0, 5);
 
   const roleLabel =
-    role === 'admin' ? 'Admin View' : role === 'instructor' ? 'Instructor View' : 'Student View';
+    role === 'admin'
+      ? 'Admin View'
+      : role === 'instructor'
+        ? 'Instructor View'
+        : 'Student View';
 
   return (
     <div className={cn('space-y-6', className)}>
@@ -107,7 +112,8 @@ export function DynamicLearningAnalyticsDashboard({
                 Dynamic Learning Analytics Dashboard
               </CardTitle>
               <CardDescription className="mt-1">
-                Real-time aggregation of completion, watch-time, test scores, and risk predictions.
+                Real-time aggregation of completion, watch-time, test scores,
+                and risk predictions.
               </CardDescription>
             </div>
 
@@ -119,12 +125,19 @@ export function DynamicLearningAnalyticsDashboard({
                 <span
                   className={cn(
                     'h-2.5 w-2.5 rounded-full',
-                    isRealtimeConnected ? 'animate-pulse bg-emerald-500' : 'bg-amber-500',
+                    isRealtimeConnected
+                      ? 'animate-pulse bg-emerald-500'
+                      : 'bg-amber-500',
                   )}
                 />
                 {isRealtimeConnected ? 'Live' : 'Reconnecting'}
               </div>
-              <Button variant="outline" size="sm" className="gap-2" onClick={refreshNow}>
+              <Button
+                variant="outline"
+                size="sm"
+                className="gap-2"
+                onClick={refreshNow}
+              >
                 <RefreshCw className="h-4 w-4" />
                 Refresh
               </Button>
@@ -171,9 +184,12 @@ export function DynamicLearningAnalyticsDashboard({
       {role === 'student' && latestStudentRisk ? (
         <Card className="border-primary/20">
           <CardHeader className="pb-2">
-            <CardTitle className="text-base">Predictive Completion Risk</CardTitle>
+            <CardTitle className="text-base">
+              Predictive Completion Risk
+            </CardTitle>
             <CardDescription>
-              EngagementScoreEngine evaluates lesson intervals, missed quizzes, and watch-time ratio.
+              EngagementScoreEngine evaluates lesson intervals, missed quizzes,
+              and watch-time ratio.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -188,13 +204,16 @@ export function DynamicLearningAnalyticsDashboard({
             </div>
             <div className="grid gap-2 sm:grid-cols-3">
               <div className="rounded-lg border bg-muted/30 p-3 text-xs">
-                Completion interval risk: {Math.round(latestStudentRisk.signals.completionIntervalRisk)}%
+                Completion interval risk:{' '}
+                {Math.round(latestStudentRisk.signals.completionIntervalRisk)}%
               </div>
               <div className="rounded-lg border bg-muted/30 p-3 text-xs">
-                Missed quiz risk: {Math.round(latestStudentRisk.signals.missedQuizRisk)}%
+                Missed quiz risk:{' '}
+                {Math.round(latestStudentRisk.signals.missedQuizRisk)}%
               </div>
               <div className="rounded-lg border bg-muted/30 p-3 text-xs">
-                Watch-time risk: {Math.round(latestStudentRisk.signals.watchTimeRisk)}%
+                Watch-time risk:{' '}
+                {Math.round(latestStudentRisk.signals.watchTimeRisk)}%
               </div>
             </div>
             <ul className="space-y-1 text-sm text-muted-foreground">
@@ -209,14 +228,20 @@ export function DynamicLearningAnalyticsDashboard({
       <div className="grid gap-6 xl:grid-cols-3">
         <Card className="xl:col-span-2">
           <CardHeader>
-            <CardTitle className="text-base">Trend Detection (Weekly vs Monthly)</CardTitle>
+            <CardTitle className="text-base">
+              Trend Detection (Weekly vs Monthly)
+            </CardTitle>
             <CardDescription>
-              Animated line chart of completion and test-score movement over the last 30 days.
+              Animated line chart of completion and test-score movement over the
+              last 30 days.
             </CardDescription>
           </CardHeader>
           <CardContent className="h-[340px]">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={snapshot.timeline} margin={{ top: 8, right: 12, left: 0, bottom: 0 }}>
+              <LineChart
+                data={snapshot.timeline}
+                margin={{ top: 8, right: 12, left: 0, bottom: 0 }}
+              >
                 <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.35} />
                 <XAxis dataKey="label" tick={{ fontSize: 11 }} />
                 <YAxis domain={[0, 100]} tick={{ fontSize: 11 }} />
@@ -247,16 +272,34 @@ export function DynamicLearningAnalyticsDashboard({
         <Card>
           <CardHeader>
             <CardTitle className="text-base">Completion by Course</CardTitle>
-            <CardDescription>Bar chart by cohort/course grouping.</CardDescription>
+            <CardDescription>
+              Bar chart by cohort/course grouping.
+            </CardDescription>
           </CardHeader>
           <CardContent className="h-[340px]">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={snapshot.courseDistribution} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
+              <BarChart
+                data={snapshot.courseDistribution}
+                margin={{ top: 8, right: 8, left: 0, bottom: 0 }}
+              >
                 <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.2} />
-                <XAxis dataKey="courseName" tick={{ fontSize: 10 }} interval={0} angle={-10} textAnchor="end" height={55} />
+                <XAxis
+                  dataKey="courseName"
+                  tick={{ fontSize: 10 }}
+                  interval={0}
+                  angle={-10}
+                  textAnchor="end"
+                  height={55}
+                />
                 <YAxis domain={[0, 100]} tick={{ fontSize: 11 }} />
                 <Tooltip contentStyle={tooltipStyle} />
-                <Bar dataKey="completionRate" fill="#10b981" radius={[6, 6, 0, 0]} name="Completion %" isAnimationActive={true} />
+                <Bar
+                  dataKey="completionRate"
+                  fill="#10b981"
+                  radius={[6, 6, 0, 0]}
+                  name="Completion %"
+                  isAnimationActive={true}
+                />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
@@ -267,7 +310,8 @@ export function DynamicLearningAnalyticsDashboard({
         <CardHeader>
           <CardTitle className="text-base">Engagement Heatmap</CardTitle>
           <CardDescription>
-            Heat intensity tracks lesson-completion activity by day and hour window.
+            Heat intensity tracks lesson-completion activity by day and hour
+            window.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
@@ -279,8 +323,13 @@ export function DynamicLearningAnalyticsDashboard({
           </div>
           <div className="space-y-2">
             {HEATMAP_DAYS.map((day) => (
-              <div key={day} className="grid grid-cols-[70px_repeat(6,minmax(0,1fr))] items-center gap-2">
-                <span className="text-xs font-medium text-muted-foreground">{day}</span>
+              <div
+                key={day}
+                className="grid grid-cols-[70px_repeat(6,minmax(0,1fr))] items-center gap-2"
+              >
+                <span className="text-xs font-medium text-muted-foreground">
+                  {day}
+                </span>
                 {HEATMAP_BUCKETS.map((bucket) => {
                   const cell = snapshot.heatmap.find(
                     (item) => item.day === day && item.hourBucket === bucket,
@@ -330,9 +379,13 @@ export function DynamicLearningAnalyticsDashboard({
                       className="flex flex-wrap items-center justify-between gap-3 rounded-lg border bg-background/70 px-4 py-3"
                     >
                       <div>
-                        <p className="text-sm font-semibold">{assessment.studentName}</p>
+                        <p className="text-sm font-semibold">
+                          {assessment.studentName}
+                        </p>
                         <p className="text-xs text-muted-foreground">
-                          {assessment.courseName} - {assessment.daysSinceLastLessonCompletion.toFixed(1)} days since last completion
+                          {assessment.courseName} -{' '}
+                          {assessment.daysSinceLastLessonCompletion.toFixed(1)}{' '}
+                          days since last completion
                         </p>
                       </div>
                       <RiskIndicatorBadge
@@ -400,7 +453,8 @@ export function DynamicLearningAnalyticsDashboard({
             </CardDescription>
           </CardHeader>
           <CardContent className="text-sm text-muted-foreground">
-            Tracking {records[0]?.studentName ?? 'Student'} with continuous polling updates.
+            Tracking {records[0]?.studentName ?? 'Student'} with continuous
+            polling updates.
           </CardContent>
         </Card>
       ) : null}

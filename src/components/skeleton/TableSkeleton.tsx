@@ -21,11 +21,7 @@ export function TableSkeleton({
       {/* Table Header */}
       <div className="flex rounded-lg bg-gray-100 dark:bg-gray-900 p-4">
         {columns.map((col, index) => (
-          <div
-            key={index}
-            className="flex-1"
-            style={{ width: col.width }}
-          >
+          <div key={index} className="flex-1" style={{ width: col.width }}>
             <Skeleton className="h-4 w-full max-w-[100px]" />
           </div>
         ))}
@@ -95,7 +91,11 @@ export function CompactTableSkeleton({
               key={colIndex}
               className={cn(
                 'h-4',
-                colIndex === 0 ? 'w-16' : colIndex === columns - 1 ? 'w-20' : 'flex-1',
+                colIndex === 0
+                  ? 'w-16'
+                  : colIndex === columns - 1
+                    ? 'w-20'
+                    : 'flex-1',
               )}
             />
           ))}

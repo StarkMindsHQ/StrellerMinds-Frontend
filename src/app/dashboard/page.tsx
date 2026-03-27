@@ -59,14 +59,54 @@ export default function DashboardPage() {
   const learnerId = user?.id || 'learner-123';
 
   const navItems = [
-    { id: 'dashboard', icon: <LayoutDashboard size={20} />, label: 'Dashboard', href: '/dashboard' },
-    { id: 'courses', icon: <BookOpen size={20} />, label: 'My Courses', href: '#' },
-    { id: 'schedule', icon: <Calendar size={20} />, label: 'Schedule', href: '#' },
-    { id: 'certs', icon: <Certificate size={20} />, label: 'Certifications', href: '#' },
-    { id: 'community', icon: <MessageSquare size={20} />, label: 'Community', href: '#' },
-    { id: 'workforce', icon: <Briefcase size={20} />, label: 'Workforce', href: '#' },
-    { id: 'progress', icon: <BarChart3 size={20} />, label: 'Progress', href: '#' },
-    { id: 'settings', icon: <Settings size={20} />, label: 'Settings', href: '#' },
+    {
+      id: 'dashboard',
+      icon: <LayoutDashboard size={20} />,
+      label: 'Dashboard',
+      href: '/dashboard',
+    },
+    {
+      id: 'courses',
+      icon: <BookOpen size={20} />,
+      label: 'My Courses',
+      href: '#',
+    },
+    {
+      id: 'schedule',
+      icon: <Calendar size={20} />,
+      label: 'Schedule',
+      href: '#',
+    },
+    {
+      id: 'certs',
+      icon: <Certificate size={20} />,
+      label: 'Certifications',
+      href: '#',
+    },
+    {
+      id: 'community',
+      icon: <MessageSquare size={20} />,
+      label: 'Community',
+      href: '#',
+    },
+    {
+      id: 'workforce',
+      icon: <Briefcase size={20} />,
+      label: 'Workforce',
+      href: '#',
+    },
+    {
+      id: 'progress',
+      icon: <BarChart3 size={20} />,
+      label: 'Progress',
+      href: '#',
+    },
+    {
+      id: 'settings',
+      icon: <Settings size={20} />,
+      label: 'Settings',
+      href: '#',
+    },
   ];
 
   return (
@@ -82,14 +122,22 @@ export default function DashboardPage() {
             <Menu className="h-5 w-5" />
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="p-0 border-r-0 w-[300px] overflow-hidden">
+        <SheetContent
+          side="left"
+          className="p-0 border-r-0 w-[300px] overflow-hidden"
+        >
           <div className="flex flex-col h-full bg-card">
             <div className="flex h-20 items-center border-b px-6 bg-primary/5">
-              <Link href="/" className="flex items-center gap-3 font-black text-xl tracking-tighter">
+              <Link
+                href="/"
+                className="flex items-center gap-3 font-black text-xl tracking-tighter"
+              >
                 <div className="w-9 h-9 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary/20">
                   <Star className="h-5 w-5" fill="currentColor" />
                 </div>
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">StarkMinds</span>
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
+                  StarkMinds
+                </span>
               </Link>
             </div>
             <div className="flex-1 py-6 overflow-y-auto px-4">
@@ -98,10 +146,11 @@ export default function DashboardPage() {
                   <Link
                     key={item.id}
                     href={item.href}
-                    className={`flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-200 group ${item.id === 'dashboard'
-                      ? 'bg-primary text-white shadow-md shadow-primary/20'
-                      : 'hover:bg-primary/10 text-muted-foreground hover:text-primary'
-                      }`}
+                    className={`flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-200 group ${
+                      item.id === 'dashboard'
+                        ? 'bg-primary text-white shadow-md shadow-primary/20'
+                        : 'hover:bg-primary/10 text-muted-foreground hover:text-primary'
+                    }`}
                   >
                     <span className="shrink-0">{item.icon}</span>
                     <span className="font-semibold text-sm">{item.label}</span>
@@ -113,11 +162,18 @@ export default function DashboardPage() {
               {/* Mobile Profile Summary */}
               <div className="flex items-center gap-4 p-2 rounded-2xl bg-background/50 border">
                 <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center text-primary font-bold overflow-hidden">
-                  <Image src="/placeholder.svg?height=48&width=48&text=JD" alt="JD" width={48} height={48} />
+                  <Image
+                    src="/placeholder.svg?height=48&width=48&text=JD"
+                    alt="JD"
+                    width={48}
+                    height={48}
+                  />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-bold truncate">John Doe</p>
-                  <p className="text-xs text-muted-foreground truncate italic">Student</p>
+                  <p className="text-xs text-muted-foreground truncate italic">
+                    Student
+                  </p>
                 </div>
               </div>
             </div>
@@ -132,7 +188,10 @@ export default function DashboardPage() {
         className="hidden md:flex flex-col border-r bg-card relative z-40 transition-all duration-300 ease-in-out"
       >
         <div className="flex h-20 items-center px-6 border-b shrink-0 overflow-hidden">
-          <Link href="/" className="flex items-center gap-3 font-black text-xl tracking-tighter">
+          <Link
+            href="/"
+            className="flex items-center gap-3 font-black text-xl tracking-tighter"
+          >
             <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary/20 shrink-0">
               <Star className="h-5 w-5" fill="currentColor" />
             </div>
@@ -157,9 +216,11 @@ export default function DashboardPage() {
                 className={`
                   flex items-center rounded-2xl transition-all duration-200 group relative
                   ${isSidebarCollapsed ? 'justify-center p-3.5' : 'gap-4 px-4 py-3.5'}
-                  ${item.id === 'dashboard'
-                    ? 'bg-primary text-white shadow-md shadow-primary/20'
-                    : 'hover:bg-primary/10 text-muted-foreground hover:text-primary'}
+                  ${
+                    item.id === 'dashboard'
+                      ? 'bg-primary text-white shadow-md shadow-primary/20'
+                      : 'hover:bg-primary/10 text-muted-foreground hover:text-primary'
+                  }
                 `}
               >
                 <span className="shrink-0">{item.icon}</span>
@@ -187,9 +248,16 @@ export default function DashboardPage() {
             onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
             className="w-full flex items-center h-12 rounded-2xl text-muted-foreground hover:bg-muted transition-all border border-transparent hover:border-border"
           >
-            <div className={`flex items-center w-full ${isSidebarCollapsed ? 'justify-center' : 'px-4 gap-4'}`}>
-              <ChevronRight size={20} className={`transform transition-transform duration-300 ${isSidebarCollapsed ? '' : 'rotate-180'}`} />
-              {!isSidebarCollapsed && <span className="text-sm font-medium">Collapse</span>}
+            <div
+              className={`flex items-center w-full ${isSidebarCollapsed ? 'justify-center' : 'px-4 gap-4'}`}
+            >
+              <ChevronRight
+                size={20}
+                className={`transform transition-transform duration-300 ${isSidebarCollapsed ? '' : 'rotate-180'}`}
+              />
+              {!isSidebarCollapsed && (
+                <span className="text-sm font-medium">Collapse</span>
+              )}
             </div>
           </button>
         </div>
@@ -198,7 +266,8 @@ export default function DashboardPage() {
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden relative">
         <header className="sticky top-0 z-30 flex h-20 shrink-0 items-center justify-between border-b bg-background/80 backdrop-blur-md px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-4">
-            <div className="md:hidden w-10"></div> {/* Space for mobile menu trigger button */}
+            <div className="md:hidden w-10"></div>{' '}
+            {/* Space for mobile menu trigger button */}
             <h1 className="text-xl font-bold tracking-tight">Dashboard</h1>
           </div>
           <div className="flex items-center gap-4">
@@ -737,7 +806,7 @@ export default function DashboardPage() {
             </TabsContent>
           </Tabs>
         </main>
-      </div >
-    </div >
+      </div>
+    </div>
   );
 }

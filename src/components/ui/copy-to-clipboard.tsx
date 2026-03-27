@@ -7,8 +7,10 @@ import { Button, type ButtonProps } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard';
 
-export interface CopyToClipboardProps
-  extends Omit<ButtonProps, 'onClick' | 'children' | 'onCopy'> {
+export interface CopyToClipboardProps extends Omit<
+  ButtonProps,
+  'onClick' | 'children' | 'onCopy'
+> {
   text: string;
   label?: string;
   successMessage?: string;

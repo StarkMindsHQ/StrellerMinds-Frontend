@@ -4,7 +4,14 @@ import React from 'react';
 import Link from 'next/link';
 import { getAllCourses } from '@/lib/mock-course-data';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { BookOpen, Clock, User, Play, ArrowRight } from 'lucide-react';
 
@@ -17,7 +24,10 @@ export default function LearningDemoPage() {
   };
 
   const getTotalDuration = (lessons: any[]) => {
-    const totalSeconds = lessons.reduce((acc, lesson) => acc + lesson.duration, 0);
+    const totalSeconds = lessons.reduce(
+      (acc, lesson) => acc + lesson.duration,
+      0,
+    );
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
     return hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
@@ -36,13 +46,17 @@ export default function LearningDemoPage() {
               Master Blockchain Technology
             </h1>
             <p className="text-lg text-muted-foreground mb-8">
-              Explore our comprehensive courses designed to take you from beginner to expert. 
-              Each course features interactive lessons, hands-on projects, and real-world applications.
+              Explore our comprehensive courses designed to take you from
+              beginner to expert. Each course features interactive lessons,
+              hands-on projects, and real-world applications.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <div className="flex items-center gap-2 text-sm">
                 <BookOpen className="w-4 h-4 text-primary" />
-                <span>{courses.reduce((acc, c) => acc + c.totalLessons, 0)} Total Lessons</span>
+                <span>
+                  {courses.reduce((acc, c) => acc + c.totalLessons, 0)} Total
+                  Lessons
+                </span>
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <Clock className="w-4 h-4 text-primary" />
@@ -68,7 +82,10 @@ export default function LearningDemoPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {courses.map((course) => (
-            <Card key={course.id} className="flex flex-col hover:shadow-lg transition-shadow">
+            <Card
+              key={course.id}
+              className="flex flex-col hover:shadow-lg transition-shadow"
+            >
               <CardHeader>
                 <div className="flex items-start justify-between mb-2">
                   <Badge variant="outline" className="mb-2">
@@ -95,7 +112,10 @@ export default function LearningDemoPage() {
                     <div className="text-sm font-medium">Course Content:</div>
                     <ul className="space-y-1">
                       {course.lessons.slice(0, 3).map((lesson, index) => (
-                        <li key={lesson.id} className="text-sm text-muted-foreground flex items-start gap-2">
+                        <li
+                          key={lesson.id}
+                          className="text-sm text-muted-foreground flex items-start gap-2"
+                        >
                           <span className="text-primary mt-1">•</span>
                           <span className="line-clamp-1">{lesson.title}</span>
                         </li>
@@ -103,7 +123,9 @@ export default function LearningDemoPage() {
                       {course.lessons.length > 3 && (
                         <li className="text-sm text-muted-foreground flex items-start gap-2">
                           <span className="text-primary mt-1">•</span>
-                          <span>And {course.lessons.length - 3} more lessons...</span>
+                          <span>
+                            And {course.lessons.length - 3} more lessons...
+                          </span>
                         </li>
                       )}
                     </ul>
@@ -143,7 +165,8 @@ export default function LearningDemoPage() {
                 </div>
                 <h3 className="font-semibold mb-2">Structured Learning</h3>
                 <p className="text-sm text-muted-foreground">
-                  Progressive lessons that build on each other for optimal learning
+                  Progressive lessons that build on each other for optimal
+                  learning
                 </p>
               </div>
               <div className="text-center">

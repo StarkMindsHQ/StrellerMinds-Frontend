@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { usePathname } from "next/navigation";
+import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 
 type NavItem = {
   label: string;
@@ -24,7 +24,7 @@ export default function Sidebar({ items }: SidebarProps) {
       <div key={item.path} style={{ paddingLeft: `${level * 16}px` }}>
         <a
           href={item.path}
-          className={pathname === item.path ? "active" : ""}
+          className={pathname === item.path ? 'active' : ''}
           tabIndex={0}
         >
           {item.label}
@@ -34,9 +34,9 @@ export default function Sidebar({ items }: SidebarProps) {
     ));
 
   return (
-    <div className={`sidebar ${isCollapsed ? "collapsed" : ""}`}>
+    <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
       <button onClick={toggleCollapse}>
-        {isCollapsed ? "Expand" : "Collapse"}
+        {isCollapsed ? 'Expand' : 'Collapse'}
       </button>
       <nav>{renderNavItems(items)}</nav>
     </div>

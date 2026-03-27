@@ -9,7 +9,10 @@ export function TourOverlay() {
   const { isOpen, currentStepIndex, steps, isStepReady } = useTour();
   const [rect, setRect] = useState<DOMRect | null>(null);
 
-  const step = useMemo(() => steps[currentStepIndex], [steps, currentStepIndex]);
+  const step = useMemo(
+    () => steps[currentStepIndex],
+    [steps, currentStepIndex],
+  );
 
   useEffect(() => {
     if (!isOpen || !step) return;

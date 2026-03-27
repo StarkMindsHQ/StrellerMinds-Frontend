@@ -136,7 +136,10 @@ export default function VideoPlayer({
                 onClick={togglePlay}
                 className="bg-primary/90 hover:bg-primary text-white border border-white/20 rounded-full w-20 h-20 md:w-24 md:h-24 shadow-2xl transition-transform active:scale-95"
               >
-                <Play className="w-10 h-10 md:w-12 md:h-12 ml-1" fill="currentColor" />
+                <Play
+                  className="w-10 h-10 md:w-12 md:h-12 ml-1"
+                  fill="currentColor"
+                />
               </Button>
             </motion.div>
           )}
@@ -145,8 +148,11 @@ export default function VideoPlayer({
 
       {/* Custom Controls - More touch friendly */}
       <div
-        className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-4 md:p-6 transition-all duration-300 z-20 ${showControls || !isPlaying ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
-          }`}
+        className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-4 md:p-6 transition-all duration-300 z-20 ${
+          showControls || !isPlaying
+            ? 'opacity-100 translate-y-0'
+            : 'opacity-0 translate-y-4 pointer-events-none'
+        }`}
       >
         {/* Progress Bar Container with larger hit area */}
         <div
@@ -195,7 +201,8 @@ export default function VideoPlayer({
             </div>
 
             <span className="text-white text-sm md:text-base font-medium tabular-nums shadow-sm">
-              {formatTime(currentTime)} <span className="text-white/60">/</span> {formatTime(duration)}
+              {formatTime(currentTime)} <span className="text-white/60">/</span>{' '}
+              {formatTime(duration)}
             </span>
           </div>
 

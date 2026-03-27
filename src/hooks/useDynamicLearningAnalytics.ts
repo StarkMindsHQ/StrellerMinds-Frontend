@@ -48,7 +48,9 @@ const resolveRoleScopedRecords = (
 ): StudentLearningRecord[] => {
   if (role === 'student') {
     const resolvedId = studentId ?? ROLE_FALLBACK_STUDENT_ID;
-    const selectedRecord = allRecords.find((record) => record.studentId === resolvedId);
+    const selectedRecord = allRecords.find(
+      (record) => record.studentId === resolvedId,
+    );
     return selectedRecord ? [selectedRecord] : [allRecords[0]];
   }
 
@@ -65,11 +67,15 @@ const resolveRoleScopedRecords = (
   return allRecords;
 };
 
-const isValidSocketPayload = (payload: unknown): payload is AnalyticsSocketPayload => {
+const isValidSocketPayload = (
+  payload: unknown,
+): payload is AnalyticsSocketPayload => {
   if (!payload || typeof payload !== 'object') return false;
 
   const candidate = payload as AnalyticsSocketPayload;
-  return candidate.type === 'analytics_update' && Array.isArray(candidate.records);
+  return (
+    candidate.type === 'analytics_update' && Array.isArray(candidate.records)
+  );
 };
 
 export const useDynamicLearningAnalytics = (
@@ -180,7 +186,9 @@ export const useDynamicLearningAnalytics = (
   }, [mode, websocketUrl, startPolling, stopPolling]);
 
   const updateThresholds = useCallback((next: Partial<RiskThresholdConfig>) => {
-    setThresholds((previous) => normalizeRiskThresholdConfig({ ...previous, ...next }));
+    setThresholds((previous) =>
+      normalizeRiskThresholdConfig({ ...previous, ...next }),
+    );
   }, []);
 
   const scopedRecords = useMemo(
@@ -189,7 +197,8 @@ export const useDynamicLearningAnalytics = (
   );
 
   const snapshot = useMemo(
-    () => createLearningAnalyticsSnapshot(scopedRecords, thresholds, new Date()),
+    () =>
+      createLearningAnalyticsSnapshot(scopedRecords, thresholds, new Date()),
     [scopedRecords, thresholds],
   );
 

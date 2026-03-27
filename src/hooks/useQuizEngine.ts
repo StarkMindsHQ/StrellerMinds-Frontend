@@ -35,7 +35,7 @@ function quizReducer(state: QuizState, action: QuizAction): QuizState {
 
     case 'SELECT_ANSWER': {
       const existingAnswerIndex = state.answers.findIndex(
-        (a) => a.questionId === action.payload.questionId
+        (a) => a.questionId === action.payload.questionId,
       );
 
       let newAnswers = [...state.answers];
@@ -160,7 +160,11 @@ export function useQuizEngine(quizConfig: QuizConfig) {
 
   // Timer countdown
   useEffect(() => {
-    if (!quizConfig.timeLimit || quizState.isSubmitted || quizState.status !== 'in-progress') {
+    if (
+      !quizConfig.timeLimit ||
+      quizState.isSubmitted ||
+      quizState.status !== 'in-progress'
+    ) {
       return;
     }
 
@@ -180,7 +184,7 @@ export function useQuizEngine(quizConfig: QuizConfig) {
 
   const currentQuestion = questions[quizState.currentQuestionIndex];
   const currentAnswerForQuestion = quizState.answers.find(
-    (a) => a.questionId === currentQuestion?.id
+    (a) => a.questionId === currentQuestion?.id,
   );
 
   const handleSelectAnswer = useCallback(
@@ -195,7 +199,7 @@ export function useQuizEngine(quizConfig: QuizConfig) {
         },
       });
     },
-    [currentQuestion, quizState.isSubmitted]
+    [currentQuestion, quizState.isSubmitted],
   );
 
   const canProceedToNext = useCallback((): boolean => {
@@ -231,7 +235,7 @@ export function useQuizEngine(quizConfig: QuizConfig) {
       }
       return false;
     },
-    [questions.length]
+    [questions.length],
   );
 
   const calculateResult = useCallback((): QuizResult => {
@@ -240,7 +244,9 @@ export function useQuizEngine(quizConfig: QuizConfig) {
     let correctCount = 0;
 
     const detailedResults: QuestionResult[] = questions.map((question) => {
-      const answer = quizState.answers.find((a) => a.questionId === question.id);
+      const answer = quizState.answers.find(
+        (a) => a.questionId === question.id,
+      );
       const isCorrect = answer?.selectedOptionId === question.correctOptionId;
 
       if (isCorrect) correctCount++;
@@ -269,14 +275,20 @@ export function useQuizEngine(quizConfig: QuizConfig) {
       startedAt: quizState.startedAt,
       completedAt: quizState.endedAt || Date.now(),
       timeSpent: Math.floor(
-        ((quizState.endedAt || Date.now()) - quizState.startedAt) / 1000
+        ((quizState.endedAt || Date.now()) - quizState.startedAt) / 1000,
       ),
       answers: quizState.answers,
       detailedResults,
     };
 
     return result;
-  }, [quizConfig, quizState.answers, quizState.startedAt, quizState.endedAt, questions]);
+  }, [
+    quizConfig,
+    quizState.answers,
+    quizState.startedAt,
+    quizState.endedAt,
+    questions,
+  ]);
 
   const handleSubmitQuiz = useCallback(() => {
     if (quizState.isSubmitted) return false;

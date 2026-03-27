@@ -1,9 +1,22 @@
 'use client';
 
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { motion, AnimatePresence, useInView, useAnimation } from 'framer-motion';
+import {
+  motion,
+  AnimatePresence,
+  useInView,
+  useAnimation,
+} from 'framer-motion';
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
-import { Clock, Users, Star, Play, TrendingUp, Loader2, RefreshCw } from 'lucide-react';
+import {
+  Clock,
+  Users,
+  Star,
+  Play,
+  TrendingUp,
+  Loader2,
+  RefreshCw,
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 // Types
@@ -43,7 +56,10 @@ export interface FetchVideosResponse {
 }
 
 export interface InfiniteScrollFeedProps {
-  fetchVideos: (cursor?: string, limit?: number) => Promise<FetchVideosResponse>;
+  fetchVideos: (
+    cursor?: string,
+    limit?: number,
+  ) => Promise<FetchVideosResponse>;
   batchSize?: number;
   gridConfig?: GridConfig;
   className?: string;
@@ -67,25 +83,25 @@ const containerVariants = {
 };
 
 const cardVariants = {
-  hidden: { 
-    opacity: 0, 
+  hidden: {
+    opacity: 0,
     y: 20,
-    scale: 0.95 
+    scale: 0.95,
   },
-  show: { 
-    opacity: 1, 
+  show: {
+    opacity: 1,
     y: 0,
     scale: 1,
     transition: {
-      type: "spring",
+      type: 'spring',
       stiffness: 100,
-      damping: 20
-    }
+      damping: 20,
+    },
   },
-  exit: { 
-    opacity: 0, 
+  exit: {
+    opacity: 0,
     y: -20,
-    scale: 0.95 
+    scale: 0.95,
   },
 };
 
@@ -101,7 +117,7 @@ const VideoCard: React.FC<{
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
     const remainingMinutes = minutes % 60;
-    
+
     if (hours > 0) {
       return `${hours}h ${remainingMinutes}m`;
     }
@@ -140,9 +156,9 @@ const VideoCard: React.FC<{
       initial="hidden"
       animate="show"
       exit="exit"
-      whileHover={{ 
+      whileHover={{
         scale: 1.02,
-        transition: { duration: 0.2 }
+        transition: { duration: 0.2 },
       }}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
@@ -203,10 +219,12 @@ const VideoCard: React.FC<{
             <span className="text-sm text-blue-600 dark:text-blue-400 font-medium">
               {video.instructor}
             </span>
-            <span className={cn(
-              'text-xs font-semibold px-2 py-1 rounded-full',
-              getLevelColor(video.level)
-            )}>
+            <span
+              className={cn(
+                'text-xs font-semibold px-2 py-1 rounded-full',
+                getLevelColor(video.level),
+              )}
+            >
               {video.level}
             </span>
           </div>
@@ -249,7 +267,9 @@ const VideoCard: React.FC<{
 };
 
 // Loading Spinner Component
-const LoadingSpinner: React.FC<{ size?: 'sm' | 'md' | 'lg' }> = ({ size = 'md' }) => {
+const LoadingSpinner: React.FC<{ size?: 'sm' | 'md' | 'lg' }> = ({
+  size = 'md',
+}) => {
   const sizeClasses = {
     sm: 'w-4 h-4',
     md: 'w-6 h-6',
@@ -258,7 +278,9 @@ const LoadingSpinner: React.FC<{ size?: 'sm' | 'md' | 'lg' }> = ({ size = 'md' }
 
   return (
     <div className="flex justify-center py-8">
-      <Loader2 className={cn(sizeClasses[size], 'animate-spin text-blue-600')} />
+      <Loader2
+        className={cn(sizeClasses[size], 'animate-spin text-blue-600')}
+      />
     </div>
   );
 };
@@ -269,7 +291,12 @@ const ScrollTrigger: React.FC<{
   isFetchingNextPage: boolean;
   onLoadMore: () => void;
   prefetchThreshold?: number;
-}> = ({ hasNextPage, isFetchingNextPage, onLoadMore, prefetchThreshold = 200 }) => {
+}> = ({
+  hasNextPage,
+  isFetchingNextPage,
+  onLoadMore,
+  prefetchThreshold = 200,
+}) => {
   const triggerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(triggerRef, {
     amount: 0.1,
@@ -332,7 +359,7 @@ export const InfiniteScrollFeed: React.FC<InfiniteScrollFeedProps> = ({
   const getGridClasses = () => {
     const { columns, gap, className: gridClassName } = mergedGridConfig;
     let gridClass = `grid ${gap || 'gap-4'} ${gridClassName || ''}`;
-    
+
     if (columns) {
       if (columns.xs) gridClass += ` grid-cols-${columns.xs}`;
       if (columns.sm) gridClass += ` sm:grid-cols-${columns.sm}`;
@@ -340,7 +367,7 @@ export const InfiniteScrollFeed: React.FC<InfiniteScrollFeedProps> = ({
       if (columns.lg) gridClass += ` lg:grid-cols-${columns.lg}`;
       if (columns.xl) gridClass += ` xl:grid-cols-${columns.xl}`;
     }
-    
+
     return gridClass;
   };
 
@@ -371,24 +398,35 @@ export const InfiniteScrollFeed: React.FC<InfiniteScrollFeedProps> = ({
       if (lastPage?.nextCursor) {
         await queryClient.prefetchInfiniteQuery({
           queryKey: ['infinite-videos'],
-          queryFn: ({ pageParam }) => fetchVideos(lastPage.nextCursor, batchSize),
+          queryFn: ({ pageParam }) =>
+            fetchVideos(lastPage.nextCursor, batchSize),
           getNextPageParam: (lastPage) => lastPage.nextCursor,
           initialPageParam: undefined,
         });
       }
     }
-  }, [hasNextPage, isFetchingNextPage, data, fetchVideos, batchSize, queryClient]);
+  }, [
+    hasNextPage,
+    isFetchingNextPage,
+    data,
+    fetchVideos,
+    batchSize,
+    queryClient,
+  ]);
 
   // Flatten all pages into a single array
-  const allVideos = data?.pages.flatMap(page => page.videos) || [];
+  const allVideos = data?.pages.flatMap((page) => page.videos) || [];
 
   // Handle video selection
-  const handleVideoSelect = useCallback((video: VideoItem) => {
-    onVideoSelect?.(video);
-    
-    // Prefetch next page when user interacts
-    prefetchNextPage();
-  }, [onVideoSelect, prefetchNextPage]);
+  const handleVideoSelect = useCallback(
+    (video: VideoItem) => {
+      onVideoSelect?.(video);
+
+      // Prefetch next page when user interacts
+      prefetchNextPage();
+    },
+    [onVideoSelect, prefetchNextPage],
+  );
 
   // Handle refresh
   const handleRefresh = useCallback(() => {
@@ -405,7 +443,7 @@ export const InfiniteScrollFeed: React.FC<InfiniteScrollFeedProps> = ({
   // Error state
   if (error) {
     return (
-      <div className={cn("text-center py-12", className)}>
+      <div className={cn('text-center py-12', className)}>
         <div className="text-red-600 dark:text-red-400 mb-4">
           <RefreshCw className="w-8 h-8 mx-auto mb-2 opacity-50" />
         </div>
@@ -439,34 +477,33 @@ export const InfiniteScrollFeed: React.FC<InfiniteScrollFeedProps> = ({
   // Empty state
   if (allVideos.length === 0) {
     return (
-      <div className={cn("text-center py-12", className)}>
+      <div className={cn('text-center py-12', className)}>
         <div className="text-gray-300 dark:text-gray-600 mb-4">
           <Play className="w-12 h-12 mx-auto" />
         </div>
-        <p className="text-gray-600 dark:text-gray-400">
-          {emptyStateMessage}
-        </p>
+        <p className="text-gray-600 dark:text-gray-400">{emptyStateMessage}</p>
       </div>
     );
   }
 
   return (
-    <div className={cn("w-full", className)}>
+    <div className={cn('w-full', className)}>
       {/* Header with refresh button */}
       {showRefreshButton && (
         <div className="flex items-center justify-between mb-6">
           <div className="text-sm text-gray-600 dark:text-gray-400">
-            {data?.pages[0]?.totalCount ? 
-              `${data.pages[0].totalCount} videos` : 
-              `${allVideos.length} videos`
-            }
+            {data?.pages[0]?.totalCount
+              ? `${data.pages[0].totalCount} videos`
+              : `${allVideos.length} videos`}
           </div>
           <button
             onClick={handleRefresh}
             disabled={isFetching}
             className="flex items-center gap-2 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors disabled:opacity-50"
           >
-            <RefreshCw className={cn("w-4 h-4", isFetching && "animate-spin")} />
+            <RefreshCw
+              className={cn('w-4 h-4', isFetching && 'animate-spin')}
+            />
             Refresh
           </button>
         </div>

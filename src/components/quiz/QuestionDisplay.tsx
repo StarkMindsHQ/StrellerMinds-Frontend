@@ -36,16 +36,21 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
       {/* Question Header */}
       <div className="space-y-2">
         <div className="flex items-start justify-between gap-4">
-          <h2 className="text-xl font-bold text-gray-800 flex-1">{question.question}</h2>
+          <h2 className="text-xl font-bold text-gray-800 flex-1">
+            {question.question}
+          </h2>
           {question.difficulty && (
-            <span className={`px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap ${
-              question.difficulty === 'easy'
-                ? 'bg-green-100 text-green-700'
-                : question.difficulty === 'medium'
-                ? 'bg-yellow-100 text-yellow-700'
-                : 'bg-red-100 text-red-700'
-            }`}>
-              {question.difficulty.charAt(0).toUpperCase() + question.difficulty.slice(1)}
+            <span
+              className={`px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap ${
+                question.difficulty === 'easy'
+                  ? 'bg-green-100 text-green-700'
+                  : question.difficulty === 'medium'
+                    ? 'bg-yellow-100 text-yellow-700'
+                    : 'bg-red-100 text-red-700'
+              }`}
+            >
+              {question.difficulty.charAt(0).toUpperCase() +
+                question.difficulty.slice(1)}
             </span>
           )}
         </div>
@@ -61,7 +66,8 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
           const isSelected = option.id === selectedOptionId;
           const isOptionCorrect = option.id === question.correctOptionId;
           const showAsCorrect = shouldShowFeedback && isOptionCorrect;
-          const showAsIncorrect = shouldShowFeedback && isSelected && !isCorrect;
+          const showAsIncorrect =
+            shouldShowFeedback && isSelected && !isCorrect;
 
           let optionClasses =
             'relative w-full p-4 text-left border rounded-lg transition-all cursor-pointer ';
@@ -74,15 +80,14 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
           } else {
             // Feedback state
             if (showAsCorrect) {
-              optionClasses += 'border-green-500 bg-green-50 ring-2 ring-green-300';
+              optionClasses +=
+                'border-green-500 bg-green-50 ring-2 ring-green-300';
             } else if (showAsIncorrect) {
               optionClasses += 'border-red-500 bg-red-50 ring-2 ring-red-300';
             } else if (isSelected) {
-              optionClasses +=
-                'border-gray-300 bg-gray-50';
+              optionClasses += 'border-gray-300 bg-gray-50';
             } else {
-              optionClasses +=
-                'border-gray-200 bg-white';
+              optionClasses += 'border-gray-200 bg-white';
             }
           }
 
@@ -104,10 +109,10 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
                     isSelected
                       ? 'border-blue-500 bg-blue-500'
                       : showAsCorrect
-                      ? 'border-green-500 bg-green-500'
-                      : showAsIncorrect
-                      ? 'border-red-500 bg-red-500'
-                      : 'border-gray-300'
+                        ? 'border-green-500 bg-green-500'
+                        : showAsIncorrect
+                          ? 'border-red-500 bg-red-500'
+                          : 'border-gray-300'
                   }`}
                 >
                   {showAsCorrect && <Check className="w-3 h-3 text-white" />}
@@ -120,8 +125,8 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
                     showAsCorrect
                       ? 'text-green-700'
                       : showAsIncorrect
-                      ? 'text-red-700'
-                      : 'text-gray-700'
+                        ? 'text-red-700'
+                        : 'text-gray-700'
                   }`}
                 >
                   {option.text}
@@ -168,7 +173,9 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
                 {isCorrect ? 'Correct!' : 'Incorrect'}
               </p>
               {question.explanation && (
-                <p className={`text-sm ${isCorrect ? 'text-green-600' : 'text-red-600'}`}>
+                <p
+                  className={`text-sm ${isCorrect ? 'text-green-600' : 'text-red-600'}`}
+                >
                   {question.explanation}
                 </p>
               )}

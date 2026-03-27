@@ -44,7 +44,9 @@ describe('Modal', () => {
         <p>body</p>
       </Modal>,
     );
-    expect(document.querySelector('[data-slot="dialog-description"]')).toBeNull();
+    expect(
+      document.querySelector('[data-slot="dialog-description"]'),
+    ).toBeNull();
   });
 
   it('renders custom footer when provided', () => {
@@ -167,7 +169,8 @@ describe('ConfirmModal', () => {
     );
     const buttons = screen.getAllByRole('button');
     const actionButtons = buttons.filter(
-      (b) => b.textContent?.includes('Confirm') || b.textContent?.includes('Cancel'),
+      (b) =>
+        b.textContent?.includes('Confirm') || b.textContent?.includes('Cancel'),
     );
     actionButtons.forEach((btn) => {
       expect((btn as HTMLButtonElement).disabled).toBe(true);

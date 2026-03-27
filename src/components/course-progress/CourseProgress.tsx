@@ -1,13 +1,13 @@
-import React, { useMemo } from "react";
-import clsx from "clsx";
-import { CourseProgressProps } from "./CourseProgress.types";
-import { CourseProgressSkeleton } from "./CourseProgressSkeleton";
+import React, { useMemo } from 'react';
+import clsx from 'clsx';
+import { CourseProgressProps } from './CourseProgress.types';
+import { CourseProgressSkeleton } from './CourseProgressSkeleton';
 
 export const CourseProgress: React.FC<CourseProgressProps> = ({
   totalLessons,
   completedLessons,
   showLabel = true,
-  size = "md",
+  size = 'md',
   loading = false,
 }) => {
   const percentage = useMemo(() => {
@@ -22,7 +22,9 @@ export const CourseProgress: React.FC<CourseProgressProps> = ({
       {/* Label */}
       {showLabel && (
         <div className="flex justify-between text-sm mb-1">
-          <span>{completedLessons} / {totalLessons} lessons</span>
+          <span>
+            {completedLessons} / {totalLessons} lessons
+          </span>
           <span>{Math.round(percentage)}%</span>
         </div>
       )}
@@ -30,10 +32,10 @@ export const CourseProgress: React.FC<CourseProgressProps> = ({
       {/* Progress Bar */}
       <div
         className={clsx(
-          "w-full bg-gray-200 rounded-full overflow-hidden",
-          size === "sm" && "h-1.5",
-          size === "md" && "h-2.5",
-          size === "lg" && "h-4"
+          'w-full bg-gray-200 rounded-full overflow-hidden',
+          size === 'sm' && 'h-1.5',
+          size === 'md' && 'h-2.5',
+          size === 'lg' && 'h-4',
         )}
       >
         <div

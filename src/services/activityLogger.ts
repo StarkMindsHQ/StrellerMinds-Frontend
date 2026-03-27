@@ -60,7 +60,7 @@ class ActivityLoggerService {
     lessonId: string,
     metrics: ActivityMetrics,
     events: ActivityEvent[],
-    courseId?: string
+    courseId?: string,
   ): Promise<void> {
     const log: ActivityLog = {
       id: `log_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -138,7 +138,7 @@ class ActivityLoggerService {
     userId: string,
     lessonId?: string,
     startDate?: Date,
-    endDate?: Date
+    endDate?: Date,
   ): Promise<ActivityLogSummary> {
     try {
       const params = new URLSearchParams({
@@ -148,8 +148,10 @@ class ActivityLoggerService {
         ...(endDate && { endDate: endDate.toISOString() }),
       });
 
-      const response = await fetch(`/api/activity-logs/summary?${params.toString()}`);
-      
+      const response = await fetch(
+        `/api/activity-logs/summary?${params.toString()}`,
+      );
+
       if (!response.ok) {
         throw new Error('Failed to fetch activity summary');
       }
@@ -165,7 +167,7 @@ class ActivityLoggerService {
   async getActivityLogs(
     userId: string,
     lessonId?: string,
-    limit: number = 50
+    limit: number = 50,
   ): Promise<ActivityLog[]> {
     try {
       const params = new URLSearchParams({
@@ -175,7 +177,7 @@ class ActivityLoggerService {
       });
 
       const response = await fetch(`/api/activity-logs?${params.toString()}`);
-      
+
       if (!response.ok) {
         throw new Error('Failed to fetch activity logs');
       }
@@ -188,17 +190,23 @@ class ActivityLoggerService {
   }
 
   // Calculate engagement trends
-  calculateEngagementTrend(logs: ActivityLog[]): 'improving' | 'declining' | 'stable' {
+  calculateEngagementTrend(
+    logs: ActivityLog[],
+  ): 'improving' | 'declining' | 'stable' {
     if (logs.length < 2) return 'stable';
 
     const sortedLogs = [...logs].sort((a, b) => a.startTime - b.startTime);
     const midpoint = Math.floor(sortedLogs.length / 2);
-    
+
     const firstHalf = sortedLogs.slice(0, midpoint);
     const secondHalf = sortedLogs.slice(midpoint);
 
-    const avgFirstHalf = firstHalf.reduce((sum, log) => sum + log.metrics.engagementScore, 0) / firstHalf.length;
-    const avgSecondHalf = secondHalf.reduce((sum, log) => sum + log.metrics.engagementScore, 0) / secondHalf.length;
+    const avgFirstHalf =
+      firstHalf.reduce((sum, log) => sum + log.metrics.engagementScore, 0) /
+      firstHalf.length;
+    const avgSecondHalf =
+      secondHalf.reduce((sum, log) => sum + log.metrics.engagementScore, 0) /
+      secondHalf.length;
 
     const difference = avgSecondHalf - avgFirstHalf;
 
@@ -222,7 +230,7 @@ class ActivityLoggerService {
       'Inactive Time',
     ];
 
-    const rows = logs.map(log => [
+    const rows = logs.map((log) => [
       log.sessionId,
       log.userId,
       log.lessonId,
@@ -236,14 +244,17 @@ class ActivityLoggerService {
     ]);
 
     const csv = [headers, ...rows]
-      .map(row => row.map(cell => `"${cell}"`).join(','))
+      .map((row) => row.map((cell) => `"${cell}"`).join(','))
       .join('\n');
 
     return csv;
   }
 
   // Download CSV
-  downloadCSV(logs: ActivityLog[], filename: string = 'activity-logs.csv'): void {
+  downloadCSV(
+    logs: ActivityLog[],
+    filename: string = 'activity-logs.csv',
+  ): void {
     const csv = this.exportLogsAsCSV(logs);
     const blob = new Blob([csv], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);

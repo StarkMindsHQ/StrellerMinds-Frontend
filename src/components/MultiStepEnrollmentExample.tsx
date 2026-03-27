@@ -3,7 +3,10 @@
 import React from 'react';
 import * as z from 'zod';
 import { CreditCard, ShieldCheck, User } from 'lucide-react';
-import { MultiStepCourseEnrollment, StepConfig } from './MultiStepCourseEnrollment';
+import {
+  MultiStepCourseEnrollment,
+  StepConfig,
+} from './MultiStepCourseEnrollment';
 
 const enrollmentSteps: StepConfig[] = [
   {
@@ -18,10 +21,30 @@ const enrollmentSteps: StepConfig[] = [
       phone: z.string().min(10, 'Phone number must be valid'),
     }),
     fields: [
-      { name: 'firstName', label: 'First Name', type: 'text', placeholder: 'John' },
-      { name: 'lastName', label: 'Last Name', type: 'text', placeholder: 'Doe' },
-      { name: 'email', label: 'Email Address', type: 'email', placeholder: 'john.doe@example.com' },
-      { name: 'phone', label: 'Phone Number', type: 'text', placeholder: '+1 (555) 000-0000' },
+      {
+        name: 'firstName',
+        label: 'First Name',
+        type: 'text',
+        placeholder: 'John',
+      },
+      {
+        name: 'lastName',
+        label: 'Last Name',
+        type: 'text',
+        placeholder: 'Doe',
+      },
+      {
+        name: 'email',
+        label: 'Email Address',
+        type: 'email',
+        placeholder: 'john.doe@example.com',
+      },
+      {
+        name: 'phone',
+        label: 'Phone Number',
+        type: 'text',
+        placeholder: '+1 (555) 000-0000',
+      },
     ],
   },
   {
@@ -40,9 +63,21 @@ const enrollmentSteps: StepConfig[] = [
         label: 'Payment Options',
         type: 'radio',
         options: [
-          { label: 'Credit Card', value: 'credit-card', description: 'Visa, Mastercard, Amex' },
-          { label: 'PayPal', value: 'paypal', description: 'Fast, safe checkout' },
-          { label: 'Crypto (Web3)', value: 'crypto', description: 'Pay with ETH/USDC' },
+          {
+            label: 'Credit Card',
+            value: 'credit-card',
+            description: 'Visa, Mastercard, Amex',
+          },
+          {
+            label: 'PayPal',
+            value: 'paypal',
+            description: 'Fast, safe checkout',
+          },
+          {
+            label: 'Crypto (Web3)',
+            value: 'crypto',
+            description: 'Pay with ETH/USDC',
+          },
         ],
       },
     ],
@@ -54,7 +89,7 @@ const enrollmentSteps: StepConfig[] = [
     icon: <ShieldCheck className="h-5 w-5" />,
     // Optional additional summary schema
     schema: z.object({
-        summary_flag: z.boolean().optional()
+      summary_flag: z.boolean().optional(),
     }),
     fields: [
       {
@@ -74,9 +109,9 @@ export default function MultiStepEnrollmentExample() {
 
   return (
     <div className="min-h-screen bg-muted/20 flex items-center justify-center p-4">
-      <MultiStepCourseEnrollment 
-        steps={enrollmentSteps} 
-        onSubmit={handleEnrollment} 
+      <MultiStepCourseEnrollment
+        steps={enrollmentSteps}
+        onSubmit={handleEnrollment}
         onCancel={() => console.log('Cancelled')}
       />
     </div>

@@ -1,32 +1,17 @@
-import React from "react";
+import React from 'react';
 
-const EmptyState = ({
-  icon,
-  title,
-  description,
-  actionLabel,
-  onAction,
-}) => {
+const EmptyState = ({ icon, title, description, actionLabel, onAction }) => {
   return (
     <div className="flex flex-col items-center justify-center text-center py-16 px-6 bg-gray-900 rounded-2xl border border-gray-800">
-      
       {/* Icon */}
-      {icon && (
-        <div className="mb-4 text-green-400 text-4xl">
-          {icon}
-        </div>
-      )}
+      {icon && <div className="mb-4 text-green-400 text-4xl">{icon}</div>}
 
       {/* Title */}
-      <h2 className="text-lg font-semibold text-white">
-        {title}
-      </h2>
+      <h2 className="text-lg font-semibold text-white">{title}</h2>
 
       {/* Description */}
       {description && (
-        <p className="text-gray-400 text-sm mt-2 max-w-md">
-          {description}
-        </p>
+        <p className="text-gray-400 text-sm mt-2 max-w-md">{description}</p>
       )}
 
       {/* CTA */}

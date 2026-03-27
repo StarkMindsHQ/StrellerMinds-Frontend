@@ -1,8 +1,8 @@
-import React from "react";
-import clsx from "clsx";
-import { PaginationProps } from "./Pagination.types";
-import { getPaginationRange } from "./pagination.utils";
-import { PageSizeSelector } from "./PageSizeSelector";
+import React from 'react';
+import clsx from 'clsx';
+import { PaginationProps } from './Pagination.types';
+import { getPaginationRange } from './pagination.utils';
+import { PageSizeSelector } from './PageSizeSelector';
 
 export const Pagination: React.FC<PaginationProps> = ({
   currentPage,
@@ -22,7 +22,6 @@ export const Pagination: React.FC<PaginationProps> = ({
 
   return (
     <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-      
       {/* Page Size */}
       {onPageSizeChange && (
         <PageSizeSelector
@@ -49,7 +48,7 @@ export const Pagination: React.FC<PaginationProps> = ({
 
         {/* Page Numbers */}
         {pages.map((page, idx) =>
-          page === "..." ? (
+          page === '...' ? (
             <span key={idx} className="px-2">
               ...
             </span>
@@ -58,14 +57,14 @@ export const Pagination: React.FC<PaginationProps> = ({
               key={page}
               onClick={() => goToPage(page)}
               className={clsx(
-                "px-3 py-1 rounded-lg border",
-                page === currentPage && "bg-blue-500 text-white"
+                'px-3 py-1 rounded-lg border',
+                page === currentPage && 'bg-blue-500 text-white',
               )}
-              aria-current={page === currentPage ? "page" : undefined}
+              aria-current={page === currentPage ? 'page' : undefined}
             >
               {page}
             </button>
-          )
+          ),
         )}
 
         {/* Next */}

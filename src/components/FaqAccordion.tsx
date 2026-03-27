@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -32,7 +32,7 @@ export const FaqAccordion: React.FC<FaqAccordionProps> = ({
   itemClassName,
 }) => {
   const [openItems, setOpenItems] = useState<Set<string | number>>(
-    new Set(defaultOpenIds)
+    new Set(defaultOpenIds),
   );
 
   const toggleItem = (id: string | number) => {
@@ -60,7 +60,9 @@ export const FaqAccordion: React.FC<FaqAccordionProps> = ({
   if (!items?.length) return null;
 
   return (
-    <div className={cn("w-full max-w-4xl mx-auto flex flex-col gap-3", className)}>
+    <div
+      className={cn('w-full max-w-4xl mx-auto flex flex-col gap-3', className)}
+    >
       {items.map((item) => {
         const isOpen = openItems.has(item.id);
         const headerId = `faq-header-${item.id}`;
@@ -74,11 +76,11 @@ export const FaqAccordion: React.FC<FaqAccordionProps> = ({
               backgroundColor: isOpen ? 'transparent' : 'transparent',
             }}
             className={cn(
-              "group border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden backdrop-blur-sm transition-all duration-300",
+              'group border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden backdrop-blur-sm transition-all duration-300',
               isOpen
-                ? "bg-blue-50/50 dark:bg-blue-900/10 shadow-sm border-blue-200 dark:border-blue-800/50"
-                : "bg-white/50 dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 hover:border-zinc-300 dark:hover:border-zinc-700",
-              itemClassName
+                ? 'bg-blue-50/50 dark:bg-blue-900/10 shadow-sm border-blue-200 dark:border-blue-800/50'
+                : 'bg-white/50 dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 hover:border-zinc-300 dark:hover:border-zinc-700',
+              itemClassName,
             )}
           >
             <button
@@ -91,20 +93,20 @@ export const FaqAccordion: React.FC<FaqAccordionProps> = ({
             >
               <h3
                 className={cn(
-                  "text-base md:text-lg font-medium transition-colors duration-300",
+                  'text-base md:text-lg font-medium transition-colors duration-300',
                   isOpen
-                    ? "text-blue-700 dark:text-blue-400"
-                    : "text-zinc-800 dark:text-zinc-200 group-hover:text-zinc-900 dark:group-hover:text-white"
+                    ? 'text-blue-700 dark:text-blue-400'
+                    : 'text-zinc-800 dark:text-zinc-200 group-hover:text-zinc-900 dark:group-hover:text-white',
                 )}
               >
                 {item.question}
               </h3>
               <div
                 className={cn(
-                  "flex-shrink-0 ml-4 h-8 w-8 flex items-center justify-center rounded-full transition-colors duration-300",
+                  'flex-shrink-0 ml-4 h-8 w-8 flex items-center justify-center rounded-full transition-colors duration-300',
                   isOpen
-                    ? "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400"
-                    : "bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400 group-hover:bg-zinc-200 dark:group-hover:bg-zinc-700"
+                    ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400'
+                    : 'bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400 group-hover:bg-zinc-200 dark:group-hover:bg-zinc-700',
                 )}
               >
                 <motion.div
@@ -124,7 +126,7 @@ export const FaqAccordion: React.FC<FaqAccordionProps> = ({
                   role="region"
                   aria-labelledby={headerId}
                   initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
+                  animate={{ height: 'auto', opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
                   transition={{ duration: 0.3, ease: [0.04, 0.62, 0.23, 0.98] }}
                 >

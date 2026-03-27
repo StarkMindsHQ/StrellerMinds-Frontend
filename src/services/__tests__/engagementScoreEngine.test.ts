@@ -140,7 +140,11 @@ describe('engagementScoreEngine', () => {
       now,
     );
 
-    const alerts = buildRiskAlerts([safeAssessment, riskyAssessment], thresholds, now);
+    const alerts = buildRiskAlerts(
+      [safeAssessment, riskyAssessment],
+      thresholds,
+      now,
+    );
 
     expect(alerts.length).toBe(1);
     expect(alerts[0].studentId).toBe('student-risk');

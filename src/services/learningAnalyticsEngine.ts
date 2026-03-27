@@ -184,7 +184,9 @@ export const aggregateLearningMetrics = (
     };
   }
 
-  const completionRate = safeAverage(records.map((record) => record.currentProgress));
+  const completionRate = safeAverage(
+    records.map((record) => record.currentProgress),
+  );
   const averageWatchTimeRatio = safeAverage(
     records.map((record) => {
       if (record.baselineWatchMinutes === 0) return 1;
@@ -199,8 +201,12 @@ export const aggregateLearningMetrics = (
     (sum, record) => sum + record.quizzesAssigned,
     0,
   );
-  const totalMissed = records.reduce((sum, record) => sum + record.quizzesMissed, 0);
-  const missedQuizRate = totalAssigned === 0 ? 0 : (totalMissed / totalAssigned) * 100;
+  const totalMissed = records.reduce(
+    (sum, record) => sum + record.quizzesMissed,
+    0,
+  );
+  const missedQuizRate =
+    totalAssigned === 0 ? 0 : (totalMissed / totalAssigned) * 100;
 
   return {
     completionRate: round(completionRate, 2),
@@ -263,7 +269,10 @@ export const buildTimelineSeries = (
 
     points.push({
       date: key,
-      label: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+      label: date.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+      }),
       completionRate: round(completionRate, 2),
       watchTimeRatio: round(watchTimeRatio, 3),
       testScore: round(testScore, 2),
@@ -278,7 +287,12 @@ export const buildCourseDistribution = (
 ): CourseAnalyticsPoint[] => {
   const grouped = new Map<
     string,
-    { courseId: string; courseName: string; completion: number[]; score: number[] }
+    {
+      courseId: string;
+      courseName: string;
+      completion: number[];
+      score: number[];
+    }
   >();
 
   for (const record of records) {
@@ -359,7 +373,11 @@ export const createLearningAnalyticsSnapshot = (
 ): LearningAnalyticsSnapshot => {
   const normalizedThresholds = normalizeRiskThresholdConfig(thresholdConfig);
   const riskAssessments = assessCohortRisk(records, normalizedThresholds, now);
-  const highRiskAlerts = buildRiskAlerts(riskAssessments, normalizedThresholds, now);
+  const highRiskAlerts = buildRiskAlerts(
+    riskAssessments,
+    normalizedThresholds,
+    now,
+  );
 
   return {
     generatedAt: now.toISOString(),

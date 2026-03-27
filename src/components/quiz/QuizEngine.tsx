@@ -60,14 +60,18 @@ const QuizEngine: React.FC<QuizEngineProps> = ({
 
   if (!quiz.currentQuestion) {
     return (
-      <div className={`flex items-center justify-center min-h-screen ${className}`}>
+      <div
+        className={`flex items-center justify-center min-h-screen ${className}`}
+      >
         <p className="text-lg text-gray-500">Loading quiz...</p>
       </div>
     );
   }
 
   return (
-    <div className={`min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-6 px-4 ${className}`}>
+    <div
+      className={`min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-6 px-4 ${className}`}
+    >
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <QuizHeader
@@ -104,7 +108,9 @@ const QuizEngine: React.FC<QuizEngineProps> = ({
               question={quiz.currentQuestion}
               selectedOptionId={quiz.currentAnswerForQuestion?.selectedOptionId}
               onSelectAnswer={quiz.selectAnswer}
-              showFeedback={config.showFeedback || config.feedbackMode === 'instant'}
+              showFeedback={
+                config.showFeedback || config.feedbackMode === 'instant'
+              }
               isSubmitted={quiz.quizState.isSubmitted}
             />
           </CardContent>
@@ -124,11 +130,13 @@ const QuizEngine: React.FC<QuizEngineProps> = ({
 
         {/* Question Navigator */}
         <div className="mt-6 p-4 bg-white rounded-lg border">
-          <p className="text-sm font-semibold text-gray-700 mb-3">Jump to question:</p>
+          <p className="text-sm font-semibold text-gray-700 mb-3">
+            Jump to question:
+          </p>
           <div className="grid grid-cols-5 sm:grid-cols-8 gap-2">
             {Array.from({ length: quiz.progress.total }).map((_, idx) => {
               const answered = quiz.quizState.answers.some(
-                (a) => a.questionId === quiz.questions[idx]?.id
+                (a) => a.questionId === quiz.questions[idx]?.id,
               );
 
               return (
@@ -139,8 +147,8 @@ const QuizEngine: React.FC<QuizEngineProps> = ({
                     idx === quiz.quizState.currentQuestionIndex
                       ? 'bg-blue-600 text-white ring-2 ring-blue-300'
                       : answered
-                      ? 'bg-green-100 text-green-700 hover:bg-green-200'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                        ? 'bg-green-100 text-green-700 hover:bg-green-200'
+                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
                   title={answered ? 'Answered' : 'Not answered'}
                 >

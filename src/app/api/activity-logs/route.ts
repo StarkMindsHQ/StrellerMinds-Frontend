@@ -8,10 +8,7 @@ export async function POST(request: NextRequest) {
     const { logs } = await request.json();
 
     if (!logs || !Array.isArray(logs)) {
-      return NextResponse.json(
-        { error: 'Invalid logs data' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Invalid logs data' }, { status: 400 });
     }
 
     // Store logs (in production, save to database)
@@ -31,7 +28,7 @@ export async function POST(request: NextRequest) {
     console.error('Error saving activity logs:', error);
     return NextResponse.json(
       { error: 'Failed to save activity logs' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -47,12 +44,12 @@ export async function GET(request: NextRequest) {
 
     // Filter by userId
     if (userId) {
-      filteredLogs = filteredLogs.filter(log => log.userId === userId);
+      filteredLogs = filteredLogs.filter((log) => log.userId === userId);
     }
 
     // Filter by lessonId
     if (lessonId) {
-      filteredLogs = filteredLogs.filter(log => log.lessonId === lessonId);
+      filteredLogs = filteredLogs.filter((log) => log.lessonId === lessonId);
     }
 
     // Sort by start time (most recent first)
@@ -66,7 +63,7 @@ export async function GET(request: NextRequest) {
     console.error('Error fetching activity logs:', error);
     return NextResponse.json(
       { error: 'Failed to fetch activity logs' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

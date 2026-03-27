@@ -55,7 +55,11 @@ function saveRecent(query: string, max: number) {
       localStorage.getItem(RECENT_KEY) ?? '[]',
     );
     const next: SearchSuggestion[] = [
-      { id: `recent-${Date.now()}`, label: query.trim(), type: 'recent' as const },
+      {
+        id: `recent-${Date.now()}`,
+        label: query.trim(),
+        type: 'recent' as const,
+      },
       ...prev.filter((r) => r.label !== query.trim()),
     ].slice(0, max);
     localStorage.setItem(RECENT_KEY, JSON.stringify(next));
@@ -203,7 +207,10 @@ export function SmartSearchAutocomplete({
     setRecent([]);
   };
 
-  const showDropdown = Boolean(isOpen && (displayItems.length > 0 || isLoading || (query.trim() && !isLoading)));
+  const showDropdown = Boolean(
+    isOpen &&
+    (displayItems.length > 0 || isLoading || (query.trim() && !isLoading)),
+  );
 
   return (
     <div ref={containerRef} className={cn('relative w-full', className)}>
@@ -245,7 +252,11 @@ export function SmartSearchAutocomplete({
 
         {query && (
           <button
-            onClick={() => { setQuery(''); setSuggestions([]); inputRef.current?.focus(); }}
+            onClick={() => {
+              setQuery('');
+              setSuggestions([]);
+              inputRef.current?.focus();
+            }}
             className="rounded-full p-0.5 text-muted-foreground hover:text-foreground transition-colors"
             aria-label="Clear"
           >

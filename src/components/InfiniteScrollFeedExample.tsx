@@ -20,12 +20,14 @@ export default function InfiniteScrollFeedExample() {
   });
   const [batchSize, setBatchSize] = useState(12);
   const [showRefreshButton, setShowRefreshButton] = useState(true);
-  const [refreshInterval, setRefreshInterval] = useState<number | undefined>(undefined);
+  const [refreshInterval, setRefreshInterval] = useState<number | undefined>(
+    undefined,
+  );
 
   const handleVideoSelect = (video: any) => {
     console.log('Selected video:', video);
     setSelectedVideo(video.id);
-    
+
     // In a real application, you would:
     // 1. Navigate to the video page
     // 2. Update the video player
@@ -69,7 +71,8 @@ export default function InfiniteScrollFeedExample() {
             Infinite Scroll Feed Demo
           </h1>
           <p className="text-gray-600 dark:text-gray-400">
-            Experience smooth infinite scrolling with prefetching, caching, and beautiful animations.
+            Experience smooth infinite scrolling with prefetching, caching, and
+            beautiful animations.
           </p>
         </div>
 
@@ -113,9 +116,11 @@ export default function InfiniteScrollFeedExample() {
                     onClick={() => setGridConfig(preset.config)}
                     className={`
                       w-full flex items-center gap-2 px-3 py-2 text-sm rounded-lg border transition-colors
-                      ${JSON.stringify(gridConfig) === JSON.stringify(preset.config)
-                        ? 'bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-900/20 dark:border-blue-800 dark:text-blue-300'
-                        : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-700'
+                      ${
+                        JSON.stringify(gridConfig) ===
+                        JSON.stringify(preset.config)
+                          ? 'bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-900/20 dark:border-blue-800 dark:text-blue-300'
+                          : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-700'
                       }
                     `}
                   >
@@ -160,7 +165,11 @@ export default function InfiniteScrollFeedExample() {
                 </label>
                 <select
                   value={refreshInterval || ''}
-                  onChange={(e) => setRefreshInterval(e.target.value ? Number(e.target.value) : undefined)}
+                  onChange={(e) =>
+                    setRefreshInterval(
+                      e.target.value ? Number(e.target.value) : undefined,
+                    )
+                  }
                   className="w-full px-3 py-1 text-sm border border-gray-200 rounded bg-white text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300"
                 >
                   <option value="">Auto-refresh: Off</option>
@@ -218,7 +227,9 @@ export default function InfiniteScrollFeedExample() {
 
         {/* Feature Highlights */}
         <div className="mt-12 bg-white dark:bg-gray-950 rounded-xl p-6 border border-gray-200 dark:border-gray-800">
-          <h3 className="text-lg font-semibold mb-4">Key Features Demonstrated</h3>
+          <h3 className="text-lg font-semibold mb-4">
+            Key Features Demonstrated
+          </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <div className="text-center">
               <div className="bg-blue-100 dark:bg-blue-900/30 rounded-lg p-3 mb-2">
@@ -289,10 +300,15 @@ export default function InfiniteScrollFeedExample() {
             <ul className="list-disc list-inside space-y-1 text-gray-600 dark:text-gray-400">
               <li>Scroll down to automatically load more videos</li>
               <li>Click on any video card to select it</li>
-              <li>Adjust grid layout and batch size using the configuration panel</li>
+              <li>
+                Adjust grid layout and batch size using the configuration panel
+              </li>
               <li>Enable auto-refresh for periodic updates</li>
               <li>Watch the smooth animations as cards appear</li>
-              <li>Notice the prefetching - next batch loads before you reach bottom</li>
+              <li>
+                Notice the prefetching - next batch loads before you reach
+                bottom
+              </li>
             </ul>
           </div>
         </div>

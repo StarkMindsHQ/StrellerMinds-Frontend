@@ -1,5 +1,5 @@
-import React from "react";
-import ErrorFallback from "./ErrorFallback";
+import React from 'react';
+import ErrorFallback from './ErrorFallback';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -16,7 +16,7 @@ class ErrorBoundary extends React.Component {
 
   componentDidCatch(error, errorInfo) {
     // 🔥 Log error (replace with Sentry, LogRocket, etc.)
-    console.error("Error caught by boundary:", error, errorInfo);
+    console.error('Error caught by boundary:', error, errorInfo);
 
     if (this.props.onError) {
       this.props.onError(error, errorInfo);
@@ -30,10 +30,7 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <ErrorFallback
-          error={this.state.error}
-          onRetry={this.handleRetry}
-        />
+        <ErrorFallback error={this.state.error} onRetry={this.handleRetry} />
       );
     }
 
