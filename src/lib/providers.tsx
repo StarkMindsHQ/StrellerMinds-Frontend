@@ -8,6 +8,7 @@ import CrossTabSyncComponent from '@/components/CrossTabSyncComponent';
 import SmartIdleDetector from '@/components/SmartIdleDetector';
 import { TourProvider } from '@/contexts/TourContext';
 import { TourOverlay } from '@/components/ui/TourOverlay';
+import { GlobalStateSyncProvider } from '@/contexts/GlobalStateSyncProvider';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [client] = useState(
@@ -25,22 +26,24 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={client}>
       <AuthProvider>
-        <CrossTabSyncComponent>
-          <Web3Provider>
-            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-              <TourProvider>
-                <SmartIdleDetector
-                  timeoutMs={15 * 60 * 1000}
-                  warningDurationMs={60 * 1000}
-                  triggerLogoutOnIdle
-                  requireAuthenticatedSession
-                />
-                {children}
-                <TourOverlay />
-              </TourProvider>
-            </ThemeProvider>
-          </Web3Provider>
-        </CrossTabSyncComponent>
+        <GlobalStateSyncProvider>
+          <CrossTabSyncComponent>
+            <Web3Provider>
+              <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+                <TourProvider>
+                  <SmartIdleDetector
+                    timeoutMs={15 * 60 * 1000}
+                    warningDurationMs={60 * 1000}
+                    triggerLogoutOnIdle
+                    requireAuthenticatedSession
+                  />
+                  {children}
+                  <TourOverlay />
+                </TourProvider>
+              </ThemeProvider>
+            </Web3Provider>
+          </CrossTabSyncComponent>
+        </GlobalStateSyncProvider>
       </AuthProvider>
     </QueryClientProvider>
   );
