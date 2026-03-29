@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider } from 'next-themes';
 import { useState } from 'react';
 import { Web3Provider } from './web3/providers';
+import { DynamicThemeLoader } from '@/components/DynamicThemeLoader';
 import { AuthProvider } from '@/contexts/AuthContext';
 import CrossTabSyncComponent from '@/components/CrossTabSyncComponent';
 import SmartIdleDetector from '@/components/SmartIdleDetector';
@@ -30,16 +31,18 @@ export function Providers({ children }: { children: React.ReactNode }) {
           <CrossTabSyncComponent>
             <Web3Provider>
               <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-                <TourProvider>
-                  <SmartIdleDetector
-                    timeoutMs={15 * 60 * 1000}
-                    warningDurationMs={60 * 1000}
-                    triggerLogoutOnIdle
-                    requireAuthenticatedSession
-                  />
-                  {children}
-                  <TourOverlay />
-                </TourProvider>
+                <DynamicThemeLoader>
+                  <TourProvider>
+                    <SmartIdleDetector
+                      timeoutMs={15 * 60 * 1000}
+                      warningDurationMs={60 * 1000}
+                      triggerLogoutOnIdle
+                      requireAuthenticatedSession
+                    />
+                    {children}
+                    <TourOverlay />
+                  </TourProvider>
+                </DynamicThemeLoader>
               </ThemeProvider>
             </Web3Provider>
           </CrossTabSyncComponent>
