@@ -157,6 +157,11 @@ export const metadata: Metadata = {
 // Initialize server environment validation
 initializeServerEnvironment();
 
+import { ActivityProvider } from '../contexts/activity-context';
+import { ActivityIndicator } from '@/components/ui/activity-indicator';
+
+// ... (existing code)
+
 export default function RootLayout({
   children,
 }: {
@@ -167,21 +172,24 @@ export default function RootLayout({
       <body className={`${inter.variable} ${sourceCodePro.variable}`}>
         <StyledComponentsRegistry>
           <Providers>
-            <EnvironmentValidator />
+            <ActivityProvider>
+              <ActivityIndicator />
+              <EnvironmentValidator />
 
-            <a
-              href="#main-content"
-              className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-16 focus:bg-[#5c0f49] focus:text-white focus:p-4 focus:outline-none focus:z-50"
-            >
-              Skip to content
-            </a>
+              <a
+                href="#main-content"
+                className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-16 focus:bg-[#5c0f49] focus:text-white focus:p-4 focus:outline-none focus:z-50"
+              >
+                Skip to content
+              </a>
 
-            <MainLayoutWrapper>{children}</MainLayoutWrapper>
+              <MainLayoutWrapper>{children}</MainLayoutWrapper>
 
-            <AppToaster />
-            <SonnerToaster position="top-right" />
-            <Analytics />
-            <CookieBanner />
+              <AppToaster />
+              <SonnerToaster position="top-right" />
+              <Analytics />
+              <CookieBanner />
+            </ActivityProvider>
           </Providers>
         </StyledComponentsRegistry>
       </body>
