@@ -2,14 +2,16 @@
 
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { BookOpen, Users, FileCheck, BarChart3 } from 'lucide-react';
+import { BookOpen, Users, FileCheck, BarChart3, DollarSign } from 'lucide-react';
 import CourseManagement from './CourseManagement';
 import StudentList from './StudentList';
 import ApplicationReview from './ApplicationReview';
 import AnalyticsDashboard from './AnalyticsDashboard';
+import { RevenueSplitVisualization } from './RevenueSplitVisualization';
+import { CurriculumBuilder } from './CurriculumBuilder';
 import { cn } from '@/lib/utils';
 
-type InstructorTabValue = 'courses' | 'students' | 'applications' | 'analytics';
+type InstructorTabValue = 'courses' | 'curriculum' | 'students' | 'applications' | 'analytics' | 'financials';
 
 const tabs: {
   value: InstructorTabValue;
@@ -17,9 +19,11 @@ const tabs: {
   icon: React.ElementType;
 }[] = [
   { value: 'courses', label: 'Courses', icon: BookOpen },
+  { value: 'curriculum', label: 'Curriculum', icon: FileCheck },
   { value: 'students', label: 'Students', icon: Users },
   { value: 'applications', label: 'Applications', icon: FileCheck },
   { value: 'analytics', label: 'Analytics', icon: BarChart3 },
+  { value: 'financials', label: 'Financials', icon: DollarSign },
 ];
 
 export default function InstructorTabs() {
@@ -51,6 +55,9 @@ export default function InstructorTabs() {
       <TabsContent value="courses" className="mt-0 flex-1 outline-none">
         <CourseManagement />
       </TabsContent>
+      <TabsContent value="curriculum" className="mt-0 flex-1 outline-none">
+        <CurriculumBuilder />
+      </TabsContent>
       <TabsContent value="students" className="mt-0 flex-1 outline-none">
         <StudentList />
       </TabsContent>
@@ -59,6 +66,9 @@ export default function InstructorTabs() {
       </TabsContent>
       <TabsContent value="analytics" className="mt-0 flex-1 outline-none">
         <AnalyticsDashboard />
+      </TabsContent>
+      <TabsContent value="financials" className="mt-0 flex-1 outline-none">
+        <RevenueSplitVisualization />
       </TabsContent>
     </Tabs>
   );
