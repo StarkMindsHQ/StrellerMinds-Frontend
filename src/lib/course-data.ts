@@ -9,6 +9,7 @@ export interface EnhancedCourseData {
   studentsCount: number;
   rating: number;
   imageUrl: string;
+  status?: 'published' | 'draft' | 'archived'; // Course publication status
 
   // Enhanced filtering properties
   popularity: number;
@@ -59,6 +60,7 @@ export const allCourses: EnhancedCourseData[] = [
     ],
     tags: ['Blockchain', 'Fundamentals', 'Beginner-Friendly'],
     reviewCount: 324,
+    status: 'published',
   },
   {
     id: 'stellar-smart-contract',
@@ -85,6 +87,7 @@ export const allCourses: EnhancedCourseData[] = [
     ],
     tags: ['Stellar', 'Smart Contracts', 'Soroban'],
     reviewCount: 187,
+    status: 'published',
   },
   {
     id: 'defi-stellar',
@@ -110,6 +113,7 @@ export const allCourses: EnhancedCourseData[] = [
     ],
     tags: ['DeFi', 'Advanced', 'Finance'],
     reviewCount: 98,
+    status: 'published',
   },
   {
     id: 'blockchain-security',
@@ -135,6 +139,7 @@ export const allCourses: EnhancedCourseData[] = [
     ],
     tags: ['Security', 'Best Practices', 'Enterprise'],
     reviewCount: 156,
+    status: 'published',
   },
   {
     id: 'crypto-trading',
@@ -149,6 +154,7 @@ export const allCourses: EnhancedCourseData[] = [
     dateAdded: '2023-07-25',
     trendingScore: 65,
     imageUrl: '/images/courses/crypto-trading.jpg',
+    status: 'published',
   },
   {
     id: 'nft-development',
@@ -163,6 +169,7 @@ export const allCourses: EnhancedCourseData[] = [
     dateAdded: '2024-01-10',
     trendingScore: 95,
     imageUrl: '/images/courses/nft-development.jpg',
+    status: 'published',
   },
   {
     id: 'blockchain-governance',
@@ -177,5 +184,6 @@ export const allCourses: EnhancedCourseData[] = [
     dateAdded: '2024-02-05',
     trendingScore: 80,
     imageUrl: '/images/courses/blockchain-governance.jpg',
+    status: 'published',
   },
 ];

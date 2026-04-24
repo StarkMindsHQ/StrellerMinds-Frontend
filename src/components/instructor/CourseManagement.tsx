@@ -1,13 +1,27 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { MOCK_COURSES, type MockCourse } from '@/data/mockInstructorData';
-import { Search, Users, BookOpen, Calendar } from 'lucide-react';
+import {
+  Search,
+  Users,
+  BookOpen,
+  Calendar,
+  Archive,
+  Undo2,
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
 
 const statusVariant: Record<
   MockCourse['status'],
@@ -23,9 +37,11 @@ export default function CourseManagement() {
   const [statusFilter, setStatusFilter] = useState<
     MockCourse['status'] | 'all'
   >('all');
+  const [courses, setCourses] = useState<MockCourse[]>(MOCK_COURSES);
+  const { toast } = useToast();
 
   const filtered = useMemo(() => {
-    return MOCK_COURSES.filter((c) => {
+    return courses.filter((c) => {
       const matchSearch =
         !search ||
         c.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -33,7 +49,49 @@ export default function CourseManagement() {
       const matchStatus = statusFilter === 'all' || c.status === statusFilter;
       return matchSearch && matchStatus;
     });
-  }, [search, statusFilter]);
+  }, [search, statusFilter, courses]);
+
+  const handleArchiveToggle = async (
+    courseId: string,
+    currentStatus: MockCourse['status'],
+  ) => {
+    const action = currentStatus === 'archived' ? 'unarchive' : 'archive';
+
+    try {
+      const response = await fetch(`/api/courses/${courseId}/archive`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to update course status');
+      }
+
+      // Update local state
+      setCourses((prev) =>
+        prev.map((c) =>
+          c.id === courseId
+            ? { ...c, status: action === 'archive' ? 'archived' : 'published' }
+            : c,
+        ),
+      );
+
+      toast({
+        title: 'Success',
+        description: `Course ${action}d successfully`,
+      });
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description:
+          error instanceof Error ? error.message : 'Failed to update course',
+        variant: 'destructive',
+      });
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -96,6 +154,29 @@ export default function CourseManagement() {
                 Updated {course.lastUpdated}
               </span>
             </CardContent>
+            <CardFooter className="flex justify-end gap-2 pt-4">
+              {course.status !== 'archived' ? (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleArchiveToggle(course.id, course.status)}
+                  className="flex items-center gap-1.5"
+                >
+                  <Archive className="size-4" />
+                  Archive
+                </Button>
+              ) : (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleArchiveToggle(course.id, course.status)}
+                  className="flex items-center gap-1.5"
+                >
+                  <Undo2 className="size-4" />
+                  Restore
+                </Button>
+              )}
+            </CardFooter>
           </Card>
         ))}
       </div>

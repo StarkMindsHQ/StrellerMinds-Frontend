@@ -14,12 +14,138 @@ model User {
   email         String    @unique
   name          String?
   phone         String?
+  role          UserRole  @default(STUDENT)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  
+
   notifications           Notification[]
   notificationPreferences NotificationPreferences?
   pushSubscriptions       PushSubscription[]
+  enrollments             Enrollment[]
+  taughtCourses           Course[] @relation("InstructorCourses")
+}
+
+model Course {
+  id               String   @id @default(cuid())
+  slug             String   @unique
+  title           String
+  description      String   @db.Text
+  shortDescription String? @db.VarChar(500)
+  thumbnail        String?
+  coverImage       String?
+  category         String
+  subcategory      String?
+  tags            String[]  @default([])
+  level           CourseLevel
+  durationMinutes Int?
+  status          CourseStatus @default(DRAFT)
+  price           Float?
+  currency        String   @default("USD")
+  instructorId    String
+  instructor      User     @relation("InstructorCourses", fields: [instructorId], references: [id], onDelete: Cascade)
+  prerequisites  CoursePrerequisite[]
+  translations    CourseTranslation[]
+  modules         Module[]
+  enrollments     Enrollment[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  publishedAt     DateTime?
+  version         Int      @default(1)
+
+  @@index([instructorId])
+  @@index([status])
+  @@index([category])
+  @@map("courses")
+}
+
+model Module {
+  id        String   @id @default(cuid())
+  courseId  String
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  title     String
+  description String? @db.Text
+  order     Int
+  isLocked  Boolean  @default(false)
+  unlockCriteria Json?
+  lessons   Lesson[]
+  quizzes   Quiz[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([courseId])
+  @@map("modules")
+}
+
+model Lesson {
+  id        String   @id @default(cuid())
+  moduleId  String
+  module    Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  title     String
+  content   String?  @db.Text
+  videoUrl  String?
+  duration  Int?     // in seconds
+  order     Int
+  type      LessonType @default(VIDEO)
+  isCompleted Boolean @default(false)
+  isLocked  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([moduleId])
+  @@map("lessons")
+}
+
+model Quiz {
+  id        String   @id @default(cuid())
+  moduleId  String
+  module    Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  title     String
+  questions Json?
+  passingScore Int   @default(70)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([moduleId])
+  @@map("quizzes")
+}
+
+model CoursePrerequisite {
+  id        String   @id @default(cuid())
+  courseId  String
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  prerequisiteCourseId String
+  @@unique([courseId, prerequisiteCourseId])
+  @@map("course_prerequisites")
+}
+
+model Enrollment {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId   String
+  course     Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  enrolledAt DateTime @default(now())
+  progress   Float    @default(0) // 0-100
+  completedAt DateTime?
+  lastAccessedAt DateTime?
+  metadata   Json?
+
+  @@unique([userId, courseId])
+  @@index([userId])
+  @@index([courseId])
+  @@map("enrollments")
+}
+
+model CourseTranslation {
+  id        String   @id @default(cuid())
+  courseId  String
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  language  LanguageCode
+  title     String?
+  description String? @db.Text
+  content   Json?     // Translated content for modules/lessons
+  @@unique([courseId, language])
+  @@map("course_translations")
 }
 
 model Notification {
@@ -107,4 +233,45 @@ enum NotificationStatus {
   UNREAD
   READ
   ARCHIVED
+}
+
+enum UserRole {
+  STUDENT
+  INSTRUCTOR
+  ADMIN
+}
+
+enum CourseStatus {
+  DRAFT
+  REVIEW
+  APPROVED
+  PUBLISHED
+  ARCHIVED
+}
+
+enum CourseLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  EXPERT
+}
+
+enum LessonType {
+  VIDEO
+  QUIZ
+  ASSIGNMENT
+  READING
+}
+
+enum LanguageCode {
+  EN
+  FR
+  ES
+  DE
+  ZH
+  JA
+  PT
+  RU
+  AR
+  HI
 }
