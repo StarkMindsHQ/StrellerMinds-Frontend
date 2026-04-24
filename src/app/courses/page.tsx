@@ -15,6 +15,11 @@ export const metadata: Metadata = {
 };
 
 export default function CoursesPage() {
+  // Filter to only show published courses on public catalog
+  const publishedCourses = allCourses.filter(
+    (course) => course.status === 'published',
+  );
+
   return (
     <MainLayout variant="container" padding="medium">
       <div className="mb-12 text-center">
@@ -28,7 +33,7 @@ export default function CoursesPage() {
       </div>
 
       <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
-        {allCourses.map((course) => (
+        {publishedCourses.map((course) => (
           <CourseCard
             key={course.id}
             {...course}
