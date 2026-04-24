@@ -1,21 +1,38 @@
-import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
-import { CourseVersion } from '../entities/course-version.entity';
+export interface CourseVersionRecord {
+  id: string;
+  courseId: string;
+  timestamp: Date | string;
+  content?: unknown;
+}
 
-@Injectable()
+interface CourseVersionRepository {
+  find(input: {
+    where: { courseId: string };
+    order: { timestamp: 'DESC' | 'ASC' };
+  }): Promise<CourseVersionRecord[]>;
+  findOneBy(input: {
+    id: string;
+    courseId: string;
+  }): Promise<CourseVersionRecord | null>;
+}
+
 export class CourseVersionService {
-  constructor(private readonly repo: Repository<CourseVersion>) {}
+  constructor(private readonly repo: CourseVersionRepository) {}
 
   async listVersions(courseId: string) {
-    return this.repo.find({ where: { courseId }, order: { timestamp: 'DESC' } });
+    return this.repo.find({
+      where: { courseId },
+      order: { timestamp: 'DESC' },
+    });
   }
 
   async restoreVersion(courseId: string, versionId: string) {
     const version = await this.repo.findOneBy({ id: versionId, courseId });
-    if (!version) throw new Error('Version not found');
 
-    // Logic to restore course content from version snapshot
-    // e.g., update Course entity with version.content
-    return { success: true };
+    if (!version) {
+      throw new Error('Version not found');
+    }
+
+    return { success: true, version };
   }
 }
