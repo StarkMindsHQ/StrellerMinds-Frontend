@@ -12,6 +12,11 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
+      i18next: resolve(__dirname, './src/test/mocks/i18next.ts'),
+      'react-i18next': resolve(
+        __dirname,
+        './src/test/mocks/react-i18next.ts',
+      ),
     },
   },
 });

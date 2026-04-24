@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence, Reorder } from 'framer-motion';
 import {
   Plus,
@@ -8,18 +8,15 @@ import {
   Trash2,
   CheckCircle2,
   Circle,
-  Settings,
-  HelpCircle,
   Save,
   X,
   Check,
-  Copy,
   Type,
-  List,
   AlignLeft,
-  Layout,
   FileCode,
   CheckSquare,
+  ArrowUpDown,
+  Puzzle,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -64,42 +61,114 @@ const QUESTION_TYPES: {
   },
   { type: 'short_answer', label: 'Short Answer', icon: <Type size={16} /> },
   { type: 'long_answer', label: 'Long Answer', icon: <AlignLeft size={16} /> },
+  { type: 'fill_blank', label: 'Fill in the Blank', icon: <Type size={16} /> },
+  { type: 'matching', label: 'Matching', icon: <Puzzle size={16} /> },
+  { type: 'ordering', label: 'Ordering', icon: <ArrowUpDown size={16} /> },
   { type: 'code', label: 'Code Solution', icon: <FileCode size={16} /> },
 ];
 
+function createQuestionTemplate(
+  type: QuestionType,
+  order: number,
+  quizId: string,
+): Question {
+  const baseQuestion: Question = {
+    id: `q-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    quizId,
+    type,
+    order,
+    question: '',
+    points: 1,
+    required: true,
+  };
+
+  if (type.includes('multiple') || type === 'true_false') {
+    return {
+      ...baseQuestion,
+      options: [
+        {
+          id: 'opt-1',
+          text: type === 'true_false' ? 'True' : 'Option 1',
+          isCorrect: type === 'true_false',
+        },
+        {
+          id: 'opt-2',
+          text: type === 'true_false' ? 'False' : 'Option 2',
+          isCorrect: false,
+        },
+      ],
+    };
+  }
+
+  if (type === 'fill_blank') {
+    return {
+      ...baseQuestion,
+      blanks: [
+        {
+          id: 'blank-1',
+          placeholder: 'Primary answer',
+          acceptedAnswers: [''],
+          caseSensitive: false,
+        },
+      ],
+    };
+  }
+
+  if (type === 'matching') {
+    return {
+      ...baseQuestion,
+      matchingPairs: [
+        {
+          id: 'pair-1',
+          left: 'Concept',
+          right: 'Definition',
+        },
+      ],
+    };
+  }
+
+  if (type === 'ordering') {
+    return {
+      ...baseQuestion,
+      orderingItems: [
+        {
+          id: 'order-1',
+          text: 'First step',
+          correctPosition: 1,
+        },
+      ],
+    };
+  }
+
+  return baseQuestion;
+}
+
+function normalizeQuestionForType(
+  question: Question,
+  type: QuestionType,
+): Question {
+  const template = createQuestionTemplate(type, question.order, question.quizId);
+
+  return {
+    ...question,
+    type,
+    options: template.options,
+    blanks: template.blanks,
+    matchingPairs: template.matchingPairs,
+    orderingItems: template.orderingItems,
+  };
+}
+
 export function QuizCreator({ quiz, onUpdate, onSave }: QuizCreatorProps) {
-  const [activeTab, setActiveTab] = useState<'questions' | 'settings'>(
-    'questions',
-  );
+  const [activeTab, setActiveTab] = useState<
+    'questions' | 'settings' | 'preview'
+  >('questions');
   const [expandedQuestionId, setExpandedQuestionId] = useState<string | null>(
     null,
   );
 
   const addQuestion = (type: QuestionType) => {
-    const newQuestion: Question = {
-      id: `q-${Date.now()}`,
-      quizId: quiz.id,
-      type,
-      order: quiz.questions.length,
-      question: '',
-      points: 1,
-      required: true,
-      options:
-        type.includes('multiple') || type === 'true_false'
-          ? [
-              {
-                id: 'opt-1',
-                text: type === 'true_false' ? 'True' : 'Option 1',
-                isCorrect: type === 'true_false',
-              },
-              {
-                id: 'opt-2',
-                text: type === 'true_false' ? 'False' : 'Option 2',
-                isCorrect: false,
-              },
-            ]
-          : [],
-    };
+    const newQuestion = createQuestionTemplate(type, quiz.questions.length, quiz.id);
 
     onUpdate({
       ...quiz,
@@ -115,7 +184,7 @@ export function QuizCreator({ quiz, onUpdate, onSave }: QuizCreatorProps) {
     });
   };
 
-  const updateQuestion = (id: string, data: Partial<Question>) => {
+  const updateQuestion = (id: string, data: Partial<Question> | Question) => {
     onUpdate({
       ...quiz,
       questions: quiz.questions.map((q) =>
@@ -156,32 +225,33 @@ export function QuizCreator({ quiz, onUpdate, onSave }: QuizCreatorProps) {
     const question = quiz.questions.find((q) => q.id === questionId);
     if (!question || !question.options) return;
 
-    // For single choice, uncheck other correct answers
-    let newOptions = question.options.map((o) =>
-      o.id === optionId ? { ...o, ...data } : o,
+    let nextOptions = question.options.map((option) =>
+      option.id === optionId ? { ...option, ...data } : option,
     );
 
     if (question.type === 'multiple_choice' && data.isCorrect) {
-      newOptions = newOptions.map((o) =>
-        o.id === optionId ? o : { ...o, isCorrect: false },
+      nextOptions = nextOptions.map((option) =>
+        option.id === optionId ? option : { ...option, isCorrect: false },
       );
     }
 
-    updateQuestion(questionId, { options: newOptions });
+    updateQuestion(questionId, { options: nextOptions });
   };
 
   const reorderQuestions = (newQuestions: Question[]) => {
     onUpdate({
       ...quiz,
-      questions: newQuestions.map((q, i) => ({ ...q, order: i })),
+      questions: newQuestions.map((question, index) => ({
+        ...question,
+        order: index,
+      })),
     });
   };
 
   return (
-    <div className="flex flex-col h-full bg-card border rounded-xl overflow-hidden shadow-sm">
-      {/* Tab Header */}
-      <div className="flex items-center justify-between px-6 py-4 border-b bg-muted/20">
-        <div className="flex bg-muted p-1 rounded-lg">
+    <div className="flex h-full flex-col overflow-hidden rounded-xl border bg-card shadow-sm">
+      <div className="flex items-center justify-between border-b bg-muted/20 px-6 py-4">
+        <div className="flex rounded-lg bg-muted p-1">
           <button
             className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${activeTab === 'questions' ? 'bg-background shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
             onClick={() => setActiveTab('questions')}
@@ -194,6 +264,12 @@ export function QuizCreator({ quiz, onUpdate, onSave }: QuizCreatorProps) {
           >
             Quiz Settings
           </button>
+          <button
+            className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${activeTab === 'preview' ? 'bg-background shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
+            onClick={() => setActiveTab('preview')}
+          >
+            Preview
+          </button>
         </div>
 
         <div className="flex items-center gap-2">
@@ -202,52 +278,55 @@ export function QuizCreator({ quiz, onUpdate, onSave }: QuizCreatorProps) {
             size="sm"
             onClick={() => toast('Draft saved')}
           >
-            <Save className="w-4 h-4 mr-2" /> Save Draft
+            <Save className="mr-2 h-4 w-4" /> Save Draft
           </Button>
           <Button size="sm" onClick={() => onSave?.(quiz)}>
-            <Check className="w-4 h-4 mr-2" /> Publish Quiz
+            <Check className="mr-2 h-4 w-4" /> Publish Quiz
           </Button>
         </div>
       </div>
 
       <div className="flex-1 overflow-y-auto">
         {activeTab === 'questions' ? (
-          <div className="p-6 max-w-4xl mx-auto space-y-6">
+          <div className="mx-auto max-w-4xl space-y-6 p-6">
             <Reorder.Group
               axis="y"
               values={quiz.questions}
               onReorder={reorderQuestions}
               className="space-y-4"
             >
-              {quiz.questions.map((q, qIdx) => (
+              {quiz.questions.map((question, index) => (
                 <Reorder.Item
-                  key={q.id}
-                  value={q}
-                  className={`border rounded-xl bg-background overflow-hidden transition-all ${expandedQuestionId === q.id ? 'ring-2 ring-primary ring-offset-2' : ''}`}
+                  key={question.id}
+                  value={question}
+                  className={`overflow-hidden rounded-xl border bg-background transition-all ${expandedQuestionId === question.id ? 'ring-2 ring-primary ring-offset-2' : ''}`}
                 >
                   <div
-                    className="flex items-center gap-4 p-4 cursor-pointer hover:bg-muted/30"
+                    className="flex cursor-pointer items-center gap-4 p-4 hover:bg-muted/30"
                     onClick={() =>
                       setExpandedQuestionId(
-                        expandedQuestionId === q.id ? null : q.id,
+                        expandedQuestionId === question.id ? null : question.id,
                       )
                     }
                   >
-                    <div className="cursor-grab active:cursor-grabbing text-muted-foreground">
+                    <div className="cursor-grab text-muted-foreground active:cursor-grabbing">
                       <GripVertical size={18} />
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-xs font-bold text-primary/70 uppercase">
-                          Question {qIdx + 1}
+                    <div className="min-w-0 flex-1">
+                      <div className="mb-1 flex items-center gap-2">
+                        <span className="text-xs font-bold uppercase text-primary/70">
+                          Question {index + 1}
                         </span>
-                        <span className="text-xs bg-muted px-1.5 py-0.5 rounded text-muted-foreground">
-                          {QUESTION_TYPES.find((t) => t.type === q.type)?.label}
+                        <span className="rounded bg-muted px-1.5 py-0.5 text-xs text-muted-foreground">
+                          {
+                            QUESTION_TYPES.find((item) => item.type === question.type)
+                              ?.label
+                          }
                         </span>
                       </div>
-                      <p className="font-medium truncate">
-                        {q.question || (
-                          <span className="text-muted-foreground italic">
+                      <p className="truncate font-medium">
+                        {question.question || (
+                          <span className="italic text-muted-foreground">
                             No question text yet...
                           </span>
                         )}
@@ -255,15 +334,15 @@ export function QuizCreator({ quiz, onUpdate, onSave }: QuizCreatorProps) {
                     </div>
                     <div className="flex items-center gap-4">
                       <span className="text-sm font-medium text-muted-foreground">
-                        {q.points} pt{q.points !== 1 ? 's' : ''}
+                        {question.points} pt{question.points !== 1 ? 's' : ''}
                       </span>
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="text-destructive opacity-0 group-hover:opacity-100 transition-opacity"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          removeQuestion(q.id);
+                        className="text-destructive"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          removeQuestion(question.id);
                         }}
                       >
                         <Trash2 size={16} />
@@ -272,12 +351,12 @@ export function QuizCreator({ quiz, onUpdate, onSave }: QuizCreatorProps) {
                   </div>
 
                   <AnimatePresence>
-                    {expandedQuestionId === q.id && (
+                    {expandedQuestionId === question.id && (
                       <motion.div
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        className="border-t bg-muted/10 p-6 space-y-6"
+                        className="space-y-6 border-t bg-muted/10 p-6"
                       >
                         <div className="space-y-4">
                           <div className="flex gap-4">
@@ -285,10 +364,10 @@ export function QuizCreator({ quiz, onUpdate, onSave }: QuizCreatorProps) {
                               <Label>Question Text</Label>
                               <Textarea
                                 placeholder="Enter your question here..."
-                                value={q.question}
-                                onChange={(e) =>
-                                  updateQuestion(q.id, {
-                                    question: e.target.value,
+                                value={question.question}
+                                onChange={(event) =>
+                                  updateQuestion(question.id, {
+                                    question: event.target.value,
                                   })
                                 }
                                 className="min-h-[100px]"
@@ -298,19 +377,22 @@ export function QuizCreator({ quiz, onUpdate, onSave }: QuizCreatorProps) {
                               <div className="space-y-2">
                                 <Label>Question Type</Label>
                                 <Select
-                                  value={q.type}
-                                  onValueChange={(v: QuestionType) =>
-                                    updateQuestion(q.id, { type: v })
+                                  value={question.type}
+                                  onValueChange={(value: QuestionType) =>
+                                    updateQuestion(
+                                      question.id,
+                                      normalizeQuestionForType(question, value),
+                                    )
                                   }
                                 >
                                   <SelectTrigger>
                                     <SelectValue />
                                   </SelectTrigger>
                                   <SelectContent>
-                                    {QUESTION_TYPES.map((t) => (
-                                      <SelectItem key={t.type} value={t.type}>
+                                    {QUESTION_TYPES.map((item) => (
+                                      <SelectItem key={item.type} value={item.type}>
                                         <div className="flex items-center gap-2">
-                                          {t.icon} {t.label}
+                                          {item.icon} {item.label}
                                         </div>
                                       </SelectItem>
                                     ))}
@@ -321,10 +403,11 @@ export function QuizCreator({ quiz, onUpdate, onSave }: QuizCreatorProps) {
                                 <Label>Points</Label>
                                 <Input
                                   type="number"
-                                  value={q.points}
-                                  onChange={(e) =>
-                                    updateQuestion(q.id, {
-                                      points: parseInt(e.target.value) || 0,
+                                  value={question.points}
+                                  onChange={(event) =>
+                                    updateQuestion(question.id, {
+                                      points:
+                                        Number.parseInt(event.target.value, 10) || 0,
                                     })
                                   }
                                 />
@@ -332,47 +415,46 @@ export function QuizCreator({ quiz, onUpdate, onSave }: QuizCreatorProps) {
                             </div>
                           </div>
 
-                          {/* Options Area (Conditional) */}
-                          {(q.type.includes('multiple') ||
-                            q.type === 'true_false') && (
+                          {(question.type.includes('multiple') ||
+                            question.type === 'true_false') && (
                             <div className="space-y-3">
                               <Label>Options</Label>
                               <div className="space-y-2">
-                                {q.options?.map((opt, optIdx) => (
+                                {question.options?.map((option) => (
                                   <div
-                                    key={opt.id}
+                                    key={option.id}
                                     className="flex items-center gap-3"
                                   >
                                     <button
                                       className={`
-                                        w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all
-                                        ${opt.isCorrect ? 'bg-green-500 border-green-500 text-white' : 'border-muted-foreground/30 hover:border-primary'}
+                                        flex h-6 w-6 items-center justify-center rounded-full border-2 transition-all
+                                        ${option.isCorrect ? 'border-green-500 bg-green-500 text-white' : 'border-muted-foreground/30 hover:border-primary'}
                                       `}
                                       onClick={() =>
-                                        updateOption(q.id, opt.id, {
-                                          isCorrect: !opt.isCorrect,
+                                        updateOption(question.id, option.id, {
+                                          isCorrect: !option.isCorrect,
                                         })
                                       }
                                     >
-                                      {opt.isCorrect && <Check size={14} />}
+                                      {option.isCorrect && <Check size={14} />}
                                     </button>
                                     <Input
-                                      value={opt.text}
-                                      onChange={(e) =>
-                                        updateOption(q.id, opt.id, {
-                                          text: e.target.value,
+                                      value={option.text}
+                                      onChange={(event) =>
+                                        updateOption(question.id, option.id, {
+                                          text: event.target.value,
                                         })
                                       }
                                       className="h-9"
-                                      disabled={q.type === 'true_false'}
+                                      disabled={question.type === 'true_false'}
                                     />
-                                    {q.type !== 'true_false' && (
+                                    {question.type !== 'true_false' && (
                                       <Button
                                         variant="ghost"
                                         size="icon"
                                         className="h-9 w-9 text-destructive"
                                         onClick={() =>
-                                          removeOption(q.id, opt.id)
+                                          removeOption(question.id, option.id)
                                         }
                                       >
                                         <X size={16} />
@@ -380,17 +462,164 @@ export function QuizCreator({ quiz, onUpdate, onSave }: QuizCreatorProps) {
                                     )}
                                   </div>
                                 ))}
-                                {q.type !== 'true_false' && (
+                                {question.type !== 'true_false' && (
                                   <Button
                                     variant="outline"
                                     size="sm"
                                     className="w-full border-dashed"
-                                    onClick={() => addOption(q.id)}
+                                    onClick={() => addOption(question.id)}
                                   >
-                                    <Plus className="w-4 h-4 mr-2" /> Add Option
+                                    <Plus className="mr-2 h-4 w-4" /> Add Option
                                   </Button>
                                 )}
                               </div>
+                            </div>
+                          )}
+
+                          {question.type === 'fill_blank' && (
+                            <div className="space-y-3">
+                              <Label>Accepted Answers</Label>
+                              {question.blanks?.map((blank) => (
+                                <div
+                                  key={blank.id}
+                                  className="grid gap-3 rounded-2xl border bg-background p-4 md:grid-cols-2"
+                                >
+                                  <Input
+                                    value={blank.placeholder}
+                                    onChange={(event) =>
+                                      updateQuestion(question.id, {
+                                        blanks: question.blanks?.map((item) =>
+                                          item.id === blank.id
+                                            ? {
+                                                ...item,
+                                                placeholder: event.target.value,
+                                              }
+                                            : item,
+                                        ),
+                                      })
+                                    }
+                                    placeholder="Blank label"
+                                  />
+                                  <Input
+                                    value={blank.acceptedAnswers.join(', ')}
+                                    onChange={(event) =>
+                                      updateQuestion(question.id, {
+                                        blanks: question.blanks?.map((item) =>
+                                          item.id === blank.id
+                                            ? {
+                                                ...item,
+                                                acceptedAnswers: event.target.value
+                                                  .split(',')
+                                                  .map((value) => value.trim())
+                                                  .filter(Boolean),
+                                              }
+                                            : item,
+                                        ),
+                                      })
+                                    }
+                                    placeholder="comma separated accepted answers"
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                          )}
+
+                          {question.type === 'matching' && (
+                            <div className="space-y-3">
+                              <Label>Matching Pairs</Label>
+                              {question.matchingPairs?.map((pair) => (
+                                <div
+                                  key={pair.id}
+                                  className="grid gap-3 rounded-2xl border bg-background p-4 md:grid-cols-2"
+                                >
+                                  <Input
+                                    value={pair.left}
+                                    onChange={(event) =>
+                                      updateQuestion(question.id, {
+                                        matchingPairs: question.matchingPairs?.map(
+                                          (item) =>
+                                            item.id === pair.id
+                                              ? {
+                                                  ...item,
+                                                  left: event.target.value,
+                                                }
+                                              : item,
+                                        ),
+                                      })
+                                    }
+                                    placeholder="Prompt"
+                                  />
+                                  <Input
+                                    value={pair.right}
+                                    onChange={(event) =>
+                                      updateQuestion(question.id, {
+                                        matchingPairs: question.matchingPairs?.map(
+                                          (item) =>
+                                            item.id === pair.id
+                                              ? {
+                                                  ...item,
+                                                  right: event.target.value,
+                                                }
+                                              : item,
+                                        ),
+                                      })
+                                    }
+                                    placeholder="Match"
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                          )}
+
+                          {question.type === 'ordering' && (
+                            <div className="space-y-3">
+                              <Label>Ordering Items</Label>
+                              {question.orderingItems?.map((item) => (
+                                <div
+                                  key={item.id}
+                                  className="grid gap-3 rounded-2xl border bg-background p-4 md:grid-cols-[1fr_120px]"
+                                >
+                                  <Input
+                                    value={item.text}
+                                    onChange={(event) =>
+                                      updateQuestion(question.id, {
+                                        orderingItems: question.orderingItems?.map(
+                                          (entry) =>
+                                            entry.id === item.id
+                                              ? {
+                                                  ...entry,
+                                                  text: event.target.value,
+                                                }
+                                              : entry,
+                                        ),
+                                      })
+                                    }
+                                    placeholder="Step text"
+                                  />
+                                  <Input
+                                    type="number"
+                                    min={1}
+                                    value={item.correctPosition}
+                                    onChange={(event) =>
+                                      updateQuestion(question.id, {
+                                        orderingItems: question.orderingItems?.map(
+                                          (entry) =>
+                                            entry.id === item.id
+                                              ? {
+                                                  ...entry,
+                                                  correctPosition:
+                                                    Number.parseInt(
+                                                      event.target.value,
+                                                      10,
+                                                    ) || 1,
+                                                }
+                                              : entry,
+                                        ),
+                                      })
+                                    }
+                                  />
+                                </div>
+                              ))}
                             </div>
                           )}
 
@@ -398,10 +627,10 @@ export function QuizCreator({ quiz, onUpdate, onSave }: QuizCreatorProps) {
                             <Label>Extra Feedback (Optional)</Label>
                             <Input
                               placeholder="Explanation for correct answer..."
-                              value={q.explanation || ''}
-                              onChange={(e) =>
-                                updateQuestion(q.id, {
-                                  explanation: e.target.value,
+                              value={question.explanation || ''}
+                              onChange={(event) =>
+                                updateQuestion(question.id, {
+                                  explanation: event.target.value,
                                 })
                               }
                             />
@@ -414,27 +643,27 @@ export function QuizCreator({ quiz, onUpdate, onSave }: QuizCreatorProps) {
               ))}
             </Reorder.Group>
 
-            <div className="flex flex-col items-center gap-4 py-8 border-2 border-dashed rounded-2xl bg-muted/10">
+            <div className="flex flex-col items-center gap-4 rounded-2xl border-2 border-dashed bg-muted/10 py-8">
               <p className="text-sm font-medium text-muted-foreground">
                 Add new question
               </p>
               <div className="flex flex-wrap items-center justify-center gap-2">
-                {QUESTION_TYPES.map((t) => (
+                {QUESTION_TYPES.map((item) => (
                   <Button
-                    key={t.type}
+                    key={item.type}
                     variant="secondary"
                     size="sm"
                     className="gap-2"
-                    onClick={() => addQuestion(t.type)}
+                    onClick={() => addQuestion(item.type)}
                   >
-                    {t.icon} {t.label}
+                    {item.icon} {item.label}
                   </Button>
                 ))}
               </div>
             </div>
           </div>
-        ) : (
-          <div className="p-8 max-w-2xl mx-auto space-y-8">
+        ) : activeTab === 'settings' ? (
+          <div className="mx-auto max-w-2xl space-y-8 p-8">
             <div className="space-y-6">
               <h3 className="text-lg font-bold">Quiz Rules</h3>
               <div className="grid gap-6">
@@ -447,10 +676,10 @@ export function QuizCreator({ quiz, onUpdate, onSave }: QuizCreatorProps) {
                   </div>
                   <Switch
                     checked={quiz.settings.shuffleQuestions}
-                    onCheckedChange={(v: boolean) =>
+                    onCheckedChange={(value: boolean) =>
                       onUpdate({
                         ...quiz,
-                        settings: { ...quiz.settings, shuffleQuestions: v },
+                        settings: { ...quiz.settings, shuffleQuestions: value },
                       })
                     }
                   />
@@ -464,10 +693,10 @@ export function QuizCreator({ quiz, onUpdate, onSave }: QuizCreatorProps) {
                   </div>
                   <Switch
                     checked={quiz.settings.shuffleAnswers}
-                    onCheckedChange={(v: boolean) =>
+                    onCheckedChange={(value: boolean) =>
                       onUpdate({
                         ...quiz,
-                        settings: { ...quiz.settings, shuffleAnswers: v },
+                        settings: { ...quiz.settings, shuffleAnswers: value },
                       })
                     }
                   />
@@ -483,10 +712,11 @@ export function QuizCreator({ quiz, onUpdate, onSave }: QuizCreatorProps) {
                     type="number"
                     className="w-24"
                     value={quiz.passingScore}
-                    onChange={(e) =>
+                    onChange={(event) =>
                       onUpdate({
                         ...quiz,
-                        passingScore: parseInt(e.target.value) || 0,
+                        passingScore:
+                          Number.parseInt(event.target.value, 10) || 0,
                       })
                     }
                   />
@@ -502,12 +732,13 @@ export function QuizCreator({ quiz, onUpdate, onSave }: QuizCreatorProps) {
                     type="number"
                     className="w-24"
                     value={quiz.settings.attemptsAllowed}
-                    onChange={(e) =>
+                    onChange={(event) =>
                       onUpdate({
                         ...quiz,
                         settings: {
                           ...quiz.settings,
-                          attemptsAllowed: parseInt(e.target.value) || 1,
+                          attemptsAllowed:
+                            Number.parseInt(event.target.value, 10) || 1,
                         },
                       })
                     }
@@ -516,17 +747,17 @@ export function QuizCreator({ quiz, onUpdate, onSave }: QuizCreatorProps) {
               </div>
             </div>
 
-            <div className="pt-8 border-t space-y-6">
+            <div className="space-y-6 border-t pt-8">
               <h3 className="text-lg font-bold">Feedback & Results</h3>
               <div className="grid gap-6">
                 <div className="space-y-2">
                   <Label>Show Feedback</Label>
                   <Select
                     value={quiz.settings.showFeedback}
-                    onValueChange={(v: any) =>
+                    onValueChange={(value) =>
                       onUpdate({
                         ...quiz,
-                        settings: { ...quiz.settings, showFeedback: v },
+                        settings: { ...quiz.settings, showFeedback: value },
                       })
                     }
                   >
@@ -543,7 +774,7 @@ export function QuizCreator({ quiz, onUpdate, onSave }: QuizCreatorProps) {
                       <SelectItem value="after_deadline">
                         Only after the module deadline
                       </SelectItem>
-                      <SelectItem value="never">Don't show feedback</SelectItem>
+                      <SelectItem value="never">Don&apos;t show feedback</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -556,15 +787,85 @@ export function QuizCreator({ quiz, onUpdate, onSave }: QuizCreatorProps) {
                   </div>
                   <Switch
                     checked={quiz.settings.showCorrectAnswers}
-                    onCheckedChange={(v: boolean) =>
+                    onCheckedChange={(value: boolean) =>
                       onUpdate({
                         ...quiz,
-                        settings: { ...quiz.settings, showCorrectAnswers: v },
+                        settings: {
+                          ...quiz.settings,
+                          showCorrectAnswers: value,
+                        },
                       })
                     }
                   />
                 </div>
               </div>
+            </div>
+          </div>
+        ) : (
+          <div className="mx-auto max-w-3xl space-y-6 p-8">
+            <div className="grid gap-4 md:grid-cols-3">
+              <div className="rounded-2xl border bg-background p-4">
+                <p className="text-sm text-muted-foreground">Question types</p>
+                <p className="mt-2 text-2xl font-bold">
+                  {new Set(quiz.questions.map((question) => question.type)).size}
+                </p>
+              </div>
+              <div className="rounded-2xl border bg-background p-4">
+                <p className="text-sm text-muted-foreground">Total questions</p>
+                <p className="mt-2 text-2xl font-bold">{quiz.questions.length}</p>
+              </div>
+              <div className="rounded-2xl border bg-background p-4">
+                <p className="text-sm text-muted-foreground">Total points</p>
+                <p className="mt-2 text-2xl font-bold">
+                  {quiz.questions.reduce(
+                    (total, question) => total + question.points,
+                    0,
+                  )}
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              {quiz.questions.map((question, index) => (
+                <div
+                  key={question.id}
+                  className="rounded-3xl border bg-background p-5 shadow-sm"
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-wide text-primary/70">
+                        Question {index + 1}
+                      </p>
+                      <h3 className="mt-1 font-semibold">
+                        {question.question || 'Untitled question'}
+                      </h3>
+                    </div>
+                    <span className="rounded-full bg-muted px-3 py-1 text-xs text-muted-foreground">
+                      {
+                        QUESTION_TYPES.find((item) => item.type === question.type)
+                          ?.label
+                      }
+                    </span>
+                  </div>
+
+                  {question.options && question.options.length > 0 && (
+                    <div className="mt-4 space-y-2">
+                      {question.options.map((option) => (
+                        <div
+                          key={option.id}
+                          className={`rounded-2xl border px-4 py-3 text-sm ${
+                            option.isCorrect
+                              ? 'border-emerald-300 bg-emerald-50'
+                              : 'bg-muted/20'
+                          }`}
+                        >
+                          {option.text}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
         )}

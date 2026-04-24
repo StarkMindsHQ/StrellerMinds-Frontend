@@ -1,8 +1,19 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import BulkUploadManager from '../src/components/upload/BulkUploadManager';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
+import BulkUploadManager from '@/components/upload/BulkUploadManager';
 
-test('shows progress during upload', async () => {
-  render(<BulkUploadManager />);
-  const input = screen.getByRole('textbox'); // file input
-  // simulate file selection and upload
+describe('BulkUploadManager', () => {
+  it('shows the selected file before upload starts', () => {
+    const { container } = render(<BulkUploadManager />);
+    const input = container.querySelector('input[type="file"]');
+
+    expect(input).not.toBeNull();
+
+    const file = new File(['hello'], 'notes.txt', { type: 'text/plain' });
+    fireEvent.change(input as HTMLInputElement, {
+      target: { files: [file] },
+    });
+
+    expect(screen.getByText(/notes.txt - pending/i)).toBeInTheDocument();
+  });
 });

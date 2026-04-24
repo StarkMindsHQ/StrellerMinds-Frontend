@@ -1,28 +1,30 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import { ErrorRecoveryBoundary } from "../src/components/ErrorRecoveryBoundary";
+import { fireEvent, render, screen } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
+import { ErrorRecoveryBoundary } from '@/components/error-recovery-boundary/ErrorRecoveryBoundary';
 
 function Problematic() {
-  throw new Error("Boom!");
+  throw new Error('Boom!');
 }
 
-describe("ErrorRecoveryBoundary", () => {
-  it("renders fallback on error", () => {
+describe('ErrorRecoveryBoundary', () => {
+  it('renders fallback on error', () => {
     render(
       <ErrorRecoveryBoundary>
         <Problematic />
-      </ErrorRecoveryBoundary>
+      </ErrorRecoveryBoundary>,
     );
+
     expect(screen.getByText(/Something went wrong/)).toBeInTheDocument();
   });
 
-  it("retry button resets error state", () => {
+  it('retry button resets error state', () => {
     render(
       <ErrorRecoveryBoundary>
         <Problematic />
-      </ErrorRecoveryBoundary>
+      </ErrorRecoveryBoundary>,
     );
-    fireEvent.click(screen.getByText("Retry"));
-    // After retry, children would re-render (here still fails, but state resets)
+
+    fireEvent.click(screen.getByText('Retry'));
     expect(screen.getByText(/Something went wrong/)).toBeInTheDocument();
   });
 });

@@ -8,7 +8,7 @@ import { useParams } from 'next/navigation';
 interface CourseTranslation {
   title: string;
   description: string;
-  lessons?: Array<{ id: string; title: string }>;
+  lessons?: Array<{ id: string; title: string; description?: string }>;
 }
 
 interface TranslationContextType {

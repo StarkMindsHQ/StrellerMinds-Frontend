@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { CheckCircle, Clock, Play } from 'lucide-react';
 import { Lesson } from '@/types/lesson';
 import { useCourseProgress } from '@/contexts/CourseProgressContext';
+import { InlineLessonCommenting } from './InlineLessonCommenting';
 
 interface LessonContentProps {
   lesson: Lesson;
@@ -86,6 +87,10 @@ export function LessonContent({
             lessonId={lesson.id}
             title={lesson.title}
             onVideoComplete={onComplete}
+          />
+          <InlineLessonCommenting
+            lessonId={lesson.id}
+            lessonTitle={lesson.title}
           />
         </div>
       </div>

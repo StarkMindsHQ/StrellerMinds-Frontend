@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
 import { CMSLayout } from '@/components/cms/CMSLayout';
 import { CourseBuilder } from '@/components/cms/CourseBuilder';
 import { RichTextEditor } from '@/components/cms/RichTextEditor';
 import { QuizCreator } from '@/components/cms/QuizCreator';
 import { MediaManager } from '@/components/cms/MediaManager';
+import { ThreadedDiscussionForum } from '@/components/cms/ThreadedDiscussionForum';
+import { PeerReviewAssignmentPanel } from '@/components/cms/PeerReviewAssignmentPanel';
 import { useCMS } from '@/contexts/CMSContext';
 import {
   Save,
@@ -24,6 +25,8 @@ import {
   Globe,
   Lock,
   ShieldCheck,
+  MessageSquare,
+  ClipboardCheck,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -32,11 +35,126 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger,
   DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { toast } from 'sonner';
-import type { Course, Lesson, Quiz } from '@/types/cms';
+import type { Assignment, Course, Lesson, Quiz } from '@/types/cms';
+
+const starterQuiz: Quiz = {
+  id: 'quiz-starter-1',
+  moduleId: 'mod-1',
+  title: 'Lesson Readiness Check',
+  description: 'Validate understanding before publishing the learning path.',
+  type: 'graded',
+  order: 0,
+  questions: [
+    {
+      id: 'question-1',
+      quizId: 'quiz-starter-1',
+      type: 'multiple_choice',
+      order: 0,
+      question: 'Which learner signal should unlock the next module?',
+      points: 2,
+      required: true,
+      explanation:
+        'Use the milestone that best represents demonstrated understanding.',
+      options: [
+        { id: 'option-1', text: 'Video completed', isCorrect: false },
+        { id: 'option-2', text: 'Quiz passed', isCorrect: true },
+        { id: 'option-3', text: 'Profile updated', isCorrect: false },
+      ],
+    },
+    {
+      id: 'question-2',
+      quizId: 'quiz-starter-1',
+      type: 'ordering',
+      order: 1,
+      question: 'Arrange the quiz publishing flow in the correct order.',
+      points: 3,
+      required: true,
+      orderingItems: [
+        { id: 'order-a', text: 'Draft questions', correctPosition: 1 },
+        { id: 'order-b', text: 'Preview learner experience', correctPosition: 2 },
+        { id: 'order-c', text: 'Publish quiz', correctPosition: 3 },
+      ],
+    },
+  ],
+  settings: {
+    shuffleQuestions: false,
+    shuffleAnswers: false,
+    showFeedback: 'after_submit',
+    attemptsAllowed: 3,
+    timeLimitEnabled: false,
+    requirePassToProgress: false,
+    showCorrectAnswers: true,
+    allowReview: true,
+  },
+  passingScore: 70,
+  totalPoints: 5,
+  status: 'draft',
+  version: 1,
+  versionHistory: [],
+  createdBy: 'admin',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+};
+
+const starterPeerReviewAssignment: Assignment = {
+  id: 'assignment-peer-1',
+  moduleId: 'mod-1',
+  title: 'Smart Contract Audit Peer Review',
+  description: 'Review another learner submission using a structured rubric.',
+  instructions: {
+    html: '<p>Review the submitted audit note and provide rubric-based feedback.</p>',
+    plainText:
+      'Review the submitted audit note and provide rubric-based feedback.',
+    json: {},
+    wordCount: 12,
+  },
+  type: 'text_submission',
+  order: 0,
+  points: 10,
+  settings: {
+    allowLateSubmission: true,
+    maxSubmissions: 1,
+    peerReviewEnabled: true,
+    peerReviewCount: 3,
+    plagiarismCheckEnabled: false,
+  },
+  rubric: {
+    criteria: [
+      {
+        id: 'criterion-1',
+        name: 'Accuracy',
+        description:
+          'Does the reviewer correctly identify the core quality issues?',
+        maxPoints: 4,
+        levels: [],
+      },
+      {
+        id: 'criterion-2',
+        name: 'Reasoning',
+        description: 'Does the reviewer explain why each recommendation matters?',
+        maxPoints: 3,
+        levels: [],
+      },
+      {
+        id: 'criterion-3',
+        name: 'Actionability',
+        description:
+          'Are the next steps clear enough for the author to improve quickly?',
+        maxPoints: 3,
+        levels: [],
+      },
+    ],
+  },
+  attachments: [],
+  status: 'draft',
+  createdBy: 'admin',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+};
 
 export default function CourseEditorPage() {
   const {
@@ -51,9 +169,7 @@ export default function CourseEditorPage() {
   const [activeTab, setActiveTab] = useState('builder');
   const [editingLessonId, setEditingLessonId] = useState<string | null>(null);
   const [editingQuizId, setEditingQuizId] = useState<string | null>(null);
-  const [showMediaModal, setShowMediaModal] = useState(false);
 
-  // Initialize with mock data if none exists
   useEffect(() => {
     if (!currentCourse) {
       setCurrentCourse({
@@ -106,8 +222,8 @@ export default function CourseEditorPage() {
                 updatedAt: new Date(),
               },
             ],
-            quizzes: [],
-            assignments: [],
+            quizzes: [starterQuiz],
+            assignments: [starterPeerReviewAssignment],
             resources: [],
             duration: 60,
             createdAt: new Date(),
@@ -148,42 +264,81 @@ export default function CourseEditorPage() {
     }
   }, [currentCourse, setCurrentCourse]);
 
-  if (!currentCourse)
+  if (!currentCourse) {
     return <div className="p-20 text-center">Loading Course Workspace...</div>;
+  }
 
-  const handleEditLesson = (moduleId: string, lesson: Lesson) => {
+  const quizEntries = currentCourse.modules.flatMap((module) =>
+    module.quizzes.map((quiz) => ({
+      moduleId: module.id,
+      quiz,
+    })),
+  );
+  const activeQuizEntry =
+    quizEntries.find((entry) => entry.quiz.id === editingQuizId) ||
+    quizEntries[0] ||
+    null;
+  const activePeerReviewAssignment =
+    currentCourse.modules.flatMap((module) => module.assignments)[0] || null;
+
+  const handleEditLesson = (_moduleId: string, lesson: Lesson) => {
     setEditingLessonId(lesson.id);
     setActiveTab('editor');
   };
 
-  const handleEditQuiz = (moduleId: string, quiz: Quiz) => {
+  const handleEditQuiz = (_moduleId: string, quiz: Quiz) => {
     setEditingQuizId(quiz.id);
     setActiveTab('quiz');
   };
 
+  const handleQuizUpdate = (updatedQuiz: Quiz) => {
+    if (!activeQuizEntry) return;
+
+    updateCourse({
+      modules: currentCourse.modules.map((module) =>
+        module.id === activeQuizEntry.moduleId
+          ? {
+              ...module,
+              quizzes: module.quizzes.map((quiz) =>
+                quiz.id === updatedQuiz.id
+                  ? {
+                      ...updatedQuiz,
+                      totalPoints: updatedQuiz.questions.reduce(
+                        (sum, question) => sum + question.points,
+                        0,
+                      ),
+                      updatedAt: new Date(),
+                    }
+                  : quiz,
+              ),
+            }
+          : module,
+      ),
+    });
+  };
+
   return (
     <CMSLayout>
-      <div className="flex flex-col h-full bg-muted/10">
-        {/* Editor Toolbar */}
-        <div className="bg-card border-b px-6 py-4 flex items-center justify-between sticky top-0 z-10 shadow-sm">
+      <div className="flex h-full flex-col bg-muted/10">
+        <div className="sticky top-0 z-10 flex items-center justify-between border-b bg-card px-6 py-4 shadow-sm">
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="sm" className="gap-2">
               <ArrowLeft size={16} /> Back
             </Button>
-            <div className="h-6 w-px bg-border hidden sm:block"></div>
+            <div className="hidden h-6 w-px bg-border sm:block"></div>
             <div>
-              <h1 className="text-lg font-bold leading-none truncate max-w-[300px]">
+              <h1 className="max-w-[300px] truncate text-lg font-bold leading-none">
                 {currentCourse.title}
               </h1>
-              <p className="text-[11px] text-muted-foreground mt-1 flex items-center gap-1.5 uppercase font-bold tracking-wider">
-                <span className="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"></span>
+              <p className="mt-1 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-yellow-500"></span>
                 Draft v{currentCourse.version}.0 · Last saved 2m ago
               </p>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
-            <div className="hidden lg:flex items-center gap-1 mr-2 px-3 py-1.5 bg-muted/50 rounded-full">
+            <div className="mr-2 hidden items-center gap-1 rounded-full bg-muted/50 px-3 py-1.5 lg:flex">
               <ShieldCheck size={14} className="text-primary" />
               <span className="text-xs font-semibold text-primary">
                 Collaboration Content Lock Active
@@ -216,65 +371,76 @@ export default function CourseEditorPage() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
                 <DropdownMenuItem>
-                  <Share2 className="w-4 h-4 mr-2" /> Share Link
+                  <Share2 className="mr-2 h-4 w-4" /> Share Link
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <History className="w-4 h-4 mr-2" /> Version History
+                  <History className="mr-2 h-4 w-4" /> Version History
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <Lock className="w-4 h-4 mr-2" /> Course Settings
+                  <Lock className="mr-2 h-4 w-4" /> Course Settings
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="text-destructive">
-                  <Layers className="w-4 h-4 mr-2" /> Archive Course
+                  <Layers className="mr-2 h-4 w-4" /> Archive Course
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
         </div>
 
-        {/* Main Workspace Area */}
         <div className="flex-1 overflow-hidden">
           <Tabs
             value={activeTab}
             onValueChange={setActiveTab}
-            className="h-full flex flex-col"
+            className="flex h-full flex-col"
           >
-            <div className="bg-card border-b px-6 flex items-center justify-between">
-              <TabsList className="h-12 bg-transparent border-none p-0 gap-6">
+            <div className="flex items-center justify-between border-b bg-card px-6">
+              <TabsList className="h-12 gap-6 border-none bg-transparent p-0">
                 <TabsTrigger
                   value="builder"
-                  className="h-12 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-2"
+                  className="h-12 rounded-none border-b-2 border-transparent px-2 data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
                 >
                   <Layers size={16} className="mr-2" /> Course Builder
                 </TabsTrigger>
                 <TabsTrigger
                   value="editor"
-                  className="h-12 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-2"
+                  className="h-12 rounded-none border-b-2 border-transparent px-2 data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
                 >
                   <FileText size={16} className="mr-2" /> Lesson Editor
                 </TabsTrigger>
                 <TabsTrigger
                   value="quiz"
-                  className="h-12 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-2"
+                  className="h-12 rounded-none border-b-2 border-transparent px-2 data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
                 >
                   <HelpCircle size={16} className="mr-2" /> Quiz Creator
                 </TabsTrigger>
                 <TabsTrigger
                   value="media"
-                  className="h-12 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-2"
+                  className="h-12 rounded-none border-b-2 border-transparent px-2 data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
                 >
                   <ImageIcon size={16} className="mr-2" /> Media Library
                 </TabsTrigger>
                 <TabsTrigger
+                  value="discussion"
+                  className="h-12 rounded-none border-b-2 border-transparent px-2 data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+                >
+                  <MessageSquare size={16} className="mr-2" /> Discussion
+                </TabsTrigger>
+                <TabsTrigger
+                  value="peer-review"
+                  className="h-12 rounded-none border-b-2 border-transparent px-2 data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+                >
+                  <ClipboardCheck size={16} className="mr-2" /> Peer Review
+                </TabsTrigger>
+                <TabsTrigger
                   value="settings"
-                  className="h-12 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-2"
+                  className="h-12 rounded-none border-b-2 border-transparent px-2 data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
                 >
                   <Settings size={16} className="mr-2" /> SEO & Settings
                 </TabsTrigger>
               </TabsList>
 
-              <div className="flex items-center gap-4 text-sm text-muted-foreground font-medium">
+              <div className="flex items-center gap-4 text-sm font-medium text-muted-foreground">
                 <span className="flex items-center gap-1.5">
                   <Globe size={14} className="text-green-500" /> Public Access
                 </span>
@@ -283,14 +449,14 @@ export default function CourseEditorPage() {
             </div>
 
             <div className="flex-1 overflow-y-auto p-6 md:p-8">
-              <div className="max-w-[1200px] mx-auto h-full">
+              <div className="mx-auto h-full max-w-[1200px]">
                 <TabsContent
                   value="builder"
                   className="mt-0 h-full focus-visible:outline-none"
                 >
                   <CourseBuilder
                     modules={currentCourse.modules}
-                    onModulesChange={(m) => updateCourse({ modules: m })}
+                    onModulesChange={(modules) => updateCourse({ modules })}
                     onEditLesson={handleEditLesson}
                     onEditQuiz={handleEditQuiz}
                   />
@@ -304,11 +470,11 @@ export default function CourseEditorPage() {
                     <div className="flex items-center justify-between">
                       <h2 className="text-2xl font-bold">Content Editor</h2>
                       {editingLessonId ? (
-                        <div className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
+                        <div className="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
                           Editing Lesson ID: {editingLessonId}
                         </div>
                       ) : (
-                        <p className="text-muted-foreground text-sm italic">
+                        <p className="text-sm italic text-muted-foreground">
                           Select a lesson from the builder to start editing
                           contents
                         </p>
@@ -316,7 +482,7 @@ export default function CourseEditorPage() {
                     </div>
                     <RichTextEditor
                       className="min-h-[500px]"
-                      onSave={(html) => toast('Auto-saved Content')}
+                      onSave={() => toast('Auto-saved Content')}
                       autoSave
                     />
                   </div>
@@ -326,21 +492,28 @@ export default function CourseEditorPage() {
                   value="quiz"
                   className="mt-0 h-full focus-visible:outline-none"
                 >
-                  {currentCourse.modules[0].quizzes[0] ? (
+                  {activeQuizEntry ? (
                     <QuizCreator
-                      quiz={currentCourse.modules[0].quizzes[0]}
-                      onUpdate={(q) => {}}
+                      quiz={activeQuizEntry.quiz}
+                      onUpdate={handleQuizUpdate}
+                      onSave={(quiz) => {
+                        handleQuizUpdate({
+                          ...quiz,
+                          status: 'published',
+                        });
+                        toast.success('Quiz saved and preview is ready');
+                      }}
                     />
                   ) : (
-                    <div className="h-[400px] flex flex-col items-center justify-center bg-card border-2 border-dashed rounded-3xl">
+                    <div className="flex h-[400px] flex-col items-center justify-center rounded-3xl border-2 border-dashed bg-card">
                       <HelpCircle
                         size={48}
-                        className="text-muted-foreground opacity-20 mb-4"
+                        className="mb-4 text-muted-foreground opacity-20"
                       />
-                      <h3 className="text-xl font-bold mb-2">
+                      <h3 className="mb-2 text-xl font-bold">
                         No active quiz selected
                       </h3>
-                      <p className="text-muted-foreground mb-6">
+                      <p className="mb-6 text-muted-foreground">
                         Create a quiz in the course builder to start designing
                         questions
                       </p>
@@ -359,13 +532,38 @@ export default function CourseEditorPage() {
                 </TabsContent>
 
                 <TabsContent
+                  value="discussion"
+                  className="mt-0 h-full focus-visible:outline-none"
+                >
+                  <ThreadedDiscussionForum />
+                </TabsContent>
+
+                <TabsContent
+                  value="peer-review"
+                  className="mt-0 h-full focus-visible:outline-none"
+                >
+                  {activePeerReviewAssignment?.rubric ? (
+                    <PeerReviewAssignmentPanel
+                      assignmentTitle={activePeerReviewAssignment.title}
+                      rubricCriteria={activePeerReviewAssignment.rubric.criteria}
+                    />
+                  ) : (
+                    <div className="rounded-3xl border border-dashed bg-card p-12 text-center">
+                      <p className="text-muted-foreground">
+                        Add a peer-reviewed assignment to activate this workflow.
+                      </p>
+                    </div>
+                  )}
+                </TabsContent>
+
+                <TabsContent
                   value="settings"
                   className="mt-0 h-full focus-visible:outline-none"
                 >
-                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div className="lg:col-span-2 space-y-8">
-                      <div className="bg-card border rounded-2xl p-6 shadow-sm">
-                        <h3 className="text-lg font-bold mb-4">Course Info</h3>
+                  <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+                    <div className="space-y-8 lg:col-span-2">
+                      <div className="rounded-2xl border bg-card p-6 shadow-sm">
+                        <h3 className="mb-4 text-lg font-bold">Course Info</h3>
                         <div className="space-y-4">
                           <div className="space-y-2">
                             <label className="text-sm font-medium">
@@ -373,8 +571,8 @@ export default function CourseEditorPage() {
                             </label>
                             <Input
                               value={currentCourse.title}
-                              onChange={(e) =>
-                                updateCourse({ title: e.target.value })
+                              onChange={(event) =>
+                                updateCourse({ title: event.target.value })
                               }
                             />
                           </div>
@@ -384,8 +582,8 @@ export default function CourseEditorPage() {
                             </label>
                             <Input
                               value={currentCourse.slug}
-                              onChange={(e) =>
-                                updateCourse({ slug: e.target.value })
+                              onChange={(event) =>
+                                updateCourse({ slug: event.target.value })
                               }
                             />
                           </div>
@@ -395,9 +593,9 @@ export default function CourseEditorPage() {
                             </label>
                             <Input
                               value={currentCourse.shortDescription}
-                              onChange={(e) =>
+                              onChange={(event) =>
                                 updateCourse({
-                                  shortDescription: e.target.value,
+                                  shortDescription: event.target.value,
                                 })
                               }
                             />
@@ -405,8 +603,8 @@ export default function CourseEditorPage() {
                         </div>
                       </div>
 
-                      <div className="bg-card border rounded-2xl p-6 shadow-sm">
-                        <h3 className="text-lg font-bold mb-4">SEO Metadata</h3>
+                      <div className="rounded-2xl border bg-card p-6 shadow-sm">
+                        <h3 className="mb-4 text-lg font-bold">SEO Metadata</h3>
                         <div className="space-y-4">
                           <div className="space-y-2">
                             <label className="text-sm font-medium">
@@ -419,7 +617,7 @@ export default function CourseEditorPage() {
                               Meta Description
                             </label>
                             <textarea
-                              className="w-full min-h-[100px] rounded-xl border bg-background px-3 py-2 text-sm"
+                              className="min-h-[100px] w-full rounded-xl border bg-background px-3 py-2 text-sm"
                               placeholder="Brief summary for search results..."
                             ></textarea>
                           </div>
@@ -428,25 +626,25 @@ export default function CourseEditorPage() {
                     </div>
 
                     <div className="space-y-6">
-                      <div className="bg-card border rounded-2xl p-6 shadow-sm">
-                        <h3 className="text-lg font-bold mb-4">
+                      <div className="rounded-2xl border bg-card p-6 shadow-sm">
+                        <h3 className="mb-4 text-lg font-bold">
                           Publication Settings
                         </h3>
                         <div className="space-y-4">
-                          <div className="p-3 bg-muted/50 rounded-xl flex items-center justify-between">
+                          <div className="flex items-center justify-between rounded-xl bg-muted/50 p-3">
                             <span className="text-sm font-medium">
                               Free Course
                             </span>
-                            <div className="w-10 h-6 bg-muted rounded-full relative">
-                              <div className="absolute left-1 top-1 w-4 h-4 bg-background rounded-full shadow-sm"></div>
+                            <div className="relative h-6 w-10 rounded-full bg-muted">
+                              <div className="absolute left-1 top-1 h-4 w-4 rounded-full bg-background shadow-sm"></div>
                             </div>
                           </div>
-                          <div className="p-3 bg-muted/50 rounded-xl flex items-center justify-between">
+                          <div className="flex items-center justify-between rounded-xl bg-muted/50 p-3">
                             <span className="text-sm font-medium">
                               Enable Certificates
                             </span>
-                            <div className="w-10 h-6 bg-primary rounded-full relative">
-                              <div className="absolute right-1 top-1 w-4 h-4 bg-background rounded-full shadow-sm"></div>
+                            <div className="relative h-6 w-10 rounded-full bg-primary">
+                              <div className="absolute right-1 top-1 h-4 w-4 rounded-full bg-background shadow-sm"></div>
                             </div>
                           </div>
                         </div>
