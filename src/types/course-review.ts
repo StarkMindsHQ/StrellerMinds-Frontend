@@ -34,6 +34,7 @@ export interface SubmitReviewResponse {
   success: boolean;
   message: string;
   review?: CourseReview;
+  summary?: CourseRatingSummary;
 }
 
 export interface GetReviewsResponse {

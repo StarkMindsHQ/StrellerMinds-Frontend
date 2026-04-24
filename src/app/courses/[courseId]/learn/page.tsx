@@ -43,7 +43,7 @@ type ViewMode = 'overview' | 'lesson';
 
 function LearningInterface({ course }: { course: Course }) {
   const { state, setCurrentLesson, completeLesson } = useCourseProgress();
-  const { enrollment, prerequisites, loading, enroll, canAccess } =
+  const { isEnrolled, prerequisites, loading, enroll, canAccess } =
     useEnrollment(course.id);
   const {
     language,
@@ -61,7 +61,7 @@ function LearningInterface({ course }: { course: Course }) {
     description: translation?.description || course.description,
     lessons: course.lessons.map((lesson) => {
       const translatedLesson = translation?.lessons?.find(
-        (l: any) => l.id === lesson.id,
+        (translatedLesson) => translatedLesson.id === lesson.id,
       );
       return {
         ...lesson,
@@ -213,7 +213,7 @@ function LearningInterface({ course }: { course: Course }) {
             )}
           </CardContent>
           <CardFooter className="flex flex-col gap-3">
-            {!enrollment.isEnrolled ? (
+            {!isEnrolled ? (
               <Button
                 onClick={handleEnrollClick}
                 disabled={enrolling || prerequisites?.allMet === false}

@@ -8,3 +8,4 @@ export * from './RecommendationEngine';
 export * from './SmartSuggestionCard';
 export * from './VideoContainer';
 export * from './DynamicCourseContentLoader';
+export * from './InlineLessonCommenting';
