@@ -18,10 +18,12 @@ import {
   Shield,
   User,
   ChevronRight,
+  Activity,
 } from 'lucide-react';
 import Link from 'next/link';
 import ChangePassword from '@/components/ChangePassword';
 import NotificationPreferences from '@/components/NotificationPreferences';
+import { SessionManagementDashboard } from '@/components/auth/SessionManagementDashboard';
 import {
   profileUpdateSchema,
   type ProfileUpdateFormData,
@@ -284,6 +286,57 @@ export default function SettingsPage() {
                   }`}
                 />
               </label>
+
+              <label
+                className={`group relative flex items-center cursor-pointer p-4 rounded-xl border-2 transition-all duration-300 ${
+                  activeSection === 'sessions'
+                    ? 'border-[#5c0f49] bg-gradient-to-r from-[#5c0f49]/5 to-purple-50 shadow-lg'
+                    : 'border-gray-200 hover:border-[#ffcc00] hover:bg-yellow-50/50'
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="settings-section"
+                  value="sessions"
+                  checked={activeSection === 'sessions'}
+                  onChange={(e) => setActiveSection(e.target.value)}
+                  className="sr-only"
+                />
+                <div
+                  className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center transition-all duration-300 ${
+                    activeSection === 'sessions'
+                      ? 'border-[#5c0f49] bg-[#5c0f49]'
+                      : 'border-gray-300 group-hover:border-[#ffcc00]'
+                  }`}
+                >
+                  {activeSection === 'sessions' && (
+                    <div className="w-2 h-2 bg-white rounded-full"></div>
+                  )}
+                </div>
+                <Activity
+                  className={`w-5 h-5 mr-3 transition-colors duration-300 ${
+                    activeSection === 'sessions'
+                      ? 'text-[#5c0f49]'
+                      : 'text-gray-400 group-hover:text-[#ffcc00]'
+                  }`}
+                />
+                <span
+                  className={`font-medium transition-colors duration-300 ${
+                    activeSection === 'sessions'
+                      ? 'text-[#5c0f49]'
+                      : 'text-gray-700 group-hover:text-[#5c0f49]'
+                  }`}
+                >
+                  Sessions
+                </span>
+                <ChevronRight
+                  className={`w-4 h-4 ml-auto transition-all duration-300 ${
+                    activeSection === 'sessions'
+                      ? 'text-[#5c0f49] rotate-90'
+                      : 'text-gray-400 group-hover:text-[#ffcc00]'
+                  }`}
+                />
+              </label>
             </div>
 
             {/* Profile Section */}
@@ -417,6 +470,9 @@ export default function SettingsPage() {
 
             {/* Notifications Section */}
             {activeSection === 'notifications' && <NotificationPreferences />}
+
+            {/* Sessions Section */}
+            {activeSection === 'sessions' && <SessionManagementDashboard />}
           </div>
         </div>
       </div>
