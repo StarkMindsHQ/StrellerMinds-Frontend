@@ -16,6 +16,7 @@ import {
   EyeOff,
   Bell,
   Shield,
+  Lock,
   User,
   ChevronRight,
   Activity,
@@ -24,6 +25,8 @@ import Link from 'next/link';
 import ChangePassword from '@/components/ChangePassword';
 import NotificationPreferences from '@/components/NotificationPreferences';
 import { SessionManagementDashboard } from '@/components/auth/SessionManagementDashboard';
+import { DeviceActivityTracker } from '@/components/auth/DeviceActivityTracker';
+import { TwoFactorAuth } from '@/components/auth/TwoFactorAuth';
 import {
   profileUpdateSchema,
   type ProfileUpdateFormData,
@@ -289,6 +292,57 @@ export default function SettingsPage() {
 
               <label
                 className={`group relative flex items-center cursor-pointer p-4 rounded-xl border-2 transition-all duration-300 ${
+                  activeSection === 'twofa'
+                    ? 'border-[#5c0f49] bg-gradient-to-r from-[#5c0f49]/5 to-purple-50 shadow-lg'
+                    : 'border-gray-200 hover:border-[#ffcc00] hover:bg-yellow-50/50'
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="settings-section"
+                  value="twofa"
+                  checked={activeSection === 'twofa'}
+                  onChange={(e) => setActiveSection(e.target.value)}
+                  className="sr-only"
+                />
+                <div
+                  className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center transition-all duration-300 ${
+                    activeSection === 'twofa'
+                      ? 'border-[#5c0f49] bg-[#5c0f49]'
+                      : 'border-gray-300 group-hover:border-[#ffcc00]'
+                  }`}
+                >
+                  {activeSection === 'twofa' && (
+                    <div className="w-2 h-2 bg-white rounded-full"></div>
+                  )}
+                </div>
+                <Lock
+                  className={`w-5 h-5 mr-3 transition-colors duration-300 ${
+                    activeSection === 'twofa'
+                      ? 'text-[#5c0f49]'
+                      : 'text-gray-400 group-hover:text-[#ffcc00]'
+                  }`}
+                />
+                <span
+                  className={`font-medium transition-colors duration-300 ${
+                    activeSection === 'twofa'
+                      ? 'text-[#5c0f49]'
+                      : 'text-gray-700 group-hover:text-[#5c0f49]'
+                  }`}
+                >
+                  Two-factor auth
+                </span>
+                <ChevronRight
+                  className={`w-4 h-4 ml-auto transition-all duration-300 ${
+                    activeSection === 'twofa'
+                      ? 'text-[#5c0f49] rotate-90'
+                      : 'text-gray-400 group-hover:text-[#ffcc00]'
+                  }`}
+                />
+              </label>
+
+              <label
+                className={`group relative flex items-center cursor-pointer p-4 rounded-xl border-2 transition-all duration-300 ${
                   activeSection === 'sessions'
                     ? 'border-[#5c0f49] bg-gradient-to-r from-[#5c0f49]/5 to-purple-50 shadow-lg'
                     : 'border-gray-200 hover:border-[#ffcc00] hover:bg-yellow-50/50'
@@ -332,6 +386,57 @@ export default function SettingsPage() {
                 <ChevronRight
                   className={`w-4 h-4 ml-auto transition-all duration-300 ${
                     activeSection === 'sessions'
+                      ? 'text-[#5c0f49] rotate-90'
+                      : 'text-gray-400 group-hover:text-[#ffcc00]'
+                  }`}
+                />
+              </label>
+
+              <label
+                className={`group relative flex items-center cursor-pointer p-4 rounded-xl border-2 transition-all duration-300 ${
+                  activeSection === 'device-activity'
+                    ? 'border-[#5c0f49] bg-gradient-to-r from-[#5c0f49]/5 to-purple-50 shadow-lg'
+                    : 'border-gray-200 hover:border-[#ffcc00] hover:bg-yellow-50/50'
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="settings-section"
+                  value="device-activity"
+                  checked={activeSection === 'device-activity'}
+                  onChange={(e) => setActiveSection(e.target.value)}
+                  className="sr-only"
+                />
+                <div
+                  className={`w-5 h-5 rounded-full border-2 mr-3 flex items-center justify-center transition-all duration-300 ${
+                    activeSection === 'device-activity'
+                      ? 'border-[#5c0f49] bg-[#5c0f49]'
+                      : 'border-gray-300 group-hover:border-[#ffcc00]'
+                  }`}
+                >
+                  {activeSection === 'device-activity' && (
+                    <div className="w-2 h-2 bg-white rounded-full"></div>
+                  )}
+                </div>
+                <Activity
+                  className={`w-5 h-5 mr-3 transition-colors duration-300 ${
+                    activeSection === 'device-activity'
+                      ? 'text-[#5c0f49]'
+                      : 'text-gray-400 group-hover:text-[#ffcc00]'
+                  }`}
+                />
+                <span
+                  className={`font-medium transition-colors duration-300 ${
+                    activeSection === 'device-activity'
+                      ? 'text-[#5c0f49]'
+                      : 'text-gray-700 group-hover:text-[#5c0f49]'
+                  }`}
+                >
+                  Device activity
+                </span>
+                <ChevronRight
+                  className={`w-4 h-4 ml-auto transition-all duration-300 ${
+                    activeSection === 'device-activity'
                       ? 'text-[#5c0f49] rotate-90'
                       : 'text-gray-400 group-hover:text-[#ffcc00]'
                   }`}
@@ -471,8 +576,14 @@ export default function SettingsPage() {
             {/* Notifications Section */}
             {activeSection === 'notifications' && <NotificationPreferences />}
 
+            {/* Two-factor authentication section */}
+            {activeSection === 'twofa' && <TwoFactorAuth />}
+
             {/* Sessions Section */}
             {activeSection === 'sessions' && <SessionManagementDashboard />}
+
+            {/* Device activity section */}
+            {activeSection === 'device-activity' && <DeviceActivityTracker />}
           </div>
         </div>
       </div>
