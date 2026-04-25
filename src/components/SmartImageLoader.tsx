@@ -5,7 +5,10 @@ import Image, { ImageProps, StaticImageData } from 'next/image';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 
-interface SmartImageLoaderProps extends Omit<ImageProps, 'onError' | 'onLoadingComplete'> {
+interface SmartImageLoaderProps extends Omit<
+  ImageProps,
+  'onError' | 'onLoadingComplete'
+> {
   fallbackSrc?: string | StaticImageData;
   blurDataURL?: string;
   onLoad?: () => void;
@@ -32,11 +35,14 @@ export function SmartImageLoader({
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
 
-  const handleError = useCallback((error: any) => {
-    setHasError(true);
-    setImgSrc(fallbackSrc);
-    onError?.(error);
-  }, [fallbackSrc, onError]);
+  const handleError = useCallback(
+    (error: any) => {
+      setHasError(true);
+      setImgSrc(fallbackSrc);
+      onError?.(error);
+    },
+    [fallbackSrc, onError],
+  );
 
   useEffect(() => {
     setImgSrc(src);
@@ -53,7 +59,7 @@ export function SmartImageLoader({
         className={cn(
           'transition-opacity duration-300 ease-in-out',
           isLoaded ? 'opacity-100' : 'opacity-0',
-          className
+          className,
         )}
         onLoad={() => {
           setIsLoaded(true);
@@ -66,14 +72,14 @@ export function SmartImageLoader({
 
       {!isLoaded && !hasError && (
         <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-800 animate-pulse">
-           <Skeleton className="w-full h-full" />
+          <Skeleton className="w-full h-full" />
         </div>
       )}
 
       {hasError && (
         <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-800 text-gray-400">
-           {/* Fallback UI can be an icon or just the fallbackSrc already being shown by the Image component */}
-           <span className="sr-only">Failed to load image</span>
+          {/* Fallback UI can be an icon or just the fallbackSrc already being shown by the Image component */}
+          <span className="sr-only">Failed to load image</span>
         </div>
       )}
     </div>

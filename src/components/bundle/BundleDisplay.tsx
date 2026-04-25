@@ -1,7 +1,16 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Package, DollarSign, Users, Clock, Star, ShoppingCart, CheckCircle, TrendingUp } from 'lucide-react';
+import {
+  Package,
+  DollarSign,
+  Users,
+  Clock,
+  Star,
+  ShoppingCart,
+  CheckCircle,
+  TrendingUp,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -44,21 +53,21 @@ interface BundleDisplayProps {
   className?: string;
 }
 
-export function BundleDisplay({ 
-  bundle, 
-  onEnroll, 
-  onEdit, 
-  onDelete, 
+export function BundleDisplay({
+  bundle,
+  onEnroll,
+  onEdit,
+  onDelete,
   showActions = true,
   variant = 'default',
-  className 
+  className,
 }: BundleDisplayProps) {
   const [isEnrolling, setIsEnrolling] = useState(false);
   const [enrolled, setEnrolled] = useState(false);
 
   const handleEnroll = async () => {
     if (!onEnroll) return;
-    
+
     setIsEnrolling(true);
     try {
       await onEnroll(bundle.id);
@@ -71,7 +80,8 @@ export function BundleDisplay({
   };
 
   const savings = bundle.originalPrice - bundle.discountedPrice;
-  const savingsPercentage = bundle.originalPrice > 0 ? (savings / bundle.originalPrice) * 100 : 0;
+  const savingsPercentage =
+    bundle.originalPrice > 0 ? (savings / bundle.originalPrice) * 100 : 0;
 
   const getLevelBadgeColor = (level: string) => {
     switch (level) {
@@ -93,17 +103,23 @@ export function BundleDisplay({
           <div className="flex items-start justify-between mb-3">
             <div className="flex-1">
               <h3 className="font-semibold text-lg mb-1">{bundle.name}</h3>
-              <p className="text-sm text-gray-600 line-clamp-2">{bundle.description}</p>
+              <p className="text-sm text-gray-600 line-clamp-2">
+                {bundle.description}
+              </p>
             </div>
             <div className="text-right ml-4">
-              <div className="text-2xl font-bold text-green-600">${bundle.discountedPrice}</div>
-              <div className="text-sm text-gray-500 line-through">${bundle.originalPrice}</div>
+              <div className="text-2xl font-bold text-green-600">
+                ${bundle.discountedPrice}
+              </div>
+              <div className="text-sm text-gray-500 line-through">
+                ${bundle.originalPrice}
+              </div>
               <Badge className="bg-red-100 text-red-800 mt-1">
                 {savingsPercentage.toFixed(0)}% OFF
               </Badge>
             </div>
           </div>
-          
+
           <div className="flex items-center justify-between">
             <div className="flex gap-4 text-sm text-gray-600">
               <span className="flex items-center gap-1">
@@ -115,10 +131,10 @@ export function BundleDisplay({
                 {bundle.enrolledCount} enrolled
               </span>
             </div>
-            
+
             {showActions && (
-              <Button 
-                size="sm" 
+              <Button
+                size="sm"
                 onClick={handleEnroll}
                 disabled={isEnrolling || enrolled || !bundle.isActive}
               >
@@ -153,7 +169,7 @@ export function BundleDisplay({
               {bundle.name}
             </CardTitle>
             <p className="text-gray-600">{bundle.description}</p>
-            
+
             <div className="flex gap-2 mt-3">
               <Badge variant={bundle.isActive ? 'default' : 'secondary'}>
                 {bundle.isActive ? 'Active' : 'Inactive'}
@@ -168,24 +184,31 @@ export function BundleDisplay({
               </Badge>
             </div>
           </div>
-          
+
           <div className="text-right ml-6">
-            <div className="text-3xl font-bold text-green-600">${bundle.discountedPrice}</div>
-            <div className="text-lg text-gray-500 line-through">${bundle.originalPrice}</div>
+            <div className="text-3xl font-bold text-green-600">
+              ${bundle.discountedPrice}
+            </div>
+            <div className="text-lg text-gray-500 line-through">
+              ${bundle.originalPrice}
+            </div>
             <Badge className="bg-red-100 text-red-800 mt-2">
               Save ${savings.toFixed(2)} ({savingsPercentage.toFixed(0)}% OFF)
             </Badge>
           </div>
         </div>
       </CardHeader>
-      
+
       <CardContent className="space-y-6">
         {/* Courses List */}
         <div>
           <h4 className="font-semibold mb-3">Included Courses</h4>
           <div className="space-y-3">
             {bundle.courses.map((course, index) => (
-              <div key={course.id} className="flex items-center justify-between p-3 border rounded-lg bg-gray-50">
+              <div
+                key={course.id}
+                className="flex items-center justify-between p-3 border rounded-lg bg-gray-50"
+              >
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-sm font-semibold text-blue-600">
                     {index + 1}
@@ -212,8 +235,12 @@ export function BundleDisplay({
                 <div className="text-right">
                   {course.price && (
                     <div>
-                      <span className="text-sm text-gray-500 line-through">${course.price}</span>
-                      <span className="ml-2 font-semibold text-green-600">FREE</span>
+                      <span className="text-sm text-gray-500 line-through">
+                        ${course.price}
+                      </span>
+                      <span className="ml-2 font-semibold text-green-600">
+                        FREE
+                      </span>
                     </div>
                   )}
                 </div>
@@ -226,19 +253,27 @@ export function BundleDisplay({
         {variant === 'detailed' && (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-gray-50 rounded-lg">
             <div className="text-center">
-              <div className="text-2xl font-bold text-blue-600">{bundle.enrolledCount}</div>
+              <div className="text-2xl font-bold text-blue-600">
+                {bundle.enrolledCount}
+              </div>
               <div className="text-sm text-gray-600">Total Enrolled</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-green-600">${bundle.revenue}</div>
+              <div className="text-2xl font-bold text-green-600">
+                ${bundle.revenue}
+              </div>
               <div className="text-sm text-gray-600">Total Revenue</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-purple-600">${bundle.discountedPrice}</div>
+              <div className="text-2xl font-bold text-purple-600">
+                ${bundle.discountedPrice}
+              </div>
               <div className="text-sm text-gray-600">Bundle Price</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-red-600">{savingsPercentage.toFixed(0)}%</div>
+              <div className="text-2xl font-bold text-red-600">
+                {savingsPercentage.toFixed(0)}%
+              </div>
               <div className="text-sm text-gray-600">Discount</div>
             </div>
           </div>
@@ -251,7 +286,10 @@ export function BundleDisplay({
               <span>Enrollment Progress</span>
               <span>{bundle.enrolledCount} students</span>
             </div>
-            <Progress value={Math.min((bundle.enrolledCount / 100) * 100, 100)} className="h-2" />
+            <Progress
+              value={Math.min((bundle.enrolledCount / 100) * 100, 100)}
+              className="h-2"
+            />
           </div>
         )}
 
@@ -277,13 +315,13 @@ export function BundleDisplay({
                 </>
               )}
             </Button>
-            
+
             {onEdit && (
               <Button variant="outline" onClick={() => onEdit(bundle)}>
                 Edit
               </Button>
             )}
-            
+
             {onDelete && (
               <Button variant="destructive" onClick={() => onDelete(bundle.id)}>
                 Delete

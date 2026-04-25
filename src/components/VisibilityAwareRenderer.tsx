@@ -82,7 +82,8 @@ export default function VisibilityAwareRenderer({
     };
   }, [disabled, onVisibilityChange, once, rootMargin, threshold]);
 
-  const shouldRenderChildren = disabled || isVisible || (once && hasBeenVisible);
+  const shouldRenderChildren =
+    disabled || isVisible || (once && hasBeenVisible);
 
   return (
     <div

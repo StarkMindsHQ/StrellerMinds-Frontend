@@ -63,15 +63,13 @@ function buildLessonBlocks(lessonTitle: string): LessonNoteBlock[] {
       id: 'walkthrough',
       label: 'Key walkthrough',
       timestamp: '05:10',
-      body:
-        'This section breaks the process into a sequence of steps so students can pause, ask questions, and compare implementation choices with their peers.',
+      body: 'This section breaks the process into a sequence of steps so students can pause, ask questions, and compare implementation choices with their peers.',
     },
     {
       id: 'takeaway',
       label: 'Final takeaway',
       timestamp: '09:35',
-      body:
-        'The closing summary highlights what should be retained, what deserves follow-up practice, and which prompts are worth discussing after the lesson.',
+      body: 'The closing summary highlights what should be retained, what deserves follow-up practice, and which prompts are worth discussing after the lesson.',
     },
   ];
 }
@@ -362,7 +360,8 @@ export function InlineLessonCommenting({
         {blocks.map((block) => {
           const rootComments = comments.filter(
             (comment) =>
-              comment.blockId === block.id && typeof comment.parentId === 'undefined',
+              comment.blockId === block.id &&
+              typeof comment.parentId === 'undefined',
           );
 
           return (
@@ -388,7 +387,9 @@ export function InlineLessonCommenting({
                 </div>
 
                 <div className="space-y-3">
-                  {rootComments.map((comment) => renderComment(comment, block.id))}
+                  {rootComments.map((comment) =>
+                    renderComment(comment, block.id),
+                  )}
                 </div>
 
                 <div className="rounded-2xl border border-dashed bg-background p-4">

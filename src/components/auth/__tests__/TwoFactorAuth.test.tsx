@@ -17,7 +17,10 @@ describe('TwoFactorAuth', () => {
   });
 
   it('renders the current 2FA status when disabled', async () => {
-    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => ({ enabled: false, backupCodes: [] }) });
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ enabled: false, backupCodes: [] }),
+    });
 
     render(<TwoFactorAuth />);
 
@@ -30,8 +33,17 @@ describe('TwoFactorAuth', () => {
   });
 
   it('starts setup and shows a secret key', async () => {
-    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => ({ enabled: false, backupCodes: [] }) });
-    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => ({ secret: 'JBSWY3DPEHPK3PXP', backupCodes: ['CODE1', 'CODE2'] }) });
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ enabled: false, backupCodes: [] }),
+    });
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        secret: 'JBSWY3DPEHPK3PXP',
+        backupCodes: ['CODE1', 'CODE2'],
+      }),
+    });
 
     render(<TwoFactorAuth />);
 
@@ -45,9 +57,21 @@ describe('TwoFactorAuth', () => {
   });
 
   it('verifies a setup code and enables two-factor authentication', async () => {
-    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => ({ enabled: false, backupCodes: [] }) });
-    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => ({ secret: 'JBSWY3DPEHPK3PXP', backupCodes: ['CODE1', 'CODE2'] }) });
-    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => ({ backupCodes: ['CODE1', 'CODE2'] }) });
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ enabled: false, backupCodes: [] }),
+    });
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        secret: 'JBSWY3DPEHPK3PXP',
+        backupCodes: ['CODE1', 'CODE2'],
+      }),
+    });
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ backupCodes: ['CODE1', 'CODE2'] }),
+    });
 
     render(<TwoFactorAuth />);
 

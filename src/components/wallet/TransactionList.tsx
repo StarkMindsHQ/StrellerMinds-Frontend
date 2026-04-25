@@ -1,4 +1,4 @@
-import TransactionItem from "./TransactionItem";
+import TransactionItem from './TransactionItem';
 
 export default function TransactionList({ transactions, loading }) {
   if (loading) return <p>Loading transactions...</p>;

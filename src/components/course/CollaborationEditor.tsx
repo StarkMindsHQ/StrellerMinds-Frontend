@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { connectEditor, applyChange } from '../../services/collaborationService';
+import {
+  connectEditor,
+  applyChange,
+} from '../../services/collaborationService';
 
-export default function CollaborationEditor({ courseId, userRole }: { courseId: string; userRole: string }) {
+export default function CollaborationEditor({
+  courseId,
+  userRole,
+}: {
+  courseId: string;
+  userRole: string;
+}) {
   const [content, setContent] = useState('');
 
   useEffect(() => {
@@ -21,7 +30,11 @@ export default function CollaborationEditor({ courseId, userRole }: { courseId: 
   return (
     <div>
       <h2>Collaboration Editor</h2>
-      <textarea value={content} onChange={handleChange} disabled={userRole !== 'editor'} />
+      <textarea
+        value={content}
+        onChange={handleChange}
+        disabled={userRole !== 'editor'}
+      />
       {userRole !== 'editor' && <p>You have read-only access.</p>}
     </div>
   );

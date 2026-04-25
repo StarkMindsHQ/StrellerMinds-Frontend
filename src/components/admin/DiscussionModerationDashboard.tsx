@@ -1,19 +1,25 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { 
-  Flag, 
-  CheckCircle, 
-  XCircle, 
-  User, 
-  MessageSquare, 
-  Clock, 
+import {
+  Flag,
+  CheckCircle,
+  XCircle,
+  User,
+  MessageSquare,
+  Clock,
   Eye,
   Ban,
   Shield,
@@ -21,7 +27,7 @@ import {
   Search,
   Filter,
   Download,
-  RefreshCw
+  RefreshCw,
 } from 'lucide-react';
 
 // Types
@@ -60,22 +66,23 @@ const mockReportedContent: ReportedContent[] = [
   {
     id: '1',
     type: 'post',
-    content: 'This is a sample post that has been reported for inappropriate content...',
+    content:
+      'This is a sample post that has been reported for inappropriate content...',
     author: {
       id: 'user1',
       name: 'John Doe',
       avatar: '/avatars/john.jpg',
-      role: 'student'
+      role: 'student',
     },
     reporter: {
       id: 'reporter1',
       name: 'Jane Smith',
-      reason: 'Inappropriate language'
+      reason: 'Inappropriate language',
     },
     reportedAt: '2024-01-15T10:30:00Z',
     status: 'pending',
     severity: 'high',
-    reports: 3
+    reports: 3,
   },
   {
     id: '2',
@@ -84,17 +91,17 @@ const mockReportedContent: ReportedContent[] = [
     author: {
       id: 'user2',
       name: 'Mike Wilson',
-      role: 'instructor'
+      role: 'instructor',
     },
     reporter: {
       id: 'reporter2',
       name: 'Admin',
-      reason: 'Spam content'
+      reason: 'Spam content',
     },
     reportedAt: '2024-01-15T09:15:00Z',
     status: 'pending',
     severity: 'medium',
-    reports: 2
+    reports: 2,
   },
   {
     id: '3',
@@ -103,18 +110,18 @@ const mockReportedContent: ReportedContent[] = [
     author: {
       id: 'user3',
       name: 'Sarah Johnson',
-      role: 'student'
+      role: 'student',
     },
     reporter: {
       id: 'reporter3',
       name: 'Moderator',
-      reason: 'Off-topic'
+      reason: 'Off-topic',
     },
     reportedAt: '2024-01-15T08:45:00Z',
     status: 'approved',
     severity: 'low',
-    reports: 1
-  }
+    reports: 1,
+  },
 ];
 
 const mockModerationActions: ModerationAction[] = [
@@ -124,7 +131,7 @@ const mockModerationActions: ModerationAction[] = [
     contentId: 'post-123',
     moderator: 'Admin User',
     timestamp: '2024-01-15T11:00:00Z',
-    reason: 'Violation of community guidelines'
+    reason: 'Violation of community guidelines',
   },
   {
     id: '2',
@@ -132,38 +139,42 @@ const mockModerationActions: ModerationAction[] = [
     contentId: 'comment-456',
     moderator: 'Moderator',
     timestamp: '2024-01-15T10:30:00Z',
-    reason: 'First offense warning'
-  }
+    reason: 'First offense warning',
+  },
 ];
 
 export const DiscussionModerationDashboard: React.FC = () => {
-  const [reportedContent, setReportedContent] = useState<ReportedContent[]>(mockReportedContent);
-  const [selectedContent, setSelectedContent] = useState<ReportedContent | null>(null);
+  const [reportedContent, setReportedContent] =
+    useState<ReportedContent[]>(mockReportedContent);
+  const [selectedContent, setSelectedContent] =
+    useState<ReportedContent | null>(null);
   const [activeTab, setActiveTab] = useState('pending');
 
   // Filter content by status
-  const pendingContent = reportedContent.filter(item => item.status === 'pending');
-  const approvedContent = reportedContent.filter(item => item.status === 'approved');
-  const removedContent = reportedContent.filter(item => item.status === 'removed');
+  const pendingContent = reportedContent.filter(
+    (item) => item.status === 'pending',
+  );
+  const approvedContent = reportedContent.filter(
+    (item) => item.status === 'approved',
+  );
+  const removedContent = reportedContent.filter(
+    (item) => item.status === 'removed',
+  );
 
   // Handle moderation actions
   const handleApprove = (contentId: string) => {
-    setReportedContent(prev => 
-      prev.map(item => 
-        item.id === contentId 
-          ? { ...item, status: 'approved' as const }
-          : item
-      )
+    setReportedContent((prev) =>
+      prev.map((item) =>
+        item.id === contentId ? { ...item, status: 'approved' as const } : item,
+      ),
     );
   };
 
   const handleRemove = (contentId: string) => {
-    setReportedContent(prev => 
-      prev.map(item => 
-        item.id === contentId 
-          ? { ...item, status: 'removed' as const }
-          : item
-      )
+    setReportedContent((prev) =>
+      prev.map((item) =>
+        item.id === contentId ? { ...item, status: 'removed' as const } : item,
+      ),
     );
   };
 
@@ -214,7 +225,9 @@ export const DiscussionModerationDashboard: React.FC = () => {
                 <Badge variant="secondary" className="text-xs">
                   {content.author.role}
                 </Badge>
-                <Badge className={`text-xs ${getSeverityColor(content.severity)}`}>
+                <Badge
+                  className={`text-xs ${getSeverityColor(content.severity)}`}
+                >
                   {content.severity}
                 </Badge>
               </div>
@@ -293,30 +306,34 @@ export const DiscussionModerationDashboard: React.FC = () => {
       title: 'Pending Review',
       value: pendingContent.length,
       icon: <Clock className="h-5 w-5 text-yellow-500" />,
-      change: '+2 from yesterday'
+      change: '+2 from yesterday',
     },
     {
       title: 'Approved Today',
-      value: approvedContent.filter(item => 
-        new Date(item.reportedAt).toDateString() === new Date().toDateString()
+      value: approvedContent.filter(
+        (item) =>
+          new Date(item.reportedAt).toDateString() ===
+          new Date().toDateString(),
       ).length,
       icon: <CheckCircle className="h-5 w-5 text-green-500" />,
-      change: '+1 from yesterday'
+      change: '+1 from yesterday',
     },
     {
       title: 'Removed Today',
-      value: removedContent.filter(item => 
-        new Date(item.reportedAt).toDateString() === new Date().toDateString()
+      value: removedContent.filter(
+        (item) =>
+          new Date(item.reportedAt).toDateString() ===
+          new Date().toDateString(),
       ).length,
       icon: <XCircle className="h-5 w-5 text-red-500" />,
-      change: 'Same as yesterday'
+      change: 'Same as yesterday',
     },
     {
       title: 'Total Reports',
       value: reportedContent.reduce((acc, item) => acc + item.reports, 0),
       icon: <Flag className="h-5 w-5 text-blue-500" />,
-      change: '+5 from yesterday'
-    }
+      change: '+5 from yesterday',
+    },
   ];
 
   return (
@@ -324,7 +341,9 @@ export const DiscussionModerationDashboard: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight">Discussion Moderation</h2>
+          <h2 className="text-3xl font-bold tracking-tight">
+            Discussion Moderation
+          </h2>
           <p className="text-muted-foreground">
             Manage community content and maintain quality standards
           </p>
@@ -356,13 +375,13 @@ export const DiscussionModerationDashboard: React.FC = () => {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">{stat.title}</p>
+                  <p className="text-sm font-medium text-muted-foreground">
+                    {stat.title}
+                  </p>
                   <p className="text-2xl font-bold">{stat.value}</p>
                   <p className="text-xs text-muted-foreground">{stat.change}</p>
                 </div>
-                <div className="p-2 bg-muted rounded-lg">
-                  {stat.icon}
-                </div>
+                <div className="p-2 bg-muted rounded-lg">{stat.icon}</div>
               </div>
             </CardContent>
           </Card>
@@ -396,7 +415,7 @@ export const DiscussionModerationDashboard: React.FC = () => {
                 <TabsContent value="pending" className="mt-4">
                   <ScrollArea className="h-[600px]">
                     {pendingContent.length > 0 ? (
-                      pendingContent.map(content => (
+                      pendingContent.map((content) => (
                         <ContentItem key={content.id} content={content} />
                       ))
                     ) : (
@@ -410,7 +429,7 @@ export const DiscussionModerationDashboard: React.FC = () => {
                 <TabsContent value="approved" className="mt-4">
                   <ScrollArea className="h-[600px]">
                     {approvedContent.length > 0 ? (
-                      approvedContent.map(content => (
+                      approvedContent.map((content) => (
                         <ContentItem key={content.id} content={content} />
                       ))
                     ) : (
@@ -424,7 +443,7 @@ export const DiscussionModerationDashboard: React.FC = () => {
                 <TabsContent value="removed" className="mt-4">
                   <ScrollArea className="h-[600px]">
                     {removedContent.length > 0 ? (
-                      removedContent.map(content => (
+                      removedContent.map((content) => (
                         <ContentItem key={content.id} content={content} />
                       ))
                     ) : (
@@ -445,20 +464,29 @@ export const DiscussionModerationDashboard: React.FC = () => {
           <Card>
             <CardHeader>
               <CardTitle>Activity Log</CardTitle>
-              <CardDescription>
-                Recent moderation actions
-              </CardDescription>
+              <CardDescription>Recent moderation actions</CardDescription>
             </CardHeader>
             <CardContent>
               <ScrollArea className="h-[600px]">
                 <div className="space-y-4">
-                  {mockModerationActions.map(action => (
-                    <div key={action.id} className="flex items-start space-x-3 p-3 rounded-lg bg-muted/50">
+                  {mockModerationActions.map((action) => (
+                    <div
+                      key={action.id}
+                      className="flex items-start space-x-3 p-3 rounded-lg bg-muted/50"
+                    >
                       <div className="flex-shrink-0">
-                        {action.action === 'removed' && <XCircle className="h-4 w-4 text-red-500" />}
-                        {action.action === 'approved' && <CheckCircle className="h-4 w-4 text-green-500" />}
-                        {action.action === 'user_warned' && <AlertTriangle className="h-4 w-4 text-yellow-500" />}
-                        {action.action === 'user_suspended' && <Ban className="h-4 w-4 text-red-500" />}
+                        {action.action === 'removed' && (
+                          <XCircle className="h-4 w-4 text-red-500" />
+                        )}
+                        {action.action === 'approved' && (
+                          <CheckCircle className="h-4 w-4 text-green-500" />
+                        )}
+                        {action.action === 'user_warned' && (
+                          <AlertTriangle className="h-4 w-4 text-yellow-500" />
+                        )}
+                        {action.action === 'user_suspended' && (
+                          <Ban className="h-4 w-4 text-red-500" />
+                        )}
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium truncate">

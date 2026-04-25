@@ -1,7 +1,13 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Search, CheckCircle, MessageSquare, ChevronDown, ChevronUp } from 'lucide-react';
+import {
+  Search,
+  CheckCircle,
+  MessageSquare,
+  ChevronDown,
+  ChevronUp,
+} from 'lucide-react';
 
 export interface QAAnswer {
   id: string;
@@ -111,7 +117,9 @@ export function MentorQAPanel({
     <div className={`flex flex-col gap-4 ${className}`}>
       {/* Header */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Mentor Q&amp;A</h2>
+        <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+          Mentor Q&amp;A
+        </h2>
         <button
           type="button"
           onClick={() => setShowForm((v) => !v)}
@@ -185,24 +193,36 @@ export function MentorQAPanel({
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
                       {accepted && (
-                        <CheckCircle className="h-4 w-4 shrink-0 text-green-500" aria-label="Has accepted answer" />
+                        <CheckCircle
+                          className="h-4 w-4 shrink-0 text-green-500"
+                          aria-label="Has accepted answer"
+                        />
                       )}
-                      <span className="font-medium text-gray-900 dark:text-gray-100">{q.title}</span>
+                      <span className="font-medium text-gray-900 dark:text-gray-100">
+                        {q.title}
+                      </span>
                     </div>
                     <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                      {q.authorName} · {new Date(q.createdAt).toLocaleDateString()}
+                      {q.authorName} ·{' '}
+                      {new Date(q.createdAt).toLocaleDateString()}
                     </p>
                   </div>
                   <div className="flex shrink-0 items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
                     <MessageSquare className="h-4 w-4" />
                     {q.answers.length}
-                    {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                    {isExpanded ? (
+                      <ChevronUp className="h-4 w-4" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4" />
+                    )}
                   </div>
                 </button>
 
                 {isExpanded && (
                   <div className="border-t border-gray-100 px-4 pb-4 pt-3 dark:border-gray-700">
-                    <p className="mb-4 text-sm text-gray-700 dark:text-gray-300">{q.content}</p>
+                    <p className="mb-4 text-sm text-gray-700 dark:text-gray-300">
+                      {q.content}
+                    </p>
 
                     {/* Answers */}
                     {q.answers.length > 0 && (
@@ -225,17 +245,20 @@ export function MentorQAPanel({
                                   </span>
                                 )}
                               </span>
-                              {!a.isAccepted && q.authorName === currentUser && (
-                                <button
-                                  type="button"
-                                  onClick={() => handleAccept(q.id, a.id)}
-                                  className="text-xs text-blue-600 hover:underline dark:text-blue-400"
-                                >
-                                  Accept
-                                </button>
-                              )}
+                              {!a.isAccepted &&
+                                q.authorName === currentUser && (
+                                  <button
+                                    type="button"
+                                    onClick={() => handleAccept(q.id, a.id)}
+                                    className="text-xs text-blue-600 hover:underline dark:text-blue-400"
+                                  >
+                                    Accept
+                                  </button>
+                                )}
                             </div>
-                            <p className="text-gray-700 dark:text-gray-300">{a.content}</p>
+                            <p className="text-gray-700 dark:text-gray-300">
+                              {a.content}
+                            </p>
                           </li>
                         ))}
                       </ul>
@@ -248,9 +271,14 @@ export function MentorQAPanel({
                         placeholder="Write an answer..."
                         value={answerDrafts[q.id] ?? ''}
                         onChange={(e) =>
-                          setAnswerDrafts((prev) => ({ ...prev, [q.id]: e.target.value }))
+                          setAnswerDrafts((prev) => ({
+                            ...prev,
+                            [q.id]: e.target.value,
+                          }))
                         }
-                        onKeyDown={(e) => e.key === 'Enter' && handlePostAnswer(q.id)}
+                        onKeyDown={(e) =>
+                          e.key === 'Enter' && handlePostAnswer(q.id)
+                        }
                         className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
                       />
                       <button

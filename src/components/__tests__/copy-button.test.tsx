@@ -55,34 +55,34 @@ describe('CopyButton', () => {
   it('calls copy function when clicked', async () => {
     mockCopy.mockResolvedValue(true);
     render(<CopyButton value={value} />);
-    
+
     fireEvent.click(screen.getByRole('button'));
-    
+
     expect(mockCopy).toHaveBeenCalledWith(value);
   });
 
   it('shows success toast on successful copy', async () => {
     mockCopy.mockResolvedValue(true);
     render(<CopyButton value={value} label="Token" />);
-    
+
     await fireEvent.click(screen.getByRole('button'));
-    
+
     expect(mockToast).toHaveBeenCalledWith('Token copied!');
   });
 
   it('shows error toast on failed copy', async () => {
     mockCopy.mockResolvedValue(false);
     render(<CopyButton value={value} />);
-    
+
     await fireEvent.click(screen.getByRole('button'));
-    
+
     expect(mockToast).toHaveBeenCalledWith('Failed to copy to clipboard');
   });
 
   it('shows Copied state when copied is true', () => {
     mockCopied = true;
     render(<CopyButton value={value} />);
-    
+
     expect(screen.getByText('Copied')).toBeDefined();
     expect(screen.getByTestId('check-icon')).toBeDefined();
   });

@@ -53,7 +53,9 @@ describe('DeviceActivityTracker', () => {
     await waitFor(() => {
       expect(screen.getByText('MacBook Air')).toBeDefined();
       expect(screen.getByText('Android Phone')).toBeDefined();
-      expect(screen.getByText(/Suspicious login activity detected/i)).toBeDefined();
+      expect(
+        screen.getByText(/Suspicious login activity detected/i),
+      ).toBeDefined();
       expect(screen.getByText(/Unusual login location/i)).toBeDefined();
     });
   });

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import { FeatureFlagService } from "@/services/FeatureFlagService";
+import React, { useEffect, useState } from 'react';
+import { FeatureFlagService } from '@/services/FeatureFlagService';
 
 interface Props {
   flag: string;
@@ -10,7 +10,12 @@ interface Props {
   variants?: { [variant: string]: React.ReactNode }; // A/B testing
 }
 
-export function FeatureFlagRenderer({ flag, children, fallback, variants }: Props) {
+export function FeatureFlagRenderer({
+  flag,
+  children,
+  fallback,
+  variants,
+}: Props) {
   const [enabled, setEnabled] = useState<boolean | null>(null);
   const [variant, setVariant] = useState<string | undefined>(undefined);
 

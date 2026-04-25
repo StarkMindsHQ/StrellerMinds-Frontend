@@ -31,7 +31,7 @@ describe('ActivityIndicator', () => {
     const { container } = render(
       <ActivityProvider>
         <ActivityIndicator />
-      </ActivityProvider>
+      </ActivityProvider>,
     );
     // The bar has a specific class 'bg-primary'
     expect(container.querySelector('.bg-primary')).toBeNull();
@@ -42,13 +42,13 @@ describe('ActivityIndicator', () => {
       <ActivityProvider>
         <ActivityIndicator />
         <TestComponent />
-      </ActivityProvider>
+      </ActivityProvider>,
     );
-    
+
     act(() => {
       screen.getByText('Start').click();
     });
-    
+
     expect(container.querySelector('.bg-primary')).not.toBeNull();
   });
 
@@ -57,20 +57,20 @@ describe('ActivityIndicator', () => {
       <ActivityProvider>
         <ActivityIndicator />
         <TestComponent />
-      </ActivityProvider>
+      </ActivityProvider>,
     );
-    
+
     act(() => {
       screen.getByText('Start').click();
       screen.getByText('Start').click();
     });
-    
+
     expect(container.querySelector('.bg-primary')).not.toBeNull();
-    
+
     act(() => {
       screen.getByText('End').click();
     });
-    
+
     expect(container.querySelector('.bg-primary')).not.toBeNull();
   });
 
@@ -79,19 +79,19 @@ describe('ActivityIndicator', () => {
       <ActivityProvider>
         <ActivityIndicator />
         <TestComponent />
-      </ActivityProvider>
+      </ActivityProvider>,
     );
-    
+
     act(() => {
       screen.getByText('Start').click();
     });
-    
+
     expect(container.querySelector('.bg-primary')).not.toBeNull();
-    
+
     act(() => {
       screen.getByText('End').click();
     });
-    
+
     expect(container.querySelector('.bg-primary')).toBeNull();
   });
 });

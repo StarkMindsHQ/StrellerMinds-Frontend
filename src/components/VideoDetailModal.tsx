@@ -646,7 +646,9 @@ export const VideoDetailModal: React.FC<VideoDetailModalProps> = ({
                   <motion.div variants={itemVariants} className="flex gap-2">
                     <Button
                       onClick={handleLike}
-                      variant={optimisticLikeState.isLiked ? 'default' : 'outline'}
+                      variant={
+                        optimisticLikeState.isLiked ? 'default' : 'outline'
+                      }
                       size="sm"
                       disabled={isLikePending}
                       className={cn(

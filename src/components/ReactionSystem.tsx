@@ -33,8 +33,11 @@ export function ReactionSystem({
   onReact,
   className = '',
 }: ReactionSystemProps) {
-  const [counts, setCounts] = useState<Record<string, number>>(initialReactions);
-  const [userReaction, setUserReaction] = useState<string | null>(initialUserReaction);
+  const [counts, setCounts] =
+    useState<Record<string, number>>(initialReactions);
+  const [userReaction, setUserReaction] = useState<string | null>(
+    initialUserReaction,
+  );
   const [showPicker, setShowPicker] = useState(false);
 
   const handleReact = (emoji: string) => {

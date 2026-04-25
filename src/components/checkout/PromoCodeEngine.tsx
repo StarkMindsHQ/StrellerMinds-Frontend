@@ -2,18 +2,18 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Tag, 
-  CheckCircle, 
-  XCircle, 
-  Percent, 
-  Gift, 
-  Calendar, 
-  Clock, 
+import {
+  Tag,
+  CheckCircle,
+  XCircle,
+  Percent,
+  Gift,
+  Calendar,
+  Clock,
   AlertTriangle,
   Loader2,
   Sparkles,
-  Zap
+  Zap,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -49,7 +49,11 @@ interface PromoCodeResponse {
 
 interface PromoCodeEngineProps {
   totalAmount: number;
-  onPromoApplied?: (promoCode: PromoCode, discountAmount: number, finalPrice: number) => void;
+  onPromoApplied?: (
+    promoCode: PromoCode,
+    discountAmount: number,
+    finalPrice: number,
+  ) => void;
   onPromoRemoved?: () => void;
   className?: string;
   disabled?: boolean;
@@ -73,7 +77,7 @@ const mockPromoCodes: PromoCode[] = [
     usedCount: 234,
     expiresAt: '2024-12-31T23:59:59Z',
     isActive: true,
-    firstTimeUserOnly: true
+    firstTimeUserOnly: true,
   },
   {
     id: '2',
@@ -85,7 +89,7 @@ const mockPromoCodes: PromoCode[] = [
     usageLimit: 500,
     usedCount: 156,
     expiresAt: '2024-11-30T23:59:59Z',
-    isActive: true
+    isActive: true,
   },
   {
     id: '3',
@@ -97,7 +101,7 @@ const mockPromoCodes: PromoCode[] = [
     usageLimit: 300,
     usedCount: 89,
     expiresAt: '2024-12-15T23:59:59Z',
-    isActive: true
+    isActive: true,
   },
   {
     id: '4',
@@ -108,7 +112,7 @@ const mockPromoCodes: PromoCode[] = [
     minAmount: 25,
     usageLimit: 2000,
     usedCount: 567,
-    isActive: true
+    isActive: true,
   },
   {
     id: '5',
@@ -120,8 +124,8 @@ const mockPromoCodes: PromoCode[] = [
     usageLimit: 100,
     usedCount: 95,
     expiresAt: '2024-01-01T23:59:59Z',
-    isActive: false
-  }
+    isActive: false,
+  },
 ];
 
 // Mock API call
@@ -129,19 +133,19 @@ const validatePromoCode = async (
   code: string,
   totalAmount: number,
   userId?: string,
-  productIds?: string[]
+  productIds?: string[],
 ): Promise<PromoCodeResponse> => {
   // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 800));
-  
+  await new Promise((resolve) => setTimeout(resolve, 800));
+
   const promoCode = mockPromoCodes.find(
-    pc => pc.code.toLowerCase() === code.toLowerCase() && pc.isActive
+    (pc) => pc.code.toLowerCase() === code.toLowerCase() && pc.isActive,
   );
 
   if (!promoCode) {
     return {
       success: false,
-      error: 'Invalid promo code'
+      error: 'Invalid promo code',
     };
   }
 
@@ -149,7 +153,7 @@ const validatePromoCode = async (
   if (promoCode.expiresAt && new Date(promoCode.expiresAt) < new Date()) {
     return {
       success: false,
-      error: 'Promo code has expired'
+      error: 'Promo code has expired',
     };
   }
 
@@ -157,7 +161,7 @@ const validatePromoCode = async (
   if (promoCode.usageLimit && promoCode.usedCount >= promoCode.usageLimit) {
     return {
       success: false,
-      error: 'Promo code usage limit reached'
+      error: 'Promo code usage limit reached',
     };
   }
 
@@ -165,7 +169,7 @@ const validatePromoCode = async (
   if (promoCode.minAmount && totalAmount < promoCode.minAmount) {
     return {
       success: false,
-      error: `Minimum order amount of $${promoCode.minAmount} required`
+      error: `Minimum order amount of $${promoCode.minAmount} required`,
     };
   }
 
@@ -177,7 +181,7 @@ const validatePromoCode = async (
     if (!isFirstTime) {
       return {
         success: false,
-        error: 'Promo code is for first-time users only'
+        error: 'Promo code is for first-time users only',
       };
     }
   }
@@ -207,7 +211,7 @@ const validatePromoCode = async (
     success: true,
     promoCode,
     discountAmount,
-    finalPrice
+    finalPrice,
   };
 };
 
@@ -224,18 +228,18 @@ const PromoCodeStatus: React.FC<{
     loading: {
       icon: <Loader2 className="h-4 w-4 animate-spin" />,
       color: 'text-blue-600',
-      bgColor: 'bg-blue-50 border-blue-200'
+      bgColor: 'bg-blue-50 border-blue-200',
     },
     success: {
       icon: <CheckCircle className="h-4 w-4" />,
       color: 'text-green-600',
-      bgColor: 'bg-green-50 border-green-200'
+      bgColor: 'bg-green-50 border-green-200',
     },
     error: {
       icon: <XCircle className="h-4 w-4" />,
       color: 'text-red-600',
-      bgColor: 'bg-red-50 border-red-200'
-    }
+      bgColor: 'bg-red-50 border-red-200',
+    },
   };
 
   const config = statusConfig[status as keyof typeof statusConfig];
@@ -247,7 +251,7 @@ const PromoCodeStatus: React.FC<{
       className={cn(
         'flex items-center gap-2 p-3 rounded-lg border text-sm',
         config.bgColor,
-        config.color
+        config.color,
       )}
     >
       {config.icon}
@@ -258,7 +262,9 @@ const PromoCodeStatus: React.FC<{
               <span className="font-medium">{promoCode.code}</span>
               <span className="ml-2">applied successfully!</span>
               {promoCode.description && (
-                <p className="text-xs opacity-75 mt-1">{promoCode.description}</p>
+                <p className="text-xs opacity-75 mt-1">
+                  {promoCode.description}
+                </p>
               )}
             </div>
             {discountAmount && (
@@ -268,12 +274,8 @@ const PromoCodeStatus: React.FC<{
             )}
           </div>
         )}
-        {status === 'error' && (
-          <span>{message}</span>
-        )}
-        {status === 'loading' && (
-          <span>Validating promo code...</span>
-        )}
+        {status === 'error' && <span>{message}</span>}
+        {status === 'loading' && <span>Validating promo code...</span>}
       </div>
     </motion.div>
   );
@@ -285,16 +287,19 @@ const PromoSuggestions: React.FC<{
   totalAmount: number;
 }> = ({ onSelect, totalAmount }) => {
   const availableCodes = mockPromoCodes.filter(
-    code => code.isActive && 
-    (!code.minAmount || totalAmount >= code.minAmount) &&
-    (!code.expiresAt || new Date(code.expiresAt) > new Date())
+    (code) =>
+      code.isActive &&
+      (!code.minAmount || totalAmount >= code.minAmount) &&
+      (!code.expiresAt || new Date(code.expiresAt) > new Date()),
   );
 
   if (availableCodes.length === 0) return null;
 
   return (
     <div className="mt-3">
-      <p className="text-xs text-muted-foreground mb-2">Available promo codes:</p>
+      <p className="text-xs text-muted-foreground mb-2">
+        Available promo codes:
+      </p>
       <div className="flex flex-wrap gap-2">
         {availableCodes.slice(0, 3).map((code) => (
           <Button
@@ -325,11 +330,13 @@ export const PromoCodeEngine: React.FC<PromoCodeEngineProps> = ({
   placeholder = 'Enter promo code',
   showSuggestions = true,
   userId,
-  productIds
+  productIds,
 }) => {
   const [promoCode, setPromoCode] = useState('');
   const [appliedPromo, setAppliedPromo] = useState<PromoCode | null>(null);
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<
+    'idle' | 'loading' | 'success' | 'error'
+  >('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [discountAmount, setDiscountAmount] = useState(0);
 
@@ -340,13 +347,26 @@ export const PromoCodeEngine: React.FC<PromoCodeEngineProps> = ({
     setErrorMessage('');
 
     try {
-      const response = await validatePromoCode(promoCode, totalAmount, userId, productIds);
+      const response = await validatePromoCode(
+        promoCode,
+        totalAmount,
+        userId,
+        productIds,
+      );
 
-      if (response.success && response.promoCode && response.discountAmount !== undefined) {
+      if (
+        response.success &&
+        response.promoCode &&
+        response.discountAmount !== undefined
+      ) {
         setStatus('success');
         setAppliedPromo(response.promoCode);
         setDiscountAmount(response.discountAmount);
-        onPromoApplied?.(response.promoCode, response.discountAmount, response.finalPrice || totalAmount);
+        onPromoApplied?.(
+          response.promoCode,
+          response.discountAmount,
+          response.finalPrice || totalAmount,
+        );
       } else {
         setStatus('error');
         setErrorMessage(response.error || 'Failed to apply promo code');
@@ -409,14 +429,14 @@ export const PromoCodeEngine: React.FC<PromoCodeEngineProps> = ({
                 disabled={disabled || status === 'loading'}
                 className={cn(
                   'pr-10',
-                  appliedPromo && 'bg-green-50 border-green-200 text-green-800'
+                  appliedPromo && 'bg-green-50 border-green-200 text-green-800',
                 )}
               />
               {appliedPromo && (
                 <CheckCircle className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-green-600" />
               )}
             </div>
-            
+
             <AnimatePresence mode="wait">
               {!appliedPromo ? (
                 <motion.div
@@ -427,7 +447,9 @@ export const PromoCodeEngine: React.FC<PromoCodeEngineProps> = ({
                 >
                   <Button
                     onClick={handleApplyPromo}
-                    disabled={disabled || status === 'loading' || !promoCode.trim()}
+                    disabled={
+                      disabled || status === 'loading' || !promoCode.trim()
+                    }
                     size="sm"
                     className="px-4"
                   >
@@ -482,18 +504,26 @@ export const PromoCodeEngine: React.FC<PromoCodeEngineProps> = ({
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
                     <Gift className="h-4 w-4 text-green-600" />
-                    <span className="font-medium text-green-800">{appliedPromo.description}</span>
+                    <span className="font-medium text-green-800">
+                      {appliedPromo.description}
+                    </span>
                   </div>
                   {appliedPromo.expiresAt && (
                     <div className="flex items-center gap-1 text-xs text-green-600">
                       <Calendar className="h-3 w-3" />
-                      <span>Expires {new Date(appliedPromo.expiresAt).toLocaleDateString()}</span>
+                      <span>
+                        Expires{' '}
+                        {new Date(appliedPromo.expiresAt).toLocaleDateString()}
+                      </span>
                     </div>
                   )}
                   {appliedPromo.usageLimit && (
                     <div className="flex items-center gap-1 text-xs text-green-600">
                       <Clock className="h-3 w-3" />
-                      <span>{appliedPromo.usageLimit - appliedPromo.usedCount} uses left</span>
+                      <span>
+                        {appliedPromo.usageLimit - appliedPromo.usedCount} uses
+                        left
+                      </span>
                     </div>
                   )}
                 </div>
@@ -502,8 +532,10 @@ export const PromoCodeEngine: React.FC<PromoCodeEngineProps> = ({
                     -${discountAmount.toFixed(2)}
                   </div>
                   <div className="text-xs text-green-600">
-                    {appliedPromo.type === 'percentage' && `${appliedPromo.value}% off`}
-                    {appliedPromo.type === 'fixed' && `$${appliedPromo.value} off`}
+                    {appliedPromo.type === 'percentage' &&
+                      `${appliedPromo.value}% off`}
+                    {appliedPromo.type === 'fixed' &&
+                      `$${appliedPromo.value} off`}
                     {appliedPromo.type === 'free_shipping' && 'Free shipping'}
                   </div>
                 </div>

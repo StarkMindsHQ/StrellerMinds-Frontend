@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { validateQueryParams, createApiSuccess, createApiError } from '@/lib/api-validation';
+import {
+  validateQueryParams,
+  createApiSuccess,
+  createApiError,
+} from '@/lib/api-validation';
 
 // Mock course data with prerequisites
 const mockCourseGraph = {
@@ -59,9 +63,17 @@ const mockCourseGraph = {
     },
   ],
   edges: [
-    { from: 'blockchain-fundamentals', to: 'stellar-smart-contract', type: 'required' },
+    {
+      from: 'blockchain-fundamentals',
+      to: 'stellar-smart-contract',
+      type: 'required',
+    },
     { from: 'stellar-smart-contract', to: 'defi-stellar', type: 'required' },
-    { from: 'blockchain-fundamentals', to: 'blockchain-security', type: 'required' },
+    {
+      from: 'blockchain-fundamentals',
+      to: 'blockchain-security',
+      type: 'required',
+    },
     { from: 'stellar-smart-contract', to: 'nft-development', type: 'required' },
     { from: 'blockchain-security', to: 'nft-development', type: 'recommended' },
   ],
@@ -93,24 +105,25 @@ export async function GET(request: NextRequest) {
     }
 
     // Get user progress
-    const userProgress = mockUserProgress[userId as keyof typeof mockUserProgress];
+    const userProgress =
+      mockUserProgress[userId as keyof typeof mockUserProgress];
     if (!userProgress) {
       return createApiError('User not found', 404);
     }
 
     // Update node statuses based on user progress
-    const updatedNodes = mockCourseGraph.nodes.map(node => {
+    const updatedNodes = mockCourseGraph.nodes.map((node) => {
       const isCompleted = userProgress.completedCourses.includes(node.id);
       const inProgress = userProgress.inProgressCourses.includes(node.id);
       const progress = userProgress.courseProgress[node.id] || 0;
 
       // Check if prerequisites are met
       const prerequisites = mockCourseGraph.edges
-        .filter(edge => edge.to === node.id && edge.type === 'required')
-        .map(edge => edge.from);
+        .filter((edge) => edge.to === node.id && edge.type === 'required')
+        .map((edge) => edge.from);
 
-      const prerequisitesMet = prerequisites.every(prereqId => 
-        userProgress.completedCourses.includes(prereqId)
+      const prerequisitesMet = prerequisites.every((prereqId) =>
+        userProgress.completedCourses.includes(prereqId),
       );
 
       let status: 'completed' | 'available' | 'locked' = 'locked';
@@ -134,25 +147,25 @@ export async function GET(request: NextRequest) {
     if (courseId) {
       // Get all nodes that are related to the specified course (prerequisites and dependents)
       const relatedNodeIds = new Set<string>();
-      
+
       // Add the course itself
       relatedNodeIds.add(courseId);
-      
+
       // Add prerequisites
       mockCourseGraph.edges
-        .filter(edge => edge.to === courseId)
-        .forEach(edge => relatedNodeIds.add(edge.from));
-      
+        .filter((edge) => edge.to === courseId)
+        .forEach((edge) => relatedNodeIds.add(edge.from));
+
       // Add dependent courses
       mockCourseGraph.edges
-        .filter(edge => edge.from === courseId)
-        .forEach(edge => relatedNodeIds.add(edge.to));
+        .filter((edge) => edge.from === courseId)
+        .forEach((edge) => relatedNodeIds.add(edge.to));
 
       // Recursively add all related nodes
       let changed = true;
       while (changed) {
         changed = false;
-        mockCourseGraph.edges.forEach(edge => {
+        mockCourseGraph.edges.forEach((edge) => {
           if (relatedNodeIds.has(edge.from) && !relatedNodeIds.has(edge.to)) {
             relatedNodeIds.add(edge.to);
             changed = true;
@@ -164,9 +177,11 @@ export async function GET(request: NextRequest) {
         });
       }
 
-      filteredNodes = updatedNodes.filter(node => relatedNodeIds.has(node.id));
-      filteredEdges = mockCourseGraph.edges.filter(edge => 
-        relatedNodeIds.has(edge.from) && relatedNodeIds.has(edge.to)
+      filteredNodes = updatedNodes.filter((node) =>
+        relatedNodeIds.has(node.id),
+      );
+      filteredEdges = mockCourseGraph.edges.filter(
+        (edge) => relatedNodeIds.has(edge.from) && relatedNodeIds.has(edge.to),
       );
     }
 

@@ -1,8 +1,8 @@
 // ReferralDashboard.tsx
-import { useReferral } from "../../hooks/useReferral";
-import ReferralStats from "./ReferralStats";
-import ReferralLink from "./ReferralLink";
-import EarningsSummary from "./EarningsSummary";
+import { useReferral } from '../../hooks/useReferral';
+import ReferralStats from './ReferralStats';
+import ReferralLink from './ReferralLink';
+import EarningsSummary from './EarningsSummary';
 
 export default function ReferralDashboard({ userId }) {
   const { stats, loading } = useReferral();

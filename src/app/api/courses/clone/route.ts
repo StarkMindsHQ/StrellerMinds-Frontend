@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { validateQueryParams, createApiSuccess, createApiError } from '@/lib/api-validation';
+import {
+  validateQueryParams,
+  createApiSuccess,
+  createApiError,
+} from '@/lib/api-validation';
 import { allCourses } from '@/lib/course-data';
 
 // Schema for course cloning request
@@ -28,7 +32,11 @@ function generateCourseId(originalId: string): string {
 }
 
 // Helper to clone course data
-function cloneCourseData(originalCourse: any, options: any, newId: string): any {
+function cloneCourseData(
+  originalCourse: any,
+  options: any,
+  newId: string,
+): any {
   const clonedCourse = {
     ...originalCourse,
     id: newId,
@@ -72,7 +80,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const validation = validateQueryParams(request, courseCloneSchema, body);
-    
+
     if (!validation.success) {
       return validation.response;
     }
@@ -80,7 +88,9 @@ export async function POST(request: NextRequest) {
     const { originalCourseId, cloneOptions } = validation.data;
 
     // Find the original course
-    const originalCourse = allCourses.find(course => course.id === originalCourseId);
+    const originalCourse = allCourses.find(
+      (course) => course.id === originalCourseId,
+    );
     if (!originalCourse) {
       return createApiError('Original course not found', 404);
     }
@@ -89,7 +99,11 @@ export async function POST(request: NextRequest) {
     const newCourseId = generateCourseId(originalCourseId);
 
     // Clone the course data
-    const clonedCourse = cloneCourseData(originalCourse, cloneOptions, newCourseId);
+    const clonedCourse = cloneCourseData(
+      originalCourse,
+      cloneOptions,
+      newCourseId,
+    );
 
     // Store the cloned course (in production, save to database)
     clonedCourses.set(newCourseId, clonedCourse);
@@ -117,9 +131,9 @@ export async function GET(request: NextRequest) {
     if (originalCourseId) {
       // Get all clones of a specific course
       const clones = Array.from(clonedCourses.values()).filter(
-        course => course.clonedFrom === originalCourseId
+        (course) => course.clonedFrom === originalCourseId,
       );
-      
+
       return createApiSuccess('Course clones retrieved successfully', {
         clones,
         count: clones.length,
@@ -128,9 +142,10 @@ export async function GET(request: NextRequest) {
     } else if (userId) {
       // Get all cloned courses by a user (instructor)
       const userClones = Array.from(clonedCourses.values()).filter(
-        course => course.instructorId === userId || course.createdBy === userId
+        (course) =>
+          course.instructorId === userId || course.createdBy === userId,
       );
-      
+
       return createApiSuccess('User cloned courses retrieved successfully', {
         clones: userClones,
         count: userClones.length,
@@ -161,16 +176,25 @@ export async function PUT(request: NextRequest) {
       }
 
       // Update the cloned course
-      const updatedCourse = { ...clonedCourse, ...updates, updatedAt: new Date().toISOString() };
+      const updatedCourse = {
+        ...clonedCourse,
+        ...updates,
+        updatedAt: new Date().toISOString(),
+      };
       clonedCourses.set(cloneId, updatedCourse);
 
       // Update in the courses array
-      const courseIndex = allCourses.findIndex(course => course.id === cloneId);
+      const courseIndex = allCourses.findIndex(
+        (course) => course.id === cloneId,
+      );
       if (courseIndex !== -1) {
         allCourses[courseIndex] = updatedCourse;
       }
 
-      return createApiSuccess('Cloned course updated successfully', updatedCourse);
+      return createApiSuccess(
+        'Cloned course updated successfully',
+        updatedCourse,
+      );
     } else if (action === 'publish') {
       const clonedCourse = clonedCourses.get(cloneId);
       if (!clonedCourse) {
@@ -181,7 +205,10 @@ export async function PUT(request: NextRequest) {
       clonedCourse.status = 'published';
       clonedCourse.publishedAt = new Date().toISOString();
 
-      return createApiSuccess('Cloned course published successfully', clonedCourse);
+      return createApiSuccess(
+        'Cloned course published successfully',
+        clonedCourse,
+      );
     } else {
       return createApiError('Invalid action', 400);
     }
@@ -209,7 +236,7 @@ export async function DELETE(request: NextRequest) {
     clonedCourses.delete(cloneId);
 
     // Remove from courses array
-    const courseIndex = allCourses.findIndex(course => course.id === cloneId);
+    const courseIndex = allCourses.findIndex((course) => course.id === cloneId);
     if (courseIndex !== -1) {
       allCourses.splice(courseIndex, 1);
     }

@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { getVersions, restoreVersion } from '../../services/courseVersionService';
+import {
+  getVersions,
+  restoreVersion,
+} from '../../services/courseVersionService';
 
 interface CourseVersion {
   id: string;
@@ -8,7 +11,11 @@ interface CourseVersion {
   changes: string;
 }
 
-export default function CourseVersionControl({ courseId }: { courseId: string }) {
+export default function CourseVersionControl({
+  courseId,
+}: {
+  courseId: string;
+}) {
   const [versions, setVersions] = useState<CourseVersion[]>([]);
 
   useEffect(() => {
@@ -24,7 +31,7 @@ export default function CourseVersionControl({ courseId }: { courseId: string })
     <div>
       <h2>Course Version History</h2>
       <ul>
-        {versions.map(v => (
+        {versions.map((v) => (
           <li key={v.id}>
             <strong>{v.timestamp}</strong> by {v.author}
             <p>{v.changes}</p>

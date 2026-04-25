@@ -52,10 +52,15 @@ export async function DELETE(request: NextRequest) {
   const sessionId = request.nextUrl.searchParams.get('id');
 
   if (!sessionId) {
-    return NextResponse.json({ error: 'Session id is required' }, { status: 400 });
+    return NextResponse.json(
+      { error: 'Session id is required' },
+      { status: 400 },
+    );
   }
 
-  const sessionIndex = activeSessionsStore.findIndex((session) => session.id === sessionId);
+  const sessionIndex = activeSessionsStore.findIndex(
+    (session) => session.id === sessionId,
+  );
 
   if (sessionIndex === -1) {
     return NextResponse.json({ error: 'Session not found' }, { status: 404 });

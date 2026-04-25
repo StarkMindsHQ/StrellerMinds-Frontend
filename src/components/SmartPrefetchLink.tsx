@@ -8,7 +8,8 @@ import { prefetchRequestQueue } from '@/lib/prefetch-request-queue';
 type PrefetchPriority = 'high' | 'normal' | 'low';
 
 export interface SmartPrefetchLinkProps
-  extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href'>,
+  extends
+    Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href'>,
     LinkProps {
   prefetchData?: (signal: AbortSignal) => Promise<unknown>;
   prefetchKey?: string;
@@ -37,7 +38,9 @@ export default function SmartPrefetchLink({
   const didPrefetchRef = useRef(false);
 
   const key = useMemo(
-    () => prefetchKey ?? `prefetch:${typeof href === 'string' ? href : href.pathname || ''}`,
+    () =>
+      prefetchKey ??
+      `prefetch:${typeof href === 'string' ? href : href.pathname || ''}`,
     [href, prefetchKey],
   );
 
@@ -127,4 +130,3 @@ export default function SmartPrefetchLink({
     </Link>
   );
 }
-
