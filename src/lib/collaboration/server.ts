@@ -642,6 +642,70 @@ export async function createCollaborationServer(httpServer: HTTPServer) {
       }
     });
 
+    // ── AMA (Ask Me Anything) Event Handlers ─────────────────────────────────
+
+    // In-memory AMA sessions store
+    const amaSessions = new Map<string, any>();
+
+    socket.on('ama:submit-question', (data: any) => {
+      try {
+        const { sessionId, question } = data;
+        const amaSession = amaSessions.get(sessionId);
+        if (!amaSession) return;
+        amaSession.questions.push(question);
+        io.to(`ama:${sessionId}`).emit('ama:question-submitted', { sessionId, question });
+      } catch (error) {
+        console.error('Error submitting AMA question:', error);
+      }
+    });
+
+    socket.on('ama:answer-question', (data: any) => {
+      try {
+        const { sessionId, questionId, answer, answeredBy } = data;
+        const amaSession = amaSessions.get(sessionId);
+        if (!amaSession) return;
+        const question = amaSession.questions.find((q: any) => q.id === questionId);
+        if (question) {
+          question.status = 'answered';
+          question.answer = answer;
+          question.answeredBy = answeredBy;
+          question.answeredAt = Date.now();
+        }
+        io.to(`ama:${sessionId}`).emit('ama:question-answered', { sessionId, questionId, answer, answeredBy, answeredAt: question?.answeredAt });
+      } catch (error) {
+        console.error('Error answering AMA question:', error);
+      }
+    });
+
+    socket.on('ama:upvote-question', (data: any) => {
+      try {
+        const { sessionId, questionId, userId } = data;
+        io.to(`ama:${sessionId}`).emit('ama:question-upvoted', { sessionId, questionId, userId });
+      } catch (error) {
+        console.error('Error upvoting AMA question:', error);
+      }
+    });
+
+    socket.on('ama:join-session', (data: any) => {
+      try {
+        const { sessionId } = data;
+        socket.join(`ama:${sessionId}`);
+        io.to(`ama:${sessionId}`).emit('ama:participant-joined', { sessionId, socketId: socket.id });
+      } catch (error) {
+        console.error('Error joining AMA session:', error);
+      }
+    });
+
+    socket.on('ama:leave-session', (data: any) => {
+      try {
+        const { sessionId } = data;
+        socket.leave(`ama:${sessionId}`);
+        io.to(`ama:${sessionId}`).emit('ama:participant-left', { sessionId, socketId: socket.id });
+      } catch (error) {
+        console.error('Error leaving AMA session:', error);
+      }
+    });
+
     // Handle disconnect
     socket.on('disconnect', () => {
       console.log('Client disconnected:', socket.id);
