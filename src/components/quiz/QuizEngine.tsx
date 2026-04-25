@@ -88,33 +88,35 @@ const QuizEngine: React.FC<QuizEngineProps> = ({
           </div>
         )}
 
-        {/* Main Content */}
-        <Card className="mb-6">
-          <CardHeader className="border-b pb-4">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-xl">
-                Question {quiz.progress.current} of {quiz.progress.total}
-              </CardTitle>
-              <div className="text-sm text-gray-500">
-                {quiz.quizState.answers.length}/{quiz.progress.total} answered
-              </div>
-            </div>
-            <QuestionProgressBar progress={quiz.progress} />
-          </CardHeader>
+         {/* Main Content */}
+         <Card className="mb-6">
+           <CardHeader className="border-b pb-4">
+             <div className="flex items-center justify-between">
+               <CardTitle className="text-xl">
+                 Question {quiz.progress.current} of {quiz.progress.total}
+               </CardTitle>
+               <div className="text-sm text-gray-500">
+                 {quiz.quizState.answers.length}/{quiz.progress.total} answered
+               </div>
+             </div>
+             <QuestionProgressBar progress={quiz.progress} />
+           </CardHeader>
 
-          <CardContent className="pt-6">
-            {/* Question */}
-            <QuestionDisplay
-              question={quiz.currentQuestion}
-              selectedOptionId={quiz.currentAnswerForQuestion?.selectedOptionId}
-              onSelectAnswer={quiz.selectAnswer}
-              showFeedback={
-                config.showFeedback || config.feedbackMode === 'instant'
-              }
-              isSubmitted={quiz.quizState.isSubmitted}
-            />
-          </CardContent>
-        </Card>
+           <CardContent className="pt-6">
+             {/* Question */}
+             <QuestionDisplay
+               question={quiz.currentQuestion}
+               selectedOptionIds={quiz.currentAnswerForQuestion?.selectedOptionIds || []}
+               confidence={quiz.currentAnswerForQuestion?.confidence || 0}
+               onSelectAnswer={quiz.selectAnswer}
+               onSetConfidence={quiz.setConfidence}
+               showFeedback={
+                 config.showFeedback || config.feedbackMode === 'instant'
+               }
+               isSubmitted={quiz.quizState.isSubmitted}
+             />
+           </CardContent>
+         </Card>
 
         {/* Navigation */}
         <QuizNavigation
