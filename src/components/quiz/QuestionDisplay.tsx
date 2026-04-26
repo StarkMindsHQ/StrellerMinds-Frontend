@@ -1,26 +1,39 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React, { useState } from 'react';
 import { QuizQuestion } from '@/types/quiz';
 import { Check, X } from 'lucide-react';
 
 interface QuestionDisplayProps {
   question: QuizQuestion;
-  selectedOptionId?: string;
-  onSelectAnswer: (optionId: string) => void;
+  selectedOptionIds: string[];
+  confidence: number;
+  onSelectAnswer: (optionIds: string[]) => void;
+  onSetConfidence: (confidence: number) => void;
   showFeedback?: boolean;
   isSubmitted?: boolean;
 }
 
 const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
   question,
-  selectedOptionId,
+  selectedOptionIds,
+  confidence,
   onSelectAnswer,
+  onSetConfidence,
   showFeedback = false,
   isSubmitted = false,
 }) => {
-  const isAnswered = selectedOptionId !== undefined;
-  const isCorrect = selectedOptionId === question.correctOptionId;
+  const isAnswered = selectedOptionIds.length > 0;
+  
+  // Determine if question is correct (all correct options selected, no incorrect ones)
+  const correctOptionIds = Array.isArray(question.correctOptionId)
+    ? question.correctOptionId
+    : [question.correctOptionId];
+    
+  const isCorrect = 
+    selectedOptionIds.length === correctOptionIds.length &&
+    selectedOptionIds.every(id => correctOptionIds.includes(id)) &&
+    correctOptionIds.every(id => selectedOptionIds.includes(id));
 
   // Show feedback only if showFeedback is true AND question is answered
   const shouldShowFeedback = showFeedback && isAnswered;
@@ -60,94 +73,103 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
         )}
       </div>
 
-      {/* Options */}
-      <div className="space-y-3">
-        {question.options.map((option) => {
-          const isSelected = option.id === selectedOptionId;
-          const isOptionCorrect = option.id === question.correctOptionId;
-          const showAsCorrect = shouldShowFeedback && isOptionCorrect;
-          const showAsIncorrect =
-            shouldShowFeedback && isSelected && !isCorrect;
+       {/* Options */}
+       <div className="space-y-3">
+         {question.options.map((option) => {
+           const isSelected = selectedOptionIds.includes(option.id);
+           const isOptionCorrect = Array.isArray(question.correctOptionId)
+             ? question.correctOptionId.includes(option.id)
+             : option.id === question.correctOptionId;
+           const showAsCorrect = shouldShowFeedback && isOptionCorrect;
+           const showAsIncorrect =
+             shouldShowFeedback && isSelected && !isOptionCorrect;
 
-          let optionClasses =
-            'relative w-full p-4 text-left border rounded-lg transition-all cursor-pointer ';
+           let optionClasses =
+             'relative w-full p-4 text-left border rounded-lg transition-all cursor-pointer ';
 
-          if (!isAnswered || !shouldShowFeedback) {
-            // Default state - not yet answered or feedback hidden
-            optionClasses += isSelected
-              ? 'border-blue-500 bg-blue-50 ring-2 ring-blue-300'
-              : 'border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50';
-          } else {
-            // Feedback state
-            if (showAsCorrect) {
-              optionClasses +=
-                'border-green-500 bg-green-50 ring-2 ring-green-300';
-            } else if (showAsIncorrect) {
-              optionClasses += 'border-red-500 bg-red-50 ring-2 ring-red-300';
-            } else if (isSelected) {
-              optionClasses += 'border-gray-300 bg-gray-50';
-            } else {
-              optionClasses += 'border-gray-200 bg-white';
-            }
-          }
+           if (!isAnswered || !shouldShowFeedback) {
+             // Default state - not yet answered or feedback hidden
+             optionClasses += isSelected
+               ? 'border-blue-500 bg-blue-50 ring-2 ring-blue-300'
+               : 'border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50';
+           } else {
+             // Feedback state
+             if (showAsCorrect) {
+               optionClasses +=
+                 'border-green-500 bg-green-50 ring-2 ring-green-300';
+             } else if (showAsIncorrect) {
+               optionClasses += 'border-red-500 bg-red-50 ring-2 ring-red-300';
+             } else if (isSelected) {
+               optionClasses += 'border-gray-300 bg-gray-50';
+             } else {
+               optionClasses += 'border-gray-200 bg-white';
+             }
+           }
 
-          return (
-            <button
-              key={option.id}
-              onClick={() => {
-                if (!isSubmitted) {
-                  onSelectAnswer(option.id);
-                }
-              }}
-              disabled={isSubmitted}
-              className={optionClasses}
-            >
-              <div className="flex items-center gap-3">
-                {/* Radio/Indicator */}
-                <div
-                  className={`w-5 h-5 rounded-full border-2 transition-all flex items-center justify-center flex-shrink-0 ${
-                    isSelected
-                      ? 'border-blue-500 bg-blue-500'
-                      : showAsCorrect
-                        ? 'border-green-500 bg-green-500'
-                        : showAsIncorrect
-                          ? 'border-red-500 bg-red-500'
-                          : 'border-gray-300'
-                  }`}
-                >
-                  {showAsCorrect && <Check className="w-3 h-3 text-white" />}
-                  {showAsIncorrect && <X className="w-3 h-3 text-white" />}
-                </div>
+           return (
+             <button
+               key={option.id}
+               onClick={() => {
+                 if (!isSubmitted) {
+                   // Toggle option selection for multi-select
+                   const newSelection = selectedOptionIds.includes(option.id)
+                     ? selectedOptionIds.filter(id => id !== option.id)
+                     : [...selectedOptionIds, option.id];
+                   onSelectAnswer(newSelection);
+                 }
+               }}
+               disabled={isSubmitted}
+               className={optionClasses}
+             >
+               <div className="flex items-center gap-3">
+                 {/* Checkbox/Indicator */}
+                 <div
+                   className={`w-5 h-5 rounded border-2 transition-all flex items-center justify-center flex-shrink-0 ${
+                     isSelected
+                       ? 'border-blue-500 bg-blue-500'
+                       : showAsCorrect
+                         ? 'border-green-500 bg-green-500'
+                         : showAsIncorrect
+                           ? 'border-red-500 bg-red-500'
+                           : 'border-gray-300'
+                   }`}
+                 >
+                   {showAsCorrect && <Check className="w-3 h-3 text-white" />}
+                   {showAsIncorrect && <X className="w-3 h-3 text-white" />}
+                   {!showAsCorrect && !showAsIncorrect && isSelected && (
+                     <span className="w-3 h-3 text-blue-600">✓</span>
+                   )}
+                 </div>
 
-                {/* Option Text */}
-                <span
-                  className={`flex-1 text-sm font-medium ${
-                    showAsCorrect
-                      ? 'text-green-700'
-                      : showAsIncorrect
-                        ? 'text-red-700'
-                        : 'text-gray-700'
-                  }`}
-                >
-                  {option.text}
-                </span>
+                 {/* Option Text */}
+                 <span
+                   className={`flex-1 text-sm font-medium ${
+                     showAsCorrect
+                       ? 'text-green-700'
+                       : showAsIncorrect
+                         ? 'text-red-700'
+                         : 'text-gray-700'
+                   }`}
+                 >
+                   {option.text}
+                 </span>
 
-                {/* Feedback Icons */}
-                {showAsCorrect && (
-                  <span className="text-xs font-semibold text-green-700 bg-green-100 px-2 py-1 rounded">
-                    Correct!
-                  </span>
-                )}
-                {showAsIncorrect && (
-                  <span className="text-xs font-semibold text-red-700 bg-red-100 px-2 py-1 rounded">
-                    Incorrect
-                  </span>
-                )}
-              </div>
-            </button>
-          );
-        })}
-      </div>
+                 {/* Feedback Icons */}
+                 {showAsCorrect && (
+                   <span className="text-xs font-semibold text-green-700 bg-green-100 px-2 py-1 rounded">
+                     Correct!
+                   </span>
+                 )}
+                 {showAsIncorrect && (
+                   <span className="text-xs font-semibold text-red-700 bg-red-100 px-2 py-1 rounded">
+                     Incorrect
+                   </span>
+                 )}
+               </div>
+             </button>
+           );
+         })}
+       </div>
 
       {/* Feedback Message */}
       {shouldShowFeedback && (
@@ -184,14 +206,39 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
         </div>
       )}
 
-      {/* No Answer Message */}
-      {!isAnswered && (
-        <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg text-amber-700 text-sm">
-          ⚠️ Please select an answer to continue
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default QuestionDisplay;
+       {/* No Answer Message */}
+       {!isAnswered && (
+         <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg text-amber-700 text-sm">
+           ⚠️ Please select an answer to continue
+         </div>
+       )}
+       
+       {/* Confidence Selector */}
+       {isAnswered && !isSubmitted && (
+         <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+           <div className="flex items-center justify-between mb-2">
+             <span className="text-sm font-medium text-gray-700">Confidence:</span>
+             <span className="text-sm font-semibold text-gray-900">{confidence}%</span>
+           </div>
+           <div className="flex space-x-2">
+             {[10, 25, 50, 75, 90].map((level) => (
+               <button
+                 key={level}
+                 onClick={() => onSetConfidence(level)}
+                 className={`w-full px-3 py-2 text-xs rounded ${
+                   confidence === level
+                     ? 'bg-blue-600 text-white'
+                     : 'bg-gray-200 hover:bg-gray-300'
+                 }`}
+               >
+                 {level}%
+               </button>
+             ))}
+           </div>
+         </div>
+       )}
+     </div>
+   );
+ };
+ 
+ export default QuestionDisplay;

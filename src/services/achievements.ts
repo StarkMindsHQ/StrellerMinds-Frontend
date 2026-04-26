@@ -14,7 +14,7 @@ export function evaluateAchievements(progress: CourseProgress) {
 
   if (completionPercentage === 100) achievements.push('Course Completed');
 
-  return achievements;
+  return achievements || [];
 }
 
 export function updateStreak() {
