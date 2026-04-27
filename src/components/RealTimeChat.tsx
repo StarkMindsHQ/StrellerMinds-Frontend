@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Send } from 'lucide-react';
+import { Send, Flag } from 'lucide-react';
 
 export interface ChatMessage {
   id: string;
@@ -18,6 +18,7 @@ export interface RealTimeChatProps {
   onSendMessage?: (content: string) => void;
   /** Simulate typing indicator from other users */
   typingUsers?: string[];
+  onReportMessage?: (messageId: string) => void;
   className?: string;
 }
 
@@ -27,6 +28,7 @@ export function RealTimeChat({
   initialMessages = [],
   onSendMessage,
   typingUsers = [],
+  onReportMessage,
   className = '',
 }: RealTimeChatProps) {
   const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
@@ -113,23 +115,33 @@ export function RealTimeChat({
                   {isOwn ? 'You' : msg.senderName}
                 </span>
               )}
-              <div className="flex items-end gap-1.5">
-                <div
-                  className={`max-w-xs rounded-2xl px-3 py-2 text-sm leading-relaxed ${
-                    isOwn
-                      ? 'rounded-br-sm bg-blue-600 text-white'
-                      : 'rounded-bl-sm bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-gray-100'
-                  }`}
-                >
-                  {msg.content}
+                  <div className="group flex items-end gap-1.5">
+                    {!isOwn && (
+                      <button
+                        type="button"
+                        onClick={() => onReportMessage?.(msg.id)}
+                        className="mb-1 hidden text-gray-400 hover:text-red-500 group-hover:block dark:text-gray-500"
+                        title="Report message"
+                      >
+                        <Flag className="h-3 w-3" />
+                      </button>
+                    )}
+                    <div
+                      className={`max-w-xs rounded-2xl px-3 py-2 text-sm leading-relaxed ${
+                        isOwn
+                          ? 'rounded-br-sm bg-blue-600 text-white'
+                          : 'rounded-bl-sm bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-gray-100'
+                      }`}
+                    >
+                      {msg.content}
+                    </div>
+                    <span className="shrink-0 text-xs text-gray-400 dark:text-gray-500">
+                      {formatTime(msg.timestamp)}
+                    </span>
+                  </div>
                 </div>
-                <span className="shrink-0 text-xs text-gray-400 dark:text-gray-500">
-                  {formatTime(msg.timestamp)}
-                </span>
-              </div>
-            </div>
-          );
-        })}
+              );
+            })}
 
         {/* Typing indicator */}
         {typingUsers.length > 0 && (

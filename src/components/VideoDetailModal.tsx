@@ -19,7 +19,11 @@ import {
   BookOpen,
   Loader2,
   User,
+  Flag,
 } from 'lucide-react';
+import { ReportModal } from '@/components/ReportModal';
+import { ReportContentType } from '@/types/report';
+import { toast } from 'sonner';
 import {
   Dialog,
   DialogContent,
@@ -191,7 +195,10 @@ const VideoDetailSkeleton: React.FC = () => (
 );
 
 // Comment Component
-const CommentItem: React.FC<{ comment: VideoComment }> = ({ comment }) => {
+const CommentItem: React.FC<{ 
+  comment: VideoComment; 
+  onReport: (id: string) => void;
+}> = ({ comment, onReport }) => {
   const [isLiked, setIsLiked] = useState(comment.isLiked || false);
   const [likesCount, setLikesCount] = useState(comment.likes);
 
@@ -264,6 +271,14 @@ const CommentItem: React.FC<{ comment: VideoComment }> = ({ comment }) => {
           <button className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
             <MessageCircle className="w-4 h-4" />
             <span>Reply</span>
+          </button>
+
+          <button 
+            onClick={() => onReport(comment.id)}
+            className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors ml-auto"
+          >
+            <Flag className="w-3.5 h-3.5" />
+            <span>Report</span>
           </button>
         </div>
       </div>
@@ -379,6 +394,9 @@ export const VideoDetailModal: React.FC<VideoDetailModalProps> = ({
     isLiked: false,
     likesCount: 0,
   });
+  const [reportModalOpen, setReportModalOpen] = useState(false);
+  const [reportContentId, setReportContentId] = useState<string | null>(null);
+  const [reportContentType, setReportContentType] = useState<ReportContentType>(ReportContentType.COMMENT);
   const {
     value: optimisticLikeState,
     error: likeError,
@@ -777,7 +795,15 @@ export const VideoDetailModal: React.FC<VideoDetailModalProps> = ({
                         <div className="space-y-2">
                           <AnimatePresence mode="popLayout">
                             {videoDetail.comments.map((comment) => (
-                              <CommentItem key={comment.id} comment={comment} />
+                              <CommentItem 
+                                key={comment.id} 
+                                comment={comment} 
+                                onReport={(id) => {
+                                  setReportContentId(id);
+                                  setReportContentType(ReportContentType.COMMENT);
+                                  setReportModalOpen(true);
+                                }}
+                              />
                             ))}
                           </AnimatePresence>
                         </div>
@@ -790,6 +816,16 @@ export const VideoDetailModal: React.FC<VideoDetailModalProps> = ({
           </div>
         </motion.div>
       </DialogContent>
+
+      <ReportModal
+        contentType={reportContentType}
+        contentId={reportContentId || ''}
+        isOpen={reportModalOpen}
+        onClose={() => setReportModalOpen(false)}
+        onSuccess={() => {
+          toast.success("Thank you for your report. Our moderators will review it.");
+        }}
+      />
     </Dialog>
   );
 };
