@@ -5,9 +5,12 @@ import {
   ChevronDown,
   ChevronRight,
   MessageSquare,
+  Pin,
+  PinOff,
   Plus,
   ThumbsUp,
 } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -143,10 +146,14 @@ function insertReply(
 }
 
 export function ThreadedDiscussionForum() {
+  const { role } = useAuth();
+  const isAdmin = role === 'admin';
+
   const [threads, setThreads] = useState(INITIAL_THREADS);
   const [sortMode, setSortMode] = useState<SortMode>('new');
   const [page, setPage] = useState(1);
   const [collapsedIds, setCollapsedIds] = useState<Set<string>>(new Set());
+  const [pinnedThreadIds, setPinnedThreadIds] = useState<Set<string>>(new Set());
   const [newThreadBody, setNewThreadBody] = useState('');
   const [replyDrafts, setReplyDrafts] = useState<Record<string, string>>({});
 
@@ -162,18 +169,37 @@ export function ThreadedDiscussionForum() {
     });
   }, [sortMode, threads]);
 
+  const pinnedThreads = useMemo(
+    () => sortedThreads.filter((thread) => pinnedThreadIds.has(thread.id)),
+    [pinnedThreadIds, sortedThreads],
+  );
+
+  const unpinnedThreads = useMemo(
+    () => sortedThreads.filter((thread) => !pinnedThreadIds.has(thread.id)),
+    [pinnedThreadIds, sortedThreads],
+  );
+
   const totalPages = Math.max(
     1,
-    Math.ceil(sortedThreads.length / ROOT_POSTS_PER_PAGE),
+    Math.ceil(unpinnedThreads.length / ROOT_POSTS_PER_PAGE),
   );
   const currentPage = Math.min(page, totalPages);
-  const paginatedThreads = sortedThreads.slice(
+  const paginatedThreads = unpinnedThreads.slice(
     (currentPage - 1) * ROOT_POSTS_PER_PAGE,
     currentPage * ROOT_POSTS_PER_PAGE,
   );
 
   const toggleThread = (threadId: string) => {
     setCollapsedIds((previous) => {
+      const next = new Set(previous);
+      if (next.has(threadId)) next.delete(threadId);
+      else next.add(threadId);
+      return next;
+    });
+  };
+
+  const togglePinnedThread = (threadId: string) => {
+    setPinnedThreadIds((previous) => {
       const next = new Set(previous);
       if (next.has(threadId)) next.delete(threadId);
       else next.add(threadId);
@@ -226,6 +252,8 @@ export function ThreadedDiscussionForum() {
   const renderThread = (thread: ForumThread, depth = 0): React.ReactNode => {
     const isCollapsed = collapsedIds.has(thread.id);
     const totalReplies = countReplies(thread);
+    const isRootThread = depth === 0;
+    const isPinned = isRootThread && pinnedThreadIds.has(thread.id);
 
     return (
       <div key={thread.id} className={depth > 0 ? 'ml-4 border-l pl-4' : ''}>
@@ -237,6 +265,11 @@ export function ThreadedDiscussionForum() {
                 <Badge variant="secondary" className="font-normal">
                   {thread.role}
                 </Badge>
+                {isPinned ? (
+                  <Badge variant="outline" className="font-normal">
+                    Pinned
+                  </Badge>
+                ) : null}
                 <span className="text-xs text-muted-foreground">
                   {relativeTime(thread.createdAt)}
                 </span>
@@ -251,6 +284,21 @@ export function ThreadedDiscussionForum() {
                 <ThumbsUp className="h-3.5 w-3.5" />
                 {thread.likes}
               </span>
+              {isRootThread && isAdmin ? (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="gap-1"
+                  onClick={() => togglePinnedThread(thread.id)}
+                >
+                  {isPinned ? (
+                    <PinOff className="h-4 w-4" />
+                  ) : (
+                    <Pin className="h-4 w-4" />
+                  )}
+                  {isPinned ? 'Unpin' : 'Pin'}
+                </Button>
+              ) : null}
               {totalReplies > 0 && (
                 <Button
                   variant="ghost"
@@ -402,6 +450,16 @@ export function ThreadedDiscussionForum() {
         </CardHeader>
         <CardContent className="p-0">
           <ScrollArea className="h-[780px]">
+            {pinnedThreads.length > 0 ? (
+              <div className="space-y-4 border-b bg-muted/10 p-6">
+                <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
+                  <Pin className="h-4 w-4" />
+                  Pinned discussions
+                </div>
+                {pinnedThreads.map((thread) => renderThread(thread))}
+              </div>
+            ) : null}
+
             <div className="space-y-4 p-6">
               {paginatedThreads.map((thread) => renderThread(thread))}
             </div>
