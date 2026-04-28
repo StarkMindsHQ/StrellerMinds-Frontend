@@ -5,12 +5,20 @@ import { updateVideoProgress } from '@/services/videoProgress';
 import { Play, Pause, Volume2, VolumeX } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useSilenceDetector } from '@/hooks/useSilenceDetector';
+import AutoSkipSilenceControls from '@/components/learning/AutoSkipSilenceControls';
 
 interface VideoPlayerProps {
   videoId: string;
   videoUrl: string;
   title: string;
   onProgressUpdate?: (watched: number, total: number) => void;
+  /** Enable auto-skip silence feature */
+  enableSilenceSkip?: boolean;
+  /** Silence detection threshold (0-255) */
+  silenceThreshold?: number;
+  /** Minimum silence duration to skip (seconds) */
+  minSilenceDuration?: number;
 }
 
 export default function VideoPlayer({
@@ -18,6 +26,9 @@ export default function VideoPlayer({
   videoUrl,
   title,
   onProgressUpdate,
+  enableSilenceSkip = false,
+  silenceThreshold = 20,
+  minSilenceDuration = 1.5,
 }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -27,6 +38,19 @@ export default function VideoPlayer({
   const [showControls, setShowControls] = useState(true);
 
   const [lastUpdateTime, setLastUpdateTime] = useState(0);
+
+  // Initialize silence detector
+  const {
+    isDetecting: isSilenceDetecting,
+    isSilent,
+    totalSkippedTime,
+    toggleDetection: toggleSilenceDetection,
+    currentLevel: audioLevel,
+  } = useSilenceDetector(videoRef.current, {
+    enabled: enableSilenceSkip,
+    threshold: silenceThreshold,
+    minSilenceDuration,
+  });
 
   useEffect(() => {
     const video = videoRef.current;
@@ -199,6 +223,18 @@ export default function VideoPlayer({
                 )}
               </Button>
             </div>
+
+            {/* Auto-skip silence controls */}
+            {enableSilenceSkip && (
+              <AutoSkipSilenceControls
+                isEnabled={enableSilenceSkip}
+                isDetecting={isSilenceDetecting}
+                isSilent={isSilent}
+                totalSkippedTime={totalSkippedTime}
+                onToggle={toggleSilenceDetection}
+                audioLevel={audioLevel}
+              />
+            )}
 
             <span className="text-white text-sm md:text-base font-medium tabular-nums shadow-sm">
               {formatTime(currentTime)} <span className="text-white/60">/</span>{' '}

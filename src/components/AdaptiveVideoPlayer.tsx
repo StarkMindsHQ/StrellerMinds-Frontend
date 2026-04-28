@@ -2,6 +2,8 @@
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Pause, Play, Settings, Loader2 } from 'lucide-react';
+import { useSilenceDetector } from '@/hooks/useSilenceDetector';
+import AutoSkipSilenceControls from '@/components/learning/AutoSkipSilenceControls';
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -22,6 +24,14 @@ export interface AdaptiveVideoPlayerProps {
   onQualityChange?: (q: QualityLevel) => void;
   onSpeedChange?: (s: PlaybackSpeed) => void;
   className?: string;
+  /** Enable auto-skip silence feature */
+  enableSilenceSkip?: boolean;
+  /** Silence detection threshold (0-255) */
+  silenceThreshold?: number;
+  /** Minimum silence duration to skip (seconds) */
+  minSilenceDuration?: number;
+  /** Callback when silence is skipped */
+  onSilenceSkip?: (startTime: number, endTime: number) => void;
 }
 
 // ── Bandwidth estimation ───────────────────────────────────────────────────────
@@ -73,6 +83,10 @@ export default function AdaptiveVideoPlayer({
   onQualityChange,
   onSpeedChange,
   className = '',
+  enableSilenceSkip = false,
+  silenceThreshold = 20,
+  minSilenceDuration = 1.5,
+  onSilenceSkip,
 }: AdaptiveVideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -82,6 +96,20 @@ export default function AdaptiveVideoPlayer({
   const [quality, setQuality] = useState<QualityLevel>(initialQuality);
   const [speed, setSpeed] = useState<PlaybackSpeed>(1);
   const [showMenu, setShowMenu] = useState(false);
+
+  // Initialize silence detector
+  const {
+    isDetecting: isSilenceDetecting,
+    isSilent,
+    totalSkippedTime,
+    toggleDetection: toggleSilenceDetection,
+    currentLevel: audioLevel,
+  } = useSilenceDetector(videoRef.current, {
+    enabled: enableSilenceSkip,
+    threshold: silenceThreshold,
+    minSilenceDuration,
+    onSilenceSkip,
+  });
 
   // Pick initial quality automatically
   useEffect(() => {
@@ -184,6 +212,18 @@ export default function AdaptiveVideoPlayer({
               {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
             </button>
             <span className="text-gray-400 text-xs tabular-nums">{fmt(currentTime)} / {fmt(duration)}</span>
+            
+            {/* Auto-skip silence controls */}
+            {enableSilenceSkip && (
+              <AutoSkipSilenceControls
+                isEnabled={enableSilenceSkip}
+                isDetecting={isSilenceDetecting}
+                isSilent={isSilent}
+                totalSkippedTime={totalSkippedTime}
+                onToggle={toggleSilenceDetection}
+                audioLevel={audioLevel}
+              />
+            )}
           </div>
 
           {/* Settings menu */}
@@ -225,6 +265,19 @@ export default function AdaptiveVideoPlayer({
                     </button>
                   ))}
                 </div>
+
+                {/* Auto-Skip Silence */}
+                {enableSilenceSkip && (
+                  <div>
+                    <p className="text-gray-400 text-xs mb-1 uppercase tracking-wide">Auto-Skip Silence</p>
+                    <button
+                      onClick={() => { toggleSilenceDetection(); setShowMenu(false); }}
+                      className={`block w-full text-left text-sm px-2 py-1 rounded ${isSilenceDetecting ? 'text-blue-400 font-semibold' : 'text-white hover:bg-gray-700'}`}
+                    >
+                      {isSilenceDetecting ? 'ON' : 'OFF'}
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </div>
