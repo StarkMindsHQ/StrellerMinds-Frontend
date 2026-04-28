@@ -3,7 +3,8 @@
 ## Overview
 
 Our design system uses CSS custom properties that are automatically converted to Tailwind CSS utilities. All tokens are defined in `src/app/globals.css` and configured in `tailwind.config.cjs`.
-
+<!-- 
+The Auto-Skip Silence feature automatically detects and skips silent parts of videos, saving users time during playback. It uses the Web Audio API to analyze audio levels in real-time and skips segments that fall below a configurable silence threshold. -->
 ### Token Structure
 
 Tokens follow a semantic naming convention:
