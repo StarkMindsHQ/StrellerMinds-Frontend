@@ -5,6 +5,7 @@ import { updateVideoProgress } from '@/services/videoProgress';
 import { enhancedVideoProgressService } from '@/services/enhancedVideoProgress';
 import { Play, Pause, Volume2, VolumeX, Gauge } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useLazyVideo } from '@/hooks/useLazyVideo';
 import {
   Select,
   SelectContent,
@@ -39,6 +40,7 @@ export default function VideoPlayer({
   minSilenceDuration = 1.5,
 }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const { shouldLoad, triggerLoad } = useLazyVideo(videoRef);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -154,9 +156,22 @@ export default function VideoPlayer({
     };
   }, [currentSessionId]);
 
+  const ensureVideoLoaded = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (!shouldLoad) {
+      triggerLoad();
+      if (!video.src) {
+        video.src = videoUrl;
+      }
+    }
+  };
+
   const togglePlay = () => {
     const video = videoRef.current;
     if (!video) return;
+
+    ensureVideoLoaded();
 
     if (isPlaying) {
       video.pause();
@@ -237,7 +252,7 @@ export default function VideoPlayer({
       <div className="aspect-video w-full relative">
         <video
           ref={videoRef}
-          src={videoUrl}
+          src={shouldLoad ? videoUrl : undefined}
           className="w-full h-full object-contain"
           onClick={togglePlay}
           preload="metadata"
