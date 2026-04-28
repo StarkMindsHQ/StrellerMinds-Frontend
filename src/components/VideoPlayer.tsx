@@ -2,8 +2,16 @@
 
 import React, { useRef, useEffect, useState } from 'react';
 import { updateVideoProgress } from '@/services/videoProgress';
-import { Play, Pause, Volume2, VolumeX } from 'lucide-react';
+import { enhancedVideoProgressService } from '@/services/enhancedVideoProgress';
+import { Play, Pause, Volume2, VolumeX, Gauge } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface VideoPlayerProps {
@@ -25,8 +33,34 @@ export default function VideoPlayer({
   const [duration, setDuration] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
   const [showControls, setShowControls] = useState(true);
+  const [playbackSpeed, setPlaybackSpeed] = useState(1);
+  const [showSpeedMenu, setShowSpeedMenu] = useState(false);
 
   const [lastUpdateTime, setLastUpdateTime] = useState(0);
+  const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
+  const [resumePosition, setResumePosition] = useState(0);
+
+  // Available playback speeds
+  const playbackSpeeds = [
+    { value: 0.5, label: '0.5x' },
+    { value: 0.75, label: '0.75x' },
+    { value: 1, label: '1x' },
+    { value: 1.25, label: '1.25x' },
+    { value: 1.5, label: '1.5x' },
+    { value: 1.75, label: '1.75x' },
+    { value: 2, label: '2x' },
+  ];
+
+  // Initialize enhanced tracking
+  useEffect(() => {
+    // Set a mock user ID (in production, this would come from auth)
+    enhancedVideoProgressService.setCurrentUser('demo-user');
+
+    // Get resume position
+    const lastPosition =
+      enhancedVideoProgressService.getResumePosition(videoId);
+    setResumePosition(lastPosition);
+  }, [videoId]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -43,7 +77,15 @@ export default function VideoPlayer({
       const now = Date.now();
       if (now - lastUpdateTime >= 2000) {
         const watchedTime = Math.min(video.currentTime, video.duration); // Ensure watched time doesn't exceed duration
+
+        // Update both old and new progress services
         updateVideoProgress(videoId, watchedTime, video.duration);
+        enhancedVideoProgressService.updatePosition(
+          videoId,
+          watchedTime,
+          video.duration,
+        );
+
         onProgressUpdate?.(watchedTime, video.duration);
         setLastUpdateTime(now);
       }
@@ -51,8 +93,20 @@ export default function VideoPlayer({
 
     const handleEnded = () => {
       setIsPlaying(false);
+
       // Ensure we mark as completed with exact duration
       updateVideoProgress(videoId, video.duration, video.duration);
+      enhancedVideoProgressService.updatePosition(
+        videoId,
+        video.duration,
+        video.duration,
+      );
+      enhancedVideoProgressService.recordEvent('play');
+
+      // End the tracking session
+      enhancedVideoProgressService.endSession();
+      setCurrentSessionId(null);
+
       onProgressUpdate?.(video.duration, video.duration);
     };
 
@@ -67,14 +121,39 @@ export default function VideoPlayer({
     };
   }, [videoId, onProgressUpdate]);
 
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (currentSessionId) {
+        enhancedVideoProgressService.endSession();
+      }
+    };
+  }, [currentSessionId]);
+
   const togglePlay = () => {
     const video = videoRef.current;
     if (!video) return;
 
     if (isPlaying) {
       video.pause();
+      enhancedVideoProgressService.recordEvent('pause');
     } else {
+      // Start tracking session if not already started
+      if (!currentSessionId) {
+        const sessionId = enhancedVideoProgressService.startSession(videoId);
+        setCurrentSessionId(sessionId);
+
+        // Resume from last position if available
+        if (
+          resumePosition > 0 &&
+          Math.abs(video.currentTime - resumePosition) < 5
+        ) {
+          video.currentTime = resumePosition;
+        }
+      }
+
       video.play();
+      enhancedVideoProgressService.recordEvent('play');
     }
     setIsPlaying(!isPlaying);
   };
@@ -85,6 +164,18 @@ export default function VideoPlayer({
 
     video.muted = !video.muted;
     setIsMuted(video.muted);
+  };
+
+  const changePlaybackSpeed = (speed: number) => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.playbackRate = speed;
+    setPlaybackSpeed(speed);
+    setShowSpeedMenu(false);
+
+    // Record speed change event
+    enhancedVideoProgressService.recordEvent('speed_change', { speed });
   };
 
   const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -98,6 +189,12 @@ export default function VideoPlayer({
 
     video.currentTime = newTime;
     setCurrentTime(newTime);
+
+    // Record seek event
+    enhancedVideoProgressService.recordEvent('seek', {
+      fromTime: video.currentTime,
+      toTime: newTime,
+    });
   };
 
   const formatTime = (time: number) => {
@@ -204,6 +301,55 @@ export default function VideoPlayer({
               {formatTime(currentTime)} <span className="text-white/60">/</span>{' '}
               {formatTime(duration)}
             </span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            {/* Speed Control */}
+            <div className="relative">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setShowSpeedMenu(!showSpeedMenu)}
+                className="text-white hover:bg-white/10 p-2 h-10 w-10 md:h-12 md:w-12 rounded-full relative"
+              >
+                <Gauge className="w-5 h-5 md:w-6 md:h-6" />
+                <span className="absolute -bottom-1 -right-1 text-xs text-white bg-[#5c0f49] rounded-full w-4 h-4 flex items-center justify-center">
+                  {playbackSpeed}x
+                </span>
+              </Button>
+
+              {/* Speed Menu */}
+              <AnimatePresence>
+                {showSpeedMenu && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                    className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-black/90 backdrop-blur-sm rounded-lg p-1 shadow-xl border border-white/10 z-30"
+                  >
+                    <div className="grid grid-cols-1 gap-1 min-w-[80px]">
+                      {playbackSpeeds.map((speed) => (
+                        <Button
+                          key={speed.value}
+                          variant={
+                            playbackSpeed === speed.value ? 'default' : 'ghost'
+                          }
+                          size="sm"
+                          onClick={() => changePlaybackSpeed(speed.value)}
+                          className={`text-xs px-3 py-1 h-8 justify-center ${
+                            playbackSpeed === speed.value
+                              ? 'bg-[#5c0f49] text-white'
+                              : 'text-white hover:bg-white/10'
+                          }`}
+                        >
+                          {speed.label}
+                        </Button>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
 
           <div className="hidden sm:block text-white text-sm md:text-base font-semibold truncate max-w-[200px] md:max-w-md drop-shadow-md">
