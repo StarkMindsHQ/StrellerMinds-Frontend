@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { LessonVideoPlayerProps } from './LessonVideoPlayer.types';
 import { saveProgress, getProgress } from './videoPlayer.utils';
 import { VideoControls } from './VideoControls';
+import { useLazyVideo } from '@/hooks/useLazyVideo';
 
 export const LessonVideoPlayer: React.FC<LessonVideoPlayerProps> = ({
   src,
@@ -10,6 +11,7 @@ export const LessonVideoPlayer: React.FC<LessonVideoPlayerProps> = ({
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { shouldLoad, triggerLoad } = useLazyVideo(videoRef);
 
   const [isPlaying, setIsPlaying] = useState(autoPlay);
   const [progress, setProgress] = useState(0);
@@ -22,6 +24,12 @@ export const LessonVideoPlayer: React.FC<LessonVideoPlayerProps> = ({
     }
   }, [lessonId]);
 
+  useEffect(() => {
+    if (autoPlay) {
+      triggerLoad();
+    }
+  }, [autoPlay, triggerLoad]);
+
   // Track progress
   const handleTimeUpdate = () => {
     if (!videoRef.current) return;
@@ -32,8 +40,21 @@ export const LessonVideoPlayer: React.FC<LessonVideoPlayerProps> = ({
   };
 
   // Controls
+  const ensureVideoLoaded = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (!shouldLoad) {
+      triggerLoad();
+      if (!video.src) {
+        video.src = src;
+      }
+    }
+  };
+
   const togglePlay = () => {
     if (!videoRef.current) return;
+
+    ensureVideoLoaded();
 
     if (isPlaying) {
       videoRef.current.pause();
@@ -71,7 +92,9 @@ export const LessonVideoPlayer: React.FC<LessonVideoPlayerProps> = ({
     >
       <video
         ref={videoRef}
-        src={src}
+        src={shouldLoad ? src : undefined}
+        preload="metadata"
+        playsInline
         className="w-full h-full"
         onTimeUpdate={handleTimeUpdate}
         onClick={togglePlay}

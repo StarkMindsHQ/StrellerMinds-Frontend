@@ -10,6 +10,7 @@ import {
   RotateCcw,
   SkipForward,
 } from 'lucide-react';
+import { useLazyVideo } from '@/hooks/useLazyVideo';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
@@ -29,6 +30,7 @@ export function VideoContainer({
 }: VideoContainerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { shouldLoad, triggerLoad } = useLazyVideo(videoRef);
   const { updateLessonProgress } = useCourseProgress();
 
   const [isPlaying, setIsPlaying] = useState(false);
@@ -86,9 +88,22 @@ export function VideoContainer({
     };
   }, [lessonId, updateLessonProgress, onVideoComplete]);
 
+  const ensureVideoLoaded = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (!shouldLoad) {
+      triggerLoad();
+      if (!video.src) {
+        video.src = videoUrl;
+      }
+    }
+  };
+
   const togglePlay = () => {
     const video = videoRef.current;
     if (!video) return;
+
+    ensureVideoLoaded();
 
     if (isPlaying) {
       video.pause();
@@ -187,7 +202,9 @@ export function VideoContainer({
     >
       <video
         ref={videoRef}
-        src={videoUrl}
+        src={shouldLoad ? videoUrl : undefined}
+        preload="metadata"
+        playsInline
         className="w-full h-full object-contain"
         onClick={togglePlay}
       />

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Play, Pause, RotateCcw } from 'lucide-react';
+import { useLazyVideo } from '@/hooks/useLazyVideo';
 
 // ── Storage helpers ────────────────────────────────────────────────────────────
 
@@ -67,6 +68,7 @@ export default function AutoResumePlayback({
   className = '',
 }: AutoResumePlaybackProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const { shouldLoad, triggerLoad } = useLazyVideo(videoRef);
   const saveTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const [isPlaying, setIsPlaying] = useState(false);
@@ -113,8 +115,21 @@ export default function AutoResumePlayback({
     onEnded?.();
   }, [videoId, onEnded]);
 
+  const ensureVideoLoaded = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (!shouldLoad) {
+      triggerLoad();
+      if (!video.src) {
+        video.src = videoUrl;
+      }
+    }
+  };
+
   const togglePlay = () => {
     if (!videoRef.current) return;
+
+    ensureVideoLoaded();
     if (isPlaying) {
       videoRef.current.pause();
     } else {
@@ -154,7 +169,9 @@ export default function AutoResumePlayback({
       {/* Video */}
       <video
         ref={videoRef}
-        src={videoUrl}
+        src={shouldLoad ? videoUrl : undefined}
+        preload="metadata"
+        playsInline
         className="w-full"
         onLoadedMetadata={handleLoadedMetadata}
         onTimeUpdate={handleTimeUpdate}

@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Pause, Play, Settings, Loader2 } from 'lucide-react';
 import { useSilenceDetector } from '@/hooks/useSilenceDetector';
 import AutoSkipSilenceControls from '@/components/learning/AutoSkipSilenceControls';
+import { useLazyVideo } from '@/hooks/useLazyVideo';
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -89,6 +90,7 @@ export default function AdaptiveVideoPlayer({
   onSilenceSkip,
 }: AdaptiveVideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const { shouldLoad, triggerLoad } = useLazyVideo(videoRef);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isBuffering, setIsBuffering] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -152,10 +154,30 @@ export default function AdaptiveVideoPlayer({
     saveTime(lessonId, t);
   }, [lessonId]);
 
+  const ensureVideoLoaded = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (!shouldLoad) {
+      triggerLoad();
+      const selectedSource = quality === 'auto'
+        ? sources[0]?.url
+        : sources.find((s) => s.quality === quality)?.url ?? sources[0]?.url;
+      if (!video.src && selectedSource) {
+        video.src = selectedSource;
+      }
+    }
+  };
+
   const togglePlay = () => {
     if (!videoRef.current) return;
-    if (isPlaying) { videoRef.current.pause(); }
-    else { videoRef.current.play().catch(() => {}); }
+
+    ensureVideoLoaded();
+
+    if (isPlaying) {
+      videoRef.current.pause();
+    } else {
+      videoRef.current.play().catch(() => {});
+    }
     setIsPlaying(!isPlaying);
   };
 
@@ -178,7 +200,9 @@ export default function AdaptiveVideoPlayer({
 
       <video
         ref={videoRef}
-        src={sources.find(s => s.quality === quality)?.url ?? sources[0]?.url}
+        src={shouldLoad ? (sources.find((s) => s.quality === quality)?.url ?? sources[0]?.url) : undefined}
+        preload="metadata"
+        playsInline
         className="w-full"
         onLoadedMetadata={() => setDuration(videoRef.current?.duration ?? 0)}
         onTimeUpdate={handleTimeUpdate}

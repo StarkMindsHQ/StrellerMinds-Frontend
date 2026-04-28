@@ -78,6 +78,11 @@ describe('AutoResumePlayback (#352)', () => {
     render(<AutoResumePlayback videoId="v1" videoUrl="/test.mp4" />);
     expect(screen.getByLabelText('Play')).toBeDefined();
   });
+
+  it('sets preload metadata on the video element', () => {
+    render(<AutoResumePlayback videoId="v1" videoUrl="/test.mp4" />);
+    expect(screen.getByTestId('video-element')).toHaveAttribute('preload', 'metadata');
+  });
 });
 
 // ── #350 — AdaptiveVideoPlayer ─────────────────────────────────────────────────
@@ -134,6 +139,11 @@ describe('AdaptiveVideoPlayer (#350)', () => {
   it('renders seek slider', () => {
     render(<AdaptiveVideoPlayer sources={mockSources} lessonId="l1" />);
     expect(screen.getByLabelText('Seek')).toBeDefined();
+  });
+
+  it('sets preload metadata on adaptive video element', () => {
+    render(<AdaptiveVideoPlayer sources={mockSources} lessonId="l1" />);
+    expect(screen.getByTestId('adaptive-video-element')).toHaveAttribute('preload', 'metadata');
   });
 });
 
