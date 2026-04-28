@@ -7,7 +7,8 @@
 A comprehensive auto-skip silence feature that detects and automatically skips silent portions of videos, saving users time during playback.
 
 ---
-
+<!-- 
+The Auto-Skip Silence feature automatically detects and skips silent parts of videos, saving users time during playback. It uses the Web Audio API to analyze audio levels in real-time and skips segments that fall below a configurable silence threshold. -->
 ## 📁 Files Created
 
 ### 1. Core Hook

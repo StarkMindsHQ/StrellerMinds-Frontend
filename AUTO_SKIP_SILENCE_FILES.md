@@ -7,7 +7,11 @@
    - Core React hook for silence detection
    - Web Audio API integration
    - Real-time audio analysis
-   - Automatic silence skipping logic
+  ## Features
+## Overview
+<!-- 
+The Auto-Skip Silence feature automatically detects and skips silent parts of videos, saving users time during playback. It uses the Web Audio API to analyze audio levels in real-time and skips segments that fall below a configurable silence threshold. -->
+ - Automatic silence skipping logic -->
 
 2. **`src/components/learning/AutoSkipSilenceControls.tsx`** (87 lines)
    - UI component for toggle controls

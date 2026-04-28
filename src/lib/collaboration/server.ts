@@ -714,3 +714,14 @@ export async function cleanupCollaborationServer(): Promise<void> {
     console.error('❌ Error during cleanup:', error);
   }
 }
+  //  // Process any missed notifications
+  //   notifications.forEach((notification) => {
+  //     self.registration.showNotification(notification.title, {
+  //       body: notification.message,
+  //       icon: notification.icon || '/icon-192x192.png',
+  //       tag: notification.id,
+  //     });
+  //   });
+  // } catch (error) {
+  //   console.error('Failed to sync notifications:', error);
+  // }

@@ -4,6 +4,11 @@
 
 The Auto-Skip Silence feature automatically detects and skips silent parts of videos, saving users time during playback. It uses the Web Audio API to analyze audio levels in real-time and skips segments that fall below a configurable silence threshold.
 
+<!-- ## Features
+## Overview
+
+The Auto-Skip Silence feature automatically detects and skips silent parts of videos, saving users time during playback. It uses the Web Audio API to analyze audio levels in real-time and skips segments that fall below a configurable silence threshold. -->
+
 ## Features
 
 ✅ **Silence Detection** - Real-time audio analysis using Web Audio API  
