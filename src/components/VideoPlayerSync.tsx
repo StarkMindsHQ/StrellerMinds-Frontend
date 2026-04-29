@@ -5,6 +5,18 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useSilenceDetector } from '@/hooks/useSilenceDetector';
 import AutoSkipSilenceControls from '@/components/learning/AutoSkipSilenceControls';
+import SubtitleCustomizationPanel from '@/components/lesson-video-player/SubtitleCustomizationPanel';
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Subtitles, Settings } from 'lucide-react';
+
+export interface SubtitleTrack {
+  src: string;
+  srclang: string;
+  label: string;
+  kind?: 'subtitles' | 'captions' | 'descriptions' | 'chapters' | 'metadata';
+  default?: boolean;
+}
 
 interface VideoPlayerSyncProps extends React.VideoHTMLAttributes<HTMLVideoElement> {
   videoId: string;
@@ -19,6 +31,8 @@ interface VideoPlayerSyncProps extends React.VideoHTMLAttributes<HTMLVideoElemen
   silenceThreshold?: number;
   /** Minimum silence duration to skip (seconds) */
   minSilenceDuration?: number;
+  /** Subtitle tracks for the video */
+  subtitleTracks?: SubtitleTrack[];
 }
 
 const VideoPlayerSync: React.FC<VideoPlayerSyncProps> = ({
