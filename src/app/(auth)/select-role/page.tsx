@@ -41,8 +41,17 @@ export default function SelectRolePage() {
         {roles.map((role) => (
           <button
             key={role.id}
+            type="button"
+            tabIndex={0}
+            aria-pressed={selectedRole === role.id}
             onClick={() => setSelectedRole(role.id)}
-            className={`w-full p-4 border-2 rounded-lg text-left transition ${
+            onKeyDown={(event) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                setSelectedRole(role.id);
+              }
+            }}
+            className={`w-full p-4 border-2 rounded-lg text-left transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-950 ${
               selectedRole === role.id
                 ? 'border-blue-500 bg-blue-50'
                 : 'border-gray-200 hover:border-blue-300'
@@ -55,6 +64,7 @@ export default function SelectRolePage() {
       </div>
 
       <button
+        type="button"
         onClick={handleContinue}
         disabled={!selectedRole}
         className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
