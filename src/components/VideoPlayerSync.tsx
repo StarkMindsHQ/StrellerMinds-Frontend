@@ -212,7 +212,19 @@ const VideoPlayerSync: React.FC<VideoPlayerSyncProps> = ({
             onPlay={onPlay}
             onPause={onPause}
             {...props}
-          />
+          >
+            {/* Subtitle tracks */}
+            {subtitleTracks.map((track, index) => (
+              <track
+                key={index}
+                src={track.src}
+                kind={track.kind || 'subtitles'}
+                srclang={track.srclang}
+                label={track.label}
+                default={track.default}
+              />
+            ))}
+          </video>
           
           {/* Auto-skip silence controls overlay */}
           {enableSilenceSkip && (
@@ -224,6 +236,46 @@ const VideoPlayerSync: React.FC<VideoPlayerSyncProps> = ({
                 totalSkippedTime={totalSkippedTime}
                 onToggle={toggleSilenceDetection}
                 audioLevel={audioLevel}
+              />
+            </div>
+          )}
+
+          {/* Subtitle controls overlay */}
+          {subtitleTracks.length > 0 && (
+            <div className="absolute top-4 left-4 z-10 flex gap-2">
+              {/* Subtitle toggle button */}
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={toggleSubtitles}
+                className={cn(
+                  "bg-black/50 hover:bg-black/70 text-white border-white/20",
+                  subtitlesEnabled && "bg-blue-600/70 hover:bg-blue-700/70"
+                )}
+                title={subtitlesEnabled ? "Disable Subtitles" : "Enable Subtitles"}
+              >
+                <Subtitles className="w-5 h-5" />
+              </Button>
+
+              {/* Language selector */}
+              <Select value={selectedLanguage} onValueChange={selectLanguage}>
+                <SelectTrigger className="w-24 bg-black/50 border-white/20 text-white">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="off">Off</SelectItem>
+                  {subtitleTracks.map((track, index) => (
+                    <SelectItem key={index} value={track.srclang}>
+                      {track.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              {/* Subtitle settings */}
+              <SubtitleCustomizationPanel
+                videoRef={videoRef}
+                storageKey={`subtitle-preferences-${videoId}`}
               />
             </div>
           )}
