@@ -3,6 +3,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { useSilenceDetector } from '@/hooks/useSilenceDetector';
+import AutoSkipSilenceControls from './src/components/learning/AutoSkipSilenceControls';
 
 interface VideoPlayerSyncProps extends React.VideoHTMLAttributes<HTMLVideoElement> {
   videoId: string;
@@ -11,6 +13,12 @@ interface VideoPlayerSyncProps extends React.VideoHTMLAttributes<HTMLVideoElemen
   className?: string;
   autoPlay?: boolean;
   saveProgress?: boolean;
+  /** Enable auto-skip silence feature */
+  enableSilenceSkip?: boolean;
+  /** Silence detection threshold (0-255) */
+  silenceThreshold?: number;
+  /** Minimum silence duration to skip (seconds) */
+  minSilenceDuration?: number;
 }
 
 const VideoPlayerSync: React.FC<VideoPlayerSyncProps> = ({
@@ -20,10 +28,26 @@ const VideoPlayerSync: React.FC<VideoPlayerSyncProps> = ({
   className,
   autoPlay = false,
   saveProgress = true,
+  enableSilenceSkip = false,
+  silenceThreshold = 20,
+  minSilenceDuration = 1.5,
   ...props
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
+
+  // Initialize silence detector
+  const {
+    isDetecting: isSilenceDetecting,
+    isSilent,
+    totalSkippedTime,
+    toggleDetection: toggleSilenceDetection,
+    currentLevel: audioLevel,
+  } = useSilenceDetector(videoRef.current, {
+    enabled: enableSilenceSkip,
+    threshold: silenceThreshold,
+    minSilenceDuration,
+  });
 
   // Handle state restoration and persistence logic
   useEffect(() => {
@@ -125,6 +149,20 @@ const VideoPlayerSync: React.FC<VideoPlayerSyncProps> = ({
             onPause={onPause}
             {...props}
           />
+          
+          {/* Auto-skip silence controls overlay */}
+          {enableSilenceSkip && (
+            <div className="absolute top-4 right-4 z-10">
+              <AutoSkipSilenceControls
+                isEnabled={enableSilenceSkip}
+                isDetecting={isSilenceDetecting}
+                isSilent={isSilent}
+                totalSkippedTime={totalSkippedTime}
+                onToggle={toggleSilenceDetection}
+                audioLevel={audioLevel}
+              />
+            </div>
+          )}
         </motion.div>
       </AnimatePresence>
     </div>
