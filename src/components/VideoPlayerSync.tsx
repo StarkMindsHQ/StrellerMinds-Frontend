@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useSilenceDetector } from '@/hooks/useSilenceDetector';
-import AutoSkipSilenceControls from './src/components/learning/AutoSkipSilenceControls';
+import AutoSkipSilenceControls from '@/components/learning/AutoSkipSilenceControls';
 
 interface VideoPlayerSyncProps extends React.VideoHTMLAttributes<HTMLVideoElement> {
   videoId: string;
