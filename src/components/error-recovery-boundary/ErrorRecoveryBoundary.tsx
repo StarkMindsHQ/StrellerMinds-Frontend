@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import React from "react";
+import React from 'react';
 
 interface ErrorRecoveryBoundaryProps {
   children: React.ReactNode;
@@ -27,7 +27,7 @@ export class ErrorRecoveryBoundary extends React.Component<
     if (this.props.onError) {
       this.props.onError(error, info);
     }
-    console.error("ErrorBoundary caught:", error, info);
+    console.error('ErrorBoundary caught:', error, info);
   }
 
   retry = () => {

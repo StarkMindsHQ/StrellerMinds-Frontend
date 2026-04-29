@@ -1,17 +1,23 @@
-import { act, fireEvent, render, renderHook, screen } from '@testing-library/react';
+import {
+  act,
+  fireEvent,
+  render,
+  renderHook,
+  screen,
+} from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import OptimisticActionHandler, { useOptimisticAction } from '../OptimisticActionHandler';
+import OptimisticActionHandler, {
+  useOptimisticAction,
+} from '../OptimisticActionHandler';
 
 describe('OptimisticActionHandler', () => {
   it('applies an optimistic update immediately and keeps the committed state on success', async () => {
     let resolveAction: ((value: { ok: boolean }) => void) | null = null;
-    const action = vi.fn(
-      (_nextValue: { liked: boolean; count: number }) => {
-        return new Promise<{ ok: boolean }>((resolve) => {
-          resolveAction = resolve;
-        });
-      },
-    );
+    const action = vi.fn((_nextValue: { liked: boolean; count: number }) => {
+      return new Promise<{ ok: boolean }>((resolve) => {
+        resolveAction = resolve;
+      });
+    });
 
     const { result } = renderHook(() =>
       useOptimisticAction({
@@ -23,10 +29,12 @@ describe('OptimisticActionHandler', () => {
     let mutationPromise: Promise<{ ok: boolean }> | null = null;
 
     act(() => {
-      mutationPromise = result.current.applyOptimisticUpdate((currentValue) => ({
-        liked: !currentValue.liked,
-        count: currentValue.count + 1,
-      }));
+      mutationPromise = result.current.applyOptimisticUpdate(
+        (currentValue) => ({
+          liked: !currentValue.liked,
+          count: currentValue.count + 1,
+        }),
+      );
     });
 
     expect(action).toHaveBeenCalledTimes(1);

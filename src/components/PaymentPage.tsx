@@ -9,9 +9,9 @@ import { logger } from '@/lib/logger';
 import { toast } from 'sonner';
 
 const PaymentPage: React.FC = () => {
-  const [paymentMethod, setPaymentMethod] = useState<'card' | 'crypto' | 'paystack'>(
-    'crypto',
-  );
+  const [paymentMethod, setPaymentMethod] = useState<
+    'card' | 'crypto' | 'paystack'
+  >('crypto');
   const [isModalOpen, setIsModalOpen] = useState(true);
   const [isRetryModalOpen, setIsRetryModalOpen] = useState(false);
 
@@ -28,7 +28,9 @@ const PaymentPage: React.FC = () => {
     logger.log('Connect wallet clicked');
   };
 
-  const handlePaymentMethodChange = (method: 'card' | 'crypto' | 'paystack') => {
+  const handlePaymentMethodChange = (
+    method: 'card' | 'crypto' | 'paystack',
+  ) => {
     setPaymentMethod(method);
   };
 
@@ -58,7 +60,7 @@ const PaymentPage: React.FC = () => {
                 onClose={handleCloseModal}
               />
             )}
-            
+
             {paymentMethod === 'crypto' && (
               <CryptoModal
                 courseTitle={courseInfo.title}
@@ -76,11 +78,20 @@ const PaymentPage: React.FC = () => {
               <div className="bg-white p-8 rounded-2xl shadow-xl space-y-6">
                 <div className="flex justify-between items-center">
                   <h3 className="text-xl font-bold">Paystack Checkout</h3>
-                  <button onClick={() => setPaymentMethod('card')} className="text-sm text-blue-600 hover:underline">Back to Card</button>
+                  <button
+                    onClick={() => setPaymentMethod('card')}
+                    className="text-sm text-blue-600 hover:underline"
+                  >
+                    Back to Card
+                  </button>
                 </div>
                 <div className="p-4 bg-blue-50 rounded-xl border border-blue-100">
-                  <p className="text-sm text-blue-800 font-medium">{courseInfo.title}</p>
-                  <p className="text-2xl font-bold text-blue-900">${courseInfo.price}</p>
+                  <p className="text-sm text-blue-800 font-medium">
+                    {courseInfo.title}
+                  </p>
+                  <p className="text-2xl font-bold text-blue-900">
+                    ${courseInfo.price}
+                  </p>
                 </div>
                 <PaystackButton
                   email="user@example.com"
@@ -92,7 +103,7 @@ const PaymentPage: React.FC = () => {
                   }}
                   onClose={() => setPaymentMethod('card')}
                 />
-                <button 
+                <button
                   onClick={handlePaymentError}
                   className="w-full text-xs text-gray-400 hover:text-red-400 transition-colors py-2"
                 >
@@ -120,7 +131,9 @@ const PaymentPage: React.FC = () => {
 
       <div className="fixed bottom-4 left-4 bg-white p-4 rounded-2xl shadow-xl border border-gray-100">
         <div className="flex flex-col gap-3">
-          <span className="text-sm font-bold text-gray-900">Demo Controls:</span>
+          <span className="text-sm font-bold text-gray-900">
+            Demo Controls:
+          </span>
           <div className="flex gap-2">
             <button
               onClick={() => setIsModalOpen(!isModalOpen)}

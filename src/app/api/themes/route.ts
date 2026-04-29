@@ -5,7 +5,8 @@ const themes = [
     name: 'default',
     variables: {},
     fontFamily: "Inter, system-ui, -apple-system, 'Segoe UI', sans-serif",
-    monoFontFamily: "'Source Code Pro', ui-monospace, SFMono-Regular, monospace",
+    monoFontFamily:
+      "'Source Code Pro', ui-monospace, SFMono-Regular, monospace",
   },
   {
     name: 'sunset',
@@ -34,4 +35,3 @@ const themes = [
 export async function GET() {
   return NextResponse.json({ themes });
 }
-

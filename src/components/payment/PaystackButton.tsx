@@ -26,28 +26,30 @@ export const PaystackButton: React.FC<PaystackButtonProps> = ({
 
   const handlePaystackPayment = () => {
     setLoading(true);
-    
+
     // In a real scenario, we would load the script:
     // https://js.paystack.co/v1/inline.js
     // and then call PaystackPop.setup()
-    
+
     // For this implementation, we'll simulate the Paystack checkout UI
     // since we might not have the script loaded in the environment immediately
-    
+
     console.log('Initiating Paystack payment...', { email, amount, publicKey });
-    
+
     // Simulate script loading and payment initialization
     setTimeout(() => {
       setLoading(false);
-      
+
       // Simulate PaystackPop behavior
       const simulatedSuccess = true; // In reality, this depends on user action
-      
+
       if (simulatedSuccess) {
         toast.success('Paystack checkout initiated');
         // Simulate a successful callback after a delay
         setTimeout(() => {
-          onSuccess('PAY-' + Math.random().toString(36).substr(2, 9).toUpperCase());
+          onSuccess(
+            'PAY-' + Math.random().toString(36).substr(2, 9).toUpperCase(),
+          );
         }, 2000);
       } else {
         toast.error('Failed to initialize Paystack');

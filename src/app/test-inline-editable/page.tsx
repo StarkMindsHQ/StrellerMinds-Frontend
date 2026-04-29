@@ -12,7 +12,11 @@ import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 
 export default function TestInlineEditablePage() {
-  const { startActivity, endActivity, isActive: isGlobalActive } = useActivity();
+  const {
+    startActivity,
+    endActivity,
+    isActive: isGlobalActive,
+  } = useActivity();
   const [eventName, setEventName] = React.useState('Tech Conference 2026');
   const [description, setDescription] = React.useState(
     'A conference about future technologies.',

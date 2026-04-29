@@ -34,8 +34,7 @@ const INITIAL_THREADS: ForumThread[] = [
     id: 'thread-1',
     author: 'Maya Okafor',
     role: 'Student',
-    body:
-      'How are you all structuring the drag-and-drop quiz experience so instructors can preview the order before publishing?',
+    body: 'How are you all structuring the drag-and-drop quiz experience so instructors can preview the order before publishing?',
     createdAt: '2026-04-24T08:30:00.000Z',
     likes: 18,
     replies: [
@@ -43,8 +42,7 @@ const INITIAL_THREADS: ForumThread[] = [
         id: 'reply-1',
         author: 'Victor Grant',
         role: 'Instructor',
-        body:
-          'I keep a staging list and a learner preview side by side. It helps catch gaps before the quiz goes live.',
+        body: 'I keep a staging list and a learner preview side by side. It helps catch gaps before the quiz goes live.',
         createdAt: '2026-04-24T09:00:00.000Z',
         likes: 9,
         replies: [
@@ -52,8 +50,7 @@ const INITIAL_THREADS: ForumThread[] = [
             id: 'reply-2',
             author: 'You',
             role: 'Mentor',
-            body:
-              'That preview pattern is exactly what we are using in the editor tab now. It makes ordering changes much safer.',
+            body: 'That preview pattern is exactly what we are using in the editor tab now. It makes ordering changes much safer.',
             createdAt: '2026-04-24T09:40:00.000Z',
             likes: 4,
             replies: [],
@@ -66,8 +63,7 @@ const INITIAL_THREADS: ForumThread[] = [
     id: 'thread-2',
     author: 'Aisha Bello',
     role: 'Student',
-    body:
-      'Would anyone want a rubric template for the peer-review assignment? I made one for smart contract audits.',
+    body: 'Would anyone want a rubric template for the peer-review assignment? I made one for smart contract audits.',
     createdAt: '2026-04-23T18:15:00.000Z',
     likes: 26,
     replies: [
@@ -75,8 +71,7 @@ const INITIAL_THREADS: ForumThread[] = [
         id: 'reply-3',
         author: 'Daniel Marks',
         role: 'Reviewer',
-        body:
-          'Yes please. A rubric with accuracy, explanation, and remediation quality would be especially useful.',
+        body: 'Yes please. A rubric with accuracy, explanation, and remediation quality would be especially useful.',
         createdAt: '2026-04-23T19:10:00.000Z',
         likes: 11,
         replies: [],
@@ -87,8 +82,7 @@ const INITIAL_THREADS: ForumThread[] = [
     id: 'thread-3',
     author: 'Jonah Smith',
     role: 'Student',
-    body:
-      'For inline lesson comments, are you anchoring notes to timestamps or to content blocks beneath the player?',
+    body: 'For inline lesson comments, are you anchoring notes to timestamps or to content blocks beneath the player?',
     createdAt: '2026-04-22T15:50:00.000Z',
     likes: 12,
     replies: [],
@@ -336,7 +330,10 @@ export function ThreadedDiscussionForum() {
             </div>
             <div className="rounded-2xl border bg-background p-3 text-center">
               <p className="text-2xl font-bold">
-                {threads.reduce((total, thread) => total + countReplies(thread), 0)}
+                {threads.reduce(
+                  (total, thread) => total + countReplies(thread),
+                  0,
+                )}
               </p>
               <p className="text-xs text-muted-foreground">Nested replies</p>
             </div>

@@ -13,18 +13,18 @@ export default function BulkUploadManager() {
 
   const handleSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
-      const newFiles = Array.from(event.target.files).map(file => ({
+      const newFiles = Array.from(event.target.files).map((file) => ({
         file,
         progress: 0,
         status: 'pending',
       }));
-      setFiles(prev => [...prev, ...newFiles]);
+      setFiles((prev) => [...prev, ...newFiles]);
     }
   };
 
   const startUpload = async (uploadFile: UploadFile, index: number) => {
     try {
-      setFiles(prev => {
+      setFiles((prev) => {
         const updated = [...prev];
         updated[index].status = 'uploading';
         return updated;
@@ -32,20 +32,20 @@ export default function BulkUploadManager() {
 
       await uploadFile.file.arrayBuffer(); // simulate reading
       await uploadFileToServer(uploadFile.file, (progress) => {
-        setFiles(prev => {
+        setFiles((prev) => {
           const updated = [...prev];
           updated[index].progress = progress;
           return updated;
         });
       });
 
-      setFiles(prev => {
+      setFiles((prev) => {
         const updated = [...prev];
         updated[index].status = 'success';
         return updated;
       });
     } catch (err: any) {
-      setFiles(prev => {
+      setFiles((prev) => {
         const updated = [...prev];
         updated[index].status = 'error';
         updated[index].error = err.message;
@@ -65,7 +65,9 @@ export default function BulkUploadManager() {
         {files.map((f, i) => (
           <li key={i}>
             {f.file.name} - {f.status}
-            {f.status === 'uploading' && <progress value={f.progress} max={100} />}
+            {f.status === 'uploading' && (
+              <progress value={f.progress} max={100} />
+            )}
             {f.status === 'error' && (
               <button onClick={() => retryUpload(i)}>Retry</button>
             )}
@@ -80,7 +82,10 @@ export default function BulkUploadManager() {
 }
 
 // Mock upload function
-async function uploadFileToServer(file: File, onProgress: (progress: number) => void) {
+async function uploadFileToServer(
+  file: File,
+  onProgress: (progress: number) => void,
+) {
   return new Promise<void>((resolve, reject) => {
     let progress = 0;
     const interval = setInterval(() => {

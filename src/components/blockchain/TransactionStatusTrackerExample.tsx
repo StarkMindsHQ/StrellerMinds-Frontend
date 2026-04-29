@@ -3,7 +3,13 @@
 import React, { useState } from 'react';
 import { TransactionStatusTracker } from './TransactionStatusTracker';
 import { Button } from '@/components/ui/button';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
@@ -14,11 +20,14 @@ import { toast } from 'sonner';
  */
 export const TransactionStatusTrackerExample: React.FC = () => {
   const [activeTxHash, setActiveTxHash] = useState<`0x${string}` | undefined>();
-  const [description, setDescription] = useState('Enrolling in Stellar Advanced Course');
+  const [description, setDescription] = useState(
+    'Enrolling in Stellar Advanced Course',
+  );
 
   const simulateTransaction = () => {
     // Generate a random mock hash
-    const mockHash = `0x${Math.random().toString(16).slice(2, 42).padStart(40, '0')}` as `0x${string}`;
+    const mockHash =
+      `0x${Math.random().toString(16).slice(2, 42).padStart(40, '0')}` as `0x${string}`;
     setActiveTxHash(mockHash);
     toast.info('Transaction submitted to blockchain');
   };
@@ -40,14 +49,14 @@ export const TransactionStatusTrackerExample: React.FC = () => {
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="tx-desc">Transaction Description</Label>
-            <Input 
-              id="tx-desc" 
-              value={description} 
+            <Input
+              id="tx-desc"
+              value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="e.g. Buying Course #123"
             />
           </div>
-          <Button 
+          <Button
             className="w-full h-12 text-lg font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-lg shadow-blue-500/20"
             onClick={simulateTransaction}
             disabled={!!activeTxHash}
@@ -56,8 +65,8 @@ export const TransactionStatusTrackerExample: React.FC = () => {
           </Button>
 
           {activeTxHash && (
-             <Button 
-              variant="link" 
+            <Button
+              variant="link"
               className="w-full text-xs opacity-60"
               onClick={() => setActiveTxHash(undefined)}
             >
@@ -72,8 +81,8 @@ export const TransactionStatusTrackerExample: React.FC = () => {
         <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground px-1">
           Active Monitoring
         </h3>
-        
-        <TransactionStatusTracker 
+
+        <TransactionStatusTracker
           txHash={activeTxHash}
           description={description}
           onConfirmed={handleConfirmed}

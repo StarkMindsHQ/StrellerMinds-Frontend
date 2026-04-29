@@ -48,7 +48,8 @@ export const SessionTimeoutManager = () => {
     // Clear existing timers
     if (logoutTimerRef.current) clearTimeout(logoutTimerRef.current);
     if (warningTimerRef.current) clearTimeout(warningTimerRef.current);
-    if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
+    if (countdownIntervalRef.current)
+      clearInterval(countdownIntervalRef.current);
 
     // If we're not authenticated, don't start any timers
     if (status !== 'authenticated') return;
@@ -60,12 +61,13 @@ export const SessionTimeoutManager = () => {
     warningTimerRef.current = setTimeout(() => {
       setShowWarning(true);
       setTimeLeft(WARNING_THRESHOLD);
-      
+
       // Start countdown interval
       countdownIntervalRef.current = setInterval(() => {
         setTimeLeft((prev) => {
           if (prev <= 1000) {
-            if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
+            if (countdownIntervalRef.current)
+              clearInterval(countdownIntervalRef.current);
             return 0;
           }
           return prev - 1000;
@@ -95,7 +97,8 @@ export const SessionTimeoutManager = () => {
     return () => {
       if (logoutTimerRef.current) clearTimeout(logoutTimerRef.current);
       if (warningTimerRef.current) clearTimeout(warningTimerRef.current);
-      if (countdownIntervalRef.current) clearInterval(countdownIntervalRef.current);
+      if (countdownIntervalRef.current)
+        clearInterval(countdownIntervalRef.current);
     };
   }, [status, startTimers]);
 
@@ -134,29 +137,30 @@ export const SessionTimeoutManager = () => {
         <div className="rounded-full bg-amber-100 dark:bg-amber-900/30 p-4 animate-pulse">
           <Clock className="h-8 w-8 text-amber-600 dark:text-amber-400" />
         </div>
-        
+
         <div className="text-center space-y-2">
           <p className="text-xl font-bold text-foreground">
-            Logging out in <span className="text-amber-600 dark:text-amber-400 tabular-nums">{formatTime(timeLeft)}</span>
+            Logging out in{' '}
+            <span className="text-amber-600 dark:text-amber-400 tabular-nums">
+              {formatTime(timeLeft)}
+            </span>
           </p>
           <p className="text-sm text-muted-foreground max-w-[280px] mx-auto">
-            Click 'Stay Logged In' to continue your session and prevent being logged out.
+            Click 'Stay Logged In' to continue your session and prevent being
+            logged out.
           </p>
         </div>
       </div>
-      
+
       <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 mt-4">
-        <Button 
-          variant="ghost" 
+        <Button
+          variant="ghost"
           onClick={handleLogout}
           className="w-full sm:w-auto hover:bg-destructive/10 hover:text-destructive"
         >
           Logout Now
         </Button>
-        <Button 
-          onClick={handleExtend}
-          className="w-full sm:w-auto"
-        >
+        <Button onClick={handleExtend} className="w-full sm:w-auto">
           Stay Logged In
         </Button>
       </div>

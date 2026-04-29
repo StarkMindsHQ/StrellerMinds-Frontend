@@ -7,7 +7,10 @@ import { Button, type ButtonProps } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard';
 
-export interface CopyButtonProps extends Omit<ButtonProps, 'onClick' | 'onCopy'> {
+export interface CopyButtonProps extends Omit<
+  ButtonProps,
+  'onClick' | 'onCopy'
+> {
   value: string;
   iconMode?: boolean;
   label?: string;
@@ -47,7 +50,11 @@ export function CopyButton({
     <Button
       variant={variant}
       size={iconMode ? 'icon' : size}
-      className={cn('relative gap-2 px-3', iconMode && 'w-8 h-8 p-0', className)}
+      className={cn(
+        'relative gap-2 px-3',
+        iconMode && 'w-8 h-8 p-0',
+        className,
+      )}
       onClick={handleCopy}
       aria-label={label ? `Copy ${label}` : 'Copy to clipboard'}
       {...props}

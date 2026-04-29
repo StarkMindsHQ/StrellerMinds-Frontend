@@ -39,7 +39,7 @@ export const PaymentRetryModal: React.FC<PaymentRetryModalProps> = ({
           {/* Decorative background elements */}
           <div className="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-red-100 rounded-full opacity-50" />
           <div className="absolute bottom-0 left-0 -ml-8 -mb-8 w-24 h-24 bg-red-100 rounded-full opacity-50" />
-          
+
           <motion.div
             initial={{ scale: 0.5, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -50,7 +50,7 @@ export const PaymentRetryModal: React.FC<PaymentRetryModalProps> = ({
               <XCircle className="w-12 h-12 text-white" />
             </div>
           </motion.div>
-          
+
           <DialogTitle className="mt-6 text-2xl font-bold text-red-900 text-center relative z-10">
             Payment Failed
           </DialogTitle>
@@ -107,7 +107,7 @@ export const PaymentRetryModal: React.FC<PaymentRetryModalProps> = ({
             </Button>
           </div>
         </div>
-        
+
         <div className="px-8 pb-6 text-center">
           <p className="text-xs text-gray-400">
             Secure encryption protected. Your data is safe with us.

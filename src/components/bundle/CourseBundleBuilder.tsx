@@ -1,14 +1,29 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Plus, X, Package, DollarSign, Percent, Save, Trash2, Calculator } from 'lucide-react';
+import {
+  Plus,
+  X,
+  Package,
+  DollarSign,
+  Percent,
+  Save,
+  Trash2,
+  Calculator,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Checkbox } from '@/components/ui/checkbox';
 import { cn } from '@/lib/utils';
@@ -41,16 +56,18 @@ interface CourseBundleBuilderProps {
   className?: string;
 }
 
-export function CourseBundleBuilder({ 
-  availableCourses, 
-  onBundleCreate, 
+export function CourseBundleBuilder({
+  availableCourses,
+  onBundleCreate,
   onBundleUpdate,
-  className 
+  className,
 }: CourseBundleBuilderProps) {
   const [bundleCourses, setBundleCourses] = useState<BundleCourse[]>([]);
   const [bundleName, setBundleName] = useState('');
   const [bundleDescription, setBundleDescription] = useState('');
-  const [discountType, setDiscountType] = useState<'percentage' | 'fixed'>('percentage');
+  const [discountType, setDiscountType] = useState<'percentage' | 'fixed'>(
+    'percentage',
+  );
   const [discountValue, setDiscountValue] = useState(10);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -59,7 +76,7 @@ export function CourseBundleBuilder({
 
   // Initialize bundle courses
   useEffect(() => {
-    const initialBundleCourses = availableCourses.map(course => ({
+    const initialBundleCourses = availableCourses.map((course) => ({
       id: course.id,
       course,
       included: false,
@@ -69,20 +86,19 @@ export function CourseBundleBuilder({
 
   // Calculate prices
   const originalPrice = bundleCourses
-    .filter(bc => bc.included && bc.course.price)
+    .filter((bc) => bc.included && bc.course.price)
     .reduce((sum, bc) => sum + (bc.course.price || 0), 0);
 
-  const discountedPrice = discountType === 'percentage' 
-    ? originalPrice * (1 - discountValue / 100)
-    : Math.max(0, originalPrice - discountValue);
+  const discountedPrice =
+    discountType === 'percentage'
+      ? originalPrice * (1 - discountValue / 100)
+      : Math.max(0, originalPrice - discountValue);
 
   const totalSavings = originalPrice - discountedPrice;
 
   const handleCourseToggle = (courseId: string, included: boolean) => {
-    setBundleCourses(prev => 
-      prev.map(bc => 
-        bc.id === courseId ? { ...bc, included } : bc
-      )
+    setBundleCourses((prev) =>
+      prev.map((bc) => (bc.id === courseId ? { ...bc, included } : bc)),
     );
   };
 
@@ -92,7 +108,7 @@ export function CourseBundleBuilder({
       return;
     }
 
-    if (bundleCourses.filter(bc => bc.included).length < 2) {
+    if (bundleCourses.filter((bc) => bc.included).length < 2) {
       setError('At least 2 courses must be included in the bundle');
       return;
     }
@@ -105,11 +121,13 @@ export function CourseBundleBuilder({
       const bundleData = {
         name: bundleName,
         description: bundleDescription,
-        courses: bundleCourses.filter(bc => bc.included).map(bc => ({
-          id: bc.id,
-          title: bc.course.title,
-          price: bc.course.price,
-        })),
+        courses: bundleCourses
+          .filter((bc) => bc.included)
+          .map((bc) => ({
+            id: bc.id,
+            title: bc.course.title,
+            price: bc.course.price,
+          })),
         discountType,
         discountValue,
         originalPrice,
@@ -154,12 +172,12 @@ export function CourseBundleBuilder({
     setBundleDescription('');
     setDiscountType('percentage');
     setDiscountValue(10);
-    setBundleCourses(prev => prev.map(bc => ({ ...bc, included: false })));
+    setBundleCourses((prev) => prev.map((bc) => ({ ...bc, included: false })));
     setError(null);
     setSuccess(null);
   };
 
-  const includedCourses = bundleCourses.filter(bc => bc.included);
+  const includedCourses = bundleCourses.filter((bc) => bc.included);
 
   return (
     <div className={cn('w-full space-y-6', className)}>
@@ -206,7 +224,9 @@ export function CourseBundleBuilder({
                 <div className="flex gap-2 mt-2">
                   <Button
                     type="button"
-                    variant={discountType === 'percentage' ? 'default' : 'outline'}
+                    variant={
+                      discountType === 'percentage' ? 'default' : 'outline'
+                    }
                     size="sm"
                     onClick={() => setDiscountType('percentage')}
                   >
@@ -224,13 +244,17 @@ export function CourseBundleBuilder({
               </div>
               <div>
                 <Label htmlFor="discount-value">
-                  {discountType === 'percentage' ? 'Discount %' : 'Discount Amount ($)'}
+                  {discountType === 'percentage'
+                    ? 'Discount %'
+                    : 'Discount Amount ($)'}
                 </Label>
                 <Input
                   id="discount-value"
                   type="number"
                   value={discountValue}
-                  onChange={(e) => setDiscountValue(parseFloat(e.target.value) || 0)}
+                  onChange={(e) =>
+                    setDiscountValue(parseFloat(e.target.value) || 0)
+                  }
                   min={discountType === 'percentage' ? 0 : 0}
                   max={discountType === 'percentage' ? 100 : undefined}
                   step={discountType === 'percentage' ? 1 : 5}
@@ -240,10 +264,9 @@ export function CourseBundleBuilder({
                 <div className="text-sm text-gray-600">
                   <p>Savings: ${totalSavings.toFixed(2)}</p>
                   <p className="font-semibold text-green-600">
-                    {totalSavings > 0 && originalPrice > 0 
+                    {totalSavings > 0 && originalPrice > 0
                       ? `${((totalSavings / originalPrice) * 100).toFixed(1)}% off`
-                      : 'No discount'
-                    }
+                      : 'No discount'}
                   </p>
                 </div>
               </div>
@@ -255,11 +278,14 @@ export function CourseBundleBuilder({
             <h3 className="font-semibold mb-4">Select Courses for Bundle</h3>
             <div className="space-y-2 max-h-64 overflow-y-auto border rounded-lg p-4">
               {bundleCourses.map((bundleCourse) => (
-                <div key={bundleCourse.id} className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50">
+                <div
+                  key={bundleCourse.id}
+                  className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50"
+                >
                   <div className="flex items-center gap-3">
                     <Checkbox
                       checked={bundleCourse.included}
-                      onCheckedChange={(checked) => 
+                      onCheckedChange={(checked) =>
                         handleCourseToggle(bundleCourse.id, checked as boolean)
                       }
                     />
@@ -298,12 +324,22 @@ export function CourseBundleBuilder({
                   <span>${originalPrice.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Discount ({discountType === 'percentage' ? `${discountValue}%` : `$${discountValue}`}):</span>
-                  <span className="text-red-600">-${totalSavings.toFixed(2)}</span>
+                  <span>
+                    Discount (
+                    {discountType === 'percentage'
+                      ? `${discountValue}%`
+                      : `$${discountValue}`}
+                    ):
+                  </span>
+                  <span className="text-red-600">
+                    -${totalSavings.toFixed(2)}
+                  </span>
                 </div>
                 <div className="flex justify-between font-bold text-lg pt-2 border-t">
                   <span>Bundle Price:</span>
-                  <span className="text-green-600">${discountedPrice.toFixed(2)}</span>
+                  <span className="text-green-600">
+                    ${discountedPrice.toFixed(2)}
+                  </span>
                 </div>
               </div>
             </div>
@@ -312,12 +348,16 @@ export function CourseBundleBuilder({
           {/* Error/Success Messages */}
           {error && (
             <Alert className="border-red-200 bg-red-50">
-              <AlertDescription className="text-red-800">{error}</AlertDescription>
+              <AlertDescription className="text-red-800">
+                {error}
+              </AlertDescription>
             </Alert>
           )}
           {success && (
             <Alert className="border-green-200 bg-green-50">
-              <AlertDescription className="text-green-800">{success}</AlertDescription>
+              <AlertDescription className="text-green-800">
+                {success}
+              </AlertDescription>
             </Alert>
           )}
 
@@ -325,7 +365,9 @@ export function CourseBundleBuilder({
           <div className="flex gap-2">
             <Button
               onClick={handleSaveBundle}
-              disabled={isSaving || !bundleName.trim() || includedCourses.length < 2}
+              disabled={
+                isSaving || !bundleName.trim() || includedCourses.length < 2
+              }
               className="flex items-center gap-2"
             >
               {isSaving ? (

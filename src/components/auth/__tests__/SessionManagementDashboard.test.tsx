@@ -60,17 +60,25 @@ describe('SessionManagementDashboard', () => {
       ok: true,
       json: async () => mockSessions,
     });
-    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => ({ ok: true }) });
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ ok: true }),
+    });
 
     render(<SessionManagementDashboard />);
 
-    const terminateButton = await screen.findByRole('button', { name: /Terminate/i });
+    const terminateButton = await screen.findByRole('button', {
+      name: /Terminate/i,
+    });
     fireEvent.click(terminateButton);
 
     await waitFor(() => {
-      expect(fetchMock).toHaveBeenLastCalledWith('/api/auth/sessions?id=session-2', {
-        method: 'DELETE',
-      });
+      expect(fetchMock).toHaveBeenLastCalledWith(
+        '/api/auth/sessions?id=session-2',
+        {
+          method: 'DELETE',
+        },
+      );
       expect(screen.queryByText('Windows PC')).toBeNull();
     });
   });

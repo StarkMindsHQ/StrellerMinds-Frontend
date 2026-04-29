@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useEffect, useMemo, useState } from 'react';
 import { AlertTriangle, DeviceLaptop, Globe2, ShieldCheck } from 'lucide-react';
@@ -104,7 +104,9 @@ export function DeviceActivityTracker() {
                   <p className="text-xs uppercase tracking-[.24em] text-slate-500">
                     Suspicious items
                   </p>
-                  <p className="text-3xl font-semibold">{suspiciousItems.length}</p>
+                  <p className="text-3xl font-semibold">
+                    {suspiciousItems.length}
+                  </p>
                 </div>
               </div>
             </div>
@@ -121,9 +123,12 @@ export function DeviceActivityTracker() {
             <div className="flex items-start gap-4 rounded-3xl border border-amber-200 bg-amber-50 p-4">
               <AlertTriangle className="h-5 w-5 text-amber-700" />
               <div>
-                <p className="font-semibold text-slate-900">Suspicious login activity detected</p>
+                <p className="font-semibold text-slate-900">
+                  Suspicious login activity detected
+                </p>
                 <p className="text-sm text-slate-600">
-                  Review the highlighted entries below and lock any unfamiliar devices.
+                  Review the highlighted entries below and lock any unfamiliar
+                  devices.
                 </p>
               </div>
             </div>
@@ -143,9 +148,13 @@ export function DeviceActivityTracker() {
           ) : null}
 
           {isLoading ? (
-            <p className="text-sm text-muted-foreground">Loading device history...</p>
+            <p className="text-sm text-muted-foreground">
+              Loading device history...
+            </p>
           ) : activity.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No device activity recorded.</p>
+            <p className="text-sm text-muted-foreground">
+              No device activity recorded.
+            </p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full min-w-[720px] text-left text-sm">
@@ -168,8 +177,12 @@ export function DeviceActivityTracker() {
                     >
                       <td className="px-4 py-4">
                         <div className="flex flex-col gap-1">
-                          <span className="font-semibold text-slate-900">{entry.device}</span>
-                          <span className="text-xs text-slate-500">{entry.browser}</span>
+                          <span className="font-semibold text-slate-900">
+                            {entry.device}
+                          </span>
+                          <span className="text-xs text-slate-500">
+                            {entry.browser}
+                          </span>
                         </div>
                       </td>
                       <td className="px-4 py-4">
@@ -179,8 +192,12 @@ export function DeviceActivityTracker() {
                         </div>
                         <p className="text-xs text-slate-500">{entry.ip}</p>
                       </td>
-                      <td className="px-4 py-4">{formatTimestamp(entry.firstSeenAt)}</td>
-                      <td className="px-4 py-4">{formatTimestamp(entry.lastSeenAt)}</td>
+                      <td className="px-4 py-4">
+                        {formatTimestamp(entry.firstSeenAt)}
+                      </td>
+                      <td className="px-4 py-4">
+                        {formatTimestamp(entry.lastSeenAt)}
+                      </td>
                       <td className="px-4 py-4">
                         <span
                           className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[.18em] ${
@@ -192,7 +209,9 @@ export function DeviceActivityTracker() {
                           {entry.suspicious ? 'Suspicious' : 'Verified'}
                         </span>
                         {entry.suspicious && entry.reason ? (
-                          <p className="mt-1 text-xs text-amber-700">{entry.reason}</p>
+                          <p className="mt-1 text-xs text-amber-700">
+                            {entry.reason}
+                          </p>
                         ) : null}
                       </td>
                     </tr>

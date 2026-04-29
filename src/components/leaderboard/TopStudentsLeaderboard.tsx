@@ -16,7 +16,13 @@ import {
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
@@ -27,7 +33,11 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
-import type { LeaderboardEntry, LeaderboardProps, LeaderboardMetricType } from '@/types/leaderboard';
+import type {
+  LeaderboardEntry,
+  LeaderboardProps,
+  LeaderboardMetricType,
+} from '@/types/leaderboard';
 
 // Fetch leaderboard data from API
 const fetchLeaderboard = async (
@@ -35,7 +45,7 @@ const fetchLeaderboard = async (
   courseId?: string,
   limit?: number,
   offset?: number,
-  userId?: string
+  userId?: string,
 ): Promise<any> => {
   const params = new URLSearchParams({
     metricType,
@@ -99,9 +109,11 @@ const RankBadge: React.FC<{ rank: number }> = ({ rank }) => {
 };
 
 // Trend indicator component
-const TrendIndicator: React.FC<{ trend?: 'up' | 'down' | 'stable' | 'new' }> = ({ trend }) => {
+const TrendIndicator: React.FC<{
+  trend?: 'up' | 'down' | 'stable' | 'new';
+}> = ({ trend }) => {
   if (!trend || trend === 'stable') return null;
-  
+
   if (trend === 'up') {
     return <TrendingUp className="h-4 w-4 text-emerald-500" />;
   }
@@ -138,7 +150,7 @@ const LeaderboardRow: React.FC<LeaderboardRowProps> = ({
         'flex items-center gap-4 p-4 rounded-xl border transition-all hover:shadow-md cursor-pointer',
         isHighlighted
           ? 'bg-gradient-to-r from-primary/10 via-primary/5 to-transparent border-primary/30 shadow-sm'
-          : 'bg-card hover:bg-accent/50 border-border'
+          : 'bg-card hover:bg-accent/50 border-border',
       )}
       onClick={() => onClick?.(entry)}
     >
@@ -162,12 +174,14 @@ const LeaderboardRow: React.FC<LeaderboardRowProps> = ({
       {/* Student Info */}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
-          <h3 className="font-semibold text-base truncate">{entry.studentName}</h3>
-          {showTrends && entry.trend && (
-            <TrendIndicator trend={entry.trend} />
-          )}
+          <h3 className="font-semibold text-base truncate">
+            {entry.studentName}
+          </h3>
+          {showTrends && entry.trend && <TrendIndicator trend={entry.trend} />}
           {isHighlighted && (
-            <Badge variant="secondary" className="text-xs">You</Badge>
+            <Badge variant="secondary" className="text-xs">
+              You
+            </Badge>
           )}
         </div>
         <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
@@ -250,9 +264,15 @@ export const TopStudentsLeaderboard: React.FC<LeaderboardProps> = ({
     const loadData = async () => {
       setIsLoading(true);
       setError(null);
-      
+
       try {
-        const result = await fetchLeaderboard(metricType, courseId, limit, offset, highlightUserId);
+        const result = await fetchLeaderboard(
+          metricType,
+          courseId,
+          limit,
+          offset,
+          highlightUserId,
+        );
         setData(result);
       } catch (err) {
         setError(err as Error);
@@ -267,7 +287,13 @@ export const TopStudentsLeaderboard: React.FC<LeaderboardProps> = ({
   const refetch = async () => {
     try {
       setIsLoading(true);
-      const result = await fetchLeaderboard(metricType, courseId, limit, offset, highlightUserId);
+      const result = await fetchLeaderboard(
+        metricType,
+        courseId,
+        limit,
+        offset,
+        highlightUserId,
+      );
       setData(result);
     } catch (err) {
       setError(err as Error);
@@ -305,7 +331,7 @@ export const TopStudentsLeaderboard: React.FC<LeaderboardProps> = ({
               Ranking by {metricType.replace('_', ' ')} performance
             </CardDescription>
           </div>
-          
+
           <div className="flex items-center gap-2">
             <Select value={metricType} onValueChange={handleMetricTypeChange}>
               <SelectTrigger className="w-[180px]">
@@ -317,24 +343,31 @@ export const TopStudentsLeaderboard: React.FC<LeaderboardProps> = ({
                 <SelectItem value="combined">Combined Score</SelectItem>
               </SelectContent>
             </Select>
-            
+
             <Button
               variant="outline"
               size="icon"
               onClick={() => refetch()}
               disabled={isLoading}
             >
-              <RefreshCw className={cn('h-4 w-4', isLoading && 'animate-spin')} />
+              <RefreshCw
+                className={cn('h-4 w-4', isLoading && 'animate-spin')}
+              />
             </Button>
           </div>
         </div>
       </CardHeader>
-      
+
       <CardContent>
         {error ? (
           <div className="text-center py-8 text-destructive">
             <p className="font-medium">Failed to load leaderboard</p>
-            <Button variant="outline" size="sm" onClick={() => refetch()} className="mt-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => refetch()}
+              className="mt-2"
+            >
               Try Again
             </Button>
           </div>
@@ -360,29 +393,33 @@ export const TopStudentsLeaderboard: React.FC<LeaderboardProps> = ({
             </AnimatePresence>
 
             {/* Current User Position (if not in top results) */}
-            {data.currentUserEntry && 
-             !data.entries.some((e: LeaderboardEntry) => e.studentId === highlightUserId) && (
-              <div className="relative py-4">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-muted"></div>
+            {data.currentUserEntry &&
+              !data.entries.some(
+                (e: LeaderboardEntry) => e.studentId === highlightUserId,
+              ) && (
+                <div className="relative py-4">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-muted"></div>
+                  </div>
+                  <div className="relative flex justify-center">
+                    <Badge variant="outline" className="bg-background px-4">
+                      Your Position
+                    </Badge>
+                  </div>
                 </div>
-                <div className="relative flex justify-center">
-                  <Badge variant="outline" className="bg-background px-4">
-                    Your Position
-                  </Badge>
-                </div>
-              </div>
-            )}
-            
-            {data.currentUserEntry && 
-             !data.entries.some((e: LeaderboardEntry) => e.studentId === highlightUserId) && (
-              <LeaderboardRow
-                entry={data.currentUserEntry}
-                isHighlighted={true}
-                onClick={onStudentClick}
-                showTrends={showTrends}
-              />
-            )}
+              )}
+
+            {data.currentUserEntry &&
+              !data.entries.some(
+                (e: LeaderboardEntry) => e.studentId === highlightUserId,
+              ) && (
+                <LeaderboardRow
+                  entry={data.currentUserEntry}
+                  isHighlighted={true}
+                  onClick={onStudentClick}
+                  showTrends={showTrends}
+                />
+              )}
           </div>
         )}
 
@@ -391,10 +428,12 @@ export const TopStudentsLeaderboard: React.FC<LeaderboardProps> = ({
           <div className="flex items-center justify-between mt-6 pt-4 border-t">
             <div className="text-sm text-muted-foreground">
               Showing <span className="font-medium">{offset + 1}</span> to{' '}
-              <span className="font-medium">{Math.min(offset + limit, data.totalCount)}</span> of{' '}
-              <span className="font-medium">{data.totalCount}</span> students
+              <span className="font-medium">
+                {Math.min(offset + limit, data.totalCount)}
+              </span>{' '}
+              of <span className="font-medium">{data.totalCount}</span> students
             </div>
-            
+
             <div className="flex items-center gap-2">
               <Button
                 variant="outline"
@@ -405,11 +444,11 @@ export const TopStudentsLeaderboard: React.FC<LeaderboardProps> = ({
                 <ChevronLeft className="h-4 w-4 mr-1" />
                 Previous
               </Button>
-              
+
               <Badge variant="outline" className="px-4">
                 Page {currentPage} of {totalPages || 1}
               </Badge>
-              
+
               <Button
                 variant="outline"
                 size="sm"

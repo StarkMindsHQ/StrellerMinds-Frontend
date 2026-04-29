@@ -1,6 +1,9 @@
 import axios from 'axios';
 
-export async function uploadFile(file: File, onProgress: (progress: number) => void) {
+export async function uploadFile(
+  file: File,
+  onProgress: (progress: number) => void,
+) {
   const formData = new FormData();
   formData.append('file', file);
 

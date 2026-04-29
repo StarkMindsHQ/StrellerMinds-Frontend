@@ -2,7 +2,13 @@
 
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { BookOpen, Users, FileCheck, BarChart3, DollarSign } from 'lucide-react';
+import {
+  BookOpen,
+  Users,
+  FileCheck,
+  BarChart3,
+  DollarSign,
+} from 'lucide-react';
 import CourseManagement from './CourseManagement';
 import StudentList from './StudentList';
 import ApplicationReview from './ApplicationReview';
@@ -11,7 +17,13 @@ import { RevenueSplitVisualization } from './RevenueSplitVisualization';
 import { CurriculumBuilder } from './CurriculumBuilder';
 import { cn } from '@/lib/utils';
 
-type InstructorTabValue = 'courses' | 'curriculum' | 'students' | 'applications' | 'analytics' | 'financials';
+type InstructorTabValue =
+  | 'courses'
+  | 'curriculum'
+  | 'students'
+  | 'applications'
+  | 'analytics'
+  | 'financials';
 
 const tabs: {
   value: InstructorTabValue;

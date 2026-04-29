@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useEffect, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -97,7 +97,9 @@ export function TwoFactorAuth() {
       setBackupCodes(data.backupCodes ?? []);
       setPendingSecret(null);
       setVerificationCode('');
-      setSuccess('Two-factor authentication is now enabled. Store your backup codes safely.');
+      setSuccess(
+        'Two-factor authentication is now enabled. Store your backup codes safely.',
+      );
     } catch (err) {
       setError((err as Error).message);
     } finally {
@@ -137,7 +139,10 @@ export function TwoFactorAuth() {
     setSuccess(null);
   };
 
-  const displayBackupCodes = useMemo(() => backupCodes.length > 0, [backupCodes]);
+  const displayBackupCodes = useMemo(
+    () => backupCodes.length > 0,
+    [backupCodes],
+  );
 
   if (!isAuthenticated) {
     return (
@@ -165,25 +170,34 @@ export function TwoFactorAuth() {
             <div className="flex items-center gap-3 text-slate-700">
               <ShieldCheck className="h-5 w-5 text-slate-600" />
               <div>
-                <p className="font-semibold text-slate-900">Secure your account with 2FA</p>
+                <p className="font-semibold text-slate-900">
+                  Secure your account with 2FA
+                </p>
                 <p className="text-sm text-slate-600">
-                  Use an authenticator app and backup codes to add an extra layer of security.
+                  Use an authenticator app and backup codes to add an extra
+                  layer of security.
                 </p>
               </div>
             </div>
 
             {isLoading ? (
-              <p className="text-sm text-muted-foreground">Loading two-factor status...</p>
+              <p className="text-sm text-muted-foreground">
+                Loading two-factor status...
+              </p>
             ) : (
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
-                  <p className="text-xs uppercase tracking-[.24em] text-slate-500">Status</p>
+                  <p className="text-xs uppercase tracking-[.24em] text-slate-500">
+                    Status
+                  </p>
                   <p className="text-2xl font-semibold text-slate-900">
                     {status?.enabled ? 'Enabled' : 'Disabled'}
                   </p>
                 </div>
                 <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
-                  <p className="text-xs uppercase tracking-[.24em] text-slate-500">Backup codes</p>
+                  <p className="text-xs uppercase tracking-[.24em] text-slate-500">
+                    Backup codes
+                  </p>
                   <p className="text-2xl font-semibold text-slate-900">
                     {displayBackupCodes ? backupCodes.length : 0}
                   </p>
@@ -227,7 +241,8 @@ export function TwoFactorAuth() {
                   {pendingSecret}
                 </p>
                 <p className="mt-2 text-sm text-slate-500">
-                  Scan this code with your authenticator app or enter it manually.
+                  Scan this code with your authenticator app or enter it
+                  manually.
                 </p>
               </div>
 
@@ -251,7 +266,11 @@ export function TwoFactorAuth() {
                 >
                   Verify code
                 </Button>
-                <Button variant="ghost" onClick={handleResetSetup} disabled={actionLoading}>
+                <Button
+                  variant="ghost"
+                  onClick={handleResetSetup}
+                  disabled={actionLoading}
+                >
                   Cancel setup
                 </Button>
               </div>
@@ -261,7 +280,9 @@ export function TwoFactorAuth() {
       ) : (
         <Card>
           <CardHeader>
-            <CardTitle>{status?.enabled ? 'Manage 2FA' : 'Set up 2FA'}</CardTitle>
+            <CardTitle>
+              {status?.enabled ? 'Manage 2FA' : 'Set up 2FA'}
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -273,11 +294,17 @@ export function TwoFactorAuth() {
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
-                  <p className="text-xs uppercase tracking-[.24em] text-slate-500">Authenticator app</p>
-                  <p className="text-lg font-semibold text-slate-900">Recommended</p>
+                  <p className="text-xs uppercase tracking-[.24em] text-slate-500">
+                    Authenticator app
+                  </p>
+                  <p className="text-lg font-semibold text-slate-900">
+                    Recommended
+                  </p>
                 </div>
                 <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
-                  <p className="text-xs uppercase tracking-[.24em] text-slate-500">Backup codes</p>
+                  <p className="text-xs uppercase tracking-[.24em] text-slate-500">
+                    Backup codes
+                  </p>
                   <p className="text-lg font-semibold text-slate-900">
                     {displayBackupCodes ? 'Available' : 'Not generated'}
                   </p>
@@ -289,7 +316,11 @@ export function TwoFactorAuth() {
                   {status?.enabled ? 'Regenerate 2FA setup' : 'Enable 2FA'}
                 </Button>
                 {status?.enabled ? (
-                  <Button variant="destructive" onClick={handleDisable} disabled={actionLoading}>
+                  <Button
+                    variant="destructive"
+                    onClick={handleDisable}
+                    disabled={actionLoading}
+                  >
                     Disable 2FA
                   </Button>
                 ) : null}
@@ -317,7 +348,8 @@ export function TwoFactorAuth() {
                 ))}
               </div>
               <p className="mt-4 text-sm text-slate-500">
-                Use each backup code once if your authenticator app is unavailable.
+                Use each backup code once if your authenticator app is
+                unavailable.
               </p>
             </div>
           </CardContent>

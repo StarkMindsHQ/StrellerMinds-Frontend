@@ -66,7 +66,10 @@ export function RealTimeChat({
   };
 
   const formatTime = (iso: string) =>
-    new Date(iso).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    new Date(iso).toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
 
   // Group consecutive messages from the same sender
   const grouped = messages.reduce<Array<ChatMessage & { showHeader: boolean }>>(
@@ -135,12 +138,28 @@ export function RealTimeChat({
         {typingUsers.length > 0 && (
           <div className="mt-2 flex items-center gap-1.5">
             <div className="flex gap-1 rounded-2xl rounded-bl-sm bg-gray-100 px-3 py-2 dark:bg-gray-800">
-              <span className="animate-bounce text-gray-400 dark:text-gray-500" style={{ animationDelay: '0ms' }}>•</span>
-              <span className="animate-bounce text-gray-400 dark:text-gray-500" style={{ animationDelay: '150ms' }}>•</span>
-              <span className="animate-bounce text-gray-400 dark:text-gray-500" style={{ animationDelay: '300ms' }}>•</span>
+              <span
+                className="animate-bounce text-gray-400 dark:text-gray-500"
+                style={{ animationDelay: '0ms' }}
+              >
+                •
+              </span>
+              <span
+                className="animate-bounce text-gray-400 dark:text-gray-500"
+                style={{ animationDelay: '150ms' }}
+              >
+                •
+              </span>
+              <span
+                className="animate-bounce text-gray-400 dark:text-gray-500"
+                style={{ animationDelay: '300ms' }}
+              >
+                •
+              </span>
             </div>
             <span className="text-xs text-gray-400 dark:text-gray-500">
-              {typingUsers.join(', ')} {typingUsers.length === 1 ? 'is' : 'are'} typing
+              {typingUsers.join(', ')} {typingUsers.length === 1 ? 'is' : 'are'}{' '}
+              typing
             </span>
           </div>
         )}

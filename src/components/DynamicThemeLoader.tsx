@@ -30,7 +30,9 @@ interface DynamicThemeContextValue {
   setTheme: (themeName: string) => void;
 }
 
-const DynamicThemeContext = createContext<DynamicThemeContextValue | null>(null);
+const DynamicThemeContext = createContext<DynamicThemeContextValue | null>(
+  null,
+);
 
 const DEFAULT_STORAGE_KEY = 'strellerminds.theme.runtime';
 const FALLBACK_THEME: RuntimeThemeConfig = {
@@ -94,7 +96,9 @@ export function DynamicThemeLoader({
 
     if (cachedThemesRaw) {
       try {
-        const cachedThemes = JSON.parse(cachedThemesRaw) as RuntimeThemeConfig[];
+        const cachedThemes = JSON.parse(
+          cachedThemesRaw,
+        ) as RuntimeThemeConfig[];
         if (Array.isArray(cachedThemes) && cachedThemes.length > 0) {
           setThemes(cachedThemes);
           const config =
@@ -119,7 +123,10 @@ export function DynamicThemeLoader({
         if (!resolvedThemes || resolvedThemes.length === 0) return;
 
         setThemes(resolvedThemes);
-        localStorage.setItem(`${storageKey}.cache`, JSON.stringify(resolvedThemes));
+        localStorage.setItem(
+          `${storageKey}.cache`,
+          JSON.stringify(resolvedThemes),
+        );
 
         const selectedTheme =
           resolvedThemes.find((theme) => theme.name === activeTheme) ??
@@ -170,4 +177,3 @@ export function useDynamicTheme() {
   }
   return context;
 }
-
