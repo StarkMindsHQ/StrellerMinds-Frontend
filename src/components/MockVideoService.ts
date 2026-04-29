@@ -83,6 +83,7 @@ const generateMockVideo = (index: number): VideoItem => {
       Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000,
     ).toISOString(),
     isLive: Math.random() > 0.9, // 10% chance of being live
+    thumbnailUrl: `https://picsum.photos/seed/video-${index}/640/360`,
   };
 };
 

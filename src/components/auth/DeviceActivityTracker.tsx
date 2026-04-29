@@ -36,26 +36,43 @@ export function DeviceActivityTracker() {
   useEffect(() => {
     if (!isAuthenticated) return;
 
+    const controller = new AbortController();
+    let isMounted = true;
+
     const load = async () => {
+      if (!isMounted) return;
+
       setIsLoading(true);
       setError(null);
 
       try {
-        const response = await fetch('/api/auth/device-activity');
+        const response = await fetch('/api/auth/device-activity', {
+          signal: controller.signal,
+        });
         if (!response.ok) {
           throw new Error('Unable to load device activity');
         }
 
         const data: DeviceActivityEntry[] = await response.json();
-        setActivity(data);
+        if (isMounted && !controller.signal.aborted) {
+          setActivity(data);
+        }
       } catch (err) {
+        if (controller.signal.aborted) return;
         setError((err as Error).message || 'Failed to load activity data');
       } finally {
-        setIsLoading(false);
+        if (isMounted && !controller.signal.aborted) {
+          setIsLoading(false);
+        }
       }
     };
 
     void load();
+
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
   }, [isAuthenticated]);
 
   const suspiciousItems = useMemo(

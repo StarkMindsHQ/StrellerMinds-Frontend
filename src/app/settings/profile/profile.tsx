@@ -36,8 +36,9 @@ export default function ProfileComponent() {
                 <Avatar className="h-36 w-36 ring-2 ring-[#ffcc00]/50 ring-offset-2 transition-all duration-500 group-hover:ring-[#ffcc00] group-hover:ring-offset-4">
                   <AvatarImage
                     src={selectedImage || '/api/placeholder/144/144'}
-                    alt="Profile"
+                    alt="User profile avatar"
                     className="object-cover"
+                    onError={() => setSelectedImage(null)}
                   />
                   <AvatarFallback className="text-3xl bg-gradient-to-br from-[#5c0f49] to-purple-600 text-white font-bold">
                     AS

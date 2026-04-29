@@ -168,6 +168,15 @@ const VideoCard: React.FC<{
       <div className="bg-white dark:bg-gray-950 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300">
         {/* Thumbnail Container */}
         <div className="relative aspect-video bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 overflow-hidden">
+          {video.thumbnailUrl && (
+            <img
+              src={video.thumbnailUrl}
+              alt={`${video.title} thumbnail`}
+              loading="lazy"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          )}
+
           {/* Live Badge */}
           {video.isLive && (
             <div className="absolute top-2 left-2 z-10">
