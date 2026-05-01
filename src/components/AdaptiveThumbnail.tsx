@@ -416,6 +416,7 @@ export const AdaptiveThumbnail: React.FC<AdaptiveThumbnailProps> = ({
             src={currentSrc}
             alt={altText}
             fill
+            loading={lazy ? 'lazy' : 'eager'}
             sizes="(max-width: 575px) 300px, (max-width: 767px) 400px, (max-width: 991px) 500px, (max-width: 1199px) 600px, (max-width: 1399px) 700px, 800px"
             quality={sizes?.quality || 75}
             placeholder="blur"
