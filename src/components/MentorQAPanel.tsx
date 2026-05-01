@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Search, CheckCircle, MessageSquare, ChevronDown, ChevronUp } from 'lucide-react';
+import { Search, CheckCircle, MessageSquare, ChevronDown, ChevronUp, Flag } from 'lucide-react';
 
 export interface QAAnswer {
   id: string;
@@ -26,6 +26,8 @@ export interface MentorQAPanelProps {
   onPostQuestion?: (title: string, content: string) => void;
   onPostAnswer?: (questionId: string, content: string) => void;
   onAcceptAnswer?: (questionId: string, answerId: string) => void;
+  onReportQuestion?: (questionId: string) => void;
+  onReportAnswer?: (answerId: string) => void;
   className?: string;
 }
 
@@ -35,6 +37,8 @@ export function MentorQAPanel({
   onPostQuestion,
   onPostAnswer,
   onAcceptAnswer,
+  onReportQuestion,
+  onReportAnswer,
   className = '',
 }: MentorQAPanelProps) {
   const [questions, setQuestions] = useState<QAQuestion[]>(initialQuestions);
@@ -193,9 +197,22 @@ export function MentorQAPanel({
                       {q.authorName} · {new Date(q.createdAt).toLocaleDateString()}
                     </p>
                   </div>
-                  <div className="flex shrink-0 items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
-                    <MessageSquare className="h-4 w-4" />
-                    {q.answers.length}
+                  <div className="flex shrink-0 items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onReportQuestion?.(q.id);
+                      }}
+                      className="hover:text-red-500"
+                      title="Report question"
+                    >
+                      <Flag className="h-3.5 w-3.5" />
+                    </button>
+                    <div className="flex items-center gap-1">
+                      <MessageSquare className="h-4 w-4" />
+                      {q.answers.length}
+                    </div>
                     {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
                   </div>
                 </button>
@@ -225,15 +242,25 @@ export function MentorQAPanel({
                                   </span>
                                 )}
                               </span>
-                              {!a.isAccepted && q.authorName === currentUser && (
+                              <div className="flex items-center gap-2">
+                                {!a.isAccepted && q.authorName === currentUser && (
+                                  <button
+                                    type="button"
+                                    onClick={() => handleAccept(q.id, a.id)}
+                                    className="text-xs text-blue-600 hover:underline dark:text-blue-400"
+                                  >
+                                    Accept
+                                  </button>
+                                )}
                                 <button
                                   type="button"
-                                  onClick={() => handleAccept(q.id, a.id)}
-                                  className="text-xs text-blue-600 hover:underline dark:text-blue-400"
+                                  onClick={() => onReportAnswer?.(a.id)}
+                                  className="text-gray-400 hover:text-red-500 dark:text-gray-500"
+                                  title="Report answer"
                                 >
-                                  Accept
+                                  <Flag className="h-3 w-3" />
                                 </button>
-                              )}
+                              </div>
                             </div>
                             <p className="text-gray-700 dark:text-gray-300">{a.content}</p>
                           </li>

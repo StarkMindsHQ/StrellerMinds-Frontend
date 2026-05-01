@@ -9,6 +9,8 @@ import { courseReviewService } from '@/services/courseReviewService';
 import type { CourseReview, CourseRatingSummary } from '@/types/course-review';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
+import { ReportModal } from '@/components/ReportModal';
+import { ReportContentType } from '@/types/report';
 
 export default function CourseReviewsDemoPage() {
   const params = useParams();
@@ -19,6 +21,8 @@ export default function CourseReviewsDemoPage() {
   const [summary, setSummary] = useState<CourseRatingSummary | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [reportModalOpen, setReportModalOpen] = useState(false);
+  const [reportContentId, setReportContentId] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadReviews() {
@@ -98,6 +102,19 @@ export default function CourseReviewsDemoPage() {
     }
   };
 
+  const handleReportClick = (contentType: ReportContentType, contentId: string) => {
+    setReportContentId(contentId);
+    setReportModalOpen(true);
+  };
+
+  const handleReportSuccess = () => {
+    // Optionally refresh or update UI
+    toast({
+      title: 'Report submitted',
+      description: 'Thank you for helping keep our platform safe.',
+    });
+  };
+
   if (isLoading) {
     return (
       <MainLayout variant="container" padding="medium">
@@ -143,9 +160,21 @@ export default function CourseReviewsDemoPage() {
             reviews={reviews}
             summary={summary}
             onHelpfulClick={handleHelpfulClick}
+            onReportClick={handleReportClick}
           />
         )}
       </div>
+
+      {/* Report Modal */}
+      {reportContentId && (
+        <ReportModal
+          contentType={ReportContentType.REVIEW}
+          contentId={reportContentId}
+          isOpen={reportModalOpen}
+          onClose={() => setReportModalOpen(false)}
+          onSuccess={handleReportSuccess}
+        />
+      )}
     </MainLayout>
   );
 }
