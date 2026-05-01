@@ -5,15 +5,15 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { 
-  Network, 
-  ZoomIn, 
-  ZoomOut, 
-  RotateCcw, 
-  CheckCircle, 
-  Lock, 
+import {
+  Network,
+  ZoomIn,
+  ZoomOut,
+  RotateCcw,
+  CheckCircle,
+  Lock,
   Play,
-  Info
+  Info,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -41,7 +41,11 @@ interface PrerequisiteGraphProps {
   className?: string;
 }
 
-export function PrerequisiteGraph({ courseId, userId = 'user@example.com', className }: PrerequisiteGraphProps) {
+export function PrerequisiteGraph({
+  courseId,
+  userId = 'user@example.com',
+  className,
+}: PrerequisiteGraphProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [nodes, setNodes] = useState<CourseNode[]>([]);
   const [edges, setEdges] = useState<GraphEdge[]>([]);
@@ -112,9 +116,17 @@ export function PrerequisiteGraph({ courseId, userId = 'user@example.com', class
 
   // Mock prerequisite relationships
   const mockEdges: GraphEdge[] = [
-    { from: 'blockchain-fundamentals', to: 'stellar-smart-contract', type: 'required' },
+    {
+      from: 'blockchain-fundamentals',
+      to: 'stellar-smart-contract',
+      type: 'required',
+    },
     { from: 'stellar-smart-contract', to: 'defi-stellar', type: 'required' },
-    { from: 'blockchain-fundamentals', to: 'blockchain-security', type: 'required' },
+    {
+      from: 'blockchain-fundamentals',
+      to: 'blockchain-security',
+      type: 'required',
+    },
     { from: 'stellar-smart-contract', to: 'nft-development', type: 'required' },
     { from: 'blockchain-security', to: 'nft-development', type: 'recommended' },
   ];
@@ -126,12 +138,16 @@ export function PrerequisiteGraph({ courseId, userId = 'user@example.com', class
         // In production, fetch from API
         // const response = await fetch(`/api/courses/prerequisites/graph?courseId=${courseId}&userId=${userId}`);
         // const data = await response.json();
-        
+
         // Use mock data for now
         setNodes(mockCourses);
         setEdges(mockEdges);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load prerequisite data');
+        setError(
+          err instanceof Error
+            ? err.message
+            : 'Failed to load prerequisite data',
+        );
       } finally {
         setLoading(false);
       }
@@ -165,17 +181,17 @@ export function PrerequisiteGraph({ courseId, userId = 'user@example.com', class
     const nodePositions = calculateNodePositions();
 
     // Draw edges
-    edges.forEach(edge => {
+    edges.forEach((edge) => {
       const fromNode = nodePositions[edge.from];
       const toNode = nodePositions[edge.to];
-      
+
       if (fromNode && toNode) {
         drawEdge(ctx, fromNode, toNode, edge.type);
       }
     });
 
     // Draw nodes
-    nodes.forEach(node => {
+    nodes.forEach((node) => {
       const position = nodePositions[node.id];
       if (position) {
         drawNode(ctx, node, position);
@@ -188,11 +204,13 @@ export function PrerequisiteGraph({ courseId, userId = 'user@example.com', class
   const calculateNodePositions = () => {
     const positions: Record<string, { x: number; y: number }> = {};
     const levels = calculateNodeLevels();
-    
+
     Object.entries(levels).forEach(([nodeId, level], index) => {
-      const nodesInLevel = Object.entries(levels).filter(([_, l]) => l === level);
+      const nodesInLevel = Object.entries(levels).filter(
+        ([_, l]) => l === level,
+      );
       const positionInLevel = nodesInLevel.findIndex(([n]) => n === nodeId);
-      
+
       positions[nodeId] = {
         x: 150 + positionInLevel * 200,
         y: 100 + level * 150,
@@ -210,31 +228,35 @@ export function PrerequisiteGraph({ courseId, userId = 'user@example.com', class
       if (visited.has(nodeId)) return;
       visited.add(nodeId);
 
-      const incomingEdges = edges.filter(edge => edge.to === nodeId);
+      const incomingEdges = edges.filter((edge) => edge.to === nodeId);
       if (incomingEdges.length === 0) {
         levels[nodeId] = 0;
       } else {
         const maxPrereqLevel = Math.max(
-          ...incomingEdges.map(edge => {
+          ...incomingEdges.map((edge) => {
             calculateLevel(edge.from, currentLevel + 1);
             return levels[edge.from] || 0;
-          })
+          }),
         );
         levels[nodeId] = maxPrereqLevel + 1;
       }
 
       // Process outgoing edges
-      const outgoingEdges = edges.filter(edge => edge.from === nodeId);
-      outgoingEdges.forEach(edge => {
+      const outgoingEdges = edges.filter((edge) => edge.from === nodeId);
+      outgoingEdges.forEach((edge) => {
         calculateLevel(edge.to, currentLevel + 1);
       });
     };
 
-    nodes.forEach(node => calculateLevel(node.id));
+    nodes.forEach((node) => calculateLevel(node.id));
     return levels;
   };
 
-  const drawNode = (ctx: CanvasRenderingContext2D, node: CourseNode, position: { x: number; y: number }) => {
+  const drawNode = (
+    ctx: CanvasRenderingContext2D,
+    node: CourseNode,
+    position: { x: number; y: number },
+  ) => {
     const isSelected = selectedNode?.id === node.id;
     const nodeSize = 60;
 
@@ -265,9 +287,13 @@ export function PrerequisiteGraph({ courseId, userId = 'user@example.com', class
     ctx.shadowOffsetY = 0;
 
     // Draw status icon
-    ctx.fillStyle = node.status === 'completed' ? '#16a34a' : 
-                    node.status === 'available' ? '#2563eb' : '#6b7280';
-    
+    ctx.fillStyle =
+      node.status === 'completed'
+        ? '#16a34a'
+        : node.status === 'available'
+          ? '#2563eb'
+          : '#6b7280';
+
     let iconY = position.y - 5;
     if (node.status === 'completed') {
       // Draw checkmark
@@ -315,44 +341,54 @@ export function PrerequisiteGraph({ courseId, userId = 'user@example.com', class
       ctx.fillStyle = '#e5e7eb';
       ctx.fillRect(position.x - 30, position.y + 50, 60, 4);
       ctx.fillStyle = '#3b82f6';
-      ctx.fillRect(position.x - 30, position.y + 50, (60 * node.progress) / 100, 4);
+      ctx.fillRect(
+        position.x - 30,
+        position.y + 50,
+        (60 * node.progress) / 100,
+        4,
+      );
     }
   };
 
-  const drawEdge = (ctx: CanvasRenderingContext2D, from: { x: number; y: number }, to: { x: number; y: number }, type: 'required' | 'recommended') => {
+  const drawEdge = (
+    ctx: CanvasRenderingContext2D,
+    from: { x: number; y: number },
+    to: { x: number; y: number },
+    type: 'required' | 'recommended',
+  ) => {
     ctx.strokeStyle = type === 'required' ? '#ef4444' : '#f59e0b';
     ctx.lineWidth = type === 'required' ? 2 : 1;
-    
+
     if (type === 'recommended') {
       ctx.setLineDash([5, 5]);
     }
 
     ctx.beginPath();
     ctx.moveTo(from.x, from.y);
-    
+
     // Draw curved line
     const controlPoint = {
       x: (from.x + to.x) / 2,
       y: (from.y + to.y) / 2 - 30,
     };
-    
+
     ctx.quadraticCurveTo(controlPoint.x, controlPoint.y, to.x, to.y);
     ctx.stroke();
 
     // Draw arrow
     const angle = Math.atan2(to.y - controlPoint.y, to.x - controlPoint.x);
     const arrowLength = 10;
-    
+
     ctx.beginPath();
     ctx.moveTo(to.x, to.y);
     ctx.lineTo(
       to.x - arrowLength * Math.cos(angle - Math.PI / 6),
-      to.y - arrowLength * Math.sin(angle - Math.PI / 6)
+      to.y - arrowLength * Math.sin(angle - Math.PI / 6),
     );
     ctx.moveTo(to.x, to.y);
     ctx.lineTo(
       to.x - arrowLength * Math.cos(angle + Math.PI / 6),
-      to.y - arrowLength * Math.sin(angle + Math.PI / 6)
+      to.y - arrowLength * Math.sin(angle + Math.PI / 6),
     );
     ctx.stroke();
 
@@ -368,12 +404,14 @@ export function PrerequisiteGraph({ courseId, userId = 'user@example.com', class
     const y = (event.clientY - rect.top - offset.y) / zoom;
 
     const nodePositions = calculateNodePositions();
-    
+
     // Check if click is on a node
     for (const [nodeId, position] of Object.entries(nodePositions)) {
-      const distance = Math.sqrt(Math.pow(x - position.x, 2) + Math.pow(y - position.y, 2));
+      const distance = Math.sqrt(
+        Math.pow(x - position.x, 2) + Math.pow(y - position.y, 2),
+      );
       if (distance <= 60) {
-        const node = nodes.find(n => n.id === nodeId);
+        const node = nodes.find((n) => n.id === nodeId);
         setSelectedNode(node || null);
         break;
       }
@@ -398,8 +436,8 @@ export function PrerequisiteGraph({ courseId, userId = 'user@example.com', class
     setIsDragging(false);
   };
 
-  const handleZoomIn = () => setZoom(prev => Math.min(prev * 1.2, 3));
-  const handleZoomOut = () => setZoom(prev => Math.max(prev / 1.2, 0.5));
+  const handleZoomIn = () => setZoom((prev) => Math.min(prev * 1.2, 3));
+  const handleZoomOut = () => setZoom((prev) => Math.max(prev / 1.2, 0.5));
   const handleReset = () => {
     setZoom(1);
     setOffset({ x: 0, y: 0 });
@@ -490,18 +528,30 @@ export function PrerequisiteGraph({ courseId, userId = 'user@example.com', class
             <div className="flex items-start justify-between">
               <div className="space-y-2">
                 <h3 className="font-semibold text-lg">{selectedNode.title}</h3>
-                <p className="text-sm text-gray-600">{selectedNode.description}</p>
+                <p className="text-sm text-gray-600">
+                  {selectedNode.description}
+                </p>
                 <div className="flex gap-2">
-                  <Badge variant={selectedNode.level === 'Beginner' ? 'default' : 'secondary'}>
+                  <Badge
+                    variant={
+                      selectedNode.level === 'Beginner'
+                        ? 'default'
+                        : 'secondary'
+                    }
+                  >
                     {selectedNode.level}
                   </Badge>
-                  <Badge variant="outline">{selectedNode.durationHours} hours</Badge>
+                  <Badge variant="outline">
+                    {selectedNode.durationHours} hours
+                  </Badge>
                   {selectedNode.rating && (
                     <Badge variant="outline">⭐ {selectedNode.rating}</Badge>
                   )}
                 </div>
                 {selectedNode.instructor && (
-                  <p className="text-sm text-gray-500">Instructor: {selectedNode.instructor}</p>
+                  <p className="text-sm text-gray-500">
+                    Instructor: {selectedNode.instructor}
+                  </p>
                 )}
                 {selectedNode.progress !== undefined && (
                   <div className="w-full">
@@ -510,8 +560,8 @@ export function PrerequisiteGraph({ courseId, userId = 'user@example.com', class
                       <span>{selectedNode.progress}%</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div 
-                        className="bg-blue-600 h-2 rounded-full" 
+                      <div
+                        className="bg-blue-600 h-2 rounded-full"
                         style={{ width: `${selectedNode.progress}%` }}
                       ></div>
                     </div>
@@ -548,8 +598,8 @@ export function PrerequisiteGraph({ courseId, userId = 'user@example.com', class
         <Alert>
           <Info className="h-4 w-4" />
           <AlertDescription>
-            <strong>Red solid lines:</strong> Required prerequisites | 
-            <strong>Orange dashed lines:</strong> Recommended prerequisites | 
+            <strong>Red solid lines:</strong> Required prerequisites |
+            <strong>Orange dashed lines:</strong> Recommended prerequisites |
             <strong>Click nodes</strong> to view course details
           </AlertDescription>
         </Alert>

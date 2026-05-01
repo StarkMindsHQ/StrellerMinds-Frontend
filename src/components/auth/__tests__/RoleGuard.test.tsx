@@ -25,7 +25,11 @@ describe('RoleGuard', () => {
 
   it('renders fallback when the user role is not allowed', () => {
     render(
-      <RoleGuard roles={['admin', 'seller']} fallback={<p>No access</p>} user={{ role: 'user' }}>
+      <RoleGuard
+        roles={['admin', 'seller']}
+        fallback={<p>No access</p>}
+        user={{ role: 'user' }}
+      >
         <div>Restricted content</div>
       </RoleGuard>,
     );

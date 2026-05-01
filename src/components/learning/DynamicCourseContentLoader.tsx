@@ -2,15 +2,15 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Loader2, 
-  AlertTriangle, 
-  ChevronRight, 
-  Play, 
+import {
+  Loader2,
+  AlertTriangle,
+  ChevronRight,
+  Play,
   RefreshCcw,
   Zap,
   Layers,
-  Sparkles
+  Sparkles,
 } from 'lucide-react';
 import { useDynamicCourseContent } from '@/hooks/useDynamicCourseContent';
 import { LessonContent } from './LessonContent';
@@ -37,7 +37,9 @@ export interface DynamicCourseContentLoaderProps {
  * Responsively loads lesson content as user navigates, minimizing JS initial payload.
  * Supports predictive prefetching to eliminate wait times for the next module.
  */
-export const DynamicCourseContentLoader: React.FC<DynamicCourseContentLoaderProps> = ({
+export const DynamicCourseContentLoader: React.FC<
+  DynamicCourseContentLoaderProps
+> = ({
   courseId,
   lessonId,
   nextLessonId,
@@ -48,10 +50,11 @@ export const DynamicCourseContentLoader: React.FC<DynamicCourseContentLoaderProp
   hasNext,
   className,
 }: DynamicCourseContentLoaderProps) => {
-  const { lesson, isLoading, error, refetch, prefetchNextLesson } = useDynamicCourseContent({
-    courseId,
-    lessonId,
-  });
+  const { lesson, isLoading, error, refetch, prefetchNextLesson } =
+    useDynamicCourseContent({
+      courseId,
+      lessonId,
+    });
 
   const [hasStartedPrefetch, setHasStartedPrefetch] = useState(false);
 
@@ -70,10 +73,12 @@ export const DynamicCourseContentLoader: React.FC<DynamicCourseContentLoaderProp
 
   if (error) {
     return (
-      <div className={cn(
-        "flex flex-col items-center justify-center p-12 text-center rounded-2xl border bg-background space-y-4",
-        className
-      )}>
+      <div
+        className={cn(
+          'flex flex-col items-center justify-center p-12 text-center rounded-2xl border bg-background space-y-4',
+          className,
+        )}
+      >
         <div className="p-4 bg-rose-100 dark:bg-rose-900/20 text-rose-600 rounded-full animate-pulse">
           <AlertTriangle className="h-10 w-10" />
         </div>
@@ -83,11 +88,7 @@ export const DynamicCourseContentLoader: React.FC<DynamicCourseContentLoaderProp
             This might be due to a poor connection or missing data on our end.
           </p>
         </div>
-        <Button 
-          variant="outline" 
-          onClick={() => refetch()}
-          className="gap-2"
-        >
+        <Button variant="outline" onClick={() => refetch()} className="gap-2">
           <RefreshCcw className="h-4 w-4" />
           Try Again
         </Button>
@@ -96,7 +97,7 @@ export const DynamicCourseContentLoader: React.FC<DynamicCourseContentLoaderProp
   }
 
   return (
-    <div className={cn("relative w-full h-full min-h-[400px]", className)}>
+    <div className={cn('relative w-full h-full min-h-[400px]', className)}>
       <AnimatePresence mode="wait">
         {isLoading ? (
           <motion.div
@@ -110,14 +111,14 @@ export const DynamicCourseContentLoader: React.FC<DynamicCourseContentLoaderProp
             <div className="p-6 border-b border-border bg-card">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
-                   <Skeleton className="h-6 w-20 rounded-full" />
-                   <Skeleton className="h-6 w-16" />
+                  <Skeleton className="h-6 w-20 rounded-full" />
+                  <Skeleton className="h-6 w-16" />
                 </div>
                 <div className="flex items-center gap-2">
-                   <Loader2 className="h-4 w-4 animate-spin opacity-50" />
-                   <span className="text-xs font-mono opacity-50 uppercase tracking-widest animate-pulse">
-                     Streaming Data...
-                   </span>
+                  <Loader2 className="h-4 w-4 animate-spin opacity-50" />
+                  <span className="text-xs font-mono opacity-50 uppercase tracking-widest animate-pulse">
+                    Streaming Data...
+                  </span>
                 </div>
               </div>
               <Skeleton className="h-8 w-3/4 mb-2" />
@@ -134,16 +135,16 @@ export const DynamicCourseContentLoader: React.FC<DynamicCourseContentLoaderProp
                   </div>
                 </div>
               </div>
-              
+
               <div className="mt-8 flex gap-4 max-w-4xl mx-auto opacity-30">
-                 <div className="flex-1 space-y-4">
-                    <Skeleton className="h-4 w-full" />
-                    <Skeleton className="h-4 w-full" />
-                    <Skeleton className="h-4 w-3/4" />
-                 </div>
+                <div className="flex-1 space-y-4">
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-3/4" />
+                </div>
               </div>
             </div>
-            
+
             {/* Loading Strategy Overlay */}
             <div className="absolute bottom-12 right-12 z-10 pointer-events-none">
               <motion.div
@@ -171,7 +172,7 @@ export const DynamicCourseContentLoader: React.FC<DynamicCourseContentLoaderProp
               key={lesson.id}
               initial={{ opacity: 0, scale: 0.98, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
               className="h-full"
             >
               {/* Actual Content Wrapper with Optimizer Badge if next is prefetched */}
@@ -190,7 +191,7 @@ export const DynamicCourseContentLoader: React.FC<DynamicCourseContentLoaderProp
                 </div>
               )}
 
-              <LessonContent 
+              <LessonContent
                 lesson={lesson}
                 onComplete={onComplete}
                 onNext={onNext}

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { ReactNode } from 'react';
 import { useAuth } from '@/hooks/useAuth';
@@ -15,7 +15,12 @@ export interface RoleGuardProps {
 const normalizeRoles = (roles: AllowedRole): string[] =>
   Array.isArray(roles) ? roles : [roles];
 
-export function RoleGuard({ roles, children, fallback = null, user }: RoleGuardProps) {
+export function RoleGuard({
+  roles,
+  children,
+  fallback = null,
+  user,
+}: RoleGuardProps) {
   const { user: authUser } = useAuth();
   const currentUser = user ?? authUser;
   const role = currentUser?.role;

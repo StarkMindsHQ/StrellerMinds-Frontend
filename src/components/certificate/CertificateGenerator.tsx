@@ -26,7 +26,10 @@ interface CertificateGeneratorProps {
   className?: string;
 }
 
-export function CertificateGenerator({ certificateData, className }: CertificateGeneratorProps) {
+export function CertificateGenerator({
+  certificateData,
+  className,
+}: CertificateGeneratorProps) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [previewMode, setPreviewMode] = useState(false);
 
@@ -46,7 +49,7 @@ export function CertificateGenerator({ certificateData, className }: Certificate
 
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('landscape', 'mm', 'a4');
-      
+
       const imgWidth = 297; // A4 width in mm (landscape)
       const pageHeight = 210; // A4 height in mm (landscape)
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
@@ -63,7 +66,9 @@ export function CertificateGenerator({ certificateData, className }: Certificate
         heightLeft -= pageHeight;
       }
 
-      pdf.save(`${certificateData.userName.replace(/\s+/g, '_')}_${certificateData.courseTitle.replace(/\s+/g, '_')}_Certificate.pdf`);
+      pdf.save(
+        `${certificateData.userName.replace(/\s+/g, '_')}_${certificateData.courseTitle.replace(/\s+/g, '_')}_Certificate.pdf`,
+      );
     } catch (error) {
       console.error('Error generating PDF:', error);
     } finally {
@@ -84,7 +89,11 @@ export function CertificateGenerator({ certificateData, className }: Certificate
     }
   };
 
-  const CertificateContent = ({ isPreview = false }: { isPreview?: boolean }) => (
+  const CertificateContent = ({
+    isPreview = false,
+  }: {
+    isPreview?: boolean;
+  }) => (
     <div
       id="certificate-content"
       className={cn(
@@ -97,7 +106,7 @@ export function CertificateGenerator({ certificateData, className }: Certificate
       <div className="absolute inset-0 opacity-5">
         <div className="h-full w-full bg-gradient-to-br from-amber-200 to-amber-600"></div>
       </div>
-      
+
       {/* Certificate Content */}
       <div className="relative z-10 text-center">
         {/* Header */}
@@ -107,8 +116,12 @@ export function CertificateGenerator({ certificateData, className }: Certificate
               <Award className="h-16 w-16 text-amber-600" />
             </div>
           </div>
-          <h1 className="text-4xl font-bold text-amber-900 mb-2">Certificate of Completion</h1>
-          <p className="text-lg text-amber-700">StrellerMinds Learning Platform</p>
+          <h1 className="text-4xl font-bold text-amber-900 mb-2">
+            Certificate of Completion
+          </h1>
+          <p className="text-lg text-amber-700">
+            StrellerMinds Learning Platform
+          </p>
         </div>
 
         {/* Main Content */}
@@ -140,15 +153,21 @@ export function CertificateGenerator({ certificateData, className }: Certificate
         <div className="grid grid-cols-3 gap-4 mb-8 text-sm">
           <div className="flex items-center justify-center gap-2">
             <Calendar className="h-4 w-4 text-amber-600" />
-            <span className="text-gray-600">Completed: {certificateData.completionDate}</span>
+            <span className="text-gray-600">
+              Completed: {certificateData.completionDate}
+            </span>
           </div>
           <div className="flex items-center justify-center gap-2">
             <User className="h-4 w-4 text-amber-600" />
-            <span className="text-gray-600">Instructor: {certificateData.instructorName}</span>
+            <span className="text-gray-600">
+              Instructor: {certificateData.instructorName}
+            </span>
           </div>
           <div className="flex items-center justify-center gap-2">
             <Award className="h-4 w-4 text-amber-600" />
-            <span className="text-gray-600">Duration: {certificateData.durationHours} hours</span>
+            <span className="text-gray-600">
+              Duration: {certificateData.durationHours} hours
+            </span>
           </div>
         </div>
 
@@ -170,7 +189,8 @@ export function CertificateGenerator({ certificateData, className }: Certificate
             Certificate ID: {certificateData.certificateId}
           </p>
           <p className="text-xs text-gray-500 mt-1">
-            This certificate can be verified at: strellerminds.com/verify/{certificateData.certificateId}
+            This certificate can be verified at: strellerminds.com/verify/
+            {certificateData.certificateId}
           </p>
         </div>
 
@@ -178,7 +198,9 @@ export function CertificateGenerator({ certificateData, className }: Certificate
         <div className="flex justify-between mt-12 pt-8 border-t border-amber-200">
           <div className="text-center">
             <div className="w-32 h-0.5 bg-gray-400 mb-2"></div>
-            <p className="text-sm text-gray-600">{certificateData.instructorName}</p>
+            <p className="text-sm text-gray-600">
+              {certificateData.instructorName}
+            </p>
             <p className="text-xs text-gray-500">Course Instructor</p>
           </div>
           <div className="text-center">
@@ -209,7 +231,9 @@ export function CertificateGenerator({ certificateData, className }: Certificate
             </div>
             <div>
               <p className="text-sm text-gray-500">Course</p>
-              <p className="font-medium truncate">{certificateData.courseTitle}</p>
+              <p className="font-medium truncate">
+                {certificateData.courseTitle}
+              </p>
             </div>
             <div>
               <p className="text-sm text-gray-500">Completed</p>
@@ -217,7 +241,9 @@ export function CertificateGenerator({ certificateData, className }: Certificate
             </div>
             <div>
               <p className="text-sm text-gray-500">Certificate ID</p>
-              <p className="font-mono text-xs">{certificateData.certificateId}</p>
+              <p className="font-mono text-xs">
+                {certificateData.certificateId}
+              </p>
             </div>
           </div>
 

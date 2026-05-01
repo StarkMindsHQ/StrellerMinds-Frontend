@@ -1,6 +1,13 @@
 'use client';
 
-import React, { useState, useEffect, useRef, memo, useCallback, useMemo } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  memo,
+  useCallback,
+  useMemo,
+} from 'react';
 import { cn } from '@/lib/utils';
 
 interface VirtualizedListProps<T> {
@@ -33,56 +40,69 @@ export function VirtualizedList<T>({
   const [scrollTop, setScrollTop] = useState(0);
 
   // Memoized function to get height of a specific item
-  const getItemHeight = useCallback((index: number) => {
-    return typeof itemHeight === 'function' ? itemHeight(index) : itemHeight;
-  }, [itemHeight]);
+  const getItemHeight = useCallback(
+    (index: number) => {
+      return typeof itemHeight === 'function' ? itemHeight(index) : itemHeight;
+    },
+    [itemHeight],
+  );
 
   // Calculate cumulative heights of items for dynamic positioning
   const { cumulativeHeights, totalHeight } = useMemo(() => {
     const cumulative = [0];
     let total = 0;
     for (let i = 0; i < items.length; i++) {
-        total += getItemHeight(i);
-        cumulative.push(total);
+      total += getItemHeight(i);
+      cumulative.push(total);
     }
     return { cumulativeHeights: cumulative, totalHeight: total };
   }, [items, getItemHeight]);
 
   // Find the index of the first visible item based on scroll position
-  const findStartIndex = useCallback((scrollPos: number) => {
-    let low = 0;
-    let high = cumulativeHeights.length - 1;
-    while (low <= high) {
+  const findStartIndex = useCallback(
+    (scrollPos: number) => {
+      let low = 0;
+      let high = cumulativeHeights.length - 1;
+      while (low <= high) {
         const mid = Math.floor((low + high) / 2);
         if (cumulativeHeights[mid] <= scrollPos) {
-            low = mid + 1;
+          low = mid + 1;
         } else {
-            high = mid - 1;
+          high = mid - 1;
         }
-    }
-    return Math.max(0, low - 1);
-  }, [cumulativeHeights]);
+      }
+      return Math.max(0, low - 1);
+    },
+    [cumulativeHeights],
+  );
 
-  const handleScroll = useCallback((event: React.UIEvent<HTMLDivElement>) => {
-    const newScrollTop = event.currentTarget.scrollTop;
-    setScrollTop(newScrollTop);
-    onScroll?.(newScrollTop);
-  }, [onScroll]);
+  const handleScroll = useCallback(
+    (event: React.UIEvent<HTMLDivElement>) => {
+      const newScrollTop = event.currentTarget.scrollTop;
+      setScrollTop(newScrollTop);
+      onScroll?.(newScrollTop);
+    },
+    [onScroll],
+  );
 
   // Determine the range of items to render
-  const containerHeightNumber = typeof containerHeight === 'string' ? 800 : containerHeight; // Default to 800 if string
-  
+  const containerHeightNumber =
+    typeof containerHeight === 'string' ? 800 : containerHeight; // Default to 800 if string
+
   const startIndex = Math.max(0, findStartIndex(scrollTop) - overscan);
   const endIndex = Math.min(
     items.length - 1,
-    findStartIndex(scrollTop + containerHeightNumber) + overscan
+    findStartIndex(scrollTop + containerHeightNumber) + overscan,
   );
 
   return (
     <div
       ref={containerRef}
       onScroll={handleScroll}
-      className={cn('overflow-y-auto overflow-x-hidden relative scrollbar-thin', className)}
+      className={cn(
+        'overflow-y-auto overflow-x-hidden relative scrollbar-thin',
+        className,
+      )}
       style={{ height: containerHeight }}
     >
       <div style={{ height: totalHeight, position: 'relative', width: '100%' }}>
@@ -109,6 +129,8 @@ export function VirtualizedList<T>({
 }
 
 // Memoized item wrapper for better performance
-export const VirtualizedItem = memo(({ children }: { children: React.ReactNode }) => {
-  return <>{children}</>;
-});
+export const VirtualizedItem = memo(
+  ({ children }: { children: React.ReactNode }) => {
+    return <>{children}</>;
+  },
+);

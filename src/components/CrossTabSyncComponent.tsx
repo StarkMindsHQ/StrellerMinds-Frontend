@@ -68,7 +68,10 @@ const CrossTabSyncContext = createContext<CrossTabSyncContextValue | null>(
 );
 
 const createTabId = () => {
-  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+  if (
+    typeof crypto !== 'undefined' &&
+    typeof crypto.randomUUID === 'function'
+  ) {
     return crypto.randomUUID();
   }
 
@@ -168,7 +171,9 @@ export default function CrossTabSyncComponent({
 
     try {
       if (message.action === 'set' && typeof message.value === 'string') {
-        const setItem = originalSetItemRef.current?.bind(localStorageRef.current);
+        const setItem = originalSetItemRef.current?.bind(
+          localStorageRef.current,
+        );
         setItem?.(message.key, message.value);
       }
 
@@ -246,8 +251,9 @@ export default function CrossTabSyncComponent({
     localStorageRef.current = window.localStorage;
     if (typeof window.BroadcastChannel !== 'undefined') {
       channelRef.current = new window.BroadcastChannel(channelName);
-      channelRef.current.onmessage = (event: MessageEvent<CrossTabSyncMessage>) =>
-        handleIncomingMessage(event.data);
+      channelRef.current.onmessage = (
+        event: MessageEvent<CrossTabSyncMessage>,
+      ) => handleIncomingMessage(event.data);
     }
 
     const storage = localStorageRef.current;

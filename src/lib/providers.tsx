@@ -30,7 +30,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
         <GlobalStateSyncProvider>
           <CrossTabSyncComponent>
             <Web3Provider>
-              <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+              >
                 <DynamicThemeLoader>
                   <TourProvider>
                     <SmartIdleDetector

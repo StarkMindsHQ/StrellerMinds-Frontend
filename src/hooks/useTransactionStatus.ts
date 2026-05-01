@@ -4,7 +4,12 @@ import { useState, useEffect } from 'react';
 import { useWaitForTransactionReceipt, useTransaction } from 'wagmi';
 import { toast } from 'sonner';
 
-export type TransactionStatus = 'idle' | 'pending' | 'confirmed' | 'failed' | 'timeout';
+export type TransactionStatus =
+  | 'idle'
+  | 'pending'
+  | 'confirmed'
+  | 'failed'
+  | 'timeout';
 
 interface UseTransactionStatusProps {
   hash?: `0x${string}`;
@@ -24,14 +29,21 @@ export const useTransactionStatus = ({
   onFailed,
   timeout = 60000, // Default 60 seconds
 }: UseTransactionStatusProps) => {
-  const [status, setStatus] = useState<TransactionStatus>(hash ? 'pending' : 'idle');
+  const [status, setStatus] = useState<TransactionStatus>(
+    hash ? 'pending' : 'idle',
+  );
   const [error, setError] = useState<Error | null>(null);
 
-  const { data: receipt, isError, isLoading, error: wagmiError } = useWaitForTransactionReceipt({
+  const {
+    data: receipt,
+    isError,
+    isLoading,
+    error: wagmiError,
+  } = useWaitForTransactionReceipt({
     hash,
     query: {
       enabled: !!hash,
-    }
+    },
   });
 
   useEffect(() => {
@@ -48,11 +60,20 @@ export const useTransactionStatus = ({
       if (onConfirmed) onConfirmed(receipt);
     } else if (isError || wagmiError) {
       setStatus('failed');
-      setError(wagmiError as Error || new Error('Transaction failed'));
+      setError((wagmiError as Error) || new Error('Transaction failed'));
       toast.error('Transaction failed!');
       if (onFailed) onFailed(wagmiError);
     }
-  }, [hash, isLoading, receipt, isError, wagmiError, onConfirmed, onFailed, status]);
+  }, [
+    hash,
+    isLoading,
+    receipt,
+    isError,
+    wagmiError,
+    onConfirmed,
+    onFailed,
+    status,
+  ]);
 
   // Handle timeout
   useEffect(() => {

@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
-import i18n from "../services/i18n";
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import i18n from '../services/i18n';
 
 const languages = [
-  { code: "en", label: "English" },
-  { code: "fr", label: "Français" },
-  { code: "es", label: "Español" },
+  { code: 'en', label: 'English' },
+  { code: 'fr', label: 'Français' },
+  { code: 'es', label: 'Español' },
 ];
 
 export function MultiLanguageSwitcher() {
@@ -17,12 +17,12 @@ export function MultiLanguageSwitcher() {
   const switchLanguage = (lang: string) => {
     i18n.changeLanguage(lang);
     setCurrentLang(lang);
-    localStorage.setItem("lang", lang);
+    localStorage.setItem('lang', lang);
   };
 
   return (
     <div className="flex items-center gap-2">
-      <span>{t("welcome")}</span>
+      <span>{t('welcome')}</span>
       <select
         value={currentLang}
         onChange={(e) => switchLanguage(e.target.value)}

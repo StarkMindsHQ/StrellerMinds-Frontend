@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { validateQueryParams, createApiSuccess, createApiError } from '@/lib/api-validation';
+import {
+  validateQueryParams,
+  createApiSuccess,
+  createApiError,
+} from '@/lib/api-validation';
 
 // Schema for certificate generation request
 export const certificateRequestSchema = z.object({
@@ -47,8 +51,14 @@ function getCourseData(courseId: string) {
 // Helper to get user data
 function getUserData(userId: string) {
   const users = {
-    'user@example.com': { name: 'John Doe', completedCourses: ['blockchain-fundamentals'] },
-    'student@example.com': { name: 'Jane Smith', completedCourses: ['stellar-smart-contract'] },
+    'user@example.com': {
+      name: 'John Doe',
+      completedCourses: ['blockchain-fundamentals'],
+    },
+    'student@example.com': {
+      name: 'Jane Smith',
+      completedCourses: ['stellar-smart-contract'],
+    },
   };
   return users[userId as keyof typeof users];
 }
@@ -62,8 +72,12 @@ function hasUserCompletedCourse(userId: string, courseId: string): boolean {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const validation = validateQueryParams(request, certificateRequestSchema, body);
-    
+    const validation = validateQueryParams(
+      request,
+      certificateRequestSchema,
+      body,
+    );
+
     if (!validation.success) {
       return validation.response;
     }
@@ -109,7 +123,10 @@ export async function POST(request: NextRequest) {
     // Store certificate (in production, save to database)
     mockCertificates.set(certificateId, certificateData);
 
-    return createApiSuccess('Certificate generated successfully', certificateData);
+    return createApiSuccess(
+      'Certificate generated successfully',
+      certificateData,
+    );
   } catch (error) {
     console.error('Error in POST /api/certificates:', error);
     return createApiError('An unexpected error occurred', 500);
@@ -128,11 +145,14 @@ export async function GET(request: NextRequest) {
       if (!certificate) {
         return createApiError('Certificate not found', 404);
       }
-      return createApiSuccess('Certificate retrieved successfully', certificate);
+      return createApiSuccess(
+        'Certificate retrieved successfully',
+        certificate,
+      );
     } else if (userId) {
       // Get all certificates for user
       const userCertificates = Array.from(mockCertificates.values()).filter(
-        cert => cert.userId === userId
+        (cert) => cert.userId === userId,
       );
       return createApiSuccess('User certificates retrieved successfully', {
         certificates: userCertificates,
@@ -157,11 +177,11 @@ export async function PUT(request: NextRequest) {
       if (!certificate) {
         return createApiError('Certificate not found', 404);
       }
-      
+
       // Update verification status
       certificate.verifiedAt = new Date().toISOString();
       certificate.verified = true;
-      
+
       return createApiSuccess('Certificate verified successfully', certificate);
     } else {
       return createApiError('Invalid action', 400);

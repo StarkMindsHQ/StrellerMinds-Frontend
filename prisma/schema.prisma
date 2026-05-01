@@ -6,7 +6,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -23,6 +22,7 @@ model User {
   pushSubscriptions       PushSubscription[]
   enrollments             Enrollment[]
   taughtCourses           Course[] @relation("InstructorCourses")
+  quizAttempts            QuizAttempt[] @relation("UserQuizAttempts")
 }
 
 model Course {
@@ -47,6 +47,7 @@ model Course {
   translations    CourseTranslation[]
   modules         Module[]
   enrollments     Enrollment[]
+  quizAttempts    QuizAttempt[] @relation("CourseQuizAttempts")
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   publishedAt     DateTime?
@@ -104,6 +105,8 @@ model Quiz {
   passingScore Int   @default(70)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  attempts  QuizAttempt[] @relation("QuizAttempts")
 
   @@index([moduleId])
   @@map("quizzes")
@@ -199,16 +202,51 @@ model PushSubscription {
   id       String @id @default(cuid())
   userId   String
   user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+
   endpoint       String @unique
   p256dh         String
   auth           String
   expirationTime DateTime?
-  
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
   @@index([userId])
+}
+
+model QuizAttempt {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation("UserQuizAttempts", fields: [userId], references: [id], onDelete: Cascade)
+  quizId       String
+  quiz         Quiz     @relation("QuizAttempts", fields: [quizId], references: [id], onDelete: Cascade)
+  courseId     String
+  course       Course   @relation("CourseQuizAttempts", fields: [courseId], references: [id], onDelete: Cascade)
+
+  score        Int      // 0-100 percentage score
+  totalPoints  Int?
+  maxPoints    Int?
+  correctAnswers Int?
+  totalQuestions  Int?
+
+  startedAt    DateTime @default(now())
+  completedAt  DateTime?
+  timeSpent    Int?     // in seconds
+
+  attempts     Int      @default(1) // which attempt number for this user
+  metadata     Json?
+
+  @@unique([userId, quizId, attempts])
+  @@index([userId])
+  @@index([quizId])
+  @@index([courseId])
+  @@index([userId, quizId])
+  @@index([quizId, score])
+  @@index([courseId, score])
+  @@index([completedAt])
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 enum NotificationType {

@@ -75,7 +75,11 @@ const starterQuiz: Quiz = {
       required: true,
       orderingItems: [
         { id: 'order-a', text: 'Draft questions', correctPosition: 1 },
-        { id: 'order-b', text: 'Preview learner experience', correctPosition: 2 },
+        {
+          id: 'order-b',
+          text: 'Preview learner experience',
+          correctPosition: 2,
+        },
         { id: 'order-c', text: 'Publish quiz', correctPosition: 3 },
       ],
     },
@@ -135,7 +139,8 @@ const starterPeerReviewAssignment: Assignment = {
       {
         id: 'criterion-2',
         name: 'Reasoning',
-        description: 'Does the reviewer explain why each recommendation matters?',
+        description:
+          'Does the reviewer explain why each recommendation matters?',
         maxPoints: 3,
         levels: [],
       },
@@ -545,12 +550,15 @@ export default function CourseEditorPage() {
                   {activePeerReviewAssignment?.rubric ? (
                     <PeerReviewAssignmentPanel
                       assignmentTitle={activePeerReviewAssignment.title}
-                      rubricCriteria={activePeerReviewAssignment.rubric.criteria}
+                      rubricCriteria={
+                        activePeerReviewAssignment.rubric.criteria
+                      }
                     />
                   ) : (
                     <div className="rounded-3xl border border-dashed bg-card p-12 text-center">
                       <p className="text-muted-foreground">
-                        Add a peer-reviewed assignment to activate this workflow.
+                        Add a peer-reviewed assignment to activate this
+                        workflow.
                       </p>
                     </div>
                   )}

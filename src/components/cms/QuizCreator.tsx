@@ -147,7 +147,11 @@ function normalizeQuestionForType(
   question: Question,
   type: QuestionType,
 ): Question {
-  const template = createQuestionTemplate(type, question.order, question.quizId);
+  const template = createQuestionTemplate(
+    type,
+    question.order,
+    question.quizId,
+  );
 
   return {
     ...question,
@@ -168,7 +172,11 @@ export function QuizCreator({ quiz, onUpdate, onSave }: QuizCreatorProps) {
   );
 
   const addQuestion = (type: QuestionType) => {
-    const newQuestion = createQuestionTemplate(type, quiz.questions.length, quiz.id);
+    const newQuestion = createQuestionTemplate(
+      type,
+      quiz.questions.length,
+      quiz.id,
+    );
 
     onUpdate({
       ...quiz,
@@ -319,8 +327,9 @@ export function QuizCreator({ quiz, onUpdate, onSave }: QuizCreatorProps) {
                         </span>
                         <span className="rounded bg-muted px-1.5 py-0.5 text-xs text-muted-foreground">
                           {
-                            QUESTION_TYPES.find((item) => item.type === question.type)
-                              ?.label
+                            QUESTION_TYPES.find(
+                              (item) => item.type === question.type,
+                            )?.label
                           }
                         </span>
                       </div>
@@ -390,7 +399,10 @@ export function QuizCreator({ quiz, onUpdate, onSave }: QuizCreatorProps) {
                                   </SelectTrigger>
                                   <SelectContent>
                                     {QUESTION_TYPES.map((item) => (
-                                      <SelectItem key={item.type} value={item.type}>
+                                      <SelectItem
+                                        key={item.type}
+                                        value={item.type}
+                                      >
                                         <div className="flex items-center gap-2">
                                           {item.icon} {item.label}
                                         </div>
@@ -407,7 +419,10 @@ export function QuizCreator({ quiz, onUpdate, onSave }: QuizCreatorProps) {
                                   onChange={(event) =>
                                     updateQuestion(question.id, {
                                       points:
-                                        Number.parseInt(event.target.value, 10) || 0,
+                                        Number.parseInt(
+                                          event.target.value,
+                                          10,
+                                        ) || 0,
                                     })
                                   }
                                 />
@@ -508,10 +523,13 @@ export function QuizCreator({ quiz, onUpdate, onSave }: QuizCreatorProps) {
                                           item.id === blank.id
                                             ? {
                                                 ...item,
-                                                acceptedAnswers: event.target.value
-                                                  .split(',')
-                                                  .map((value) => value.trim())
-                                                  .filter(Boolean),
+                                                acceptedAnswers:
+                                                  event.target.value
+                                                    .split(',')
+                                                    .map((value) =>
+                                                      value.trim(),
+                                                    )
+                                                    .filter(Boolean),
                                               }
                                             : item,
                                         ),
@@ -536,15 +554,15 @@ export function QuizCreator({ quiz, onUpdate, onSave }: QuizCreatorProps) {
                                     value={pair.left}
                                     onChange={(event) =>
                                       updateQuestion(question.id, {
-                                        matchingPairs: question.matchingPairs?.map(
-                                          (item) =>
+                                        matchingPairs:
+                                          question.matchingPairs?.map((item) =>
                                             item.id === pair.id
                                               ? {
                                                   ...item,
                                                   left: event.target.value,
                                                 }
                                               : item,
-                                        ),
+                                          ),
                                       })
                                     }
                                     placeholder="Prompt"
@@ -553,15 +571,15 @@ export function QuizCreator({ quiz, onUpdate, onSave }: QuizCreatorProps) {
                                     value={pair.right}
                                     onChange={(event) =>
                                       updateQuestion(question.id, {
-                                        matchingPairs: question.matchingPairs?.map(
-                                          (item) =>
+                                        matchingPairs:
+                                          question.matchingPairs?.map((item) =>
                                             item.id === pair.id
                                               ? {
                                                   ...item,
                                                   right: event.target.value,
                                                 }
                                               : item,
-                                        ),
+                                          ),
                                       })
                                     }
                                     placeholder="Match"
@@ -583,15 +601,16 @@ export function QuizCreator({ quiz, onUpdate, onSave }: QuizCreatorProps) {
                                     value={item.text}
                                     onChange={(event) =>
                                       updateQuestion(question.id, {
-                                        orderingItems: question.orderingItems?.map(
-                                          (entry) =>
-                                            entry.id === item.id
-                                              ? {
-                                                  ...entry,
-                                                  text: event.target.value,
-                                                }
-                                              : entry,
-                                        ),
+                                        orderingItems:
+                                          question.orderingItems?.map(
+                                            (entry) =>
+                                              entry.id === item.id
+                                                ? {
+                                                    ...entry,
+                                                    text: event.target.value,
+                                                  }
+                                                : entry,
+                                          ),
                                       })
                                     }
                                     placeholder="Step text"
@@ -602,19 +621,20 @@ export function QuizCreator({ quiz, onUpdate, onSave }: QuizCreatorProps) {
                                     value={item.correctPosition}
                                     onChange={(event) =>
                                       updateQuestion(question.id, {
-                                        orderingItems: question.orderingItems?.map(
-                                          (entry) =>
-                                            entry.id === item.id
-                                              ? {
-                                                  ...entry,
-                                                  correctPosition:
-                                                    Number.parseInt(
-                                                      event.target.value,
-                                                      10,
-                                                    ) || 1,
-                                                }
-                                              : entry,
-                                        ),
+                                        orderingItems:
+                                          question.orderingItems?.map(
+                                            (entry) =>
+                                              entry.id === item.id
+                                                ? {
+                                                    ...entry,
+                                                    correctPosition:
+                                                      Number.parseInt(
+                                                        event.target.value,
+                                                        10,
+                                                      ) || 1,
+                                                  }
+                                                : entry,
+                                          ),
                                       })
                                     }
                                   />
@@ -774,7 +794,9 @@ export function QuizCreator({ quiz, onUpdate, onSave }: QuizCreatorProps) {
                       <SelectItem value="after_deadline">
                         Only after the module deadline
                       </SelectItem>
-                      <SelectItem value="never">Don&apos;t show feedback</SelectItem>
+                      <SelectItem value="never">
+                        Don&apos;t show feedback
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -807,12 +829,17 @@ export function QuizCreator({ quiz, onUpdate, onSave }: QuizCreatorProps) {
               <div className="rounded-2xl border bg-background p-4">
                 <p className="text-sm text-muted-foreground">Question types</p>
                 <p className="mt-2 text-2xl font-bold">
-                  {new Set(quiz.questions.map((question) => question.type)).size}
+                  {
+                    new Set(quiz.questions.map((question) => question.type))
+                      .size
+                  }
                 </p>
               </div>
               <div className="rounded-2xl border bg-background p-4">
                 <p className="text-sm text-muted-foreground">Total questions</p>
-                <p className="mt-2 text-2xl font-bold">{quiz.questions.length}</p>
+                <p className="mt-2 text-2xl font-bold">
+                  {quiz.questions.length}
+                </p>
               </div>
               <div className="rounded-2xl border bg-background p-4">
                 <p className="text-sm text-muted-foreground">Total points</p>
@@ -842,8 +869,9 @@ export function QuizCreator({ quiz, onUpdate, onSave }: QuizCreatorProps) {
                     </div>
                     <span className="rounded-full bg-muted px-3 py-1 text-xs text-muted-foreground">
                       {
-                        QUESTION_TYPES.find((item) => item.type === question.type)
-                          ?.label
+                        QUESTION_TYPES.find(
+                          (item) => item.type === question.type,
+                        )?.label
                       }
                     </span>
                   </div>

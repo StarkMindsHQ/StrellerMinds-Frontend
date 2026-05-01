@@ -77,4 +77,3 @@ export default function ScrollProgressIndicator({
     </div>
   );
 }
-

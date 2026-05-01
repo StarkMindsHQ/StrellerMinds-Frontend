@@ -36,7 +36,9 @@ export class APIRequestQueueManager {
   }
 
   enqueue<T>(options: QueueRequestOptions<T>): Promise<T> {
-    const existing = this.byKey.get(options.key) as QueuedRequest<T> | undefined;
+    const existing = this.byKey.get(options.key) as
+      | QueuedRequest<T>
+      | undefined;
     if (existing) {
       return existing.promise;
     }
@@ -88,7 +90,10 @@ export class APIRequestQueueManager {
     const staleKeys: string[] = [];
 
     this.byKey.forEach((task, key) => {
-      if (now - task.createdAt > maxAgeMs || now - task.createdAt > task.staleAfterMs) {
+      if (
+        now - task.createdAt > maxAgeMs ||
+        now - task.createdAt > task.staleAfterMs
+      ) {
         staleKeys.push(key);
       }
     });
@@ -101,7 +106,9 @@ export class APIRequestQueueManager {
     return {
       activeCount: this.activeCount,
       pendingCount:
-        this.queues.high.length + this.queues.normal.length + this.queues.low.length,
+        this.queues.high.length +
+        this.queues.normal.length +
+        this.queues.low.length,
       inflightKeys: Array.from(this.byKey.keys()),
     };
   }
@@ -147,4 +154,3 @@ export class APIRequestQueueManager {
     }
   }
 }
-

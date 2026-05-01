@@ -12,7 +12,7 @@ export class FeatureFlagService {
     if (cachedFlags) return cachedFlags;
 
     // Fetch from remote config API
-    const res = await fetch("/api/feature-flags");
+    const res = await fetch('/api/feature-flags');
     const data = await res.json();
     cachedFlags = data;
     return data;

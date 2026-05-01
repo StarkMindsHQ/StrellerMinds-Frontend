@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { act, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import CrossTabSyncComponent, { useCrossTabSync } from '../CrossTabSyncComponent';
+import CrossTabSyncComponent, {
+  useCrossTabSync,
+} from '../CrossTabSyncComponent';
 
 const { logoutMock } = vi.hoisted(() => ({
   logoutMock: vi.fn(),

@@ -20,14 +20,26 @@ import {
   Filter,
   Crown,
   Star,
-  Zap
+  Zap,
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 
 // Types
@@ -69,9 +81,21 @@ interface CommunityLeaderboardProps {
 
 // Mock data generator
 const generateMockUsers = (count: number): CommunityUser[] => {
-  const roles: Array<'student' | 'instructor' | 'admin' | 'moderator'> = ['student', 'instructor', 'admin', 'moderator'];
-  const badges = ['Top Contributor', 'Helpful', 'Creative', 'Mentor', 'Rising Star', 'Expert'];
-  
+  const roles: Array<'student' | 'instructor' | 'admin' | 'moderator'> = [
+    'student',
+    'instructor',
+    'admin',
+    'moderator',
+  ];
+  const badges = [
+    'Top Contributor',
+    'Helpful',
+    'Creative',
+    'Mentor',
+    'Rising Star',
+    'Expert',
+  ];
+
   return Array.from({ length: count }, (_, i) => ({
     id: `user-${i + 1}`,
     name: `User ${i + 1}`,
@@ -81,22 +105,31 @@ const generateMockUsers = (count: number): CommunityUser[] => {
     rank: i + 1,
     score: Math.floor(Math.random() * 10000) + 1000,
     level: Math.floor(Math.random() * 50) + 1,
-    trend: ['up', 'down', 'stable', 'new'][Math.floor(Math.random() * 4)] as any,
+    trend: ['up', 'down', 'stable', 'new'][
+      Math.floor(Math.random() * 4)
+    ] as any,
     stats: {
       posts: Math.floor(Math.random() * 500),
       comments: Math.floor(Math.random() * 1000),
       likes: Math.floor(Math.random() * 2000),
       shares: Math.floor(Math.random() * 200),
-      contributions: Math.floor(Math.random() * 100)
+      contributions: Math.floor(Math.random() * 100),
     },
     badges: badges.slice(0, Math.floor(Math.random() * 3) + 1),
-    joinDate: new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000).toISOString(),
-    lastActive: new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000).toISOString()
+    joinDate: new Date(
+      Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000,
+    ).toISOString(),
+    lastActive: new Date(
+      Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000,
+    ).toISOString(),
   }));
 };
 
 // Rank badge component for top 3 positions
-const RankBadge: React.FC<{ rank: number; isCurrentUser?: boolean }> = ({ rank, isCurrentUser }) => {
+const RankBadge: React.FC<{ rank: number; isCurrentUser?: boolean }> = ({
+  rank,
+  isCurrentUser,
+}) => {
   if (rank === 1) {
     return (
       <div className="relative">
@@ -128,19 +161,25 @@ const RankBadge: React.FC<{ rank: number; isCurrentUser?: boolean }> = ({ rank, 
     );
   }
   return (
-    <div className={cn(
-      'h-8 w-8 rounded-full flex items-center justify-center font-bold text-sm',
-      isCurrentUser ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
-    )}>
+    <div
+      className={cn(
+        'h-8 w-8 rounded-full flex items-center justify-center font-bold text-sm',
+        isCurrentUser
+          ? 'bg-primary text-primary-foreground'
+          : 'bg-muted text-muted-foreground',
+      )}
+    >
       {rank}
     </div>
   );
 };
 
 // Trend indicator component
-const TrendIndicator: React.FC<{ trend?: 'up' | 'down' | 'stable' | 'new' }> = ({ trend }) => {
+const TrendIndicator: React.FC<{
+  trend?: 'up' | 'down' | 'stable' | 'new';
+}> = ({ trend }) => {
   if (!trend || trend === 'stable') return null;
-  
+
   if (trend === 'up') {
     return <TrendingUp className="h-4 w-4 text-emerald-500" />;
   }
@@ -155,11 +194,17 @@ const TrendIndicator: React.FC<{ trend?: 'up' | 'down' | 'stable' | 'new' }> = (
 
 // User role badge
 const RoleBadge: React.FC<{ role: string }> = ({ role }) => {
-  const variants: Record<string, { variant: 'default' | 'secondary' | 'destructive' | 'outline'; color: string }> = {
+  const variants: Record<
+    string,
+    {
+      variant: 'default' | 'secondary' | 'destructive' | 'outline';
+      color: string;
+    }
+  > = {
     student: { variant: 'secondary', color: 'bg-blue-100 text-blue-800' },
     instructor: { variant: 'default', color: 'bg-purple-100 text-purple-800' },
     admin: { variant: 'destructive', color: 'bg-red-100 text-red-800' },
-    moderator: { variant: 'outline', color: 'bg-green-100 text-green-800' }
+    moderator: { variant: 'outline', color: 'bg-green-100 text-green-800' },
   };
 
   const config = variants[role] || variants.student;
@@ -188,8 +233,10 @@ const LeaderboardRow: React.FC<LeaderboardRowProps> = ({
   const formatLastActive = (date: string) => {
     const now = new Date();
     const lastActive = new Date(date);
-    const diffInHours = Math.floor((now.getTime() - lastActive.getTime()) / (1000 * 60 * 60));
-    
+    const diffInHours = Math.floor(
+      (now.getTime() - lastActive.getTime()) / (1000 * 60 * 60),
+    );
+
     if (diffInHours < 1) return 'Active now';
     if (diffInHours < 24) return `${diffInHours}h ago`;
     if (diffInHours < 168) return `${Math.floor(diffInHours / 24)}d ago`;
@@ -206,7 +253,7 @@ const LeaderboardRow: React.FC<LeaderboardRowProps> = ({
         'flex items-center gap-4 p-4 rounded-xl border transition-all hover:shadow-md cursor-pointer',
         isHighlighted
           ? 'bg-gradient-to-r from-primary/10 via-primary/5 to-transparent border-primary/30 shadow-sm'
-          : 'bg-card hover:bg-accent/50 border-border'
+          : 'bg-card hover:bg-accent/50 border-border',
       )}
       onClick={() => onClick?.(user)}
     >
@@ -219,7 +266,11 @@ const LeaderboardRow: React.FC<LeaderboardRowProps> = ({
       <Avatar className="h-12 w-12 ring-2 ring-offset-2 ring-primary/20">
         <AvatarImage src={user.avatar} alt={user.name} />
         <AvatarFallback className="bg-gradient-to-br from-primary/20 to-primary/40 text-primary font-semibold">
-          {user.name.split(' ').map(n => n[0]).join('').toUpperCase()}
+          {user.name
+            .split(' ')
+            .map((n) => n[0])
+            .join('')
+            .toUpperCase()}
         </AvatarFallback>
       </Avatar>
 
@@ -227,12 +278,14 @@ const LeaderboardRow: React.FC<LeaderboardRowProps> = ({
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-1">
           <h3 className="font-semibold text-base truncate">{user.name}</h3>
-          <span className="text-muted-foreground text-sm">@{user.username}</span>
-          {showTrends && user.trend && (
-            <TrendIndicator trend={user.trend} />
-          )}
+          <span className="text-muted-foreground text-sm">
+            @{user.username}
+          </span>
+          {showTrends && user.trend && <TrendIndicator trend={user.trend} />}
           {isHighlighted && (
-            <Badge variant="secondary" className="text-xs">You</Badge>
+            <Badge variant="secondary" className="text-xs">
+              You
+            </Badge>
           )}
         </div>
         <div className="flex items-center gap-2 mb-2">
@@ -246,12 +299,16 @@ const LeaderboardRow: React.FC<LeaderboardRowProps> = ({
             <span>{user.score.toLocaleString()} pts</span>
           </div>
         </div>
-        
+
         {/* Badges */}
         {user.badges.length > 0 && (
           <div className="flex flex-wrap gap-1 mb-2">
             {user.badges.map((badge, index) => (
-              <Badge key={index} variant="outline" className="text-xs px-2 py-0.5">
+              <Badge
+                key={index}
+                variant="outline"
+                className="text-xs px-2 py-0.5"
+              >
                 {badge}
               </Badge>
             ))}
@@ -285,7 +342,9 @@ const LeaderboardRow: React.FC<LeaderboardRowProps> = ({
 
       {/* Score */}
       <div className="flex-shrink-0 text-right">
-        <div className="text-2xl font-bold text-primary">{user.score.toLocaleString()}</div>
+        <div className="text-2xl font-bold text-primary">
+          {user.score.toLocaleString()}
+        </div>
         <div className="text-xs text-muted-foreground">points</div>
       </div>
     </motion.div>
@@ -328,7 +387,7 @@ export const CommunityLeaderboard: React.FC<CommunityLeaderboardProps> = ({
   const [filters, setFilters] = useState<LeaderboardFilters>({
     timeframe: 'week',
     category: 'overall',
-    role: 'all'
+    role: 'all',
   });
 
   // Simulate API call
@@ -336,11 +395,11 @@ export const CommunityLeaderboard: React.FC<CommunityLeaderboardProps> = ({
     const loadUsers = async () => {
       setIsLoading(true);
       // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       const mockUsers = generateMockUsers(100);
       // Add current user if not in top results
-      if (currentUserId && !mockUsers.some(u => u.id === currentUserId)) {
+      if (currentUserId && !mockUsers.some((u) => u.id === currentUserId)) {
         const currentUser: CommunityUser = {
           id: currentUserId,
           name: 'Current User',
@@ -355,15 +414,15 @@ export const CommunityLeaderboard: React.FC<CommunityLeaderboardProps> = ({
             comments: 89,
             likes: 156,
             shares: 12,
-            contributions: 8
+            contributions: 8,
           },
           badges: ['Rising Star'],
           joinDate: '2023-06-15T00:00:00Z',
-          lastActive: new Date().toISOString()
+          lastActive: new Date().toISOString(),
         };
         mockUsers.push(currentUser);
       }
-      
+
       setUsers(mockUsers);
       setIsLoading(false);
     };
@@ -372,26 +431,29 @@ export const CommunityLeaderboard: React.FC<CommunityLeaderboardProps> = ({
   }, [filters, currentUserId]);
 
   // Filter and paginate users
-  const filteredUsers = users.filter(user => {
+  const filteredUsers = users.filter((user) => {
     if (filters.role !== 'all' && user.role !== filters.role) return false;
     return true;
   });
 
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedUsers = filteredUsers.slice(startIndex, startIndex + itemsPerPage);
+  const paginatedUsers = filteredUsers.slice(
+    startIndex,
+    startIndex + itemsPerPage,
+  );
   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
 
   const handleFilterChange = (key: keyof LeaderboardFilters, value: string) => {
-    setFilters(prev => ({ ...prev, [key]: value }));
+    setFilters((prev) => ({ ...prev, [key]: value }));
     setCurrentPage(1);
   };
 
   const handlePreviousPage = () => {
-    setCurrentPage(prev => Math.max(1, prev - 1));
+    setCurrentPage((prev) => Math.max(1, prev - 1));
   };
 
   const handleNextPage = () => {
-    setCurrentPage(prev => Math.min(totalPages, prev + 1));
+    setCurrentPage((prev) => Math.min(totalPages, prev + 1));
   };
 
   const refreshLeaderboard = () => {
@@ -415,9 +477,12 @@ export const CommunityLeaderboard: React.FC<CommunityLeaderboardProps> = ({
               Top contributors based on activity and engagement
             </CardDescription>
           </div>
-          
+
           <div className="flex items-center gap-2">
-            <Select value={filters.timeframe} onValueChange={(value) => handleFilterChange('timeframe', value)}>
+            <Select
+              value={filters.timeframe}
+              onValueChange={(value) => handleFilterChange('timeframe', value)}
+            >
               <SelectTrigger className="w-[120px]">
                 <Calendar className="h-4 w-4 mr-2" />
                 <SelectValue />
@@ -432,7 +497,10 @@ export const CommunityLeaderboard: React.FC<CommunityLeaderboardProps> = ({
               </SelectContent>
             </Select>
 
-            <Select value={filters.category} onValueChange={(value) => handleFilterChange('category', value)}>
+            <Select
+              value={filters.category}
+              onValueChange={(value) => handleFilterChange('category', value)}
+            >
               <SelectTrigger className="w-[140px]">
                 <Filter className="h-4 w-4 mr-2" />
                 <SelectValue />
@@ -446,7 +514,10 @@ export const CommunityLeaderboard: React.FC<CommunityLeaderboardProps> = ({
               </SelectContent>
             </Select>
 
-            <Select value={filters.role} onValueChange={(value) => handleFilterChange('role', value)}>
+            <Select
+              value={filters.role}
+              onValueChange={(value) => handleFilterChange('role', value)}
+            >
               <SelectTrigger className="w-[120px]">
                 <Users className="h-4 w-4 mr-2" />
                 <SelectValue />
@@ -458,19 +529,21 @@ export const CommunityLeaderboard: React.FC<CommunityLeaderboardProps> = ({
                 <SelectItem value="admin">Admins</SelectItem>
               </SelectContent>
             </Select>
-            
+
             <Button
               variant="outline"
               size="icon"
               onClick={refreshLeaderboard}
               disabled={isLoading}
             >
-              <RefreshCw className={cn('h-4 w-4', isLoading && 'animate-spin')} />
+              <RefreshCw
+                className={cn('h-4 w-4', isLoading && 'animate-spin')}
+              />
             </Button>
           </div>
         </div>
       </CardHeader>
-      
+
       <CardContent>
         {isLoading ? (
           <LeaderboardSkeleton />
@@ -500,10 +573,13 @@ export const CommunityLeaderboard: React.FC<CommunityLeaderboardProps> = ({
           <div className="flex items-center justify-between mt-6 pt-4 border-t">
             <div className="text-sm text-muted-foreground">
               Showing <span className="font-medium">{startIndex + 1}</span> to{' '}
-              <span className="font-medium">{Math.min(startIndex + itemsPerPage, filteredUsers.length)}</span> of{' '}
-              <span className="font-medium">{filteredUsers.length}</span> users
+              <span className="font-medium">
+                {Math.min(startIndex + itemsPerPage, filteredUsers.length)}
+              </span>{' '}
+              of <span className="font-medium">{filteredUsers.length}</span>{' '}
+              users
             </div>
-            
+
             <div className="flex items-center gap-2">
               <Button
                 variant="outline"
@@ -514,11 +590,11 @@ export const CommunityLeaderboard: React.FC<CommunityLeaderboardProps> = ({
                 <ChevronLeft className="h-4 w-4 mr-1" />
                 Previous
               </Button>
-              
+
               <Badge variant="outline" className="px-4">
                 Page {currentPage} of {totalPages}
               </Badge>
-              
+
               <Button
                 variant="outline"
                 size="sm"

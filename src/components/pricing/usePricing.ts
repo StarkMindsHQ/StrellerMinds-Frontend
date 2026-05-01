@@ -1,6 +1,6 @@
 // usePricing.ts
-import { useEffect, useState } from "react";
-import { fetchPrice } from "../services/pricing.api";
+import { useEffect, useState } from 'react';
+import { fetchPrice } from '../services/pricing.api';
 
 export function usePricing({ country, currency }) {
   const [options, setOptions] = useState({
@@ -8,7 +8,7 @@ export function usePricing({ country, currency }) {
     premium: false,
   });
 
-  const [promoCode, setPromoCode] = useState("");
+  const [promoCode, setPromoCode] = useState('');
   const [price, setPrice] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -20,7 +20,7 @@ export function usePricing({ country, currency }) {
       try {
         const data = await fetchPrice(
           { country, currency, options, promoCode },
-          { signal: controller.signal }
+          { signal: controller.signal },
         );
         setPrice(data);
       } catch (err) {

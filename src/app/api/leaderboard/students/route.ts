@@ -1,11 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { generateMockLearningRecords } from '@/data/learningAnalyticsMock';
-import type { LeaderboardEntry, LeaderboardResponse, LeaderboardFilters } from '@/types/leaderboard';
+import type {
+  LeaderboardEntry,
+  LeaderboardResponse,
+  LeaderboardFilters,
+} from '@/types/leaderboard';
 import type { StudentLearningRecord } from '@/types/learningAnalytics';
 
 /**
  * GET /api/leaderboard/students
- * 
+ *
  * Fetches top students leaderboard data
  * Query params:
  * - metricType: 'completion' | 'quiz_score' | 'combined'
@@ -17,7 +21,7 @@ import type { StudentLearningRecord } from '@/types/learningAnalytics';
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
-    
+
     const metricType = (searchParams.get('metricType') as any) || 'completion';
     const courseId = searchParams.get('courseId') || undefined;
     const limit = parseInt(searchParams.get('limit') || '20', 10);
@@ -27,22 +31,25 @@ export async function GET(request: NextRequest) {
     // Validate metric type
     if (!['completion', 'quiz_score', 'combined'].includes(metricType)) {
       return NextResponse.json(
-        { error: 'Invalid metric type. Must be completion, quiz_score, or combined' },
-        { status: 400 }
+        {
+          error:
+            'Invalid metric type. Must be completion, quiz_score, or combined',
+        },
+        { status: 400 },
       );
     }
 
     // Generate mock data (in production, this would come from database)
     const allStudents = generateMockLearningRecords(50);
-    
+
     // Filter by course if specified
     let filteredStudents = allStudents;
     if (courseId) {
-      filteredStudents = allStudents.filter(s => s.courseId === courseId);
+      filteredStudents = allStudents.filter((s) => s.courseId === courseId);
     }
 
     // Calculate score based on metric type
-    const calculateScore = (student: typeof allStudents[0]): number => {
+    const calculateScore = (student: (typeof allStudents)[0]): number => {
       switch (metricType) {
         case 'completion':
           return student.currentProgress;
@@ -50,8 +57,7 @@ export async function GET(request: NextRequest) {
           return Math.round(student.quizAverageScore);
         case 'combined':
           return Math.round(
-            student.currentProgress * 0.6 + 
-            student.quizAverageScore * 0.4
+            student.currentProgress * 0.6 + student.quizAverageScore * 0.4,
           );
         default:
           return student.currentProgress;
@@ -60,7 +66,7 @@ export async function GET(request: NextRequest) {
 
     // Sort by score (descending)
     const ranked = filteredStudents
-      .map(student => ({
+      .map((student) => ({
         ...student,
         score: calculateScore(student),
       }))
@@ -90,7 +96,7 @@ export async function GET(request: NextRequest) {
     // Find current user if userId provided
     let currentUserEntry: LeaderboardEntry | undefined;
     if (userId) {
-      const userRank = ranked.findIndex(s => s.studentId === userId);
+      const userRank = ranked.findIndex((s) => s.studentId === userId);
       if (userRank !== -1) {
         const user = ranked[userRank];
         currentUserEntry = {
@@ -130,7 +136,7 @@ export async function GET(request: NextRequest) {
     console.error('Leaderboard API Error:', error);
     return NextResponse.json(
       { error: 'Failed to fetch leaderboard data' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

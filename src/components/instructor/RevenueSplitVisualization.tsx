@@ -14,10 +14,29 @@ import {
   YAxis,
   CartesianGrid,
 } from 'recharts';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from '@/components/ui/card';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import { Download, Filter, TrendingUp, DollarSign, PieChart as PieChartIcon, BarChart3 } from 'lucide-react';
+import {
+  Download,
+  Filter,
+  TrendingUp,
+  DollarSign,
+  PieChart as PieChartIcon,
+  BarChart3,
+} from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const COLORS = ['#5c0f49', '#09A5DB', '#10b981', '#f59e0b'];
@@ -45,15 +64,21 @@ export const RevenueSplitVisualization: React.FC = () => {
     return MOCK_REVENUE_DATA.reduce((acc, item) => acc + item.value, 0);
   }, []);
 
-  const instructorShare = MOCK_REVENUE_DATA.find(d => d.name.includes('Instructor'))?.value || 0;
-  const platformShare = MOCK_REVENUE_DATA.find(d => d.name.includes('Platform'))?.value || 0;
+  const instructorShare =
+    MOCK_REVENUE_DATA.find((d) => d.name.includes('Instructor'))?.value || 0;
+  const platformShare =
+    MOCK_REVENUE_DATA.find((d) => d.name.includes('Platform'))?.value || 0;
 
   return (
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Revenue Distribution</h2>
-          <p className="text-sm text-gray-500">Track your earnings and platform distribution</p>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+            Revenue Distribution
+          </h2>
+          <p className="text-sm text-gray-500">
+            Track your earnings and platform distribution
+          </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <Select value={timeRange} onValueChange={setTimeRange}>
@@ -74,9 +99,13 @@ export const RevenueSplitVisualization: React.FC = () => {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Courses</SelectItem>
-              <SelectItem value="stellar-dev">Stellar Smart Contracts</SelectItem>
+              <SelectItem value="stellar-dev">
+                Stellar Smart Contracts
+              </SelectItem>
               <SelectItem value="react-mastery">React Mastery</SelectItem>
-              <SelectItem value="web3-fundamentals">Web3 Fundamentals</SelectItem>
+              <SelectItem value="web3-fundamentals">
+                Web3 Fundamentals
+              </SelectItem>
             </SelectContent>
           </Select>
 
@@ -99,8 +128,12 @@ export const RevenueSplitVisualization: React.FC = () => {
                 <DollarSign className="w-6 h-6" />
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-500">Total Revenue</p>
-                <h3 className="text-2xl font-bold text-gray-900">${totalRevenue.toLocaleString()}</h3>
+                <p className="text-sm font-medium text-gray-500">
+                  Total Revenue
+                </p>
+                <h3 className="text-2xl font-bold text-gray-900">
+                  ${totalRevenue.toLocaleString()}
+                </h3>
               </div>
             </div>
             <div className="flex items-center gap-1 text-green-600 text-sm font-medium">
@@ -117,17 +150,23 @@ export const RevenueSplitVisualization: React.FC = () => {
           >
             <div className="flex justify-between items-end mb-2">
               <div>
-                <p className="text-sm font-medium text-gray-500">Your Share (80%)</p>
-                <h3 className="text-2xl font-bold text-[#09A5DB]">${instructorShare.toLocaleString()}</h3>
+                <p className="text-sm font-medium text-gray-500">
+                  Your Share (80%)
+                </p>
+                <h3 className="text-2xl font-bold text-[#09A5DB]">
+                  ${instructorShare.toLocaleString()}
+                </h3>
               </div>
               <div className="text-right">
                 <p className="text-xs text-gray-400">Platform Fee</p>
-                <p className="text-sm font-semibold text-gray-600">${platformShare.toLocaleString()}</p>
+                <p className="text-sm font-semibold text-gray-600">
+                  ${platformShare.toLocaleString()}
+                </p>
               </div>
             </div>
             <div className="w-full bg-gray-100 h-2.5 rounded-full overflow-hidden">
-              <div 
-                className="bg-[#09A5DB] h-full rounded-full transition-all duration-1000" 
+              <div
+                className="bg-[#09A5DB] h-full rounded-full transition-all duration-1000"
                 style={{ width: '80%' }}
               />
             </div>
@@ -139,21 +178,23 @@ export const RevenueSplitVisualization: React.FC = () => {
           <CardHeader className="flex flex-row items-center justify-between pb-2 bg-white">
             <div>
               <CardTitle className="text-lg">Financial Breakdown</CardTitle>
-              <CardDescription>Visual representation of your earnings</CardDescription>
+              <CardDescription>
+                Visual representation of your earnings
+              </CardDescription>
             </div>
             <div className="flex items-center bg-gray-50 p-1 rounded-lg">
-              <Button 
-                variant={viewType === 'pie' ? 'secondary' : 'ghost'} 
-                size="sm" 
+              <Button
+                variant={viewType === 'pie' ? 'secondary' : 'ghost'}
+                size="sm"
                 onClick={() => setViewType('pie')}
                 className="h-8 px-3"
               >
                 <PieChartIcon className="w-4 h-4 mr-2" />
                 Pie
               </Button>
-              <Button 
-                variant={viewType === 'bar' ? 'secondary' : 'ghost'} 
-                size="sm" 
+              <Button
+                variant={viewType === 'bar' ? 'secondary' : 'ghost'}
+                size="sm"
                 onClick={() => setViewType('bar')}
                 className="h-8 px-3"
               >
@@ -181,23 +222,56 @@ export const RevenueSplitVisualization: React.FC = () => {
                       <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
                   </Pie>
-                  <Tooltip 
-                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                  <Tooltip
+                    contentStyle={{
+                      borderRadius: '12px',
+                      border: 'none',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                    }}
                   />
-                  <Legend verticalAlign="bottom" height={36}/>
+                  <Legend verticalAlign="bottom" height={36} />
                 </PieChart>
               ) : (
                 <BarChart data={MOCK_MONTHLY_REVENUE}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-                  <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 12 }} />
-                  <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12 }} />
-                  <Tooltip 
-                    cursor={{ fill: '#f8fafc' }}
-                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    vertical={false}
+                    stroke="#f0f0f0"
                   />
-                  <Legend verticalAlign="top" align="right" height={36}/>
-                  <Bar dataKey="instructor" name="Instructor Share" stackId="a" fill="#09A5DB" radius={[0, 0, 0, 0]} />
-                  <Bar dataKey="platform" name="Platform Fee" stackId="a" fill="#5c0f49" radius={[4, 4, 0, 0]} />
+                  <XAxis
+                    dataKey="month"
+                    axisLine={false}
+                    tickLine={false}
+                    tick={{ fontSize: 12 }}
+                  />
+                  <YAxis
+                    axisLine={false}
+                    tickLine={false}
+                    tick={{ fontSize: 12 }}
+                  />
+                  <Tooltip
+                    cursor={{ fill: '#f8fafc' }}
+                    contentStyle={{
+                      borderRadius: '12px',
+                      border: 'none',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                    }}
+                  />
+                  <Legend verticalAlign="top" align="right" height={36} />
+                  <Bar
+                    dataKey="instructor"
+                    name="Instructor Share"
+                    stackId="a"
+                    fill="#09A5DB"
+                    radius={[0, 0, 0, 0]}
+                  />
+                  <Bar
+                    dataKey="platform"
+                    name="Platform Fee"
+                    stackId="a"
+                    fill="#5c0f49"
+                    radius={[4, 4, 0, 0]}
+                  />
                 </BarChart>
               )}
             </ResponsiveContainer>

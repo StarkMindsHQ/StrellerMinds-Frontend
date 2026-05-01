@@ -29,7 +29,7 @@ describe('VisibilityTracker', () => {
     render(
       <VisibilityTracker>
         <div data-testid="child">Target Content</div>
-      </VisibilityTracker>
+      </VisibilityTracker>,
     );
     expect(screen.getByTestId('child')).toBeDefined();
   });
@@ -38,7 +38,7 @@ describe('VisibilityTracker', () => {
     render(
       <VisibilityTracker>
         <div>Content</div>
-      </VisibilityTracker>
+      </VisibilityTracker>,
     );
     expect(observeMock).toHaveBeenCalled();
   });
@@ -47,7 +47,7 @@ describe('VisibilityTracker', () => {
     const { unmount } = render(
       <VisibilityTracker>
         <div>Content</div>
-      </VisibilityTracker>
+      </VisibilityTracker>,
     );
     unmount();
     expect(disconnectMock).toHaveBeenCalled();
@@ -55,11 +55,11 @@ describe('VisibilityTracker', () => {
 
   it('calls onVisible when element becomes intersecting', () => {
     const onVisible = vi.fn();
-    
+
     render(
       <VisibilityTracker onVisible={onVisible}>
         <div>Content</div>
-      </VisibilityTracker>
+      </VisibilityTracker>,
     );
 
     // Simulate intersection
@@ -73,11 +73,11 @@ describe('VisibilityTracker', () => {
 
   it('calls onHidden when element stops intersecting', () => {
     const onHidden = vi.fn();
-    
+
     render(
       <VisibilityTracker onHidden={onHidden}>
         <div>Content</div>
-      </VisibilityTracker>
+      </VisibilityTracker>,
     );
 
     // Simulate intersection end
@@ -93,7 +93,7 @@ describe('VisibilityTracker', () => {
     render(
       <VisibilityTracker once>
         <div>Content</div>
-      </VisibilityTracker>
+      </VisibilityTracker>,
     );
 
     const mockEntry = { isIntersecting: true } as IntersectionObserverEntry;

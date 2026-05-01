@@ -24,7 +24,7 @@ import {
   WifiOff,
   Archive,
   Trash2,
-  MoreVertical
+  MoreVertical,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -33,12 +33,12 @@ import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuTrigger,
-  DropdownMenuSeparator 
+  DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 
@@ -106,21 +106,30 @@ interface NotificationFeedProps {
 // Mock data generator
 const generateMockNotifications = (count: number): Notification[] => {
   const types: NotificationType[] = [
-    'message', 'achievement', 'course', 'review', 'alert', 
-    'social', 'system', 'mention', 'follow', 'like', 'comment'
+    'message',
+    'achievement',
+    'course',
+    'review',
+    'alert',
+    'social',
+    'system',
+    'mention',
+    'follow',
+    'like',
+    'comment',
   ];
-  
+
   const users = [
     { id: '1', name: 'John Doe', avatar: '/avatars/john.jpg' },
     { id: '2', name: 'Jane Smith', avatar: '/avatars/jane.jpg' },
     { id: '3', name: 'Mike Wilson', avatar: '/avatars/mike.jpg' },
-    { id: '4', name: 'Sarah Johnson', avatar: '/avatars/sarah.jpg' }
+    { id: '4', name: 'Sarah Johnson', avatar: '/avatars/sarah.jpg' },
   ];
 
   const courses = [
     { id: '1', name: 'Advanced TypeScript' },
     { id: '2', name: 'Blockchain Fundamentals' },
-    { id: '3', name: 'DeFi Mastery' }
+    { id: '3', name: 'DeFi Mastery' },
   ];
 
   return Array.from({ length: count }, (_, i) => {
@@ -128,7 +137,7 @@ const generateMockNotifications = (count: number): Notification[] => {
     const user = users[Math.floor(Math.random() * users.length)];
     const course = courses[Math.floor(Math.random() * courses.length)];
     const hoursAgo = Math.floor(Math.random() * 72);
-    
+
     return {
       id: `notif-${i + 1}`,
       type,
@@ -136,20 +145,31 @@ const generateMockNotifications = (count: number): Notification[] => {
       description: generateDescription(type, user, course),
       timestamp: new Date(Date.now() - hoursAgo * 60 * 60 * 1000),
       read: Math.random() > 0.3,
-      priority: ['alert', 'system'].includes(type) ? 'high' : Math.random() > 0.7 ? 'medium' : 'low',
+      priority: ['alert', 'system'].includes(type)
+        ? 'high'
+        : Math.random() > 0.7
+          ? 'medium'
+          : 'low',
       actionUrl: '#',
       actionText: generateActionText(type),
       metadata: {
         fromUser: user,
         course: course,
-        ...(type === 'achievement' && { amount: Math.floor(Math.random() * 100) + 10 })
+        ...(type === 'achievement' && {
+          amount: Math.floor(Math.random() * 100) + 10,
+        }),
       },
-      groupId: type === 'like' || type === 'comment' ? `social-${user.id}` : undefined
+      groupId:
+        type === 'like' || type === 'comment' ? `social-${user.id}` : undefined,
     };
   });
 };
 
-const generateTitle = (type: NotificationType, user: any, course: any): string => {
+const generateTitle = (
+  type: NotificationType,
+  user: any,
+  course: any,
+): string => {
   const titles = {
     message: `${user.name} sent you a message`,
     achievement: '🎉 Achievement unlocked!',
@@ -161,24 +181,28 @@ const generateTitle = (type: NotificationType, user: any, course: any): string =
     mention: `${user.name} mentioned you`,
     follow: `${user.name} started following you`,
     like: `${user.name} liked your post`,
-    comment: `${user.name} commented on your post`
+    comment: `${user.name} commented on your post`,
   };
   return titles[type] || 'New notification';
 };
 
-const generateDescription = (type: NotificationType, user: any, course: any): string => {
+const generateDescription = (
+  type: NotificationType,
+  user: any,
+  course: any,
+): string => {
   const descriptions = {
     message: `Check your messages from ${user.name}`,
-    achievement: 'You\'ve completed another milestone in your learning journey',
+    achievement: "You've completed another milestone in your learning journey",
     course: `${course.name} has new lessons and assignments ready`,
     review: `${user.name} left detailed feedback on your recent submission`,
     alert: 'Please review this important announcement',
-    social: 'There\'s new activity in your network',
+    social: "There's new activity in your network",
     system: 'System maintenance scheduled for tonight',
     mention: `You were mentioned in a discussion about ${course.name}`,
     follow: `${user.name} is now following your progress`,
     like: `${user.name} liked your recent achievement`,
-    comment: `${user.name} commented: "Great work on this!"`
+    comment: `${user.name} commented: "Great work on this!"`,
   };
   return descriptions[type] || 'Click to view details';
 };
@@ -195,7 +219,7 @@ const generateActionText = (type: NotificationType): string => {
     mention: 'View Mention',
     follow: 'View Profile',
     like: 'View Post',
-    comment: 'Reply'
+    comment: 'Reply',
   };
   return actions[type] || 'View';
 };
@@ -212,7 +236,7 @@ const NotificationIcon: Record<NotificationType, React.ReactNode> = {
   mention: <MessageSquare className="h-4 w-4" />,
   follow: <Users className="h-4 w-4" />,
   like: <Heart className="h-4 w-4" />,
-  comment: <MessageSquare className="h-4 w-4" />
+  comment: <MessageSquare className="h-4 w-4" />,
 };
 
 // Color mapping
@@ -227,14 +251,14 @@ const NotificationColor: Record<NotificationType, string> = {
   mention: 'bg-blue-500',
   follow: 'bg-pink-500',
   like: 'bg-red-500',
-  comment: 'bg-blue-500'
+  comment: 'bg-blue-500',
 };
 
 // Priority color
 const PriorityColor: Record<string, string> = {
   high: 'border-l-red-500',
   medium: 'border-l-yellow-500',
-  low: 'border-l-gray-300'
+  low: 'border-l-gray-300',
 };
 
 // Time formatting
@@ -253,10 +277,12 @@ const formatTimeAgo = (date: Date): string => {
 };
 
 // Group similar notifications
-const groupNotifications = (notifications: Notification[]): NotificationGroup[] => {
+const groupNotifications = (
+  notifications: Notification[],
+): NotificationGroup[] => {
   const groups: Record<string, NotificationGroup> = {};
-  
-  notifications.forEach(notif => {
+
+  notifications.forEach((notif) => {
     if (notif.groupId) {
       if (!groups[notif.groupId]) {
         groups[notif.groupId] = {
@@ -264,19 +290,23 @@ const groupNotifications = (notifications: Notification[]): NotificationGroup[] 
           type: notif.type,
           notifications: [],
           latestTimestamp: notif.timestamp,
-          unreadCount: 0
+          unreadCount: 0,
         };
       }
       groups[notif.groupId].notifications.push(notif);
       groups[notif.groupId].unreadCount += notif.read ? 0 : 1;
-      groups[notif.groupId].latestTimestamp = new Date(Math.max(
-        groups[notif.groupId].latestTimestamp.getTime(),
-        notif.timestamp.getTime()
-      ));
+      groups[notif.groupId].latestTimestamp = new Date(
+        Math.max(
+          groups[notif.groupId].latestTimestamp.getTime(),
+          notif.timestamp.getTime(),
+        ),
+      );
     }
   });
 
-  return Object.values(groups).sort((a, b) => b.latestTimestamp.getTime() - a.latestTimestamp.getTime());
+  return Object.values(groups).sort(
+    (a, b) => b.latestTimestamp.getTime() - a.latestTimestamp.getTime(),
+  );
 };
 
 // Individual notification item
@@ -304,16 +334,18 @@ const NotificationItem: React.FC<{
       className={cn(
         'group flex items-start gap-3 p-4 rounded-lg border cursor-pointer transition-all hover:bg-accent/50',
         !notification.read && 'bg-primary/5 border-primary/20',
-        PriorityColor[notification.priority]
+        PriorityColor[notification.priority],
       )}
       onClick={() => onClick(notification)}
     >
       {/* Icon */}
       <div className="flex-shrink-0">
-        <div className={cn(
-          'flex h-10 w-10 items-center justify-center rounded-full text-white',
-          NotificationColor[notification.type]
-        )}>
+        <div
+          className={cn(
+            'flex h-10 w-10 items-center justify-center rounded-full text-white',
+            NotificationColor[notification.type],
+          )}
+        >
           {NotificationIcon[notification.type]}
         </div>
       </div>
@@ -322,16 +354,18 @@ const NotificationItem: React.FC<{
       <div className="flex-1 min-w-0">
         <div className="flex items-start justify-between gap-2">
           <div className="flex-1">
-            <h4 className={cn(
-              'text-sm font-medium line-clamp-1',
-              !notification.read && 'font-semibold'
-            )}>
+            <h4
+              className={cn(
+                'text-sm font-medium line-clamp-1',
+                !notification.read && 'font-semibold',
+              )}
+            >
               {notification.title}
             </h4>
             <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
               {notification.description}
             </p>
-            
+
             {/* Metadata */}
             <div className="flex items-center gap-2 mt-2">
               <span className="text-xs text-muted-foreground">
@@ -387,11 +421,7 @@ const NotificationItem: React.FC<{
             )}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-8 w-8 p-0"
-                >
+                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                   <MoreVertical className="h-3 w-3" />
                 </Button>
               </DropdownMenuTrigger>
@@ -445,10 +475,12 @@ const NotificationGroupItem: React.FC<{
         onClick={() => setIsExpanded(!isExpanded)}
       >
         {/* Group icon */}
-        <div className={cn(
-          'flex h-10 w-10 items-center justify-center rounded-full text-white relative',
-          NotificationColor[group.type]
-        )}>
+        <div
+          className={cn(
+            'flex h-10 w-10 items-center justify-center rounded-full text-white relative',
+            NotificationColor[group.type],
+          )}
+        >
           {NotificationIcon[group.type]}
           {group.unreadCount > 1 && (
             <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 text-xs">
@@ -463,18 +495,15 @@ const NotificationGroupItem: React.FC<{
             {group.notifications[0].title}
           </h4>
           <p className="text-sm text-muted-foreground">
-            {group.notifications.length} notifications • {formatTimeAgo(group.latestTimestamp)}
+            {group.notifications.length} notifications •{' '}
+            {formatTimeAgo(group.latestTimestamp)}
           </p>
         </div>
 
         {/* Actions */}
         <div className="flex items-center gap-2">
           {group.unreadCount > 0 && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleMarkGroupAsRead}
-            >
+            <Button variant="ghost" size="sm" onClick={handleMarkGroupAsRead}>
               <CheckCheck className="h-3 w-3 mr-1" />
               Mark all read
             </Button>
@@ -495,7 +524,10 @@ const NotificationGroupItem: React.FC<{
             className="border-t bg-muted/30"
           >
             {group.notifications.map((notification) => (
-              <div key={notification.id} className="p-3 border-b last:border-b-0">
+              <div
+                key={notification.id}
+                className="p-3 border-b last:border-b-0"
+              >
                 <NotificationItem
                   notification={notification}
                   onMarkRead={onMarkRead}
@@ -522,19 +554,24 @@ export const NotificationFeed: React.FC<NotificationFeedProps> = ({
   className,
   enableRealTime = true,
   showGrouping = true,
-  maxItems = 50
+  maxItems = 50,
 }) => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [filteredNotifications, setFilteredNotifications] = useState<Notification[]>([]);
+  const [filteredNotifications, setFilteredNotifications] = useState<
+    Notification[]
+  >([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeTab, setActiveTab] = useState<'all' | 'unread' | 'groups'>('all');
+  const [activeTab, setActiveTab] = useState<'all' | 'unread' | 'groups'>(
+    'all',
+  );
   const [isRealTimeEnabled, setIsRealTimeEnabled] = useState(enableRealTime);
   const [isLoading, setIsLoading] = useState(false);
   const realTimeIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Initialize notifications
   useEffect(() => {
-    const initialNotifications = externalNotifications || generateMockNotifications(20);
+    const initialNotifications =
+      externalNotifications || generateMockNotifications(20);
     setNotifications(initialNotifications);
     setFilteredNotifications(initialNotifications);
   }, [externalNotifications]);
@@ -544,7 +581,9 @@ export const NotificationFeed: React.FC<NotificationFeedProps> = ({
     if (isRealTimeEnabled) {
       realTimeIntervalRef.current = setInterval(() => {
         const newNotification = generateMockNotifications(1)[0];
-        setNotifications(prev => [newNotification, ...prev].slice(0, maxItems));
+        setNotifications((prev) =>
+          [newNotification, ...prev].slice(0, maxItems),
+        );
       }, 15000); // Add new notification every 15 seconds
     }
 
@@ -561,43 +600,48 @@ export const NotificationFeed: React.FC<NotificationFeedProps> = ({
 
     // Apply search filter
     if (searchQuery) {
-      filtered = filtered.filter(notif =>
-        notif.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        notif.description.toLowerCase().includes(searchQuery.toLowerCase())
+      filtered = filtered.filter(
+        (notif) =>
+          notif.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          notif.description.toLowerCase().includes(searchQuery.toLowerCase()),
       );
     }
 
     // Apply tab filter
     if (activeTab === 'unread') {
-      filtered = filtered.filter(notif => !notif.read);
+      filtered = filtered.filter((notif) => !notif.read);
     }
 
     setFilteredNotifications(filtered);
   }, [notifications, searchQuery, activeTab]);
 
   // Handle mark as read
-  const handleMarkRead = useCallback((id: string) => {
-    setNotifications(prev => 
-      prev.map(notif => 
-        notif.id === id ? { ...notif, read: true } : notif
-      )
-    );
-    onMarkRead?.(id);
-  }, [onMarkRead]);
+  const handleMarkRead = useCallback(
+    (id: string) => {
+      setNotifications((prev) =>
+        prev.map((notif) =>
+          notif.id === id ? { ...notif, read: true } : notif,
+        ),
+      );
+      onMarkRead?.(id);
+    },
+    [onMarkRead],
+  );
 
   // Handle mark all as read
   const handleMarkAllRead = useCallback(() => {
-    setNotifications(prev => 
-      prev.map(notif => ({ ...notif, read: true }))
-    );
+    setNotifications((prev) => prev.map((notif) => ({ ...notif, read: true })));
     onMarkAllRead?.();
   }, [onMarkAllRead]);
 
   // Handle delete
-  const handleDelete = useCallback((id: string) => {
-    setNotifications(prev => prev.filter(notif => notif.id !== id));
-    onDelete?.(id);
-  }, [onDelete]);
+  const handleDelete = useCallback(
+    (id: string) => {
+      setNotifications((prev) => prev.filter((notif) => notif.id !== id));
+      onDelete?.(id);
+    },
+    [onDelete],
+  );
 
   // Handle delete all
   const handleDeleteAll = useCallback(() => {
@@ -606,24 +650,29 @@ export const NotificationFeed: React.FC<NotificationFeedProps> = ({
   }, [onDeleteAll]);
 
   // Handle notification click
-  const handleNotificationClick = useCallback((notification: Notification) => {
-    handleMarkRead(notification.id);
-    onNotificationClick?.(notification);
-  }, [handleMarkRead, onNotificationClick]);
+  const handleNotificationClick = useCallback(
+    (notification: Notification) => {
+      handleMarkRead(notification.id);
+      onNotificationClick?.(notification);
+    },
+    [handleMarkRead, onNotificationClick],
+  );
 
   // Handle mark group as read
   const handleMarkGroupRead = useCallback((groupId: string) => {
-    setNotifications(prev => 
-      prev.map(notif => 
-        notif.groupId === groupId ? { ...notif, read: true } : notif
-      )
+    setNotifications((prev) =>
+      prev.map((notif) =>
+        notif.groupId === groupId ? { ...notif, read: true } : notif,
+      ),
     );
   }, []);
 
   // Get grouped notifications
   const groupedNotifications = groupNotifications(filteredNotifications);
-  const ungroupedNotifications = filteredNotifications.filter(notif => !notif.groupId);
-  const unreadCount = notifications.filter(notif => !notif.read).length;
+  const ungroupedNotifications = filteredNotifications.filter(
+    (notif) => !notif.groupId,
+  );
+  const unreadCount = notifications.filter((notif) => !notif.read).length;
 
   return (
     <Card className={cn('w-full max-h-[800px]', className)}>
@@ -632,7 +681,10 @@ export const NotificationFeed: React.FC<NotificationFeedProps> = ({
           <div className="flex items-center gap-2">
             <CardTitle className="text-lg">Notifications</CardTitle>
             {unreadCount > 0 && (
-              <Badge variant="secondary" className="h-5 min-w-5 rounded-full px-1.5 text-[10px]">
+              <Badge
+                variant="secondary"
+                className="h-5 min-w-5 rounded-full px-1.5 text-[10px]"
+              >
                 {unreadCount}
               </Badge>
             )}
@@ -649,9 +701,13 @@ export const NotificationFeed: React.FC<NotificationFeedProps> = ({
               size="sm"
               onClick={() => setIsRealTimeEnabled(!isRealTimeEnabled)}
             >
-              {isRealTimeEnabled ? <WifiOff className="h-4 w-4" /> : <Wifi className="h-4 w-4" />}
+              {isRealTimeEnabled ? (
+                <WifiOff className="h-4 w-4" />
+              ) : (
+                <Wifi className="h-4 w-4" />
+              )}
             </Button>
-            
+
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="sm">
@@ -659,12 +715,18 @@ export const NotificationFeed: React.FC<NotificationFeedProps> = ({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={handleMarkAllRead} disabled={unreadCount === 0}>
+                <DropdownMenuItem
+                  onClick={handleMarkAllRead}
+                  disabled={unreadCount === 0}
+                >
                   <CheckCheck className="h-3 w-3 mr-2" />
                   Mark all read
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleDeleteAll} disabled={notifications.length === 0}>
+                <DropdownMenuItem
+                  onClick={handleDeleteAll}
+                  disabled={notifications.length === 0}
+                >
                   <Trash2 className="h-3 w-3 mr-2" />
                   Delete all
                 </DropdownMenuItem>
@@ -688,8 +750,14 @@ export const NotificationFeed: React.FC<NotificationFeedProps> = ({
             <Filter className="h-4 w-4 mr-2" />
             Filter
           </Button>
-          <Button variant="outline" size="sm" onClick={() => setIsLoading(!isLoading)}>
-            <RefreshCw className={cn('h-4 w-4 mr-2', isLoading && 'animate-spin')} />
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setIsLoading(!isLoading)}
+          >
+            <RefreshCw
+              className={cn('h-4 w-4 mr-2', isLoading && 'animate-spin')}
+            />
             Refresh
           </Button>
         </div>
@@ -697,7 +765,11 @@ export const NotificationFeed: React.FC<NotificationFeedProps> = ({
 
       <CardContent className="p-0">
         {/* Tabs */}
-        <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as any)} className="px-6">
+        <Tabs
+          value={activeTab}
+          onValueChange={(value) => setActiveTab(value as any)}
+          className="px-6"
+        >
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="all" className="text-xs">
               All ({notifications.length})
@@ -726,8 +798,8 @@ export const NotificationFeed: React.FC<NotificationFeedProps> = ({
 
           <TabsContent value="unread" className="mt-4">
             <NotificationList
-              notifications={ungroupedNotifications.filter(n => !n.read)}
-              groups={groupedNotifications.filter(g => g.unreadCount > 0)}
+              notifications={ungroupedNotifications.filter((n) => !n.read)}
+              groups={groupedNotifications.filter((g) => g.unreadCount > 0)}
               showGrouping={showGrouping}
               onMarkRead={handleMarkRead}
               onDelete={handleDelete}
@@ -764,7 +836,15 @@ const NotificationList: React.FC<{
   onDelete: (id: string) => void;
   onMarkGroupRead: (groupId: string) => void;
   onClick: (notification: Notification) => void;
-}> = ({ notifications, groups, showGrouping, onMarkRead, onDelete, onMarkGroupRead, onClick }) => {
+}> = ({
+  notifications,
+  groups,
+  showGrouping,
+  onMarkRead,
+  onDelete,
+  onMarkGroupRead,
+  onClick,
+}) => {
   if (notifications.length === 0 && groups.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-12 text-center">
@@ -779,16 +859,17 @@ const NotificationList: React.FC<{
       <div className="space-y-3">
         <AnimatePresence>
           {/* Show groups first */}
-          {showGrouping && groups.map((group) => (
-            <NotificationGroupItem
-              key={group.id}
-              group={group}
-              onMarkGroupRead={onMarkGroupRead}
-              onMarkRead={onMarkRead}
-              onDelete={onDelete}
-              onClick={onClick}
-            />
-          ))}
+          {showGrouping &&
+            groups.map((group) => (
+              <NotificationGroupItem
+                key={group.id}
+                group={group}
+                onMarkGroupRead={onMarkGroupRead}
+                onMarkRead={onMarkRead}
+                onDelete={onDelete}
+                onClick={onClick}
+              />
+            ))}
 
           {/* Show individual notifications */}
           {notifications.map((notification) => (

@@ -35,11 +35,11 @@ interface UseOptimisticActionOptions<TValue, TResult> {
   onError?: (error: Error, rollbackValue: TValue) => void;
 }
 
-interface OptimisticActionHandlerProps<TValue, TResult>
-  extends UseOptimisticActionOptions<TValue, TResult> {
-  children: (
-    state: OptimisticActionState<TValue, TResult>,
-  ) => React.ReactNode;
+interface OptimisticActionHandlerProps<
+  TValue,
+  TResult,
+> extends UseOptimisticActionOptions<TValue, TResult> {
+  children: (state: OptimisticActionState<TValue, TResult>) => React.ReactNode;
 }
 
 const resolveValue = <TValue,>(

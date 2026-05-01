@@ -10,7 +10,8 @@ import { CheckCircle, Award, Clock, User } from 'lucide-react';
 
 export default function CertificatePage() {
   const params = useParams();
-  const [certificateData, setCertificateData] = useState<CertificateData | null>(null);
+  const [certificateData, setCertificateData] =
+    useState<CertificateData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -73,7 +74,8 @@ export default function CertificatePage() {
               </div>
               <p className="text-gray-600 mt-2">{error}</p>
               <p className="text-sm text-gray-500 mt-4">
-                Certificates are available only after completing all course requirements.
+                Certificates are available only after completing all course
+                requirements.
               </p>
             </CardContent>
           </Card>
@@ -89,8 +91,12 @@ export default function CertificatePage() {
           <Card>
             <CardContent className="p-6 text-center">
               <Award className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="font-semibold text-gray-700">Certificate Not Found</h3>
-              <p className="text-gray-500 mt-2">Unable to load certificate data.</p>
+              <h3 className="font-semibold text-gray-700">
+                Certificate Not Found
+              </h3>
+              <p className="text-gray-500 mt-2">
+                Unable to load certificate data.
+              </p>
             </CardContent>
           </Card>
         </div>
@@ -109,7 +115,8 @@ export default function CertificatePage() {
           </Badge>
           <h1 className="text-3xl font-bold text-gray-900">Your Certificate</h1>
           <p className="text-gray-600">
-            Congratulations on completing your course! Download your certificate below.
+            Congratulations on completing your course! Download your certificate
+            below.
           </p>
         </div>
 
@@ -145,14 +152,18 @@ export default function CertificatePage() {
                   <Clock className="h-5 w-5 text-blue-600" />
                   <div>
                     <p className="text-sm text-gray-500">Duration</p>
-                    <p className="font-medium">{certificateData.durationHours} hours</p>
+                    <p className="font-medium">
+                      {certificateData.durationHours} hours
+                    </p>
                   </div>
                 </div>
               </div>
               <div className="space-y-4">
                 <div>
                   <p className="text-sm text-gray-500">Completion Date</p>
-                  <p className="font-medium">{certificateData.completionDate}</p>
+                  <p className="font-medium">
+                    {certificateData.completionDate}
+                  </p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-500">Certificate ID</p>

@@ -71,9 +71,7 @@ export default function SmartIdleDetector({
   const statusRef = useRef<SmartIdleStatus>('active');
 
   const trackingEnabled =
-    enabled &&
-    !isLoading &&
-    (!requireAuthenticatedSession || isAuthenticated);
+    enabled && !isLoading && (!requireAuthenticatedSession || isAuthenticated);
 
   const clearTimers = () => {
     if (warningTimerRef.current) {
@@ -236,22 +234,11 @@ export default function SmartIdleDetector({
       });
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [
-    trackingEnabled,
-    timeoutMs,
-    warningDurationMs,
-    triggerLogoutOnIdle,
-  ]);
+  }, [trackingEnabled, timeoutMs, warningDurationMs, triggerLogoutOnIdle]);
 
   if (!children) {
     return null;
   }
 
-  return (
-    <>
-      {typeof children === 'function'
-        ? children(state)
-        : children}
-    </>
-  );
+  return <>{typeof children === 'function' ? children(state) : children}</>;
 }

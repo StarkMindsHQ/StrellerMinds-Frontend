@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React, { useState, useEffect, ReactNode } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -52,7 +52,8 @@ export function DataDependencyResolver({
           }
         } catch (error) {
           if (isMounted) {
-            resolveErrors[dep.key] = error instanceof Error ? error : new Error(String(error));
+            resolveErrors[dep.key] =
+              error instanceof Error ? error : new Error(String(error));
           }
         }
       }
@@ -78,15 +79,17 @@ export function DataDependencyResolver({
   }, [dependencies]);
 
   if (isLoading) {
-    return loadingUI || (
-      <div className="space-y-4 p-4">
-        {dependencies.map((dep) => (
-          <div key={dep.key} className="space-y-2">
-            <Skeleton className="h-4 w-[250px]" />
-            <Skeleton className="h-4 w-[200px]" />
-          </div>
-        ))}
-      </div>
+    return (
+      loadingUI || (
+        <div className="space-y-4 p-4">
+          {dependencies.map((dep) => (
+            <div key={dep.key} className="space-y-2">
+              <Skeleton className="h-4 w-[250px]" />
+              <Skeleton className="h-4 w-[200px]" />
+            </div>
+          ))}
+        </div>
+      )
     );
   }
 

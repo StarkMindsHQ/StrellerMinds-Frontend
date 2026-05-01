@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useEffect, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -31,7 +31,9 @@ export function SessionManagementDashboard() {
   const [sessions, setSessions] = useState<ActiveSessionItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [deletingSessionId, setDeletingSessionId] = useState<string | null>(null);
+  const [deletingSessionId, setDeletingSessionId] = useState<string | null>(
+    null,
+  );
 
   const hasSessions = sessions.length > 0;
 
@@ -72,7 +74,9 @@ export function SessionManagementDashboard() {
         throw new Error(body?.error || 'Failed to terminate session');
       }
 
-      setSessions((previous) => previous.filter((session) => session.id !== sessionId));
+      setSessions((previous) =>
+        previous.filter((session) => session.id !== sessionId),
+      );
     } catch (err) {
       setError((err as Error).message || 'Unable to terminate session');
     } finally {
@@ -118,7 +122,9 @@ export function SessionManagementDashboard() {
                   <p className="text-xs uppercase tracking-[.24em] text-slate-500">
                     Total sessions
                   </p>
-                  <p className="text-3xl font-semibold">{activeSessionsSummary.total}</p>
+                  <p className="text-3xl font-semibold">
+                    {activeSessionsSummary.total}
+                  </p>
                 </div>
               </div>
             </div>
@@ -129,7 +135,9 @@ export function SessionManagementDashboard() {
                   <p className="text-xs uppercase tracking-[.24em] text-slate-500">
                     Current session
                   </p>
-                  <p className="text-3xl font-semibold">{activeSessionsSummary.current}</p>
+                  <p className="text-3xl font-semibold">
+                    {activeSessionsSummary.current}
+                  </p>
                 </div>
               </div>
             </div>
@@ -154,7 +162,9 @@ export function SessionManagementDashboard() {
               Loading active sessions...
             </div>
           ) : !hasSessions ? (
-            <p className="text-sm text-muted-foreground">No active sessions found.</p>
+            <p className="text-sm text-muted-foreground">
+              No active sessions found.
+            </p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full min-w-[720px] text-left text-sm">
@@ -176,8 +186,12 @@ export function SessionManagementDashboard() {
                     >
                       <td className="px-4 py-4">
                         <div className="flex flex-col gap-1">
-                          <span className="font-semibold text-slate-900">{session.device}</span>
-                          <span className="text-xs text-slate-500">{session.ip}</span>
+                          <span className="font-semibold text-slate-900">
+                            {session.device}
+                          </span>
+                          <span className="text-xs text-slate-500">
+                            {session.ip}
+                          </span>
                         </div>
                       </td>
                       <td className="px-4 py-4">{session.browser}</td>
@@ -187,7 +201,9 @@ export function SessionManagementDashboard() {
                           <span>{session.location}</span>
                         </div>
                       </td>
-                      <td className="px-4 py-4">{formatDate(session.lastSeenAt)}</td>
+                      <td className="px-4 py-4">
+                        {formatDate(session.lastSeenAt)}
+                      </td>
                       <td className="px-4 py-4">
                         <span
                           className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[.18em] ${
@@ -203,7 +219,10 @@ export function SessionManagementDashboard() {
                         <Button
                           variant="destructive"
                           size="sm"
-                          disabled={session.isCurrent || deletingSessionId === session.id}
+                          disabled={
+                            session.isCurrent ||
+                            deletingSessionId === session.id
+                          }
                           onClick={() => void handleTerminate(session.id)}
                         >
                           <Trash2 className="h-4 w-4" />

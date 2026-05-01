@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { 
-  runRecommendationEngine, 
-  type RecommendationEngineInput, 
+import {
+  runRecommendationEngine,
+  type RecommendationEngineInput,
   type RecommendationEngineResult,
-  type RecommendationStrategy
+  type RecommendationStrategy,
 } from '@/services/recommendationEngine';
 import { buildMockRecommendationInput } from '@/data/recommendationEngineMock';
 import { activityLogger } from '@/services/activityLogger';
@@ -38,16 +38,20 @@ export function useAdaptiveRecommendations({
       // that either returns the telemetry data for us to process locally
       // OR returns the calculated recommendations directly.
       // Acceptance Criteria: "Fetches recommendations via API"
-      
+
       // Simulating API call
-      await new Promise(resolve => setTimeout(resolve, 800));
+      await new Promise((resolve) => setTimeout(resolve, 800));
 
       // Attempt to get real activity logs to inform recommendations
       // If no real data is available, we fall back to mock data
       let input: RecommendationEngineInput;
-      
+
       try {
-        const logs = await activityLogger.getActivityLogs(learnerId, undefined, 10);
+        const logs = await activityLogger.getActivityLogs(
+          learnerId,
+          undefined,
+          10,
+        );
         if (logs.length > 0) {
           // In a real scenario, we would map logs to telemetry format
           // Here we still use buildMockRecommendationInput as a base for variety
@@ -64,7 +68,9 @@ export function useAdaptiveRecommendations({
       setResult(recommendationResult);
     } catch (err) {
       console.error('Failed to fetch recommendations:', err);
-      setError('Could not load personalized recommendations. Please try again later.');
+      setError(
+        'Could not load personalized recommendations. Please try again later.',
+      );
     } finally {
       setIsLoading(false);
     }
@@ -87,6 +93,6 @@ export function useAdaptiveRecommendations({
     result,
     isLoading,
     error,
-    refresh: fetchRecommendations
+    refresh: fetchRecommendations,
   };
 }

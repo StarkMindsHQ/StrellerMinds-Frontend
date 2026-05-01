@@ -11,7 +11,10 @@ export class CourseVersionController {
   }
 
   @Post(':versionId/restore')
-  async restore(@Param('courseId') courseId: string, @Param('versionId') versionId: string) {
+  async restore(
+    @Param('courseId') courseId: string,
+    @Param('versionId') versionId: string,
+  ) {
     return this.service.restoreVersion(courseId, versionId);
   }
 }

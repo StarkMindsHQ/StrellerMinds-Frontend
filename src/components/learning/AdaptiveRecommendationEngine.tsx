@@ -36,7 +36,9 @@ interface AdaptiveRecommendationEngineProps {
  * Displays personalized course suggestions based on deep analysis of user activity.
  * Adapts in real-time to changes in learning pace and quiz performance.
  */
-export const AdaptiveRecommendationEngine: React.FC<AdaptiveRecommendationEngineProps> = ({
+export const AdaptiveRecommendationEngine: React.FC<
+  AdaptiveRecommendationEngineProps
+> = ({
   learnerId,
   className,
   onRefresh,
@@ -70,10 +72,15 @@ export const AdaptiveRecommendationEngine: React.FC<AdaptiveRecommendationEngine
   };
 
   return (
-    <Card className={cn('relative overflow-hidden border-primary/20 bg-card/90 shadow-lg backdrop-blur-md transition-shadow hover:shadow-primary/5', className)}>
+    <Card
+      className={cn(
+        'relative overflow-hidden border-primary/20 bg-card/90 shadow-lg backdrop-blur-md transition-shadow hover:shadow-primary/5',
+        className,
+      )}
+    >
       {/* Visual background element */}
       <div className="absolute top-0 right-0 -mr-20 -mt-20 h-48 w-48 rounded-full bg-primary/5 blur-3xl" />
-      
+
       <CardHeader className="relative z-10 border-b border-primary/10 pb-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="space-y-1">
@@ -82,10 +89,11 @@ export const AdaptiveRecommendationEngine: React.FC<AdaptiveRecommendationEngine
               Adaptive Intelligent Learning Path
             </CardTitle>
             <CardDescription className="text-sm font-medium text-muted-foreground/80">
-              Personalized recommendations dynamically optimized for your current speed and mastery level.
+              Personalized recommendations dynamically optimized for your
+              current speed and mastery level.
             </CardDescription>
           </div>
-          
+
           <div className="flex items-center gap-3">
             <Button
               variant="outline"
@@ -94,11 +102,21 @@ export const AdaptiveRecommendationEngine: React.FC<AdaptiveRecommendationEngine
               disabled={isLoading || isRefreshing}
               className="h-9 gap-2 font-semibold transition-all hover:bg-primary/5"
             >
-              <RotateCw className={cn('h-4 w-4', (isLoading || isRefreshing) && 'animate-spin')} />
+              <RotateCw
+                className={cn(
+                  'h-4 w-4',
+                  (isLoading || isRefreshing) && 'animate-spin',
+                )}
+              />
               Refresh Path
             </Button>
-            <Badge variant="secondary" className="px-2.5 py-1 text-xs font-bold ring-1 ring-inset ring-primary/20">
-              {result?.strategy === 'weakness-first' ? 'Gap Analysis Mode' : 'Momentum Balance Mode'}
+            <Badge
+              variant="secondary"
+              className="px-2.5 py-1 text-xs font-bold ring-1 ring-inset ring-primary/20"
+            >
+              {result?.strategy === 'weakness-first'
+                ? 'Gap Analysis Mode'
+                : 'Momentum Balance Mode'}
             </Badge>
           </div>
         </div>
@@ -107,18 +125,26 @@ export const AdaptiveRecommendationEngine: React.FC<AdaptiveRecommendationEngine
       <CardContent className="relative z-10 space-y-8 pt-8">
         {/* Performance Overview Section */}
         {showActivitySummary && result && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             className="grid gap-4 sm:grid-cols-3"
           >
-            <div className={cn('flex flex-col rounded-xl border p-4 transition-all hover:scale-[1.02]', speedColor[result.analysis.completionSpeedLabel])}>
+            <div
+              className={cn(
+                'flex flex-col rounded-xl border p-4 transition-all hover:scale-[1.02]',
+                speedColor[result.analysis.completionSpeedLabel],
+              )}
+            >
               <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider opacity-80">
                 <History className="h-3.5 w-3.5" />
                 Velocity Metrics
               </div>
               <div className="mt-2 text-2xl font-black">
-                {result.analysis.averageCompletionSpeedRatio}x <span className="text-sm font-medium opacity-70">multiplier</span>
+                {result.analysis.averageCompletionSpeedRatio}x{' '}
+                <span className="text-sm font-medium opacity-70">
+                  multiplier
+                </span>
               </div>
               <p className="mt-1 text-[10px] sm:text-xs font-medium opacity-90 leading-tight">
                 {speedLabel[result.analysis.completionSpeedLabel]}
@@ -131,7 +157,10 @@ export const AdaptiveRecommendationEngine: React.FC<AdaptiveRecommendationEngine
                 Mastery Index
               </div>
               <div className="mt-2 text-2xl font-black text-foreground">
-                {result.analysis.averageQuizScore}% <span className="text-sm font-medium opacity-60">avg score</span>
+                {result.analysis.averageQuizScore}%{' '}
+                <span className="text-sm font-medium opacity-60">
+                  avg score
+                </span>
               </div>
               <p className="mt-1 text-xs font-medium text-muted-foreground leading-tight">
                 Based on integrated quiz session analysis
@@ -144,10 +173,15 @@ export const AdaptiveRecommendationEngine: React.FC<AdaptiveRecommendationEngine
                 Gap Detection
               </div>
               <div className="mt-2 text-2xl font-black text-foreground">
-                {result.analysis.weakTopics.length} <span className="text-sm font-medium opacity-60">critical hotspots</span>
+                {result.analysis.weakTopics.length}{' '}
+                <span className="text-sm font-medium opacity-60">
+                  critical hotspots
+                </span>
               </div>
               <p className="mt-1 text-xs font-medium text-muted-foreground truncate leading-tight">
-                {result.analysis.weakTopics.slice(0, 1).map(t => t.topic)[0] || 'No immediate risks identified'}
+                {result.analysis.weakTopics
+                  .slice(0, 1)
+                  .map((t) => t.topic)[0] || 'No immediate risks identified'}
               </p>
             </div>
           </motion.div>
@@ -162,7 +196,8 @@ export const AdaptiveRecommendationEngine: React.FC<AdaptiveRecommendationEngine
             </h3>
             {result && (
               <span className="text-[10px] font-medium text-muted-foreground/60 italic">
-                Path generated at {new Date(result.generatedAt).toLocaleTimeString()}
+                Path generated at{' '}
+                {new Date(result.generatedAt).toLocaleTimeString()}
               </span>
             )}
           </div>
@@ -182,7 +217,7 @@ export const AdaptiveRecommendationEngine: React.FC<AdaptiveRecommendationEngine
                 ))}
               </div>
             ) : error ? (
-              <motion.div 
+              <motion.div
                 key="error"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -191,22 +226,31 @@ export const AdaptiveRecommendationEngine: React.FC<AdaptiveRecommendationEngine
                 <div className="rounded-full bg-destructive/10 p-4 mb-4">
                   <AlertTriangle className="h-8 w-8 text-destructive" />
                 </div>
-                <p className="text-lg font-bold text-foreground mb-2">Engine Disruption</p>
-                <p className="text-sm text-muted-foreground max-w-sm mb-6">{error}</p>
+                <p className="text-lg font-bold text-foreground mb-2">
+                  Engine Disruption
+                </p>
+                <p className="text-sm text-muted-foreground max-w-sm mb-6">
+                  {error}
+                </p>
                 <Button variant="outline" onClick={handleRefresh}>
                   Reset Engine Connection
                 </Button>
               </motion.div>
             ) : result?.suggestions.length === 0 ? (
-              <motion.div 
+              <motion.div
                 key="empty"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-primary/20 bg-muted/20 p-12 text-center"
               >
                 <Sparkles className="h-10 w-10 text-primary/40 mb-4" />
-                <p className="text-lg font-bold text-foreground mb-1">Path Optimized</p>
-                <p className="text-sm text-muted-foreground">Continue with your main course. No remedial steps required for the current mastery level.</p>
+                <p className="text-lg font-bold text-foreground mb-1">
+                  Path Optimized
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  Continue with your main course. No remedial steps required for
+                  the current mastery level.
+                </p>
               </motion.div>
             ) : (
               <motion.div
@@ -229,11 +273,11 @@ export const AdaptiveRecommendationEngine: React.FC<AdaptiveRecommendationEngine
                     key={suggestion.id}
                     variants={{
                       hidden: { opacity: 0, y: 20 },
-                      show: { opacity: 1, y: 0 }
+                      show: { opacity: 1, y: 0 },
                     }}
                   >
-                    <SmartSuggestionCard 
-                      suggestion={suggestion} 
+                    <SmartSuggestionCard
+                      suggestion={suggestion}
                       className="border-primary/10 shadow-sm transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-md"
                     />
                   </motion.div>

@@ -28,7 +28,8 @@ export const useDynamicCourseContent = ({
     return {
       id: lid,
       title: `Dynamic Lesson: ${lid.split('-').pop()}`,
-      description: 'This lesson was loaded dynamically to optimize initial course load time.',
+      description:
+        'This lesson was loaded dynamically to optimize initial course load time.',
       videoUrl: 'https://sample-videos.com/video123.mp4',
       duration: 600,
       order: parseInt(lid.split('-').pop() || '1', 10),
@@ -49,14 +50,17 @@ export const useDynamicCourseContent = ({
   });
 
   // Prefetch logic for the next lesson
-  const prefetchNextLesson = useCallback(async (nextLessonId: string) => {
-    await queryClient.prefetchQuery({
-      queryKey: ['lesson', courseId, nextLessonId],
-      queryFn: () => fetchLesson(courseId, nextLessonId),
-      staleTime: 1000 * 60 * 5,
-    });
-    console.log(`Prefetched lesson: ${nextLessonId}`);
-  }, [courseId, queryClient]);
+  const prefetchNextLesson = useCallback(
+    async (nextLessonId: string) => {
+      await queryClient.prefetchQuery({
+        queryKey: ['lesson', courseId, nextLessonId],
+        queryFn: () => fetchLesson(courseId, nextLessonId),
+        staleTime: 1000 * 60 * 5,
+      });
+      console.log(`Prefetched lesson: ${nextLessonId}`);
+    },
+    [courseId, queryClient],
+  );
 
   return {
     lesson,

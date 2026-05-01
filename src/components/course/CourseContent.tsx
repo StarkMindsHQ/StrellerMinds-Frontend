@@ -22,10 +22,7 @@ export default function CourseContent({
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">{course.title}</h2>
       {course.lessons.map((lesson) => (
-        <div
-          key={lesson.id}
-          className="rounded-lg border border-border p-4"
-        >
+        <div key={lesson.id} className="rounded-lg border border-border p-4">
           <div className="flex items-center justify-between gap-3">
             <div>
               <h3 className="font-medium">{lesson.title}</h3>
@@ -35,7 +32,11 @@ export default function CourseContent({
                 </p>
               ) : null}
             </div>
-            {editable ? <button>Edit Lesson</button> : <span>Student View</span>}
+            {editable ? (
+              <button>Edit Lesson</button>
+            ) : (
+              <span>Student View</span>
+            )}
           </div>
         </div>
       ))}

@@ -39,7 +39,8 @@ const ROLE_LABELS: Record<ParticipantRole, string> = {
 };
 
 const ROLE_COLORS: Record<ParticipantRole, string> = {
-  owner: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300',
+  owner:
+    'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300',
   editor: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300',
   viewer: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300',
 };
@@ -55,7 +56,8 @@ export function StudentCollaborationRoom({
   onRoleChange,
   className = '',
 }: StudentCollaborationRoomProps) {
-  const [participants, setParticipants] = useState<Participant[]>(initialParticipants);
+  const [participants, setParticipants] =
+    useState<Participant[]>(initialParticipants);
   const [notes, setNotes] = useState<CollaborationNote[]>(initialNotes);
   const [activeTab, setActiveTab] = useState<'notes' | 'participants'>('notes');
   const [noteInput, setNoteInput] = useState('');
@@ -64,7 +66,8 @@ export function StudentCollaborationRoom({
 
   const currentParticipant = participants.find((p) => p.id === currentUserId);
   const canEdit =
-    currentParticipant?.role === 'owner' || currentParticipant?.role === 'editor';
+    currentParticipant?.role === 'owner' ||
+    currentParticipant?.role === 'editor';
   const isOwner = currentParticipant?.role === 'owner';
 
   const handleAddNote = () => {
@@ -108,8 +111,12 @@ export function StudentCollaborationRoom({
       {/* Header */}
       <div className="flex items-center justify-between border-b border-gray-200 px-4 py-3 dark:border-gray-700">
         <div>
-          <h2 className="font-semibold text-gray-900 dark:text-gray-100">{roomName}</h2>
-          <p className="text-xs text-gray-500 dark:text-gray-400">Room ID: {roomId}</p>
+          <h2 className="font-semibold text-gray-900 dark:text-gray-100">
+            {roomName}
+          </h2>
+          <p className="text-xs text-gray-500 dark:text-gray-400">
+            Room ID: {roomId}
+          </p>
         </div>
         <div className="flex items-center gap-2">
           <span className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400">
@@ -200,7 +207,9 @@ export function StudentCollaborationRoom({
                       })}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-800 dark:text-gray-200">{note.content}</p>
+                  <p className="text-sm text-gray-800 dark:text-gray-200">
+                    {note.content}
+                  </p>
                 </div>
               ))
             )}
@@ -220,20 +229,28 @@ export function StudentCollaborationRoom({
                     <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
                       {p.name}
                       {p.id === currentUserId && (
-                        <span className="ml-1 text-xs text-gray-400">(you)</span>
+                        <span className="ml-1 text-xs text-gray-400">
+                          (you)
+                        </span>
                       )}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   {p.role === 'owner' && (
-                    <Crown className="h-3.5 w-3.5 text-yellow-500" aria-label="Owner" />
+                    <Crown
+                      className="h-3.5 w-3.5 text-yellow-500"
+                      aria-label="Owner"
+                    />
                   )}
                   {isOwner && p.id !== currentUserId ? (
                     <select
                       value={p.role}
                       onChange={(e) =>
-                        handleRoleChange(p.id, e.target.value as ParticipantRole)
+                        handleRoleChange(
+                          p.id,
+                          e.target.value as ParticipantRole,
+                        )
                       }
                       aria-label={`Role for ${p.name}`}
                       className="rounded border border-gray-300 bg-white px-2 py-0.5 text-xs dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200"

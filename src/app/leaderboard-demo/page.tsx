@@ -3,7 +3,13 @@
 import React from 'react';
 import { Trophy, Users, Target, BarChart3 } from 'lucide-react';
 import { TopStudentsLeaderboard } from '@/components/leaderboard/TopStudentsLeaderboard';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
 export default function LeaderboardDemoPage() {
@@ -14,10 +20,13 @@ export default function LeaderboardDemoPage() {
         <div className="text-center space-y-4">
           <div className="flex items-center justify-center gap-2">
             <Trophy className="h-10 w-10 text-primary" />
-            <h1 className="text-4xl font-black tracking-tight">Student Leaderboard</h1>
+            <h1 className="text-4xl font-black tracking-tight">
+              Student Leaderboard
+            </h1>
           </div>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Celebrating top performers across all courses. Track your progress and compete with peers!
+            Celebrating top performers across all courses. Track your progress
+            and compete with peers!
           </p>
         </div>
 
@@ -25,7 +34,9 @@ export default function LeaderboardDemoPage() {
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Students</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Total Students
+              </CardTitle>
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -35,10 +46,12 @@ export default function LeaderboardDemoPage() {
               </p>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Avg Completion</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Avg Completion
+              </CardTitle>
               <Target className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -48,10 +61,12 @@ export default function LeaderboardDemoPage() {
               </p>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Quizzes Taken</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Quizzes Taken
+              </CardTitle>
               <BarChart3 className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -61,7 +76,7 @@ export default function LeaderboardDemoPage() {
               </p>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Top Score</CardTitle>
@@ -121,7 +136,9 @@ export default function LeaderboardDemoPage() {
             showTrends={true}
             className="shadow-xl"
             onStudentClick={(student) => {
-              alert(`Selected: ${student.studentName}\nRank: ${student.rank}\nScore: ${student.score}%`);
+              alert(
+                `Selected: ${student.studentName}\nRank: ${student.rank}\nScore: ${student.score}%`,
+              );
             }}
           />
         </div>
@@ -140,28 +157,53 @@ export default function LeaderboardDemoPage() {
           <CardContent>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               <div className="space-y-2">
-                <Badge variant="secondary" className="mb-2">Metrics</Badge>
-                <p className="text-sm">Track by course completion, quiz scores, or combined performance</p>
+                <Badge variant="secondary" className="mb-2">
+                  Metrics
+                </Badge>
+                <p className="text-sm">
+                  Track by course completion, quiz scores, or combined
+                  performance
+                </p>
               </div>
               <div className="space-y-2">
-                <Badge variant="secondary" className="mb-2">Real-time</Badge>
-                <p className="text-sm">Live updates ensure rankings are always current</p>
+                <Badge variant="secondary" className="mb-2">
+                  Real-time
+                </Badge>
+                <p className="text-sm">
+                  Live updates ensure rankings are always current
+                </p>
               </div>
               <div className="space-y-2">
-                <Badge variant="secondary" className="mb-2">User Highlight</Badge>
-                <p className="text-sm">Easily find your position in the rankings</p>
+                <Badge variant="secondary" className="mb-2">
+                  User Highlight
+                </Badge>
+                <p className="text-sm">
+                  Easily find your position in the rankings
+                </p>
               </div>
               <div className="space-y-2">
-                <Badge variant="secondary" className="mb-2">Responsive</Badge>
-                <p className="text-sm">Perfect viewing experience on all devices</p>
+                <Badge variant="secondary" className="mb-2">
+                  Responsive
+                </Badge>
+                <p className="text-sm">
+                  Perfect viewing experience on all devices
+                </p>
               </div>
               <div className="space-y-2">
-                <Badge variant="secondary" className="mb-2">Pagination</Badge>
-                <p className="text-sm">Navigate through large datasets effortlessly</p>
+                <Badge variant="secondary" className="mb-2">
+                  Pagination
+                </Badge>
+                <p className="text-sm">
+                  Navigate through large datasets effortlessly
+                </p>
               </div>
               <div className="space-y-2">
-                <Badge variant="secondary" className="mb-2">Trends</Badge>
-                <p className="text-sm">Visual indicators show ranking changes</p>
+                <Badge variant="secondary" className="mb-2">
+                  Trends
+                </Badge>
+                <p className="text-sm">
+                  Visual indicators show ranking changes
+                </p>
               </div>
             </div>
           </CardContent>
@@ -177,7 +219,7 @@ export default function LeaderboardDemoPage() {
           </CardHeader>
           <CardContent>
             <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm">
-{`<TopStudentsLeaderboard
+              {`<TopStudentsLeaderboard
   metricType="completion"
   courseId="blockchain-101"
   limit={20}

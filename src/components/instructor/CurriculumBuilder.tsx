@@ -2,18 +2,18 @@
 
 import React, { useState } from 'react';
 import { motion, Reorder, AnimatePresence } from 'framer-motion';
-import { 
-  GripVertical, 
-  Plus, 
-  Trash2, 
-  Edit3, 
-  Video, 
-  FileText, 
-  HelpCircle, 
-  ChevronDown, 
+import {
+  GripVertical,
+  Plus,
+  Trash2,
+  Edit3,
+  Video,
+  FileText,
+  HelpCircle,
+  ChevronDown,
   ChevronRight,
   Save,
-  Layout
+  Layout,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -69,61 +69,77 @@ export const CurriculumBuilder: React.FC = () => {
   };
 
   const addLesson = (sectionId: string) => {
-    setSections(sections.map(section => {
-      if (section.id === sectionId) {
-        return {
-          ...section,
-          lessons: [
-            ...section.lessons,
-            { id: `l-${Date.now()}`, title: 'New Lesson', type: 'video' }
-          ]
-        };
-      }
-      return section;
-    }));
+    setSections(
+      sections.map((section) => {
+        if (section.id === sectionId) {
+          return {
+            ...section,
+            lessons: [
+              ...section.lessons,
+              { id: `l-${Date.now()}`, title: 'New Lesson', type: 'video' },
+            ],
+          };
+        }
+        return section;
+      }),
+    );
   };
 
   const deleteSection = (sectionId: string) => {
-    setSections(sections.filter(s => s.id !== sectionId));
+    setSections(sections.filter((s) => s.id !== sectionId));
     toast.success('Section deleted');
   };
 
   const deleteLesson = (sectionId: string, lessonId: string) => {
-    setSections(sections.map(section => {
-      if (section.id === sectionId) {
-        return {
-          ...section,
-          lessons: section.lessons.filter(l => l.id !== lessonId)
-        };
-      }
-      return section;
-    }));
+    setSections(
+      sections.map((section) => {
+        if (section.id === sectionId) {
+          return {
+            ...section,
+            lessons: section.lessons.filter((l) => l.id !== lessonId),
+          };
+        }
+        return section;
+      }),
+    );
   };
 
   const toggleSection = (sectionId: string) => {
-    setSections(sections.map(section => 
-      section.id === sectionId ? { ...section, isExpanded: !section.isExpanded } : section
-    ));
+    setSections(
+      sections.map((section) =>
+        section.id === sectionId
+          ? { ...section, isExpanded: !section.isExpanded }
+          : section,
+      ),
+    );
   };
 
   const updateSectionTitle = (sectionId: string, title: string) => {
-    setSections(sections.map(section => 
-      section.id === sectionId ? { ...section, title } : section
-    ));
+    setSections(
+      sections.map((section) =>
+        section.id === sectionId ? { ...section, title } : section,
+      ),
+    );
   };
 
-  const updateLessonTitle = (sectionId: string, lessonId: string, title: string) => {
-    setSections(sections.map(section => {
-      if (section.id === sectionId) {
-        return {
-          ...section,
-          lessons: section.lessons.map(lesson => 
-            lesson.id === lessonId ? { ...lesson, title } : lesson
-          )
-        };
-      }
-      return section;
-    }));
+  const updateLessonTitle = (
+    sectionId: string,
+    lessonId: string,
+    title: string,
+  ) => {
+    setSections(
+      sections.map((section) => {
+        if (section.id === sectionId) {
+          return {
+            ...section,
+            lessons: section.lessons.map((lesson) =>
+              lesson.id === lessonId ? { ...lesson, title } : lesson,
+            ),
+          };
+        }
+        return section;
+      }),
+    );
   };
 
   const handleSave = () => {
@@ -139,16 +155,24 @@ export const CurriculumBuilder: React.FC = () => {
     <div className="max-w-4xl mx-auto p-6 space-y-8">
       <div className="flex items-center justify-between bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Course Curriculum</h2>
-          <p className="text-sm text-gray-500">Plan and organize your course content</p>
+          <h2 className="text-2xl font-bold text-gray-900">
+            Course Curriculum
+          </h2>
+          <p className="text-sm text-gray-500">
+            Plan and organize your course content
+          </p>
         </div>
         <div className="flex gap-3">
-          <Button variant="outline" onClick={addSection} className="rounded-xl border-gray-200">
+          <Button
+            variant="outline"
+            onClick={addSection}
+            className="rounded-xl border-gray-200"
+          >
             <Plus className="w-4 h-4 mr-2" />
             Add Section
           </Button>
-          <Button 
-            onClick={handleSave} 
+          <Button
+            onClick={handleSave}
             disabled={isSaving}
             className="bg-[#5c0f49] hover:bg-[#4a0c3b] text-white rounded-xl shadow-lg shadow-purple-100"
           >
@@ -167,7 +191,12 @@ export const CurriculumBuilder: React.FC = () => {
         </div>
       </div>
 
-      <Reorder.Group axis="y" values={sections} onReorder={setSections} className="space-y-4">
+      <Reorder.Group
+        axis="y"
+        values={sections}
+        onReorder={setSections}
+        className="space-y-4"
+      >
         <AnimatePresence>
           {sections.map((section) => (
             <Reorder.Item
@@ -182,16 +211,22 @@ export const CurriculumBuilder: React.FC = () => {
                 <div className="cursor-grab active:cursor-grabbing text-gray-400">
                   <GripVertical className="w-5 h-5" />
                 </div>
-                <button 
+                <button
                   onClick={() => toggleSection(section.id)}
                   className="p-1 hover:bg-gray-200 rounded-md transition-colors"
                 >
-                  {section.isExpanded ? <ChevronDown className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
+                  {section.isExpanded ? (
+                    <ChevronDown className="w-5 h-5" />
+                  ) : (
+                    <ChevronRight className="w-5 h-5" />
+                  )}
                 </button>
                 <div className="flex-1">
-                  <Input 
+                  <Input
                     value={section.title}
-                    onChange={(e) => updateSectionTitle(section.id, e.target.value)}
+                    onChange={(e) =>
+                      updateSectionTitle(section.id, e.target.value)
+                    }
                     className="border-none bg-transparent font-bold text-lg focus-visible:ring-0 px-0 h-auto"
                   />
                 </div>
@@ -199,7 +234,12 @@ export const CurriculumBuilder: React.FC = () => {
                   <span className="text-xs font-medium bg-white px-2 py-1 rounded-md text-gray-500 border border-gray-200">
                     {section.lessons.length} lessons
                   </span>
-                  <Button variant="ghost" size="icon" onClick={() => deleteSection(section.id)} className="text-red-500 hover:text-red-600 hover:bg-red-50">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => deleteSection(section.id)}
+                    className="text-red-500 hover:text-red-600 hover:bg-red-50"
+                  >
                     <Trash2 className="w-4 h-4" />
                   </Button>
                 </div>
@@ -214,11 +254,17 @@ export const CurriculumBuilder: React.FC = () => {
                     className="overflow-hidden"
                   >
                     <div className="p-4 pt-0 space-y-2 ml-12 pr-6 pb-6">
-                      <Reorder.Group 
-                        axis="y" 
-                        values={section.lessons} 
+                      <Reorder.Group
+                        axis="y"
+                        values={section.lessons}
                         onReorder={(newLessons) => {
-                          setSections(sections.map(s => s.id === section.id ? { ...s, lessons: newLessons } : s));
+                          setSections(
+                            sections.map((s) =>
+                              s.id === section.id
+                                ? { ...s, lessons: newLessons }
+                                : s,
+                            ),
+                          );
                         }}
                         className="space-y-2"
                       >
@@ -232,21 +278,35 @@ export const CurriculumBuilder: React.FC = () => {
                               <GripVertical className="w-4 h-4" />
                             </div>
                             <div className="p-2 bg-gray-50 rounded-lg text-gray-500">
-                              {lesson.type === 'video' && <Video className="w-4 h-4" />}
-                              {lesson.type === 'article' && <FileText className="w-4 h-4" />}
-                              {lesson.type === 'quiz' && <HelpCircle className="w-4 h-4" />}
+                              {lesson.type === 'video' && (
+                                <Video className="w-4 h-4" />
+                              )}
+                              {lesson.type === 'article' && (
+                                <FileText className="w-4 h-4" />
+                              )}
+                              {lesson.type === 'quiz' && (
+                                <HelpCircle className="w-4 h-4" />
+                              )}
                             </div>
                             <div className="flex-1">
-                              <Input 
+                              <Input
                                 value={lesson.title}
-                                onChange={(e) => updateLessonTitle(section.id, lesson.id, e.target.value)}
+                                onChange={(e) =>
+                                  updateLessonTitle(
+                                    section.id,
+                                    lesson.id,
+                                    e.target.value,
+                                  )
+                                }
                                 className="border-none bg-transparent text-sm focus-visible:ring-0 px-0 h-auto"
                               />
                             </div>
-                            <Button 
-                              variant="ghost" 
-                              size="icon" 
-                              onClick={() => deleteLesson(section.id, lesson.id)}
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() =>
+                                deleteLesson(section.id, lesson.id)
+                              }
                               className="opacity-0 group-hover:opacity-100 text-gray-400 hover:text-red-500 transition-opacity"
                             >
                               <Trash2 className="w-4 h-4" />
@@ -254,16 +314,18 @@ export const CurriculumBuilder: React.FC = () => {
                           </Reorder.Item>
                         ))}
                       </Reorder.Group>
-                      
-                      <Button 
-                        variant="ghost" 
+
+                      <Button
+                        variant="ghost"
                         onClick={() => addLesson(section.id)}
                         className="w-full mt-4 border-2 border-dashed border-gray-100 hover:border-purple-100 hover:bg-purple-50/30 text-gray-500 rounded-xl py-8 flex flex-col gap-2"
                       >
                         <div className="p-2 bg-white rounded-full shadow-sm">
                           <Plus className="w-5 h-5 text-[#5c0f49]" />
                         </div>
-                        <span className="text-sm font-medium">Add a lesson to this section</span>
+                        <span className="text-sm font-medium">
+                          Add a lesson to this section
+                        </span>
                       </Button>
                     </div>
                   </motion.div>
@@ -279,9 +341,16 @@ export const CurriculumBuilder: React.FC = () => {
           <div className="bg-gray-50 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
             <Layout className="w-8 h-8 text-gray-300" />
           </div>
-          <h3 className="text-lg font-bold text-gray-900">Your curriculum is empty</h3>
-          <p className="text-gray-500 mb-6">Start by adding your first section</p>
-          <Button onClick={addSection} className="bg-[#5c0f49] hover:bg-[#4a0c3b] text-white px-8 py-6 rounded-xl font-bold">
+          <h3 className="text-lg font-bold text-gray-900">
+            Your curriculum is empty
+          </h3>
+          <p className="text-gray-500 mb-6">
+            Start by adding your first section
+          </p>
+          <Button
+            onClick={addSection}
+            className="bg-[#5c0f49] hover:bg-[#4a0c3b] text-white px-8 py-6 rounded-xl font-bold"
+          >
             <Plus className="w-5 h-5 mr-2" />
             Add First Section
           </Button>

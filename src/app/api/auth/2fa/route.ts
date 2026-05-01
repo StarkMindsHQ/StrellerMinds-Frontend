@@ -13,8 +13,8 @@ let twoFactorState: TwoFactorState = {
 };
 
 const generateBackupCodes = () =>
-  Array.from({ length: 6 }).map(
-    () => Math.random().toString(36).slice(2, 10).toUpperCase(),
+  Array.from({ length: 6 }).map(() =>
+    Math.random().toString(36).slice(2, 10).toUpperCase(),
   );
 
 const validateCode = (code: string) => /^[0-9]{6}$/.test(code);
