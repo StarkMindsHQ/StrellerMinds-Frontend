@@ -47,6 +47,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { ContributorDashboard } from '@/components/dashboard/contributor/ContributorDashboard';
+import CommunityLeaderboard from '@/components/community/CommunityLeaderboard';
 import { AdaptiveRecommendationEngine } from '@/components/learning/AdaptiveRecommendationEngine';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -696,8 +697,13 @@ export default function DashboardPage() {
                     </Button>
                   </CardFooter>
                 </Card>
+              </div>
 
-                <Card>
+              <div className="grid gap-4 lg:grid-cols-1">
+                <CommunityLeaderboard currentUserId={learnerId} />
+              </div>
+
+              <Card>
                   <CardHeader>
                     <CardTitle>Account Summary</CardTitle>
                     <CardDescription>
