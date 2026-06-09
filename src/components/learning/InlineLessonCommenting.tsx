@@ -1,7 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Bell, MessageSquare, Pencil, Trash2 } from 'lucide-react';
+import { Bell, MessageSquare, Pencil, Trash2, Flag } from 'lucide-react';
+import { ReportModal } from '@/components/ReportModal';
+import { ReportContentType } from '@/types/report';
+import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -119,6 +122,8 @@ export function InlineLessonCommenting({
       createdAt: '2026-04-24T12:45:00.000Z',
     },
   ]);
+  const [reportModalOpen, setReportModalOpen] = useState(false);
+  const [reportContentId, setReportContentId] = useState<string | null>(null);
 
   const deleteCommentWithReplies = (commentId: string) => {
     const relatedIds = new Set<string>([commentId]);
@@ -237,18 +242,33 @@ export function InlineLessonCommenting({
                   <Pencil className="h-3.5 w-3.5" />
                   Edit
                 </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="gap-1 text-destructive"
+                    onClick={() => deleteCommentWithReplies(comment.id)}
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                    Delete
+                  </Button>
+                </div>
+              )}
+
+              {!canModify && (
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="gap-1 text-destructive"
-                  onClick={() => deleteCommentWithReplies(comment.id)}
+                  className="gap-1 text-muted-foreground hover:text-red-500"
+                  onClick={() => {
+                    setReportContentId(comment.id);
+                    setReportModalOpen(true);
+                  }}
                 >
-                  <Trash2 className="h-3.5 w-3.5" />
-                  Delete
+                  <Flag className="h-3.5 w-3.5" />
+                  Report
                 </Button>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
 
           {isEditing ? (
             <div className="mt-3 space-y-2">
@@ -417,6 +437,16 @@ export function InlineLessonCommenting({
           );
         })}
       </div>
+
+      <ReportModal
+        contentType={ReportContentType.COMMENT}
+        contentId={reportContentId || ''}
+        isOpen={reportModalOpen}
+        onClose={() => setReportModalOpen(false)}
+        onSuccess={() => {
+          toast.success("Thank you for your report. Our moderators will review it.");
+        }}
+      />
     </div>
   );
 }
