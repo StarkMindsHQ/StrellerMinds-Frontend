@@ -14,7 +14,8 @@ export interface Video {
   views: string;
   [key: string]: any;
 }
-
+<!-- 
+The Auto-Skip Silence feature automatically detects and skips silent parts of videos, saving users time during playback. It uses the Web Audio API to analyze audio levels in real-time and skips segments that fall below a configurable silence threshold. -->
 export interface GridConfig {
   columns: {
     xs?: number;

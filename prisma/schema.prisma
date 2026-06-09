@@ -275,3 +275,53 @@ enum LanguageCode {
   AR
   HI
 }
+
+enum ReportStatus {
+  PENDING
+  REVIEWED
+  RESOLVED
+  DISMISSED
+}
+
+enum ReportReason {
+  SPAM
+  HARASSMENT
+  INAPPROPRIATE_CONTENT
+  MISINFORMATION
+  OTHER
+}
+
+enum ReportContentType {
+  COURSE
+  LESSON
+  MODULE
+  REVIEW
+  COMMENT
+  USER
+  OTHER
+}
+
+model Report {
+  id           String          @id @default(cuid())
+  contentType  ReportContentType
+  contentId    String
+  reason       ReportReason
+  details      String?         @db.Text
+  status       ReportStatus    @default(PENDING)
+
+  reporterId   String
+  reporter     User            @relation(fields: [reporterId], references: [id], onDelete: Cascade)
+
+  resolvedBy   String?
+  resolvedByUser User?        @relation(fields: [resolvedBy], references: [id])
+  resolvedAt   DateTime?
+  adminNotes   String?         @db.Text
+
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  @@index([contentType, contentId])
+  @@index([reporterId])
+  @@index([status])
+  @@index([createdAt])
+}

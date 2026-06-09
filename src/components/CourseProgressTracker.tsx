@@ -12,6 +12,12 @@ import { evaluateAchievements } from '@/services/achievements';
 import { CourseProgress } from '@/types/progress';
 import VideoPlayer from '@/components/VideoPlayer';
 import { populateTestData } from '@/utils/testData';
+import {
+  getLessonsWithLockStatus,
+  getLessonCompletionStatus,
+  type Lesson,
+} from '@/services/lessonLockService';
+import LockedLessonCard from '@/components/LockedLessonCard';
 
 interface SampleVideo {
   id: string;
@@ -57,17 +63,32 @@ const sampleVideos: SampleVideo[] = [
   },
 ];
 
+// Convert sample videos to lessons for locking mechanism
+const lessons: Lesson[] = sampleVideos.map((video, index) => ({
+  id: video.id,
+  title: video.title,
+  order: index,
+  videoId: video.id,
+}));
+
 export default function CourseProgressTracker() {
   const [progress, setProgress] = useState<CourseProgress | null>(null);
   const [completionPercentage, setCompletionPercentage] = useState(0);
   const [achievements, setAchievements] = useState<string[]>([]);
   const [playingVideo, setPlayingVideo] = useState<SampleVideo | null>(null);
+  const [lessonsWithStatus, setLessonsWithStatus] = useState<
+    (Lesson & { isLocked: boolean; isCompleted: boolean })[]
+  >([]);
 
   useEffect(() => {
     const loadedProgress = loadProgress();
     setProgress(loadedProgress);
     setCompletionPercentage(calculateCourseCompletion(loadedProgress));
     setAchievements(evaluateAchievements(loadedProgress));
+
+    // Initialize lessons with lock and completion status
+    const lessonCompletionStatus = getLessonCompletionStatus(lessons);
+    setLessonsWithStatus(lessonCompletionStatus);
 
     // Add some sample data for testing if none exists
     if (loadedProgress.quizzes.length === 0) {
@@ -78,6 +99,10 @@ export default function CourseProgressTracker() {
       setProgress(updatedProgress);
       setCompletionPercentage(calculateCourseCompletion(updatedProgress));
       setAchievements(evaluateAchievements(updatedProgress));
+
+      // Update lessons with new progress
+      const updatedLessonStatus = getLessonCompletionStatus(lessons);
+      setLessonsWithStatus(updatedLessonStatus);
     }
   }, []);
 
@@ -91,6 +116,30 @@ export default function CourseProgressTracker() {
     setProgress(loadedProgress);
     setCompletionPercentage(calculateCourseCompletion(loadedProgress));
     setAchievements(evaluateAchievements(loadedProgress));
+
+    // Update lessons with new progress and lock status
+    const updatedLessonStatus = getLessonCompletionStatus(lessons);
+    setLessonsWithStatus(updatedLessonStatus);
+  };
+
+  const handleLessonAccess = (lessonId: string) => {
+    const lesson = lessonsWithStatus.find((l) => l.lessonId === lessonId);
+    if (!lesson) return;
+
+    // Check if lesson is locked
+    if (lesson.isLocked) {
+      const previousLesson = lessons.find((l) => l.order === lesson.order - 1);
+      alert(
+        `Complete "${previousLesson?.title || 'the previous lesson'}" before accessing this lesson`,
+      );
+      return;
+    }
+
+    // Find the corresponding video and play it
+    const video = sampleVideos.find((v) => v.id === lessonId);
+    if (video) {
+      handleVideoPlay(video);
+    }
   };
 
   const resetProgress = () => {
@@ -172,69 +221,30 @@ export default function CourseProgressTracker() {
           </CardContent>
         </Card>
 
-        {/* Video Progress */}
+        {/* Lesson Progress with Locking */}
         <Card className="mb-8 border-[#ffcc00]/20 shadow-lg">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-[#5c0f49]">
               <Play className="w-5 h-5" />
-              Video Progress
+              Course Lessons
             </CardTitle>
+            <p className="text-sm text-gray-600">
+              Complete each lesson to unlock the next one
+            </p>
           </CardHeader>
           <CardContent>
             <div className="grid gap-4">
-              {sampleVideos.map((video) => {
-                const videoProgress = progress.videos.find(
-                  (v) => v.lessonId === video.id,
+              {lessonsWithStatus.map((lesson) => {
+                const previousLesson = lessons.find(
+                  (l) => l.order === lesson.order - 1,
                 );
-                const watchedPercentage = videoProgress
-                  ? Math.min(
-                      (videoProgress.watchedSeconds /
-                        videoProgress.totalSeconds) *
-                        100,
-                      100,
-                    ) // Cap at 100%
-                  : 0;
-
                 return (
-                  <div
-                    key={video.id}
-                    className="flex items-center gap-4 p-4 border border-[#ffcc00]/10 rounded-lg hover:bg-[#5c0f49]/5 transition-colors"
-                  >
-                    <div className="w-16 h-16 bg-[#5c0f49]/10 rounded-lg flex items-center justify-center">
-                      <Play className="w-6 h-6 text-[#5c0f49]" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-[#5c0f49]">
-                        {video.title}
-                      </h3>
-                      <p className="text-sm text-gray-600">
-                        Duration:{' '}
-                        {videoProgress
-                          ? `${Math.floor(videoProgress.totalSeconds / 60)}:${(videoProgress.totalSeconds % 60).toString().padStart(2, '0')}`
-                          : `${Math.floor(video.duration / 60)}:${(video.duration % 60).toString().padStart(2, '0')}`}
-                      </p>
-                      <div className="mt-2">
-                        <div className="flex justify-between items-center mb-1">
-                          <span className="text-xs text-gray-500">
-                            Watched: {Math.round(watchedPercentage)}%
-                          </span>
-                          {videoProgress?.completed && (
-                            <CheckCircle className="w-4 h-4 text-green-500" />
-                          )}
-                        </div>
-                        <Progress
-                          value={watchedPercentage}
-                          className="h-2 bg-[#5c0f49]/10"
-                        />
-                      </div>
-                    </div>
-                    <Button
-                      onClick={() => handleVideoPlay(video)}
-                      className="bg-[#5c0f49] hover:bg-[#7a1a5f] text-[#ffcc00] border border-[#ffcc00]/20"
-                    >
-                      Watch
-                    </Button>
-                  </div>
+                  <LockedLessonCard
+                    key={lesson.lessonId}
+                    lesson={lesson}
+                    onPlayVideo={handleLessonAccess}
+                    previousLessonTitle={previousLesson?.title}
+                  />
                 );
               })}
             </div>

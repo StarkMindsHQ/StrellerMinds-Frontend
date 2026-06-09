@@ -2,7 +2,8 @@
 
 ## Overview
 This implementation provides a complete course rating and review system for the StrellerMinds platform, allowing students to rate courses with stars and submit detailed reviews.
-
+<!-- 
+The Auto-Skip Silence feature automatically detects and skips silent parts of videos, saving users time during playback. It uses the Web Audio API to analyze audio levels in real-time and skips segments that fall below a configurable silence threshold. -->
 ## Features Implemented
 
 ### ✅ Core Features

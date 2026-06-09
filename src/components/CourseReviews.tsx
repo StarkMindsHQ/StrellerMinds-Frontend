@@ -1,23 +1,26 @@
 'use client';
 
 import React from 'react';
-import { Star, User, ThumbsUp, Calendar } from 'lucide-react';
+import { Star, User, ThumbsUp, Calendar, Flag } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import type { CourseReview, CourseRatingSummary } from '@/types/course-review';
+import type { ReportContentType } from '@/types/report';
 
 interface CourseReviewsProps {
   reviews: CourseReview[];
   summary: CourseRatingSummary;
   onHelpfulClick?: (reviewId: string) => void;
+  onReportClick?: (contentType: ReportContentType, contentId: string) => void;
 }
 
 export function CourseReviews({
   reviews,
   summary,
   onHelpfulClick,
+  onReportClick,
 }: CourseReviewsProps) {
   const renderStars = (rating: number, size: number = 4) => {
     return (
@@ -160,7 +163,7 @@ export function CourseReviews({
                     </p>
                   )}
 
-                  {/* Helpful Button */}
+                  {/* Actions */}
                   {review.helpfulCount !== undefined && (
                     <div className="flex items-center gap-4 pt-2 border-t border-gray-200 dark:border-gray-800">
                       <Button
@@ -171,6 +174,15 @@ export function CourseReviews({
                       >
                         <ThumbsUp className="w-4 h-4 mr-2" />
                         Helpful ({review.helpfulCount})
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => onReportClick?.(ReportContentType.REVIEW, review.id)}
+                        className="text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 ml-auto"
+                      >
+                        <Flag className="w-4 h-4 mr-2" />
+                        Report
                       </Button>
                     </div>
                   )}
